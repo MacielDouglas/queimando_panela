@@ -10,6 +10,13 @@ const createToken = (user) => {
   );
 };
 
+const existingUser = async (id) => {
+  const user = await User.findById(id);
+  if (!user) throw new Error("Usuário não encontrado.");
+
+  return user;
+};
+
 const setTokenCookie = (res, token) => {
   res.cookie("access_token", token, {
     httpOnly: true,
@@ -33,14 +40,27 @@ const validateUserCredentials = async (email, password) => {
   return user;
 };
 
+const verifyAuthorization = (req) => {
+  const authorizationHeader = req.headers.cookie;
+  if (!authorizationHeader) {
+    throw new Error("Token de autorização não fornecido.");
+  }
+
+  const token = authorizationHeader.split("access_token=")[1];
+
+  if (!token) {
+    throw new Error("Token de autorização inválido.");
+  }
+
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  return decodedToken;
+};
+
 const userResolver = {
   Query: {
     getUser: async (_, { id }) => {
       try {
-        const user = await User.findById(id).lean().exec();
-        if (!user) {
-          throw new Error("Usuário não encontrado");
-        }
+        const user = await existingUser(id);
         return sanitizeUser(user);
       } catch (error) {
         throw new Error(`Erro ao buscar usuário: ${error.message}`);
@@ -106,6 +126,75 @@ const userResolver = {
         return newUser;
       } catch (error) {
         throw new Error(`Erro ao criar novo usuário: ${error.message}`);
+      }
+    },
+
+    deleteUser: async (_, { id }, { req }) => {
+      try {
+        const decodedToken = verifyAuthorization(req);
+        if (!decodedToken)
+          throw new Error("Você não tem permissão para excluir esse usuário.");
+
+        const user = await existingUser(id);
+
+        await User.findByIdAndDelete(user.id);
+
+        return {
+          success: true,
+          message: `Usuário: ${existingUser.username}, foi excluído com sucesso.`,
+        };
+      } catch (error) {
+        throw new Error(`Erro ao excluir usuário: ${error.message}`);
+      }
+    },
+
+    updateUser: async (_, { id, updateUser }, { req }) => {
+      try {
+        const user = await existingUser(id);
+
+        const decodedToken = verifyAuthorization(req);
+        if (!decodedToken || decodedToken.userId !== user.id) {
+          throw new Error("Você não tem permissão para alterar esse usuário.");
+        }
+
+        const userUpdate = {};
+        const { username, email, password, profilePicture, name } = updateUser;
+
+        if (password && password.trim()) {
+          userUpdate.password = await bcrypt.hash(password, 10);
+        }
+
+        if (username && username.trim()) {
+          userUpdate.username = username;
+        }
+
+        if (email && email.trim()) {
+          userUpdate.email = email;
+        }
+
+        if (profilePicture && profilePicture.trim()) {
+          userUpdate.profilePicture = profilePicture;
+        }
+
+        if (name && name.trim()) {
+          userUpdate.name = name;
+        }
+
+        await User.findByIdAndUpdate(id, userUpdate);
+
+        const updatedUser = await existingUser(id);
+
+        return {
+          username: updatedUser.username,
+          isAdmin: updatedUser.isAdmin,
+          profilePicture: updatedUser.profilePicture,
+          name: updatedUser.name,
+          success: true,
+          message: "Usuário atualizado com sucesso.",
+        };
+      } catch (error) {
+        console.error(`Erro ao atualizar usuário: ${error.message}`);
+        throw new Error(`Erro ao atualizar usuário: ${error.message}`);
       }
     },
   },

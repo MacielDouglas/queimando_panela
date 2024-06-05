@@ -32,6 +32,8 @@ type LogoutResponse {
 
 type Mutation {
     createUser(user: NewUserInput!): User
+    deleteUser(id: ID!): DeleteUserResponse
+    updateUser(id: ID!, updateUser: UpdateUserInput!): UpdateUserResponse!
 }
 
 input NewUserInput {
@@ -41,6 +43,28 @@ input NewUserInput {
     profilePicture: String!
     isAdmin: Boolean
     name: String!
+}
+
+type DeleteUserResponse {
+    success: Boolean!
+    message: String!
+}
+
+input UpdateUserInput {
+    username: String
+    email: String
+    password: String
+    profilePicture: String
+    name: String
+}
+
+type UpdateUserResponse {
+    success: Boolean!
+    message: String
+    username: String
+    profilePicture: String
+    isAdmin: Boolean
+    name: String
 }
 `;
 
