@@ -1,60 +1,13 @@
 import User from "../../models/user.models.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-
-const createToken = (user) => {
-  return jwt.sign(
-    { userId: user._id, isAdmin: user.isAdmin },
-    process.env.JWT_SECRET,
-    { expiresIn: "1h" }
-  );
-};
-
-const existingUser = async (id) => {
-  const user = await User.findById(id);
-  if (!user) throw new Error("Usuário não encontrado.");
-
-  return user;
-};
-
-const setTokenCookie = (res, token) => {
-  res.cookie("access_token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
-  });
-};
-
-const sanitizeUser = (user) => {
-  const { _id, isAdmin, username, profilePicture, name } = user;
-  return { id: _id, isAdmin, username, profilePicture, name };
-};
-
-const validateUserCredentials = async (email, password) => {
-  const user = await User.findOne({ email }).select("+password");
-  if (!user) throw new Error("Credenciais inválidas.");
-
-  const isValidPassword = await bcrypt.compare(password, user.password);
-  if (!isValidPassword) throw new Error("Credenciais inválidas.");
-
-  return user;
-};
-
-const verifyAuthorization = (req) => {
-  const authorizationHeader = req.headers.cookie;
-  if (!authorizationHeader) {
-    throw new Error("Token de autorização não fornecido.");
-  }
-
-  const token = authorizationHeader.split("access_token=")[1];
-
-  if (!token) {
-    throw new Error("Token de autorização inválido.");
-  }
-
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-  return decodedToken;
-};
+import {
+  createToken,
+  existingUser,
+  setTokenCookie,
+  sanitizeUser,
+  validateUserCredentials,
+  verifyAuthorization,
+} from "../../utils/utils.js"; // Substitua pelo caminho correto
 
 const userResolver = {
   Query: {
@@ -70,10 +23,8 @@ const userResolver = {
     loginUser: async (_, { email, password }, { res }) => {
       try {
         const user = await validateUserCredentials(email, password);
-
         const token = createToken(user);
         setTokenCookie(res, token);
-
         return sanitizeUser(user);
       } catch (error) {
         console.error(`Erro ao fazer login: ${error.message}`);
@@ -100,13 +51,12 @@ const userResolver = {
         const existingEmail = await User.findOne({ email: user.email });
         if (existingEmail)
           throw new Error(
-            `Este email está em uso. Por favor, use outro email.`
+            "Este email está em uso. Por favor, use outro email."
           );
 
         const existingUsername = await User.findOne({
           username: user.username,
         });
-
         if (existingUsername)
           throw new Error(
             "Este username está em uso, por favor escolha outro nome de usuário."
@@ -123,32 +73,32 @@ const userResolver = {
         });
 
         await newUser.save();
-        return newUser;
+        return sanitizeUser(newUser);
       } catch (error) {
         throw new Error(`Erro ao criar novo usuário: ${error.message}`);
       }
     },
 
-    deleteUser: async (_, { id }, { req }) => {
+    deleteUser: async (_, { id }, { res, req }) => {
       try {
         const decodedToken = verifyAuthorization(req);
         if (!decodedToken)
           throw new Error("Você não tem permissão para excluir esse usuário.");
 
         const user = await existingUser(id);
-
         await User.findByIdAndDelete(user.id);
+        res.clearCookie("access_token");
 
         return {
           success: true,
-          message: `Usuário: ${existingUser.username}, foi excluído com sucesso.`,
+          message: `Usuário: ${user.username}, foi excluído com sucesso.`,
         };
       } catch (error) {
         throw new Error(`Erro ao excluir usuário: ${error.message}`);
       }
     },
 
-    updateUser: async (_, { id, updateUser }, { req }) => {
+    updateUser: async (_, { id, updateUserInput }, { req }) => {
       try {
         const user = await existingUser(id);
 
@@ -158,7 +108,9 @@ const userResolver = {
         }
 
         const userUpdate = {};
-        const { username, email, password, profilePicture, name } = updateUser;
+
+        const { username, email, password, profilePicture, name } =
+          updateUserInput;
 
         if (password && password.trim()) {
           userUpdate.password = await bcrypt.hash(password, 10);
@@ -185,10 +137,7 @@ const userResolver = {
         const updatedUser = await existingUser(id);
 
         return {
-          username: updatedUser.username,
-          isAdmin: updatedUser.isAdmin,
-          profilePicture: updatedUser.profilePicture,
-          name: updatedUser.name,
+          ...sanitizeUser(updatedUser),
           success: true,
           message: "Usuário atualizado com sucesso.",
         };

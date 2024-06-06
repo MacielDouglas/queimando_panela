@@ -33,7 +33,7 @@ type LogoutResponse {
 type Mutation {
     createUser(user: NewUserInput!): User
     deleteUser(id: ID!): DeleteUserResponse
-    updateUser(id: ID!, updateUser: UpdateUserInput!): UpdateUserResponse!
+    updateUser(id: ID!, updateUserInput: UpdateUserInput!): UpdateUserResponse!
 }
 
 input NewUserInput {
