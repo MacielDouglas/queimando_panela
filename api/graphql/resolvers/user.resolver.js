@@ -2,18 +2,18 @@ import User from "../../models/user.models.js";
 import bcrypt from "bcryptjs";
 import {
   createToken,
-  existingUser,
   setTokenCookie,
   sanitizeUser,
   validateUserCredentials,
   verifyAuthorization,
-} from "../../utils/utils.js"; // Substitua pelo caminho correto
+  existing,
+} from "../../utils/utils.js";
 
 const userResolver = {
   Query: {
     getUser: async (_, { id }) => {
       try {
-        const user = await existingUser(id);
+        const user = await existing(id, "usuario");
         return sanitizeUser(user);
       } catch (error) {
         throw new Error(`Erro ao buscar usuário: ${error.message}`);
@@ -85,7 +85,7 @@ const userResolver = {
         if (!decodedToken)
           throw new Error("Você não tem permissão para excluir esse usuário.");
 
-        const user = await existingUser(id);
+        const user = await existing(id, "usuario");
         await User.findByIdAndDelete(user.id);
         res.clearCookie("access_token");
 
@@ -100,7 +100,8 @@ const userResolver = {
 
     updateUser: async (_, { id, updateUserInput }, { req }) => {
       try {
-        const user = await existingUser(id);
+        // const user = await existingUser(id);
+        const user = await existing(id, "usuario");
 
         const decodedToken = verifyAuthorization(req);
         if (!decodedToken || decodedToken.userId !== user.id) {
@@ -134,7 +135,8 @@ const userResolver = {
 
         await User.findByIdAndUpdate(id, userUpdate);
 
-        const updatedUser = await existingUser(id);
+        const updatedUser = await existing(id, (type = "user"));
+        // const updatedUser = await existingUser(id);
 
         return {
           ...sanitizeUser(updatedUser),

@@ -1,19 +1,36 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user.models.js";
+import Recipe from "../models/recipe.models.js";
 
 export const createToken = (user) => {
   return jwt.sign(
-    { userId: user._id, isAdmin: user.isAdmin },
+    { userId: user._id, isAdmin: user.isAdmin, username: user.username },
     process.env.JWT_SECRET,
     { expiresIn: "1h" }
   );
 };
 
-export const existingUser = async (id) => {
-  const user = await User.findById(id);
-  if (!user) throw new Error("Usuário não encontrado.");
-  return user;
+export const existing = async (id, type) => {
+  const models = {
+    usuario: User,
+    receita: Recipe,
+  };
+
+  const Model = models[type];
+
+  if (!Model) {
+    throw new Error("Tipo inválido!");
+  }
+
+  const document = await Model.findById(id);
+
+  if (!document) {
+    throw new Error(
+      `${type.charAt(0).toUpperCase() + type.slice(1)} não encontrado.`
+    );
+  }
+  return document;
 };
 
 export const setTokenCookie = (res, token) => {
