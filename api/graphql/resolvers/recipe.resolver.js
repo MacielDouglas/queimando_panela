@@ -19,6 +19,12 @@ const buildQuery = (input) => {
   return query;
 };
 
+const generateSlug = (title) => {
+  return (
+    Math.random().toString(9).slice(-4) + "-" + slugify(title, { lower: true })
+  );
+};
+
 const recipeResolver = {
   Query: {
     getRecipes: async (_, { slug, input }) => {
@@ -49,7 +55,6 @@ const recipeResolver = {
             "Você não tem permissão para criar uma receita, faça login corretamente."
           );
 
-        console.log(decodedToken);
         const existingRecipe = await Recipe.findOne({ title: newRecipe.title });
         if (
           existingRecipe &&
@@ -58,16 +63,11 @@ const recipeResolver = {
           throw new Error("Desculpe, mas já existe uma receita igual a essa");
         }
 
-        const slug =
-          Math.random().toString(9).slice(-4) +
-          "-" +
-          slugify(newRecipe.title, { lower: true });
-
         const recipe = new Recipe({
           ...newRecipe,
           userId: decodedToken.userId,
           writer: decodedToken.username,
-          slug: slug,
+          slug: generateSlug(newRecipe.title),
         });
 
         await recipe.save();
@@ -93,6 +93,63 @@ const recipeResolver = {
         success: true,
         message: `A receita: ${recipe.title}, foi removida com sucesso.`,
       };
+    },
+
+    updateRecipe: async (_, { id, updateRecipe }, { req }) => {
+      try {
+        const decodedToken = verifyAuthorization(req);
+        if (!decodedToken)
+          throw new Error("Você não tem permissão para excluir essa postagem.");
+
+        const recipe = await Recipe.findByIdAndUpdate(id);
+        if (recipe.userId !== decodedToken.userId) {
+          throw new Error(
+            "Você não tem autorização para deletar essa receita."
+          );
+        }
+        const updatableFields = [
+          "title",
+          "content",
+          "image",
+          "category",
+          "ingredients",
+        ];
+
+        updatableFields.forEach((field) => {
+          if (updateRecipe[field] !== undefined && updateRecipe[field] !== "") {
+            if (field === "ingredients") {
+              if (
+                (Array.isArray(updateRecipe.ingredients) &&
+                  updateRecipe.ingredients.length > 1) ||
+                (updateRecipe.ingredients.length === 1 &&
+                  updateRecipe.ingredients[0] !== "")
+              ) {
+                recipe[field] = updateRecipe[field];
+              }
+            } else {
+              if (field === "title") {
+                recipe["slug"] = generateSlug(updateRecipe.title);
+              }
+              recipe[field] = updateRecipe[field];
+            }
+          }
+        });
+
+        await recipe.save();
+
+        return {
+          success: true,
+          message: `A receita ${recipe.title}, foi alterada com sucesso`,
+          title: recipe.title,
+          content: recipe.content,
+          category: recipe.category,
+          slug: recipe.slug,
+          ingredients: recipe.ingredients,
+          image: recipe.image,
+        };
+      } catch (error) {
+        throw new Error(`Erro ao atualizar a receita: ${error.message}`);
+      }
     },
   },
 };
