@@ -3,17 +3,21 @@ import { ALL_RECIPES } from "./graphql/queries/recipe.query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import ScrollToTop from "./helper/ScrollTotop";
+import Loading from "./helper/Loading";
+import Header from "./components/Header";
 
 export default function App() {
   const { data, loading, error } = useQuery(ALL_RECIPES);
 
-  if (loading) return <div>Carregando</div>;
+  // if (loading) return <h1>Carregando</h1>;
+  if (loading) return <Loading />;
   if (error) return <div>Erro</div>;
 
   console.log(data);
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
       </Routes>
