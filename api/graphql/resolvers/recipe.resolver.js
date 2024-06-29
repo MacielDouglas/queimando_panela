@@ -34,7 +34,7 @@ const recipeResolver = {
           if (!recipe) {
             throw new Error("Receita não encontrada");
           }
-          return recipe;
+          return [recipe]; // Retorna um array com a receita encontrada
         } else {
           const query = buildQuery(input);
           const recipes = await Recipe.find(query).exec();
@@ -101,7 +101,7 @@ const recipeResolver = {
         if (!decodedToken)
           throw new Error("Você não tem permissão para excluir essa postagem.");
 
-        const recipe = await Recipe.findByIdAndUpdate(id);
+        const recipe = await Recipe.findById(id);
         if (recipe.userId !== decodedToken.userId) {
           throw new Error(
             "Você não tem autorização para deletar essa receita."
@@ -113,6 +113,10 @@ const recipeResolver = {
           "image",
           "category",
           "ingredients",
+          "difficult",
+          "description",
+          "type",
+          "time",
         ];
 
         updatableFields.forEach((field) => {
@@ -146,6 +150,9 @@ const recipeResolver = {
           slug: recipe.slug,
           ingredients: recipe.ingredients,
           image: recipe.image,
+          difficult: recipe.difficult,
+          description: recipe.description,
+          time: recipe.time,
         };
       } catch (error) {
         throw new Error(`Erro ao atualizar a receita: ${error.message}`);

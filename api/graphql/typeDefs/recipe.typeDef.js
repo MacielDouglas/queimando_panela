@@ -11,6 +11,9 @@ type Recipe {
     createdAt: String
     writer: String!
     ingredients: [String!]
+    difficult: String!
+    description: String!
+    time: String!
 }
 
 type Query {
@@ -23,7 +26,7 @@ type Mutation {
     updateRecipe(id: ID!, updateRecipe: UpdateRecipeInput!): UpdateRecipeResponse
 }
 
-input NewRecipeInput{
+input NewRecipeInput {
     userId: String
     title: String!
     content: String!
@@ -31,6 +34,9 @@ input NewRecipeInput{
     category: String!
     writer: String
     ingredients: [String!]
+    difficult: String!
+    description: String!
+    time: String!
 }
 
 input RecipeFilters {
@@ -50,6 +56,9 @@ input UpdateRecipeInput {
     category: String
     ingredients: [String]
     slug: String
+    difficult: String
+    description: String
+    time: String
 }
 
 type UpdateRecipeResponse {
@@ -61,7 +70,9 @@ type UpdateRecipeResponse {
     category: String
     ingredients: [String]
     slug: String
-
+    difficult: String
+    description: String
+    time: String
 }
 `;
 

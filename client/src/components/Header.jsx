@@ -19,7 +19,7 @@ export default function Header() {
       </div>
       <div>
         <button onClick={toggleModal}>
-          <img src={menu} className="h-8 p-1 mr-2" alt="Menu" />
+          <img src={menu} className="h-7 p-1 mr-2" alt="Menu" />
         </button>
       </div>
       {isModalOpen && (

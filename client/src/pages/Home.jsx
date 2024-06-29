@@ -1,6 +1,6 @@
 import Loading from "../helper/Loading";
 export default function Home() {
-  const loading = false;
+  const loading = true;
   return (
     <div className="bg-orange-100">
       <h1>Home</h1>
