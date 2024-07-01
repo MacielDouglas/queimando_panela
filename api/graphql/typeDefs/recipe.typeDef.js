@@ -28,6 +28,7 @@ type Mutation {
     deleteRecipe(recipeId: ID!): DeleteRecipeResponse
     updateRecipe(id: ID!, updateRecipe: UpdateRecipeInput!): UpdateRecipeResponse
     rateRecipe(newRating: NewRatingInput!): Recipe
+    deleteRate(recipeId: ID!): DeleteRecipeResponse
 }
 
 input NewRecipeInput {

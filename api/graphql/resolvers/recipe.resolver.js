@@ -183,23 +183,44 @@ const recipeResolver = {
           );
         }
 
-        // console.log(decodedToken);
-
         const { recipeId, score } = newRating;
 
-        console.log(score);
         const recipe = await Recipe.findById(recipeId);
-        console.log(recipe);
         if (!recipe) {
           throw new Error("Receita não encontrada.");
         }
 
         recipe.ratings.set(decodedToken.userId, score);
         await recipe.save();
-        console.log(recipe);
+
         return recipe;
       } catch (error) {
         throw new Error(`Erro ao pontuar a receita: ${error.message}`);
+      }
+    },
+
+    deleteRate: async (_, { recipeId }, { req }) => {
+      try {
+        const decodedToken = verifyAuthorization(req);
+        if (!decodedToken)
+          throw new Error(
+            "Você não tem permissão para deletar a pontuação da receita, faça login corretamente."
+          );
+
+        const recipe = await Recipe.findById(recipeId);
+        if (!recipe) {
+          throw new Error("Receita não encontrada.");
+        }
+
+        recipe.ratings.delete(decodedToken.userId);
+        await recipe.save();
+
+        return {
+          success: true,
+          message: "Pontuação deletada com sucesso",
+        };
+      } catch (error) {
+        throw new Error(`Erro ao deletar a receita: ${error.message}`);
       }
     },
   },
