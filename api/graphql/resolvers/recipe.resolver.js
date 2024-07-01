@@ -1,19 +1,17 @@
 import Recipe from "../../models/recipe.models.js";
-import { existing, verifyAuthorization } from "../../utils/utils.js";
+import { verifyAuthorization } from "../../utils/utils.js";
 import slugify from "slugify";
+import { GraphQLJSON } from "graphql-type-json";
 
 const buildQuery = (input) => {
   const query = {};
   if (input) {
-    const { category, title, writer } = input;
+    const { category, title } = input;
     if (category) {
       query.category = category;
     }
     if (title) {
       query.title = { $regex: title, $options: "i" };
-    }
-    if (writer) {
-      query.writer = { $regex: writer, $options: "i" };
     }
   }
   return query;
@@ -21,11 +19,12 @@ const buildQuery = (input) => {
 
 const generateSlug = (title) => {
   return (
-    Math.random().toString(9).slice(-4) + "-" + slugify(title, { lower: true })
+    Math.random().toString(36).slice(-4) + "-" + slugify(title, { lower: true })
   );
 };
 
 const recipeResolver = {
+  JSON: GraphQLJSON,
   Query: {
     getRecipes: async (_, { slug, input }) => {
       try {
@@ -78,35 +77,52 @@ const recipeResolver = {
     },
 
     deleteRecipe: async (_, { recipeId }, { req }) => {
-      const decodedToken = verifyAuthorization(req);
-      if (!decodedToken)
-        throw new Error("Você não tem permissão para excluir essa postagem.");
+      try {
+        const decodedToken = verifyAuthorization(req);
+        if (!decodedToken)
+          throw new Error("Você não tem permissão para excluir essa postagem.");
 
-      const recipe = await existing(recipeId, "receita");
-      if (recipe.userId !== decodedToken.userId) {
-        throw new Error("Você não tem autorização para deletar essa receita.");
+        const recipe = await Recipe.findById(recipeId);
+        if (!recipe) {
+          throw new Error("Receita não encontrada");
+        }
+
+        if (recipe.userId !== decodedToken.userId) {
+          throw new Error(
+            "Você não tem autorização para deletar essa receita."
+          );
+        }
+
+        await Recipe.findByIdAndDelete(recipeId);
+
+        return {
+          success: true,
+          message: `A receita: ${recipe.title}, foi removida com sucesso.`,
+        };
+      } catch (error) {
+        throw new Error(`Erro ao deletar a receita: ${error.message}`);
       }
-
-      await Recipe.findByIdAndDelete(recipeId);
-
-      return {
-        success: true,
-        message: `A receita: ${recipe.title}, foi removida com sucesso.`,
-      };
     },
 
     updateRecipe: async (_, { id, updateRecipe }, { req }) => {
       try {
         const decodedToken = verifyAuthorization(req);
         if (!decodedToken)
-          throw new Error("Você não tem permissão para excluir essa postagem.");
+          throw new Error(
+            "Você não tem permissão para atualizar essa postagem."
+          );
 
         const recipe = await Recipe.findById(id);
+        if (!recipe) {
+          throw new Error("Receita não encontrada");
+        }
+
         if (recipe.userId !== decodedToken.userId) {
           throw new Error(
-            "Você não tem autorização para deletar essa receita."
+            "Você não tem autorização para atualizar essa receita."
           );
         }
+
         const updatableFields = [
           "title",
           "content",
@@ -115,7 +131,6 @@ const recipeResolver = {
           "ingredients",
           "difficult",
           "description",
-          "type",
           "time",
         ];
 
@@ -143,7 +158,7 @@ const recipeResolver = {
 
         return {
           success: true,
-          message: `A receita ${recipe.title}, foi alterada com sucesso`,
+          message: `A receita ${recipe.title} foi alterada com sucesso.`,
           title: recipe.title,
           content: recipe.content,
           category: recipe.category,
@@ -156,6 +171,35 @@ const recipeResolver = {
         };
       } catch (error) {
         throw new Error(`Erro ao atualizar a receita: ${error.message}`);
+      }
+    },
+
+    rateRecipe: async (_, { newRating }, { req }) => {
+      try {
+        const decodedToken = verifyAuthorization(req);
+        if (!decodedToken) {
+          throw new Error(
+            "Você não tem permissão para pontuar uma receita, faça login corretamente."
+          );
+        }
+
+        // console.log(decodedToken);
+
+        const { recipeId, score } = newRating;
+
+        console.log(score);
+        const recipe = await Recipe.findById(recipeId);
+        console.log(recipe);
+        if (!recipe) {
+          throw new Error("Receita não encontrada.");
+        }
+
+        recipe.ratings.set(decodedToken.userId, score);
+        await recipe.save();
+        console.log(recipe);
+        return recipe;
+      } catch (error) {
+        throw new Error(`Erro ao pontuar a receita: ${error.message}`);
       }
     },
   },

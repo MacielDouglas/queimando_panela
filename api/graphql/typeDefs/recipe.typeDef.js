@@ -1,5 +1,7 @@
 const recipeTypeDef = `#graphql
 
+scalar JSON
+
 type Recipe {
     id: ID!
     userId: ID!
@@ -14,6 +16,7 @@ type Recipe {
     difficult: String!
     description: String!
     time: String!
+    ratings: JSON
 }
 
 type Query {
@@ -24,6 +27,7 @@ type Mutation {
     createRecipe(newRecipe: NewRecipeInput!): Recipe
     deleteRecipe(recipeId: ID!): DeleteRecipeResponse
     updateRecipe(id: ID!, updateRecipe: UpdateRecipeInput!): UpdateRecipeResponse
+    rateRecipe(newRating: NewRatingInput!): Recipe
 }
 
 input NewRecipeInput {
@@ -73,6 +77,11 @@ type UpdateRecipeResponse {
     difficult: String
     description: String
     time: String
+}
+
+input NewRatingInput {
+    recipeId: String!
+    score: Float!
 }
 `;
 

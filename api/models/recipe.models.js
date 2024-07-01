@@ -68,6 +68,11 @@ const recipeSchema = new Schema(
       type: String,
       required: true,
     },
+    ratings: {
+      type: Map,
+      of: Number,
+      default: {},
+    },
   },
   {
     timestamps: true,
