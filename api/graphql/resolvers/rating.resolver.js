@@ -47,28 +47,28 @@ const ratingResolver = {
       }
     },
 
-    deleteRating: async (_, { recipeId }, { req }) => {
-      try {
-        const decodedToken = verifyAuthorization(req);
-        if (!decodedToken)
-          throw new Error(
-            "Você não tem permissão para deletar a pontuação da receita, faça login corretamente."
-          );
+    // deleteRating: async (_, { recipeId }, { req }) => {
+    //   try {
+    //     const decodedToken = verifyAuthorization(req);
+    //     if (!decodedToken)
+    //       throw new Error(
+    //         "Você não tem permissão para deletar a pontuação da receita, faça login corretamente."
+    //       );
 
-        await Rating.findOneAndUpdate(
-          { recipeId },
-          { $unset: { [`rating.${decodedToken.userId}`]: "" } },
-          { new: true }
-        );
+    //     await Rating.findOneAndUpdate(
+    //       { recipeId },
+    //       { $unset: { [`rating.${decodedToken.userId}`]: "" } },
+    //       { new: true }
+    //     );
 
-        return {
-          success: true,
-          message: "Pontuação deletada com sucesso",
-        };
-      } catch (error) {
-        throw new Error(`Erro ao deletar a pontuação: ${error.message}`);
-      }
-    },
+    //     return {
+    //       success: true,
+    //       message: "Pontuação deletada com sucesso",
+    //     };
+    //   } catch (error) {
+    //     throw new Error(`Erro ao deletar a pontuação: ${error.message}`);
+    //   }
+    // },
   },
 };
 

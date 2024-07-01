@@ -15,7 +15,7 @@ type Query {
 
 type Mutation {
     createRating(newRating: NewRatingInput!): Rating!
-    deleteRating(recipeId: ID!): DeleteRatingResponse
+    # deleteRating(recipeId: ID!): DeleteRatingResponse
 }
 
 type DeleteRatingResponse {
