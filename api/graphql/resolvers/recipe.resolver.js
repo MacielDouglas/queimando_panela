@@ -183,23 +183,39 @@ const recipeResolver = {
           );
         }
 
-        const { recipeId, score } = newRating;
+        const { recipeId, score, comment, userId } = newRating;
 
         const recipe = await Recipe.findById(recipeId);
         if (!recipe) {
           throw new Error("Receita não encontrada.");
         }
 
-        recipe.ratings.set(decodedToken.userId, score);
-        await recipe.save();
+        const existingRatingIndex = recipe?.ratings.findIndex(
+          (rating) => rating.userId === decodedToken.userId
+        );
 
+        if (existingRatingIndex > -1) {
+          recipe.ratings[existingRatingIndex] = {
+            userId,
+            rating: score,
+            comment,
+          };
+        } else {
+          recipe.ratings.push({
+            userId: decodedToken.userId,
+            rating: score,
+            comment,
+          });
+        }
+
+        await recipe.save();
         return recipe;
       } catch (error) {
         throw new Error(`Erro ao pontuar a receita: ${error.message}`);
       }
     },
 
-    deleteRate: async (_, { recipeId }, { req }) => {
+    deleteRate: async (_, { recipeId, userId }, { req }) => {
       try {
         const decodedToken = verifyAuthorization(req);
         if (!decodedToken)
@@ -212,7 +228,15 @@ const recipeResolver = {
           throw new Error("Receita não encontrada.");
         }
 
-        recipe.ratings.delete(decodedToken.userId);
+        const ratingIndex = recipe.ratings.findIndex(
+          (rating) => rating.userId === userId
+        );
+
+        if (ratingIndex === -1) {
+          throw new Error("Avaliação não encontrada.");
+        }
+
+        recipe.ratings.splice(ratingIndex, 1);
         await recipe.save();
 
         return {

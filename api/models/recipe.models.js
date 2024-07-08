@@ -2,6 +2,20 @@ import mongoose from "mongoose";
 
 const { Schema, model } = mongoose;
 
+const ratingSchema = new Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+  },
+  comment: {
+    type: String,
+  },
+});
+
 const recipeSchema = new Schema(
   {
     userId: {
@@ -68,11 +82,7 @@ const recipeSchema = new Schema(
       type: String,
       required: true,
     },
-    ratings: {
-      type: Map,
-      of: Number,
-      default: {},
-    },
+    ratings: [ratingSchema],
   },
   {
     timestamps: true,

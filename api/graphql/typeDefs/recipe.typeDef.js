@@ -16,7 +16,13 @@ type Recipe {
     difficult: String!
     description: String!
     time: String!
-    ratings: JSON
+    ratings: [Rating]
+}
+
+type Rating {
+    userId: ID!
+    rating: Float!
+    comment: String
 }
 
 type Query {
@@ -28,7 +34,7 @@ type Mutation {
     deleteRecipe(recipeId: ID!): DeleteRecipeResponse
     updateRecipe(id: ID!, updateRecipe: UpdateRecipeInput!): UpdateRecipeResponse
     rateRecipe(newRating: NewRatingInput!): Recipe
-    deleteRate(recipeId: ID!): DeleteRecipeResponse
+    deleteRate(recipeId: ID!, userId: ID!): DeleteRecipeResponse
 }
 
 input NewRecipeInput {
@@ -82,7 +88,9 @@ type UpdateRecipeResponse {
 
 input NewRatingInput {
     recipeId: String!
+    userId: String
     score: Float!
+    comment: String!
 }
 `;
 
