@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import ScrollToTop from "./helper/ScrollTotop";
 import Loading from "./helper/Loading";
 import Header from "./components/Header";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
   const { data, loading, error } = useQuery(ALL_RECIPES);
@@ -16,6 +17,7 @@ export default function App() {
   console.log(data);
   return (
     <BrowserRouter>
+      <ToastContainer />
       <ScrollToTop />
       <Header />
       <Routes>
