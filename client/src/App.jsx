@@ -23,7 +23,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
       </Routes>
-      <div className="bg-gradient-to-b from-stone-50 to-gray-50">
+      {/* <div className="bg-gradient-to-b from-stone-50 to-gray-50">
         {data.getRecipes.map((recipe) => (
           <div key={recipe.id} className="mb-4">
             <p>Title: {recipe.title}</p>
@@ -35,7 +35,7 @@ export default function App() {
             <p>Ingredientes: {recipe.ingredients}</p>
           </div>
         ))}
-      </div>
+      </div> */}
     </BrowserRouter>
   );
 }

@@ -4,9 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        roboto: ["Roboto", "sans-serif"],
-        poppins: ["Poppins", "sans-serif"],
-        wenkai: ["LXGW WenKai Mono TC", "monospace"],
+        noto: ["Noto Serif", "serif"],
+        oswald: ["Oswald", "sans-serif"],
       },
       colors: {
         primary: "#FA9D33",

@@ -1,73 +1,148 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import receita from "../assets/Receita.svg";
+import queimando from "../assets/queimando_panela.svg";
 import menu from "../assets/Menu.svg";
 import close from "../assets/CloseMenu.svg";
+import search from "../assets/search.svg";
+import { useSelector } from "react-redux";
+
+const recipeCategories = [
+  "acompanhamentos",
+  "aves",
+  "bolos",
+  "carnes",
+  "churrasco",
+  "drinks",
+  "fondues, musses e suflês",
+  "massas",
+  "pães",
+  "peixes",
+  "saladas",
+  "sanduíches e salgados",
+  "sobremesas e doces",
+  "sopas",
+  "sorvetes",
+  "típicos",
+  "tortas",
+  "outros",
+];
 
 export default function Header() {
-  const user = false; // Defina o estado do usuário conforme necessário
+  const user = useSelector((state) => state.auth.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false);
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const toggleModal = () => setIsModalOpen((prevState) => !prevState);
+  const showRecipeModal = () => setIsRecipeModalOpen(true);
+  const hideRecipeModal = () =>
+    setTimeout(() => setIsRecipeModalOpen(false), 500);
+
+  const renderLink = (to, label) => (
+    <Link to={to} className="hover:text-gray-500">
+      {label}
+    </Link>
+  );
+
+  const renderNavLink = (to, label) => (
+    <Link
+      to={to}
+      className="hover:underline hover:text-gray-500 flex hover:text-xl justify-between p-3"
+    >
+      {label}
+    </Link>
+  );
 
   return (
-    <header className="h-10 bg-gradient-to-b from-orange-500 to-primary flex justify-between items-center mx-auto">
-      <div>
-        <img src={receita} className="h-8 p-1 ml-2" alt="Logo Receita" />
-      </div>
-      <div>
-        <button onClick={toggleModal}>
-          <img src={menu} className="h-7 p-1 mr-2" alt="Menu" />
+    <header className="bg-sky-50 w-full flex flex-col shadow-sm">
+      <div className="mx-5 flex justify-between lg:mx-20 gap-5 h-10 lg:items-center lg:h-14 font-noto text-gray-500">
+        <p className="hidden lg:block">Bem vindo ao Queimando Panelas!!!</p>
+        <button onClick={toggleModal} className="lg:hidden">
+          <img
+            src={isModalOpen ? close : menu}
+            className="h-6 p-1"
+            alt="Menu"
+          />
         </button>
+        <div className="flex gap-20 items-center">
+          {user ? (
+            <Link
+              to="/dashboard?tab=profile"
+              className="hover:underline hidden lg:flex items-center gap-2"
+            >
+              Perfil de {user.name}
+              <img
+                src={user.profilePicture}
+                className="w-7 h-7 rounded-full border border-white"
+                alt={`Imagem do usuário: ${user.name}`}
+              />
+            </Link>
+          ) : (
+            <Link to="/login" className="hidden lg:block hover:text-gray-900">
+              LOGIN
+            </Link>
+          )}
+          <button onClick={toggleModal}>
+            <img src={search} className="h-6" alt="Search" />
+          </button>
+        </div>
       </div>
+      <hr className="border-gray-200" />
+      <div className="flex mx-5 self-center items-center gap-10 text-[#1d1d1b] font-oswald font-semibold">
+        <div className="gap-4 hidden lg:flex">
+          {renderLink("/home", "HOME")}
+          <p className="text-gray-300">/</p>
+          <div
+            onMouseEnter={showRecipeModal}
+            onMouseLeave={hideRecipeModal}
+            className="relative"
+          >
+            {renderLink("/recipe", "RECEITAS")}
+            {isRecipeModalOpen && (
+              <div
+                className="absolute top-full -left-14 mt-0 w-56 bg-white border border-gray-200 shadow-2xl z-10"
+                onMouseEnter={showRecipeModal}
+                onMouseLeave={hideRecipeModal}
+              >
+                <ul className="flex flex-col p-2">
+                  {recipeCategories.map((category) => (
+                    <li key={category} className="hover:items-center">
+                      {renderNavLink(`/recipe/${category}`, category)}
+                      <hr />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+        <Link to="/">
+          <img src={queimando} className="h-36 p-2" alt="Logo Receita" />
+        </Link>
+        <div className="hidden lg:flex gap-3">
+          {renderLink("/about", "SOBRE")}
+          <p className="text-gray-300">/</p>
+          {renderLink("/contact", "CONTATO")}
+        </div>
+      </div>
+
       {isModalOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end"
+          className="mt-10 fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-start font-oswald"
           onClick={toggleModal}
         >
           <div
-            className="bg-white p-6 rounded-l-lg h-full w-2/3 flex flex-col"
+            className="bg-white p-6 h-full w-2/3 flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <button onClick={toggleModal} className="self-end">
-              <img src={close} className="h-8 p-1 mr-2" alt="Close Menu" />
-            </button>
-            <ul className="flex flex-col gap-4 text-xl w-full mt-4">
-              <li>
-                <Link to="/" className="hover:underline flex justify-between">
-                  Home
-                </Link>
-              </li>
+            <ul className="flex flex-col gap-4 text-xl w-full">
+              <li>{renderNavLink("/", "Home")}</li>
               <hr />
-              <li>
-                <Link
-                  to="/about"
-                  className="hover:underline flex justify-between"
-                >
-                  Sobre
-                </Link>
-              </li>
+              <li>{renderNavLink("/recipe", "Receitas")}</li>
               <hr />
-              <li>
-                <Link
-                  to="/projects"
-                  className="hover:underline flex justify-between"
-                >
-                  Projetos
-                </Link>
-              </li>
+              <li>{renderNavLink("/about", "Sobre")}</li>
               <hr />
-              <li>
-                <Link
-                  to="/portfolio"
-                  className="hover:underline flex justify-between"
-                >
-                  Portfólio
-                </Link>
-              </li>
-              {user ? (
+              <li>{renderNavLink("/contact", "Contato")}</li>
+              {user && (
                 <>
                   <hr />
                   <li>
@@ -84,7 +159,7 @@ export default function Header() {
                     </Link>
                   </li>
                 </>
-              ) : null}
+              )}
               <hr />
               <li>
                 {user ? (
@@ -95,12 +170,7 @@ export default function Header() {
                     Sair
                   </button>
                 ) : (
-                  <Link
-                    to="/login"
-                    className="hover:underline flex justify-between"
-                  >
-                    LOGIN
-                  </Link>
+                  renderNavLink("/login", "Login")
                 )}
               </li>
               <hr />
@@ -111,161 +181,3 @@ export default function Header() {
     </header>
   );
 }
-
-// import receita from "../assets/Receita.svg";
-// import menu from "../assets/Menu.svg";
-// import close from "../assets/CloseMenu.svg";
-// import { useState } from "react";
-// import { Link, useNavigate, useLocation } from "react-router-dom";
-
-// export default function Header() {
-//   const user = false;
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-
-//   const toggleModal = () => {
-//     setIsModalOpen(!isModalOpen);
-//   };
-
-//   return (
-//     <header className="h-10 bg-gradient-to-b from-orange-500 to-primary flex mx-auto justify-between items-center">
-//       <div>
-//         <img src={receita} className="h-8 p-1 ml-2" alt="" />
-//       </div>
-//       <div>
-//         <button onClick={toggleModal}>
-//           <img src={menu} className="h-8 p-1 mr-2" alt="" />
-//         </button>
-//       </div>
-//       {isModalOpen && (
-//         <div
-//           className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end"
-//           onClick={toggleModal}
-//         >
-//           <div
-//             className="bg-white p-6 rounded-l-lg h-full w-2/3 flex flex-col"
-//             onClick={(e) => e.stopPropagation()}
-//           >
-//             <ul
-//               className="flex flex-col gap-4 text-xl w-full "
-//               onClick={() => setIsModalOpen(false)}
-//             >
-//               <li>
-//                 <Link to="/" className="hover:underline flex justify-between">
-//                   Home
-//                   {/* <IoHomeOutline className="text-2xl" /> */}
-//                 </Link>
-//               </li>
-//               <hr />
-//               <li>
-//                 <Link
-//                   to="/about"
-//                   className="hover:underline flex justify-between"
-//                 >
-//                   Sobre
-//                   {/* <MdOutlineAssignment className="text-2xl" /> */}
-//                 </Link>
-//               </li>
-//               <hr />
-//               <li>
-//                 <Link
-//                   to="/projects"
-//                   className="hover:underline flex justify-between"
-//                 >
-//                   Projetos
-//                   {/* <MdLightbulbOutline className="text-2xl" /> */}
-//                 </Link>
-//               </li>
-//               <hr />
-//               <li>
-//                 <Link
-//                   to="/projects"
-//                   className="hover:underline flex justify-between hover:text-black"
-//                 >
-//                   Portfólio
-//                   {/* <MdOutlineDashboard className="text-2xl" /> */}
-//                 </Link>
-//               </li>
-//               {user ? (
-//                 <>
-//                   <hr />
-//                   <li>
-//                     <Link
-//                       to="/dashboard?tab=profile"
-//                       className="hover:underline flex justify-between hover:text-black"
-//                     >
-//                       {/* Perfil {user.name} <MdPermIdentity className="text-2xl" /> */}
-//                       Perfil de {user.name}{" "}
-//                       <img
-//                         src={user.profilePicture}
-//                         className="w-7 h-7 rounded-full border border-white"
-//                         alt={`Imagem do usuário: ${user.name}`}
-//                       />
-//                     </Link>
-//                   </li>
-//                 </>
-//               ) : null}
-//               <hr />
-//               <li>
-//                 {user ? (
-//                   <button
-//                     // onClick={logOff}
-//                     className="text-red-500 hover:text-red-700 w-full text-left flex justify-between"
-//                   >
-//                     Sair
-//                     {/* <MdLogout className="text-2xl inline-block" /> */}
-//                   </button>
-//                 ) : (
-//                   <Link
-//                     to="/login"
-//                     className="hover:underline flex justify-between"
-//                   >
-//                     LOGIN
-//                     {/* <MdLogin className="text-2xl" /> */}
-//                   </Link>
-//                 )}
-//               </li>
-//               <hr />
-//             </ul>
-//             {/* {!isSearchPage && (
-//               <div className=" flex flex-col gap-2 text-sm mt-5">
-//                 <h3 className="mb-3 sm:mb-5 text-xl font-semibold text-gray-500">
-//                   Pesquise por...
-//                 </h3>
-
-//                 <div onClick={toggleModal}>
-//                   <CategoryList uniqueCategories={uniqueCategories} />
-//                 </div>
-//                 <form
-//                   onSubmit={(e) => {
-//                     e.preventDefault();
-//                     handleSearchSubmit();
-//                   }}
-//                 >
-//                   <label htmlFor="title"></label>
-//                   <input
-//                     type="text"
-//                     id="title"
-//                     name="titulo"
-//                     value={searchQuery}
-//                     onChange={(e) => setSearchQuery(e.target.value)}
-//                     placeholder="Digite algo..."
-//                     className="border border-gray-300 rounded-md w-full px-4 py-2 focus:outline-none focus:border-blue-500 mb-3"
-//                   />
-//                 </form>
-//                 <div className="flex flex-col sm:flex-row gap-3">
-//                   <button
-//                     onClick={handleSearchSubmit}
-//                     className="bg-blue-500 p-2 sm:p-3 rounded-md text-red-50 flex-1 flex items-center gap-2 justify-center"
-//                   >
-//                     <MdSearch className="text-xl mt-1 cursor-pointer hover:text-gray-900" />
-//                     Pesquisar!
-//                   </button>
-//                 </div>
-//               </div>
-//             )} */}
-//           </div>
-//         </div>
-//       )}
-//     </header>
-//   );
-// }
