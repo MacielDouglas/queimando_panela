@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import queimando from "../assets/queimando_panela.svg";
 import menu from "../assets/Menu.svg";
 import close from "../assets/CloseMenu.svg";
 import search from "../assets/search.svg";
-import { useSelector } from "react-redux";
+import recipeIcons from "../assets/recipes/icons";
 
 const recipeCategories = [
   "acompanhamentos",
@@ -34,8 +35,7 @@ export default function Header() {
 
   const toggleModal = () => setIsModalOpen((prevState) => !prevState);
   const showRecipeModal = () => setIsRecipeModalOpen(true);
-  const hideRecipeModal = () =>
-    setTimeout(() => setIsRecipeModalOpen(false), 500);
+  const hideRecipeModal = () => setIsRecipeModalOpen(false);
 
   const renderLink = (to, label) => (
     <Link to={to} className="hover:text-gray-500">
@@ -44,10 +44,7 @@ export default function Header() {
   );
 
   const renderNavLink = (to, label) => (
-    <Link
-      to={to}
-      className="hover:underline hover:text-gray-500 flex hover:text-xl justify-between p-3"
-    >
+    <Link to={to} className="hover:underline flex justify-between p-3">
       {label}
     </Link>
   );
@@ -99,15 +96,23 @@ export default function Header() {
             {renderLink("/recipe", "RECEITAS")}
             {isRecipeModalOpen && (
               <div
-                className="absolute top-full -left-14 mt-0 w-56 bg-white border border-gray-200 shadow-2xl z-10"
+                className="absolute top-full -left-20  w-56 bg-white border border-gray-200 shadow-2xl z-10"
                 onMouseEnter={showRecipeModal}
                 onMouseLeave={hideRecipeModal}
               >
-                <ul className="flex flex-col p-2">
+                <ul className="flex flex-col ">
                   {recipeCategories.map((category) => (
-                    <li key={category} className="hover:items-center">
+                    <li
+                      key={category}
+                      className="flex items-center  hover:bg-gray-200 p-2 hover:underline cursor-pointer"
+                    >
+                      <img
+                        src={recipeIcons[category]}
+                        alt={category}
+                        className="w-8 h-8"
+                      />
                       {renderNavLink(`/recipe/${category}`, category)}
-                      <hr />
+                      <hr className="bg-black" />
                     </li>
                   ))}
                 </ul>
@@ -127,7 +132,7 @@ export default function Header() {
 
       {isModalOpen && (
         <div
-          className="mt-10 fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-start font-oswald"
+          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-start font-oswald"
           onClick={toggleModal}
         >
           <div
