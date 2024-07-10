@@ -8,13 +8,14 @@ import Header from "./components/Header";
 import { ToastContainer } from "react-toastify";
 
 export default function App() {
-  const { data, loading, error } = useQuery(ALL_RECIPES);
+  // const { data, loading, error } = useQuery(ALL_RECIPES);
+  // console.log(data);
 
-  // if (loading) return <h1>Carregando</h1>;
-  if (loading) return <Loading />;
-  if (error) return <div>Erro</div>;
+  // // if (loading) return <h1>Carregando</h1>;
+  // if (loading) return <Loading />;
+  // if (error) return <div>Erro</div>;
 
-  console.log(data);
+  // console.log(data);
   return (
     <BrowserRouter>
       <ToastContainer />

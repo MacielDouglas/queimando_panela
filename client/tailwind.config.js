@@ -13,6 +13,9 @@ export default {
         tertiary: "#ACD188",
         quaternary: "#FF6a53",
       },
+      backgroundImage: {
+        pattern: "url('/src/assets/bg_food 1.svg')",
+      },
     },
   },
   plugins: [],

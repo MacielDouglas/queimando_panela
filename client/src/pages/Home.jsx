@@ -1,8 +1,24 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../helper/Loading";
 import Login from "./Login";
+import RecipeCard from "../components/cards/RecipeCard";
+import { useEffect } from "react";
+import { fetchRecipes } from "../features/recipes/recipesThunck";
+
 export default function Home() {
-  const loading = true;
+  const dispatch = useDispatch();
+  const { recipes, loading, error } = useSelector((state) => state.recipes);
+
+  useEffect(() => {
+    dispatch(fetchRecipes());
+  }, [dispatch]);
+
+  console.log("RECIPES: ", recipes);
+
+  // const loading = true;
+  if (loading) return <Loading />;
+
+  if (error) return <p>Error: {error}</p>;
 
   const Profile = () => {
     const user = useSelector((state) => state.auth.user);
@@ -14,16 +30,21 @@ export default function Home() {
 
     return (
       <div>
-        <h1>BEm vindo, {user.name}</h1>
-        <p>Admin: {user.isAdmin}</p>
-        <p>Username: {user.username}</p>
+        <div>
+          <h1>BEm vindo, {user.name}</h1>
+          <p>Admin: {user.isAdmin}</p>
+          <p>Username: {user.username}</p>
+        </div>
       </div>
     );
   };
 
   return (
-    <div className="bg-orange-100">
-      <h1>Home</h1>
+    <div className="relative min-h-screen bg-pattern bg-cover">
+      <div>
+        <RecipeCard />
+        <h1>Home</h1>
+      </div>
       <Login />
       <Profile />
       {/* {loading && <Loading />} */}

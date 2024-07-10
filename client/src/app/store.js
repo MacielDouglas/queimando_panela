@@ -1,3 +1,4 @@
+// src/app/store.js
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {
   persistStore,
@@ -15,6 +16,7 @@ import storage from "redux-persist/lib/storage";
 
 // Reducers importados
 import authReducer from "../features/auth/authSlice";
+import recipesReducer from "../features/recipes/recipesSlice"; // Novo reducer
 
 // Configuração do Redux Persist
 const persistConfig = {
@@ -25,6 +27,7 @@ const persistConfig = {
 // Combinação dos reducers
 const rootReducer = combineReducers({
   auth: authReducer,
+  recipes: recipesReducer, // Novo reducer
 });
 
 // Persistência do reducer
