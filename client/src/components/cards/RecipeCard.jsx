@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function RecipeCard({ recipe }) {
+  if (!recipe) return null;
   return (
     <>
       <Link to={recipe.slug} className="relative group">

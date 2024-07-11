@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import RecipeCard from "./cards/RecipeCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRecipes } from "../features/recipes/recipesThunck";
+import Loading from "../helper/Loading";
 
 export default function HomeRecipe() {
   const dispatch = useDispatch();
@@ -12,6 +13,9 @@ export default function HomeRecipe() {
   }, [dispatch, recipes]);
 
   console.log("RECIPES: ", recipes[0]);
+
+  if (loading) return <Loading />;
+  if (error) return <Loading />;
 
   return (
     <div className="w-full md:h-[700px] flex flex-col md:grid lg:grid-cols-3 md:grid-cols-2 grid-rows-2">
