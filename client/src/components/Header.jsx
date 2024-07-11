@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import queimando from "../assets/queimando_panela.svg";
 import menu from "../assets/Menu.svg";
 import close from "../assets/CloseMenu.svg";
 import search from "../assets/search.svg";
 import recipeIcons from "../assets/recipes/icons";
+import { resetAuth } from "../features/auth/authSlice";
 
 const recipeCategories = [
   "acompanhamentos",
@@ -37,6 +38,8 @@ export default function Header() {
   const showRecipeModal = () => setIsRecipeModalOpen(true);
   const hideRecipeModal = () => setIsRecipeModalOpen(false);
 
+  const dispatch = useDispatch();
+
   const renderLink = (to, label) => (
     <Link to={to} className="hover:text-gray-500">
       {label}
@@ -49,8 +52,13 @@ export default function Header() {
     </Link>
   );
 
+  const handleReset = () => {
+    dispatch(resetAuth());
+  };
+  // console.log(user);
+
   return (
-    <header className="bg-sky-50 w-full flex flex-col shadow-sm">
+    <header className="bg-gray-50 w-full flex flex-col">
       <div className="mx-5 flex justify-between lg:mx-20 gap-5 h-10 lg:items-center lg:h-14 font-noto text-gray-500">
         <p className="hidden lg:block">Bem vindo ao Queimando Panelas!!!</p>
         <button onClick={toggleModal} className="lg:hidden">
@@ -62,17 +70,25 @@ export default function Header() {
         </button>
         <div className="flex gap-20 items-center">
           {user ? (
-            <Link
-              to="/dashboard?tab=profile"
-              className="hover:underline hidden lg:flex items-center gap-2"
-            >
-              Perfil de {user.name}
-              <img
-                src={user.profilePicture}
-                className="w-7 h-7 rounded-full border border-white"
-                alt={`Imagem do usuário: ${user.name}`}
-              />
-            </Link>
+            <>
+              <Link
+                to="/dashboard?tab=profile"
+                className="hover:underline hidden lg:flex items-center gap-2"
+              >
+                Perfil de {user.name}
+                <img
+                  src={user.profilePicture}
+                  className="w-7 h-7 rounded-full border border-white"
+                  alt={`Imagem do usuário: ${user.name}`}
+                />
+              </Link>
+              <button
+                onClick={handleReset}
+                className="py-1 px-2 bg-red-500 text-white"
+              >
+                SAIR
+              </button>
+            </>
           ) : (
             <Link to="/login" className="hidden lg:block hover:text-gray-900">
               LOGIN

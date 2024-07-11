@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { LOGIN_USER } from "../../graphql/queries/user.query";
-import { client } from "../../main";
+// import { client } from "../../main";
 import { setUser } from "./authSlice";
 import useToast from "../../hooks/useToast";
+import { client } from "../../apollo/client";
 
 /**
  * Async thunk action for logging in a user.

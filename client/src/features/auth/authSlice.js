@@ -9,12 +9,14 @@ const clearExpirationTimeout = (state) => {
   }
 };
 
+const initialState = {
+  user: null,
+  tokenExpirationTimeout: null,
+};
+
 const authSlice = createSlice({
   name: "auth",
-  initialState: {
-    user: null,
-    tokenExpirationTimeout: null,
-  },
+  initialState,
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
@@ -28,8 +30,9 @@ const authSlice = createSlice({
       state.user = null;
       clearExpirationTimeout(state);
     },
+    resetAuth: () => initialState,
   },
 });
 
-export const { setUser, clearUser } = authSlice.actions;
+export const { setUser, clearUser, resetAuth } = authSlice.actions;
 export default authSlice.reducer;

@@ -4,7 +4,8 @@ import {
   fetchRecipesFailure,
 } from "./recipesSlice";
 import { ALL_RECIPES } from "./../../graphql/queries/recipe.query";
-import { client } from "../../main";
+import { client } from "../../apollo/client";
+// import { client } from "../../main";
 
 export const fetchRecipes = () => async (dispatch) => {
   dispatch(fetchRecipesStart());

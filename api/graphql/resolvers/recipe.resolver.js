@@ -27,6 +27,7 @@ const recipeResolver = {
   JSON: GraphQLJSON,
   Query: {
     getRecipes: async (_, { slug, input }) => {
+      console.log("getRecipes");
       try {
         if (slug) {
           const recipe = await Recipe.findOne({ slug }).exec();
