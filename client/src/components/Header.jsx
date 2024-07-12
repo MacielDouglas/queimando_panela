@@ -102,7 +102,7 @@ export default function Header() {
       <hr className="border-gray-200" />
       <div className="flex mx-5 self-center items-center gap-10 text-[#1d1d1b] font-oswald font-semibold">
         <div className="gap-4 hidden lg:flex">
-          {renderLink("/home", "HOME")}
+          {renderLink("/", "HOME")}
           <p className="text-gray-300">/</p>
           <div
             onMouseEnter={showRecipeModal}
