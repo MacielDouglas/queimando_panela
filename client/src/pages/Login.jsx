@@ -34,7 +34,7 @@ export default function Login() {
     }
   };
   return (
-    <div className="min-h-screen p-14 bg-pattern bg-cover ">
+    <div className="min-h-screen p-14  bg-cover ">
       <div className="p-14 mx-auto max-w-96 sm:max-w-xl md:max-w-2xl lg:max-w-3xl bg-gray-100 rounded-2xl shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center gap-5 ">
           <div className="flex-1">

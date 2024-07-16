@@ -23,7 +23,7 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-pattern bg-cover">
+    <div className="">
       <div>
         <HomeRecipe />
         <h1>Home</h1>

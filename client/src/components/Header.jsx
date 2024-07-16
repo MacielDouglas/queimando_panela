@@ -7,6 +7,7 @@ import close from "../assets/CloseMenu.svg";
 import search from "../assets/search.svg";
 import recipeIcons from "../assets/recipes/icons";
 import { resetAuth } from "../features/auth/authSlice";
+import { motion } from "framer-motion";
 
 const recipeCategories = [
   "acompanhamentos",
@@ -58,13 +59,13 @@ export default function Header() {
   // console.log(user);
 
   return (
-    <header className="bg-gray-50 w-full flex flex-col">
-      <div className="mx-5 flex justify-between lg:mx-20 gap-5 h-10 lg:items-center lg:h-14 font-noto text-gray-500">
+    <header className="bg-gray-50 w-full flex flex-col shadow-md">
+      <div className="mx-5 flex justify-between lg:mx-20 gap-5 h-10 lg:items-center lg:h-12 font-noto text-gray-500">
         <p className="hidden lg:block">Bem vindo ao Queimando Panelas!!!</p>
         <button onClick={toggleModal} className="lg:hidden">
           <img
             src={isModalOpen ? close : menu}
-            className="h-6 p-1"
+            className="h-6 p-1 "
             alt="Menu"
           />
         </button>
@@ -101,7 +102,17 @@ export default function Header() {
       </div>
       <hr className="border-gray-200" />
       <div className="flex mx-5 self-center items-center gap-10 text-[#1d1d1b] font-oswald font-semibold">
-        <div className="gap-4 hidden lg:flex">
+        <motion.div
+          initial={{ opacity: 0, x: -300 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 10,
+            delay: 1,
+          }}
+          className="gap-4 hidden lg:flex"
+        >
           {renderLink("/", "HOME")}
           <p className="text-gray-300">/</p>
           <div
@@ -120,12 +131,12 @@ export default function Header() {
                   {recipeCategories.map((category) => (
                     <li
                       key={category}
-                      className="flex items-center  hover:bg-gray-200 p-2 hover:underline cursor-pointer"
+                      className="flex items-center  hover:bg-gray-200 p-2  hover:underline cursor-pointer group"
                     >
                       <img
                         src={recipeIcons[category]}
                         alt={category}
-                        className="w-8 h-8"
+                        className="w-8 h-8 group-hover:w-12"
                       />
                       {renderNavLink(`/recipe/${category}`, category)}
                       <hr className="bg-black" />
@@ -135,21 +146,45 @@ export default function Header() {
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
         <Link to="/">
-          <img src={queimando} className="h-36 p-2" alt="Logo Receita" />
+          <motion.img
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 100,
+              damping: 10,
+              delay: 0.5,
+            }}
+            src={queimando}
+            className="h-36 -mt-10 p-2 hover:img-shadow "
+            alt="Logo Receita"
+          />
         </Link>
-        <div className="hidden lg:flex gap-3">
+        <motion.div
+          initial={{ opacity: 0, x: 300 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 10,
+            delay: 1,
+          }}
+          className="hidden lg:flex gap-3"
+        >
           {renderLink("/about", "SOBRE")}
           <p className="text-gray-300">/</p>
           {renderLink("/contact", "CONTATO")}
-        </div>
+        </motion.div>
       </div>
 
       {isModalOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-start font-oswald"
+        <motion.div
+          className="fixed inset-0 mt-10 bg-black bg-opacity-50 z-50 flex justify-start font-oswald"
           onClick={toggleModal}
+          initial={{ x: "-4%" }}
+          whileInView={{ x: 0 }}
         >
           <div
             className="bg-white p-6 h-full w-2/3 flex flex-col"
@@ -197,7 +232,7 @@ export default function Header() {
               <hr />
             </ul>
           </div>
-        </div>
+        </motion.div>
       )}
     </header>
   );
