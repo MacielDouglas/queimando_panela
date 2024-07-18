@@ -33,7 +33,7 @@ export const loginUser = createAsyncThunk(
       return userData;
     } catch (error) {
       // Log and return a more descriptive error message
-      showError(`Erro ao fazer login, ${error.message}`);
+      showError(`Login: ${error.message}`);
 
       console.error("Login failed:", error.message);
       return thunkAPI.rejectWithValue("Failed to login. Please try again.");

@@ -8,6 +8,9 @@ import search from "../assets/search.svg";
 import recipeIcons from "../assets/recipes/icons";
 import { resetAuth } from "../features/auth/authSlice";
 import { motion } from "framer-motion";
+import Login from "../pages/Login";
+import { PiUserDuotone } from "react-icons/pi";
+import { ImExit } from "react-icons/im";
 
 const recipeCategories = [
   "acompanhamentos",
@@ -34,6 +37,7 @@ export default function Header() {
   const user = useSelector((state) => state.auth.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false);
+  const [showModalLogin, setShowModalLogin] = useState(false);
 
   const toggleModal = () => setIsModalOpen((prevState) => !prevState);
   const showRecipeModal = () => setIsRecipeModalOpen(true);
@@ -42,7 +46,7 @@ export default function Header() {
   const dispatch = useDispatch();
 
   const renderLink = (to, label) => (
-    <Link to={to} className="hover:text-gray-500">
+    <Link to={to} className="hover:text-stone-500">
       {label}
     </Link>
   );
@@ -56,11 +60,12 @@ export default function Header() {
   const handleReset = () => {
     dispatch(resetAuth());
   };
-  // console.log(user);
+  console.log(showModalLogin);
+  // if (setShowModalLogin) return <Login />;
 
   return (
-    <header className="bg-gray-50 w-full flex flex-col shadow-md">
-      <div className="mx-5 flex justify-between lg:mx-20 gap-5 h-10 lg:items-center lg:h-12 font-noto text-gray-500">
+    <header className="bg-stone-50 w-full flex flex-col shadow-md">
+      <div className="mx-5 flex justify-between lg:mx-20 gap-5 h-10 lg:items-center lg:h-12 font-noto text-stone-500">
         <p className="hidden lg:block">Bem vindo ao Queimando Panelas!!!</p>
         <button onClick={toggleModal} className="lg:hidden">
           <img
@@ -83,16 +88,14 @@ export default function Header() {
                   alt={`Imagem do usuário: ${user.name}`}
                 />
               </Link>
-              <button
-                onClick={handleReset}
-                className="py-1 px-2 bg-red-500 text-white"
-              >
-                SAIR
+              <button onClick={handleReset}>
+                <ImExit className="text-2xl hover:text-black " />
               </button>
             </>
           ) : (
-            <Link to="/login" className="hidden lg:block hover:text-gray-900">
-              LOGIN
+            // <button onClick={() => setShowModalLogin(true)}>LOGIN</button>
+            <Link to="/login" className="hidden lg:block hover:text-stone-900">
+              <PiUserDuotone className="text-3xl" />
             </Link>
           )}
           <button onClick={toggleModal}>
@@ -100,7 +103,7 @@ export default function Header() {
           </button>
         </div>
       </div>
-      <hr className="border-gray-200" />
+      <hr className="border-stone-200" />
       <div className="flex mx-5 self-center items-center gap-10 text-[#1d1d1b] font-oswald font-semibold">
         <motion.div
           initial={{ opacity: 0, x: -300 }}
@@ -114,7 +117,7 @@ export default function Header() {
           className="gap-4 hidden lg:flex"
         >
           {renderLink("/", "HOME")}
-          <p className="text-gray-300">/</p>
+          <p className="text-stone-300">/</p>
           <div
             onMouseEnter={showRecipeModal}
             onMouseLeave={hideRecipeModal}
@@ -123,7 +126,7 @@ export default function Header() {
             {renderLink("/recipe", "RECEITAS")}
             {isRecipeModalOpen && (
               <div
-                className="absolute top-full -left-20  w-56 bg-white border border-gray-200 shadow-2xl z-10"
+                className="absolute top-full -left-20  w-56 bg-white border border-stone-200 shadow-2xl z-10"
                 onMouseEnter={showRecipeModal}
                 onMouseLeave={hideRecipeModal}
               >
@@ -131,7 +134,7 @@ export default function Header() {
                   {recipeCategories.map((category) => (
                     <li
                       key={category}
-                      className="flex items-center  hover:bg-gray-200 p-2  hover:underline cursor-pointer group"
+                      className="flex items-center  hover:bg-yellow-400 p-2  hover:underline cursor-pointer group"
                     >
                       <img
                         src={recipeIcons[category]}
@@ -174,7 +177,7 @@ export default function Header() {
           className="hidden lg:flex gap-3"
         >
           {renderLink("/about", "SOBRE")}
-          <p className="text-gray-300">/</p>
+          <p className="text-stone-300">/</p>
           {renderLink("/contact", "CONTATO")}
         </motion.div>
       </div>
@@ -234,6 +237,7 @@ export default function Header() {
           </div>
         </motion.div>
       )}
+      {showModalLogin && <Login setShowModalLogin={setShowModalLogin} />}
     </header>
   );
 }

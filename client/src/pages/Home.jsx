@@ -28,7 +28,7 @@ export default function Home() {
         <HomeRecipe />
         <h1>Home</h1>
       </div>
-      <Login />
+      {/* <Login /> */}
       <Profile />
     </div>
   );

@@ -15,6 +15,7 @@ export default {
       },
       backgroundImage: {
         pattern: "url('/src/assets/bg_food 1.svg')",
+        cozinhando: "url('/src/assets/cozinhando.jpg')",
       },
     },
   },
