@@ -4,6 +4,7 @@ import ScrollToTop from "./helper/ScrollTotop";
 import Header from "./components/Header";
 import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
+import Footer from "./pages/Footer";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

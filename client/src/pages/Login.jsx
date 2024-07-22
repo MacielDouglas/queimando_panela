@@ -115,7 +115,7 @@ export default function Login() {
 
   return (
     <div
-      className={`flex overflow-x-hidden font-noto bg-stone-50 ${
+      className={`flex overflow-hidden font-noto bg-stone-50 ${
         !cadastro ? "h-[700px]" : "h-[950px]"
       }`}
     >
