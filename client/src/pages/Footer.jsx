@@ -1,42 +1,42 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Link } from "react-router-dom";
 import queimando from "../assets/queimando_panela.svg";
 import { BsEnvelope, BsLinkedin, BsGithub, BsTwitterX } from "react-icons/bs";
 import { motion } from "framer-motion";
-import recipeIcons from "../assets/recipes/icons";
+// import recipeIcons from "../assets/recipes/icons";
 
-const recipeCategories = [
-  "acompanhamentos",
-  "aves",
-  "bolos",
-  "carnes",
-  "churrasco",
-  "drinks",
-  "fondues, musses e suflês",
-  "massas",
-  "pães",
-  "peixes",
-  "saladas",
-  "sanduíches e salgados",
-  "sobremesas e doces",
-  "sopas",
-  "sorvetes",
-  "típicos",
-  "tortas",
-  "outros",
-];
+// const recipeCategories = [
+//   "acompanhamentos",
+//   "aves",
+//   "bolos",
+//   "carnes",
+//   "churrasco",
+//   "drinks",
+//   "fondues, musses e suflês",
+//   "massas",
+//   "pães",
+//   "peixes",
+//   "saladas",
+//   "sanduíches e salgados",
+//   "sobremesas e doces",
+//   "sopas",
+//   "sorvetes",
+//   "típicos",
+//   "tortas",
+//   "outros",
+// ];
 
 export default function Footer() {
-  const [hoveredCategory, setHoveredCategory] = useState(null);
+  // const [hoveredCategory, setHoveredCategory] = useState(null);
 
-  const renderNavLink = (to, label, category) => (
-    <Link
-      to={to}
-      className="hover:underline justify-between p-3 hidden group-hover:block no-underline text-xs"
-    >
-      {label}
-    </Link>
-  );
+  // const renderNavLink = (to, label, category) => (
+  //   <Link
+  //     to={to}
+  //     className="hover:underline justify-between p-3 hidden group-hover:block no-underline text-xs"
+  //   >
+  //     {label}
+  //   </Link>
+  // );
 
   return (
     <footer className="bg-yellow-400 p-10 max-w-full rounded-2xl m-10 flex flex-col lg:flex-row font-noto">
@@ -45,7 +45,7 @@ export default function Footer() {
           <motion.img
             src={queimando}
             alt="Logotipo do site queimando panela."
-            className="h-24 self-center"
+            className="h-24 self-center hover:img-shadow"
             initial={{ opacity: 0, x: -100 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{

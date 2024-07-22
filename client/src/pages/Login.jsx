@@ -41,6 +41,10 @@ export default function Login() {
     }
   }, [user, navigate]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [cadastro]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
