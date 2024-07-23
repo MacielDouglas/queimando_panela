@@ -60,8 +60,6 @@ export default function Header() {
   const handleReset = () => {
     dispatch(resetAuth());
   };
-  console.log(showModalLogin);
-  // if (setShowModalLogin) return <Login />;
 
   return (
     <header className="bg-stone-50 w-full flex flex-col shadow-md">
