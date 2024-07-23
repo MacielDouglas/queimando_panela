@@ -101,7 +101,7 @@ export default function Footer() {
           >
             registrar
           </Link>
-          <p className="text-xs text-yellow-900">
+          <p className="text-xs text-yellow-900 hidden lg:block">
             <span className="font-semibold">Queimado Panela.</span> © Alguns
             direitos reservados
           </p>
@@ -177,7 +177,7 @@ export default function Footer() {
         </div>
         <div className="border-t border-yellow-950 flex justify-between p-4 flex-wrap gap-3 lg:gap-0 mt-10 lg:mt-0">
           <p className="text-sm text-yellow-900">Desenvolvido por Maciel D.</p>
-          <div className="flex gap-4">
+          <div className="flex gap-4 mt-4 lg:mt-0">
             <Link
               to="https://github.com/MacielDouglas"
               target="_blank"
@@ -211,6 +211,10 @@ export default function Footer() {
               <BsEnvelope className="text-2xl" />
             </Link>
           </div>
+          <p className="text-xs text-yellow-900  lg:hidden mt-4">
+            <span className="font-semibold">Queimado Panela.</span> © Alguns
+            direitos reservados
+          </p>
         </div>
       </motion.div>
     </footer>

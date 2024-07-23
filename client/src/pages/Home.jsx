@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import Login from "./Login";
 import HomeRecipe from "../components/HomeRecipe";
+import BestRecipe from "../components/BestRecipe";
 
 export default function Home() {
   const Profile = () => {
@@ -26,6 +26,7 @@ export default function Home() {
     <div className="">
       <div>
         <HomeRecipe />
+        <BestRecipe />
         <h1>Home</h1>
       </div>
       {/* <Login /> */}
