@@ -8,19 +8,22 @@ import {
   PiBookBookmarkDuotone,
   PiBookOpenTextDuotone,
   PiChatCenteredTextDuotone,
-  PiDoorDuotone,
 } from "react-icons/pi";
+import { ImExit } from "react-icons/im";
 import { resetAuth } from "../../features/auth/authSlice";
 
 const SidebarLink = ({ to, icon, label }) => (
-  <Link
-    to={to}
-    className="flex justify-between items-center p-2 rounded-lg hover:bg-stone-50"
-  >
-    <p className="text-xl flex items-center gap-4">
-      {icon} {label}
-    </p>
-  </Link>
+  <>
+    <Link
+      to={to}
+      className="flex justify-between items-center p-2 rounded-lg hover:bg-stone-50"
+    >
+      <p className="text-xl flex items-center gap-4">
+        {icon} {label}
+      </p>
+    </Link>
+    <hr />
+  </>
 );
 
 SidebarLink.propTypes = {
@@ -69,7 +72,7 @@ const SidebarLogout = ({ onLogout }) => (
     onClick={onLogout}
     className="text-xl p-2 rounded-lg hover:bg-red-50 flex items-center gap-4 cursor-pointer hover:text-red-800"
   >
-    <PiDoorDuotone /> Sair
+    <ImExit /> Sair
   </p>
 );
 
@@ -94,21 +97,21 @@ export default function DashSidebar() {
         icon={<PiBookBookmarkDuotone />}
         label="Receitas"
       />
-      <hr />
+      {/* <hr /> */}
       <SidebarLink
         to="/dashboard?tab=newRecipe"
         icon={<PiBookOpenTextDuotone />}
         label="Nova Receita"
       />
-      <hr />
+      {/* <hr /> */}
       <SidebarLink
         to="/dashboard?tab=comments"
         icon={<PiChatCenteredTextDuotone />}
         label="Comentários"
       />
-      <hr />
+      {/* <hr /> */}
       <SidebarAdminLink user={user} />
-      <hr />
+
       <SidebarLogout onLogout={handleReset} />
     </div>
   );
