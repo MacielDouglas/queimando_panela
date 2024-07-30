@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
 import HomeRecipe from "../components/HomeRecipe";
 import BestRecipe from "../components/BestRecipe";
+import UpdateUser from "../components/ImageUpload";
 
 export default function Home() {
+  console.log(import.meta.env.STORAGE_BUCKET);
   const Profile = () => {
     const user = useSelector((state) => state.auth.user);
     console.log("User: ", user);
@@ -31,6 +33,7 @@ export default function Home() {
       </div>
       {/* <Login /> */}
       <Profile />
+      <UpdateUser />
     </div>
   );
 }
