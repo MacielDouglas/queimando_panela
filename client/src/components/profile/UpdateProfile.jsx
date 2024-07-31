@@ -38,7 +38,11 @@ export default function UpdateProfile() {
 
     try {
       setLoading(true);
-      if (imageFileUrl) {
+      if (
+        imageFileUrl &&
+        user.profilePicture !==
+          "https://firebasestorage.googleapis.com/v0/b/queimando-panela.appspot.com/o/perfil%2F1722454447282user.webp?alt=media&token=3dd585aa-5ce9-4bb3-9d46-5ecf11d1e60c"
+      ) {
         const fileRef = ref(storage, user.profilePicture);
         try {
           await deleteObject(fileRef);

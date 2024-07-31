@@ -64,7 +64,7 @@ const userResolver = {
 
         const hashedPassword = await bcrypt.hash(user.password, 10);
         const photo =
-          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+          "https://firebasestorage.googleapis.com/v0/b/queimando-panela.appspot.com/o/perfil%2F1722454447282user.webp?alt=media&token=3dd585aa-5ce9-4bb3-9d46-5ecf11d1e60c";
 
         const newUser = new User({
           ...user,
