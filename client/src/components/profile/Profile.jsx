@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const user = useSelector((state) => state.auth.user);
@@ -44,9 +45,12 @@ export default function Profile() {
           </p>
           <p className="text-sm text-stone-500">username: {user.username}</p>
         </div>
-        <button className="text-xs border  p-2 border-stone-800 hover:bg-stone-800 hover:text-stone-100 rounded-md">
+        <Link
+          to="/dashboard?tab=updateProfile"
+          className="text-xs border  p-2 border-stone-800 hover:bg-stone-800 hover:text-stone-100 rounded-md"
+        >
           editar
-        </button>
+        </Link>
       </motion.div>
       <motion.div
         initial={{ opacity: 0, x: 100 }}

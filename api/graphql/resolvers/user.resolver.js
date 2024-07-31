@@ -135,7 +135,7 @@ const userResolver = {
 
         await User.findByIdAndUpdate(id, userUpdate);
 
-        const updatedUser = await existing(id, (type = "user"));
+        const updatedUser = await existing(id, "usuario");
         // const updatedUser = await existingUser(id);
 
         return {

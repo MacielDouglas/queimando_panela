@@ -8,3 +8,12 @@ export const NEW_USER = gql`
     }
   }
 `;
+
+export const UPDATE_USER = gql`
+  mutation updateUser($updateUserId: ID!, $updateUserInput: UpdateUserInput!) {
+    updateUser(id: $updateUserId, updateUserInput: $updateUserInput) {
+      message
+      success
+    }
+  }
+`;

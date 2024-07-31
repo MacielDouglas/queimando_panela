@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 // import DashSidebar from "../components/DashSidebar";
-import Profile from "./Profile";
+
 import DashSidebar from "../components/dashboard/DashSidebar";
+import Profile from "../components/profile/Profile";
+import UpdateProfile from "../components/profile/UpdateProfile";
 // import CreatePost from "./CreatePost";
 // import DashPosts from "./../components/DashPosts";
 // import UpdatePost from "./UpdatePost";
@@ -35,6 +37,7 @@ export default function Dashboard() {
     <div className="min-h-screen flex flex-col md:flex-row bg-stone-200">
       <div className="md:w-56">{<DashSidebar />}</div>
       {tab === "profile" && <Profile />}
+      {tab === "updateProfile" && <UpdateProfile />}
       {/* {tab === "posts" && <DashPosts />} */}
       {/* {tab === "newPost" && <CreatePost />} */}
       {/* {postSlug && <UpdatePost postSlug={postSlug} />} */}
