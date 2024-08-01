@@ -83,15 +83,24 @@ export default function Profile() {
         }}
         className="flex gap-5 justify-center lg:justify-between w-full flex-wrap"
       >
-        <button className="border bg-yellow-400 w-48 py-2 rounded-md border-transparent hover:border-white text-yellow-950">
-          Enviar Receita
-        </button>
-        <button className="border bg-slate-700 w-48 py-2 rounded-md border-transparent hover:border-white text-slate-100">
+        <Link
+          to={"/dashboard?tab=newRecipe"}
+          className="border bg-yellow-400 w-48 py-2 text-center rounded-md border-transparent hover:border-white text-yellow-950"
+        >
+          Criar Receita
+        </Link>
+        <Link
+          to={"/dashboard?tab=myRecipes"}
+          className="border bg-slate-700 w-48 py-2 text-center rounded-md border-transparent hover:border-white text-slate-100"
+        >
           Receitas enviadas
-        </button>
-        <button className="border bg-stone-700 w-48 py-2 rounded-md border-transparent hover:border-white text-stone-100">
+        </Link>
+        <Link
+          to={"/dashboard?tab=saveRecipe"}
+          className="border bg-stone-700 w-48 py-2 text-center rounded-md border-transparent hover:border-white text-stone-100"
+        >
           Receitas Salvas
-        </button>
+        </Link>
       </motion.div>
     </section>
   );

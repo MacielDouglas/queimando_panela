@@ -11,27 +11,7 @@ import { motion } from "framer-motion";
 import Login from "../pages/Login";
 import { PiUserDuotone } from "react-icons/pi";
 import { ImExit } from "react-icons/im";
-
-const recipeCategories = [
-  "acompanhamentos",
-  "aves",
-  "bolos",
-  "carnes",
-  "churrasco",
-  "drinks",
-  "fondues, musses e suflês",
-  "massas",
-  "pães",
-  "peixes",
-  "saladas",
-  "sanduíches e salgados",
-  "sobremesas e doces",
-  "sopas",
-  "sorvetes",
-  "típicos",
-  "tortas",
-  "outros",
-];
+import recipeCategories from "../constants/recipeCategories.js";
 
 export default function Header() {
   const user = useSelector((state) => state.auth.user);

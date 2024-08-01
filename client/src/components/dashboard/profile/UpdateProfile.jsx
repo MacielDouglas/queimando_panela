@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import ImageFormUpload from "../formularios/ImageFormUpload";
+import ImageFormUpload from "../../formularios/ImageFormUpload";
 import { useState } from "react";
-import FormField from "../formularios/FormField";
+import FormField from "../../formularios/FormField";
 import { useMutation } from "@apollo/client";
-import { UPDATE_USER } from "../../graphql/mutation/user.mutation";
-import useToast from "../../hooks/useToast";
+import { UPDATE_USER } from "../../../graphql/mutation/user.mutation";
+import useToast from "../../../hooks/useToast";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
-import { resetAuth } from "../../features/auth/authSlice";
+import { resetAuth } from "../../../features/auth/authSlice";
 
 export default function UpdateProfile() {
   const user = useSelector((state) => state.auth.user);
@@ -118,6 +118,7 @@ export default function UpdateProfile() {
           image={user.profilePicture}
           imageFileUrl={imageFileUrl}
           setImageFileUrl={setImageFileUrl}
+          type="profile"
         />
         <motion.div
           initial={{ opacity: 0, x: 100 }}

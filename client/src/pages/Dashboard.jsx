@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-// import DashSidebar from "../components/DashSidebar";
 
 import DashSidebar from "../components/dashboard/DashSidebar";
-import Profile from "../components/profile/Profile";
-import UpdateProfile from "../components/profile/UpdateProfile";
-// import CreatePost from "./CreatePost";
-// import DashPosts from "./../components/DashPosts";
-// import UpdatePost from "./UpdatePost";
+import Profile from "../components/dashboard/profile/Profile";
+import UpdateProfile from "../components/dashboard/profile/UpdateProfile";
+import NewRecipe from "../components/dashboard/recipes/NewRecipe";
+import MyRecipes from "../components/dashboard/recipes/MyRecipes";
+import SaveRecipes from "../components/dashboard/recipes/SaveRecipes";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -38,6 +37,9 @@ export default function Dashboard() {
       <div className="md:w-56">{<DashSidebar />}</div>
       {tab === "profile" && <Profile />}
       {tab === "updateProfile" && <UpdateProfile />}
+      {tab === "newRecipe" && <NewRecipe />}
+      {tab === "saveRecipe" && <SaveRecipes />}
+      {tab === "myRecipes" && <MyRecipes />}
       {/* {tab === "posts" && <DashPosts />} */}
       {/* {tab === "newPost" && <CreatePost />} */}
       {/* {postSlug && <UpdatePost postSlug={postSlug} />} */}
