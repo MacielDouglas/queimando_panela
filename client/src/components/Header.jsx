@@ -44,7 +44,7 @@ export default function Header() {
   return (
     <header className="bg-stone-50 w-full flex flex-col shadow-md">
       <div className="mx-5 flex justify-between lg:mx-20 gap-5 h-10 lg:items-center lg:h-12 font-noto text-stone-500">
-        <p className="hidden lg:block">Bem vindo ao Queimando Panelas!!!</p>
+        <p className="hidden lg:block">Bem vindo ao Queimando Panela!!!</p>
         <button onClick={toggleModal} className="lg:hidden">
           <img
             src={isModalOpen ? close : menu}
@@ -139,7 +139,7 @@ export default function Header() {
               delay: 0.5,
             }}
             src={queimando}
-            className="h-36 -mt-10 p-2 hover:img-shadow "
+            className="w-72 p-2 hover:img-shadow "
             alt="Logo Receita"
           />
         </Link>

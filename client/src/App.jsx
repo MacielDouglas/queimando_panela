@@ -8,6 +8,7 @@ import Footer from "./pages/Footer";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import Recipe from "./pages/Recipe";
 
 export default function App() {
   return (
@@ -18,7 +19,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<OnlyAdminPrivateRoute />}></Route>
+        <Route path="/recipe/:slug" element={<Recipe />} />
+        <Route element={<OnlyAdminPrivateRoute />}>
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+        </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

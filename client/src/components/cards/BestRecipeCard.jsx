@@ -30,6 +30,7 @@ export default function BestRecipeCard({ recipe }) {
       <h1 className="font-oswald text-2xl lg:text-[40px] font-bold">
         {recipe.title}
       </h1>
+
       <motion.div
         className="  flex justify-center  h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:4px_4px]  text-sm md:text-xl"
         initial={{ opacity: 0, y: -100 }}
@@ -91,7 +92,7 @@ export default function BestRecipeCard({ recipe }) {
         </div>
       </div>
       <Link
-        to={recipe.slug}
+        to={`recipe/${recipe.slug}`}
         className="border border-stone-300 hover:bg-stone-950 hover:text-white mt-4  py-3 px-6  rounded-3xl self-center  text-xs md:text-sm "
       >
         VEJA A RECEITA

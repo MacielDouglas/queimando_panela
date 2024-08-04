@@ -1,43 +1,9 @@
-// import { useState } from "react";
 import { Link } from "react-router-dom";
 import queimando from "../assets/queimando_panela.svg";
 import { BsEnvelope, BsLinkedin, BsGithub, BsTwitterX } from "react-icons/bs";
 import { motion } from "framer-motion";
-// import recipeIcons from "../assets/recipes/icons";
-
-// const recipeCategories = [
-//   "acompanhamentos",
-//   "aves",
-//   "bolos",
-//   "carnes",
-//   "churrasco",
-//   "drinks",
-//   "fondues, musses e suflês",
-//   "massas",
-//   "pães",
-//   "peixes",
-//   "saladas",
-//   "sanduíches e salgados",
-//   "sobremesas e doces",
-//   "sopas",
-//   "sorvetes",
-//   "típicos",
-//   "tortas",
-//   "outros",
-// ];
 
 export default function Footer() {
-  // const [hoveredCategory, setHoveredCategory] = useState(null);
-
-  // const renderNavLink = (to, label, category) => (
-  //   <Link
-  //     to={to}
-  //     className="hover:underline justify-between p-3 hidden group-hover:block no-underline text-xs"
-  //   >
-  //     {label}
-  //   </Link>
-  // );
-
   return (
     <footer className="bg-yellow-400 p-10 max-w-full rounded-2xl m-10 flex flex-col lg:flex-row font-noto">
       <div className="lg:flex-1 flex flex-col text-sm gap-4 items-center lg:items-start">
@@ -56,28 +22,6 @@ export default function Footer() {
             }}
           />
         </Link>
-        {/* <div className="border-b-2 pb-8 border-black group border flex flex-col items-center justify-between">
-          <ul className="flex flex-wrap items-center gap-4 w-full h-20 ">
-            {recipeCategories.map((category) => (
-              <li
-                key={category}
-                onMouseEnter={() => setHoveredCategory(category)}
-                onMouseLeave={() => setHoveredCategory(null)}
-              >
-                <Link>
-                  <img
-                    className="w-6 h-6 hover:h-16 hover:w-16 group border"
-                    src={recipeIcons[category]}
-                    alt={`Ícone da categoria ${category}`}
-                  />
-                </Link>
-              </li>
-            ))}
-          </ul>
-          {hoveredCategory && (
-            <p className="text-2xl font-semibold">{hoveredCategory}</p>
-          )}
-        </div> */}
         <motion.div
           className="w-full flex flex-col gap-12"
           initial={{ opacity: 0, y: -100 }}

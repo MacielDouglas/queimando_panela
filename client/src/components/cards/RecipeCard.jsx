@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export default function RecipeCard({ recipe, extraClasses = "" }) {
   return (
     <Link
-      to={recipe.slug}
+      to={`/recipe/${recipe.slug}`}
       className={`bg-cover bg-center group  flex flex-col relative ${extraClasses}`}
     >
       <motion.img
@@ -35,7 +35,7 @@ export default function RecipeCard({ recipe, extraClasses = "" }) {
         <p className="mx-auto text-2xl font-oswald lg:text-3xl border-t  border-b p-3 text-center">
           {recipe.title.toUpperCase()}
         </p>
-        <button className="mx-auto px-3 font-noto text-xs py-2 bg-transparent border hover:bg-white hover:text-black mt-5 text-center lg:mb-20">
+        <button className="mx-auto px-3 font-noto text-xs py-2 bg-transparent border hover:bg-white hover:text-black mt-5 text-center mb-[10%]">
           VEJA A RECEITA
         </button>
       </motion.div>
