@@ -26,7 +26,7 @@ type Rating {
 }
 
 type Query {
-    getRecipes(slug: String, input: RecipeFilters): [Recipe]!
+    getRecipes(input: RecipeFilters): [Recipe]!
 }
 
 type Mutation {
@@ -51,8 +51,10 @@ input NewRecipeInput {
 }
 
 input RecipeFilters {
+    slug: String
     title: String
     category: String
+    ingredients: String
 }
 
 type DeleteRecipeResponse {
@@ -64,7 +66,7 @@ input UpdateRecipeInput {
     title: String
     content: String
     image: String
-    category: String
+    category: String!
     ingredients: [String]
     slug: String
     difficult: String

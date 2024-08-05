@@ -26,24 +26,62 @@ const generateSlug = (title) => {
 const recipeResolver = {
   JSON: GraphQLJSON,
   Query: {
-    getRecipes: async (_, { slug, input }) => {
+    getRecipes: async (_, { input }) => {
       console.log("getRecipes");
       try {
-        if (slug) {
-          const recipe = await Recipe.findOne({ slug }).exec();
-          if (!recipe) {
-            throw new Error("Receita não encontrada");
+        let query = {};
+
+        if (input) {
+          if (input.slug) {
+            query.slug = input.slug;
           }
-          return [recipe]; // Retorna um array com a receita encontrada
-        } else {
-          const query = buildQuery(input);
-          const recipes = await Recipe.find(query).exec();
-          return recipes;
+
+          if (input.category) {
+            query.category = input.category;
+          }
+
+          if (input.title) {
+            const words = input.title.trim().split(/\s+/);
+            if (words.length > 1) {
+              query.title = { $regex: input.title, $options: "i" }; // Busca no título para várias palavras
+            } else {
+              query.$or = [
+                { ingredients: { $regex: input.title, $options: "i" } },
+                { title: { $regex: input.title, $options: "i" } },
+              ]; // Busca em ingredientes ou título para uma palavra
+            }
+          }
+
+          if (input.ingredients) {
+            query.ingredients = { $regex: input.ingredients, $options: "i" };
+          }
         }
+
+        const recipes = await Recipe.find(query).exec();
+        return recipes;
       } catch (error) {
         throw new Error(`Erro ao buscar as receitas: ${error.message}`);
       }
     },
+
+    // getRecipes: async (_, { slug, input }) => {
+    //   console.log("getRecipes");
+    //   try {
+    //     if (slug) {
+    //       const recipe = await Recipe.findOne({ slug }).exec();
+    //       if (!recipe) {
+    //         throw new Error("Receita não encontrada");
+    //       }
+    //       return [recipe]; // Retorna um array com a receita encontrada
+    //     } else {
+    //       const query = buildQuery(input);
+    //       const recipes = await Recipe.find(query).exec();
+    //       return recipes;
+    //     }
+    //   } catch (error) {
+    //     throw new Error(`Erro ao buscar as receitas: ${error.message}`);
+    //   }
+    // },
   },
 
   Mutation: {

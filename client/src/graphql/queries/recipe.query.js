@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const ALL_RECIPES = gql`
-  query recipes {
-    getRecipes {
+  query recipeOne($input: RecipeFilters) {
+    getRecipes(input: $input) {
       category
       content
       description
