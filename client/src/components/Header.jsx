@@ -101,7 +101,7 @@ export default function Header() {
             onMouseLeave={hideRecipeModal}
             className="relative"
           >
-            {renderLink("/recipe", "RECEITAS")}
+            {renderLink("/recipes", "RECEITAS")}
             {isRecipeModalOpen && (
               <div
                 className="absolute top-full -left-20  w-56 bg-white border border-stone-200 shadow-2xl z-10"
@@ -119,7 +119,7 @@ export default function Header() {
                         alt={category}
                         className="w-8 h-8 group-hover:w-12"
                       />
-                      {renderNavLink(`/recipe/${category}`, category)}
+                      {renderNavLink(`/category/${category}`, category)}
                       <hr className="bg-black" />
                     </li>
                   ))}
@@ -174,7 +174,7 @@ export default function Header() {
             <ul className="flex flex-col gap-4 text-xl w-full">
               <li>{renderNavLink("/", "Home")}</li>
               <hr />
-              <li>{renderNavLink("/recipe", "Receitas")}</li>
+              <li>{renderNavLink("/recipes", "Receitas")}</li>
               <hr />
               <li>{renderNavLink("/about", "Sobre")}</li>
               <hr />
