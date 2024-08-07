@@ -1,4 +1,3 @@
-// src/app/store.js
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {
   persistStore,

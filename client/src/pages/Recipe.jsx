@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import recipeIcons from "../assets/recipes/icons";
 import Loading from "../helper/Loading";
 import RecipeCard from "../components/cards/RecipeCard";
+import Ratings from "../components/Ratings";
 
 export default function Recipe() {
   const { recipes, loading } = useSelector((state) => state.recipes);
@@ -159,6 +160,9 @@ export default function Recipe() {
                     ))}
                 </ul>
               </div>
+              <div className="z-20">
+                <Ratings ratings={recipe.ratings} id={recipe.id} />
+              </div>
             </div>
           </div>
         </div>
@@ -172,9 +176,9 @@ export default function Recipe() {
           damping: 30,
           delay: 1,
         }}
-        className="md:-my-12 col-span-1 bg-gradient-to-r to-stone-200 from-stone-300 pt-20 shadow-2xl shadow-stone-900/50"
+        className="md:-my-12 col-span-1 bg-gradient-to-r to-stone-200 from-stone-300 pt-20 shadow-2xl shadow-stone-900/50 z-10"
       >
-        <div className=" md:px-8 text-center indent-0">
+        <div className=" md:px-8 text-center indent-0 ">
           <h3 className="my-10 uppercase font-oswald tracking-widest text-stone-600">
             Escolha uma categoria
           </h3>

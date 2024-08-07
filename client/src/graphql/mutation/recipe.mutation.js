@@ -16,3 +16,23 @@ export const NEW_RECIPE = gql`
     }
   }
 `;
+
+export const GET_RATING = gql`
+  mutation getRating($newRating: NewRatingInput!) {
+    rateRecipe(newRating: $newRating) {
+      ratings {
+        comment
+        rating
+      }
+    }
+  }
+`;
+
+export const DELETE_RATING = gql`
+  mutation deleteRating($recipeId: ID!, $userId: ID!) {
+    deleteRate(recipeId: $recipeId, userId: $userId) {
+      message
+      success
+    }
+  }
+`;

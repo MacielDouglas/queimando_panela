@@ -18,6 +18,7 @@ export const ALL_RECIPES = gql`
       ratings {
         rating
         comment
+        userId
       }
       createdAt
     }
