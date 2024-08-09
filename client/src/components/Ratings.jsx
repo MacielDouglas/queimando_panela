@@ -7,9 +7,13 @@ import { PropTypes } from "prop-types";
 import Loading from "../helper/Loading";
 import StarsRender from "./others/StarsRender";
 import TextAreaField from "./formularios/TextArealField";
-import { DELETE_RATING, GET_RATING } from "../graphql/mutation/recipe.mutation";
+import {
+  DELETE_RATING,
+  RATE_RECIPE,
+} from "../graphql/mutation/recipe.mutation";
 import useToast from "../hooks/useToast";
 import Modal from "./modal/Modal";
+import { ALL_RECIPES } from "../graphql/queries/recipe.query";
 
 export default function Ratings({ ratings, id }) {
   const user = useSelector((state) => state.auth.user);
@@ -26,7 +30,8 @@ export default function Ratings({ ratings, id }) {
     setComment(e.target.value);
   };
 
-  const [newRating] = useMutation(GET_RATING);
+  const [rateRecipe] = useMutation(RATE_RECIPE);
+
   const [deleteRating] = useMutation(DELETE_RATING);
 
   const handleNewRating = async (e) => {
@@ -35,9 +40,9 @@ export default function Ratings({ ratings, id }) {
       return showError("Por favor, adicione uma avaliação para enviar.");
 
     try {
-      await newRating({
+      await rateRecipe({
         variables: {
-          newRating: {
+          rateRecipe: {
             recipeId: id,
             score: userRating,
             comment: comment,

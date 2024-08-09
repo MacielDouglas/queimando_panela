@@ -33,7 +33,7 @@ type Mutation {
     createRecipe(newRecipe: NewRecipeInput!): Recipe
     deleteRecipe(recipeId: ID!): DeleteRecipeResponse
     updateRecipe(id: ID!, updateRecipe: UpdateRecipeInput!): UpdateRecipeResponse
-    rateRecipe(newRating: NewRatingInput!): Recipe
+    rateRecipe(rateRecipe: NewRatingInput!): Recipe
     deleteRate(recipeId: ID!, userId: ID!): DeleteRecipeResponse
 }
 

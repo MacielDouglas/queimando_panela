@@ -213,7 +213,7 @@ const recipeResolver = {
       }
     },
 
-    rateRecipe: async (_, { newRating }, { req }) => {
+    rateRecipe: async (_, { rateRecipe }, { req }) => {
       try {
         const decodedToken = verifyAuthorization(req);
         if (!decodedToken) {
@@ -222,7 +222,7 @@ const recipeResolver = {
           );
         }
 
-        const { recipeId, score, comment, userId } = newRating;
+        const { recipeId, score, comment, userId } = rateRecipe;
 
         const recipe = await Recipe.findById(recipeId);
         if (!recipe) {

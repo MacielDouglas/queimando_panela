@@ -17,9 +17,9 @@ export const NEW_RECIPE = gql`
   }
 `;
 
-export const GET_RATING = gql`
-  mutation getRating($newRating: NewRatingInput!) {
-    rateRecipe(newRating: $newRating) {
+export const RATE_RECIPE = gql`
+  mutation getRating($rateRecipe: NewRatingInput!) {
+    rateRecipe(rateRecipe: $rateRecipe) {
       ratings {
         comment
         rating
