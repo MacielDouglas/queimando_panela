@@ -4,7 +4,13 @@ import { Link } from "react-router-dom";
 
 export default function Profile() {
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
+  const { recipes, loading, error } = useSelector((state) => state.recipes);
+
+  const myRecipes = recipes.filter((recipe) => recipe.userId === user.id);
+  const myRatings = recipes.filter((recipe) =>
+    recipe.ratings.some((rating) => rating.userId === user.id)
+  );
+
   return (
     <section className="flex flex-col w-full items-start font-noto px-4 sm:px-8 md:px-20 lg:px-40 xl:px-52 py-8 bg-stone-100 gap-10">
       <motion.h1
@@ -65,11 +71,11 @@ export default function Profile() {
       >
         <div className="text-wrap">
           <p>Total de receitas</p>
-          <p className="text-xl font-semibold">292</p>
+          <p className="text-xl font-semibold">{myRecipes.length}</p>
         </div>
         <div>
           <p>Total de comentários</p>
-          <p className="text-xl font-semibold">32</p>
+          <p className="text-xl font-semibold">{myRatings.length}</p>
         </div>
       </motion.div>
       <motion.div

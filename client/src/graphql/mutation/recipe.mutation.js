@@ -23,6 +23,7 @@ export const RATE_RECIPE = gql`
       ratings {
         comment
         rating
+        userId
       }
     }
   }

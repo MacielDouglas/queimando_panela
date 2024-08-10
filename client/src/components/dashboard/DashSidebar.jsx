@@ -93,7 +93,7 @@ export default function DashSidebar() {
       <SidebarProfileLink user={user} />
       <hr />
       <SidebarLink
-        to="/dashboard?tab=recipes"
+        to="/dashboard?tab=myRecipes"
         icon={<PiBookBookmarkDuotone />}
         label="Receitas"
       />

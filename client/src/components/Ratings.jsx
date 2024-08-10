@@ -1,6 +1,6 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GET_USER } from "../graphql/queries/user.query";
 import { PropTypes } from "prop-types";
@@ -13,7 +13,12 @@ import {
 } from "../graphql/mutation/recipe.mutation";
 import useToast from "../hooks/useToast";
 import Modal from "./modal/Modal";
-import { ALL_RECIPES } from "../graphql/queries/recipe.query";
+import {
+  addRating,
+  deleteRatingFailure,
+  deleteRatingSuccess,
+  editRating,
+} from "../features/recipes/recipesSlice";
 
 export default function Ratings({ ratings, id }) {
   const user = useSelector((state) => state.auth.user);
@@ -25,6 +30,7 @@ export default function Ratings({ ratings, id }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { showSuccess, showError } = useToast();
+  const dispatch = useDispatch();
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
@@ -40,7 +46,7 @@ export default function Ratings({ ratings, id }) {
       return showError("Por favor, adicione uma avaliação para enviar.");
 
     try {
-      await rateRecipe({
+      const { data } = await rateRecipe({
         variables: {
           rateRecipe: {
             recipeId: id,
@@ -50,7 +56,58 @@ export default function Ratings({ ratings, id }) {
           },
         },
       });
+
+      console.log("NEW RATE: ", data);
+
+      dispatch(
+        addRating({
+          recipeId: id,
+          newRating:
+            data.rateRecipe.ratings[data.rateRecipe.ratings.length - 1],
+          userId: user.id,
+        })
+      );
       showSuccess("Comentário enviado com sucesso!");
+      setIsEditModalOpen(false);
+    } catch (error) {
+      showError(error.message);
+    }
+  };
+
+  const handleEditRating = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await rateRecipe({
+        variables: {
+          rateRecipe: {
+            recipeId: id,
+            score: userRating,
+            comment: comment,
+            userId: user.id,
+          },
+        },
+      });
+
+      const ratingIndex = data.rateRecipe.ratings.findIndex(
+        (r) => r.userId === user.id
+      );
+
+      if (ratingIndex !== -1) {
+        const editedRating = data.rateRecipe.ratings[ratingIndex];
+
+        // Despachando a action para atualizar o estado do Redux
+        dispatch(
+          editRating({
+            recipeId: id,
+            userId: user.id,
+            updatedRating: editedRating,
+          })
+        );
+      } else {
+        console.error("Avaliação não encontrada.");
+      }
+      showSuccess("Comentário editado com sucesso!");
       setIsEditModalOpen(false);
     } catch (error) {
       showError(error.message);
@@ -62,9 +119,14 @@ export default function Ratings({ ratings, id }) {
       await deleteRating({
         variables: { recipeId: id, userId: user.id },
       });
+
+      dispatch(deleteRatingSuccess({ recipeId: id, userId: user.id }));
+      setComment("");
+      setUserRating(0);
       setIsDeleteModalOpen(false);
       showSuccess("Comentário deletado com sucesso!");
     } catch (error) {
+      dispatch(deleteRatingFailure(error.message));
       showError(error.message);
     }
   };
@@ -114,7 +176,7 @@ export default function Ratings({ ratings, id }) {
                   <div className="flex items-center gap-1">
                     <StarsRender rating={rating.rating} />
                   </div>
-                  {rating.userId === user.id && (
+                  {rating.userId === user?.id && (
                     <>
                       <button
                         onClick={() => {
@@ -146,9 +208,9 @@ export default function Ratings({ ratings, id }) {
             <h2>Não tem avaliações.</h2>
           </>
         )}
-        {ratings.some((rating) => rating.userId === user.id)}
+        {ratings.some((rating) => rating.userId === user?.id)}
         {user ? (
-          ratings.some((rating) => rating.userId === user.id) ? (
+          ratings.some((rating) => rating.userId === user?.id) ? (
             <div className="pt-10">
               <h3 className="font-oswald text-lg uppercase tracking-widest text-center pb-5">
                 Obrigado por ter avaliado essa receita
@@ -197,7 +259,7 @@ export default function Ratings({ ratings, id }) {
 
       <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
         <h2>Editar Comentário</h2>
-        <form onSubmit={handleNewRating}>
+        <form onSubmit={handleEditRating}>
           <div className="flex gap-1 cursor-pointer text-2xl pb-5">
             <StarsRender rating={userRating} setUserRating={setUserRating} />
           </div>

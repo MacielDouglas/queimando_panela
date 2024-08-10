@@ -14,6 +14,12 @@ export default function Recipe() {
   const [recipe, setRecipe] = useState(null);
   const [category, setCategory] = useState([]);
 
+  const totalRating = recipe?.ratings.reduce(
+    (sum, rating) => sum + rating?.rating,
+    0
+  );
+  const averageRating = totalRating / recipe?.ratings.length;
+
   useEffect(() => {
     const selectedRecipe = recipes.find((recipe) => recipe.slug === slug);
     const selectedCategory = recipes.filter(
@@ -78,9 +84,7 @@ export default function Recipe() {
                   {recipe.category}
                 </p>
               </Link>
-              <div className="flex gap-1">
-                {renderStars(recipe.averageRating)}
-              </div>
+              <div className="flex gap-1">{renderStars(averageRating)}</div>
             </div>
           </motion.div>
         </div>
