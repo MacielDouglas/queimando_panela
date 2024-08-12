@@ -73,7 +73,7 @@ export default function Recipe() {
             <div className="bg-white text-stone-600 px-6 flex gap-4 justify-center font-oswald items-center">
               <Link
                 className="flex gap-2 items-center hover:text-stone-700 bg-white"
-                to={`/recipe/${recipe.category}`}
+                to={`/category/${recipe.category}`}
               >
                 <img
                   className="w-4 h-4"
@@ -187,21 +187,33 @@ export default function Recipe() {
             Escolha uma categoria
           </h3>
           <div className="w-full flex items-center">
-            <Link className="flex flex-wrap justify-center gap-5">
+            <div className="flex flex-wrap justify-center gap-5">
               {Object.values(recipeIcons).map((item) => (
-                <motion.img
+                <Link
+                  to={`/category/${item
+                    .split("/")
+                    .pop()
+                    .replace(/(\.[^/.]+$|%7D)$/, "")}`}
                   key={item}
-                  className={`w-12 h-12 border border-stone-400 p-2 box hover:bg-yellow-500 ${
-                    item === recipeIcons[recipe.category] && "bg-yellow-500"
-                  }`}
-                  whileHover={{ scale: 2 }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ type: "spring", stiffness: 1000, damping: 20 }}
-                  src={item}
-                  alt={`Ícone da categoria ${item}`}
-                />
+                >
+                  <motion.img
+                    key={item}
+                    className={`w-12 h-12 border border-stone-400 p-2 box hover:bg-yellow-500 ${
+                      item === recipeIcons[recipe.category] && "bg-yellow-500"
+                    }`}
+                    whileHover={{ scale: 2 }}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 1000,
+                      damping: 20,
+                    }}
+                    src={item}
+                    alt={`Ícone da categoria ${item}`}
+                  />
+                </Link>
               ))}
-            </Link>
+            </div>
           </div>
           <h3 className="my-10 uppercase font-oswald tracking-widest text-stone-600">
             Outras opções de {recipe.category}

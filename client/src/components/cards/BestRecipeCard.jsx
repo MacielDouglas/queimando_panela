@@ -45,7 +45,7 @@ export default function BestRecipeCard({ recipe }) {
         <div className="bg-white text-stone-600 px-6 flex gap-4 justify-center font-oswald items-center">
           <Link
             className="flex gap-2 items-center hover:text-stone-700 bg-white"
-            to={`recipe/${recipe.category}`}
+            to={`category/${recipe.category}`}
           >
             <img
               className="w-4 h-4"

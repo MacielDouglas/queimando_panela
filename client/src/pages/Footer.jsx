@@ -2,8 +2,34 @@ import { Link } from "react-router-dom";
 import queimando from "../assets/queimando_panela.svg";
 import { BsEnvelope, BsLinkedin, BsGithub, BsTwitterX } from "react-icons/bs";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import Loading from "../helper/Loading";
 
 export default function Footer() {
+  const { recipes, loading } = useSelector((state) => state.recipes);
+  const [bestCategory, setBestCategory] = useState([]);
+
+  useEffect(() => {
+    if (recipes.length > 0) {
+      const categoryCount = recipes
+        .flatMap((recipe) => recipe.category)
+        .reduce((count, cat) => {
+          count[cat] = (count[cat] || 0) + 1;
+          return count;
+        }, {});
+
+      const topCategories = Object.entries(categoryCount)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4)
+        .map(([category]) => category);
+
+      setBestCategory(topCategories);
+    }
+  }, [recipes]);
+
+  if (loading) return <Loading />;
+
   return (
     <footer className="bg-yellow-400 p-10 max-w-full rounded-2xl m-10 flex flex-col lg:flex-row font-noto">
       <div className="lg:flex-1 flex flex-col text-sm gap-4 items-center lg:items-start">
@@ -65,11 +91,19 @@ export default function Footer() {
         <div className="flex justify-between  pl-3 flex-wrap gap-10 lg:gap-0">
           <div className="flex flex-col gap-2">
             <p className="font-semibold">Algumas receitas:</p>
-            <Link className="hover:text-yellow-800">Todas</Link>
-            <Link className="hover:text-yellow-800">Aves</Link>
-            <Link className="hover:text-yellow-800">Carnes</Link>
-            <Link className="hover:text-yellow-800">Massas</Link>
-            <Link className="hover:text-yellow-800">Drinks</Link>
+            <Link className="hover:text-yellow-800" to={"/recipes"}>
+              Todas
+            </Link>
+            {bestCategory.length > 0 &&
+              bestCategory.map((item) => (
+                <Link
+                  to={`/category/${item}`}
+                  key={item}
+                  className="hover:text-yellow-800"
+                >
+                  {item}
+                </Link>
+              ))}
           </div>
           <div className="flex flex-col gap-3">
             <p className="font-semibold">Sobre:</p>
