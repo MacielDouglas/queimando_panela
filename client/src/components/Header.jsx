@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import queimando from "../assets/queimando_panela.svg";
 import menu from "../assets/Menu.svg";
@@ -30,16 +30,22 @@ export default function Header() {
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-
   const renderLink = (to, label) => (
-    <Link to={to} className="hover:text-stone-500">
+    <Link
+      to={to}
+      className="hover:text-stone-500"
+      onClick={() => setIsModalOpen(false)}
+    >
       {label}
     </Link>
   );
 
   const renderNavLink = (to, label) => (
-    <Link to={to} className="hover:underline flex justify-between p-3">
+    <Link
+      to={to}
+      className="hover:underline flex justify-between p-3"
+      onClick={() => setIsModalOpen(false)}
+    >
       {label}
     </Link>
   );
@@ -55,7 +61,7 @@ export default function Header() {
         <button onClick={toggleModal} className="lg:hidden">
           <img
             src={isModalOpen ? close : menu}
-            className="h-6 p-1 "
+            className="h-6 p-1"
             alt="Menu"
           />
         </button>
@@ -74,11 +80,10 @@ export default function Header() {
                 />
               </Link>
               <button onClick={handleReset}>
-                <ImExit className="text-2xl hover:text-black " />
+                <ImExit className="text-2xl hover:text-black" />
               </button>
             </>
           ) : (
-            // <button onClick={() => setShowModalLogin(true)}>LOGIN</button>
             <Link to="/login" className="hidden lg:block hover:text-stone-900">
               <PiUserDuotone className="text-3xl" />
             </Link>
@@ -111,15 +116,15 @@ export default function Header() {
             {renderLink("/recipes", "RECEITAS")}
             {isRecipeModalOpen && (
               <div
-                className="absolute top-full -left-20  w-56 bg-white border border-stone-200 shadow-2xl z-10"
+                className="absolute top-full -left-20 w-56 bg-white border border-stone-200 shadow-2xl z-10"
                 onMouseEnter={showRecipeModal}
                 onMouseLeave={hideRecipeModal}
               >
-                <ul className="flex flex-col ">
+                <ul className="flex flex-col">
                   {recipeCategories.map((category) => (
                     <li
                       key={category}
-                      className="flex items-center  hover:bg-yellow-400 p-2  hover:underline cursor-pointer group"
+                      className="flex items-center hover:bg-yellow-400 p-2 hover:underline cursor-pointer group"
                     >
                       <img
                         src={recipeIcons[category]}
@@ -146,7 +151,7 @@ export default function Header() {
               delay: 0.5,
             }}
             src={queimando}
-            className="w-72 p-2 hover:img-shadow "
+            className="w-72 p-2 hover:img-shadow"
             alt="Logo Receita"
           />
         </Link>
@@ -193,6 +198,7 @@ export default function Header() {
                     <Link
                       to="/dashboard?tab=profile"
                       className="hover:underline flex justify-between"
+                      onClick={() => setIsModalOpen(false)} // Fecha o menu ao clicar
                     >
                       Perfil de {user.name}
                       <img
@@ -210,6 +216,7 @@ export default function Header() {
                   <button
                     // onClick={logOff}
                     className="text-red-500 hover:text-red-700 w-full text-left flex justify-between"
+                    onClick={() => setIsModalOpen(false)} // Fecha o menu ao clicar
                   >
                     Sair
                   </button>

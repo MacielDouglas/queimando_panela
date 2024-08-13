@@ -12,6 +12,7 @@ import Recipe from "./pages/Recipe";
 import Category from "./pages/Category";
 import Recipes from "./pages/Recipes";
 import Search from "./pages/Search";
+import About from "./pages/About";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/admin/dashboard" element={<Dashboard />} />
         </Route>
         <Route path="/search" element={<Search />} />
+        <Route path="/about" element={<About />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
