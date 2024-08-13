@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { ALL_RECIPES } from "../graphql/queries/recipe.query";
 import { useLazyQuery } from "@apollo/client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Loading from "../helper/Loading";
 import { motion } from "framer-motion";
 
@@ -22,7 +22,21 @@ export default function Category() {
     fetchData();
   }, [category, searchCategory]);
 
-  if (loading) return <Loading />;
+  const [showLoading, setShowLoading] = useState(true);
+
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setShowLoading(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setShowLoading(true);
+    }
+  }, [loading]);
+
+  if (showLoading) return <Loading />;
 
   return (
     <div className="flex flex-col gap-8 font-noto p-10 bg-stone-50">

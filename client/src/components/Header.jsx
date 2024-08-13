@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import queimando from "../assets/queimando_panela.svg";
 import menu from "../assets/Menu.svg";
@@ -12,18 +12,25 @@ import Login from "../pages/Login";
 import { PiUserDuotone } from "react-icons/pi";
 import { ImExit } from "react-icons/im";
 import recipeCategories from "../constants/recipeCategories.js";
+import Search from "../pages/Search.jsx";
 
 export default function Header() {
   const user = useSelector((state) => state.auth.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false);
   const [showModalLogin, setShowModalLogin] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const openSearchModal = () => setIsSearchOpen(true);
+  const closeSearchModal = () => setIsSearchOpen(false);
 
   const toggleModal = () => setIsModalOpen((prevState) => !prevState);
   const showRecipeModal = () => setIsRecipeModalOpen(true);
   const hideRecipeModal = () => setIsRecipeModalOpen(false);
 
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const renderLink = (to, label) => (
     <Link to={to} className="hover:text-stone-500">
@@ -76,7 +83,7 @@ export default function Header() {
               <PiUserDuotone className="text-3xl" />
             </Link>
           )}
-          <button onClick={toggleModal}>
+          <button onClick={openSearchModal}>
             <img src={search} className="h-6" alt="Search" />
           </button>
         </div>
@@ -216,6 +223,7 @@ export default function Header() {
         </motion.div>
       )}
       {showModalLogin && <Login setShowModalLogin={setShowModalLogin} />}
+      <Search isOpen={isSearchOpen} onClose={closeSearchModal} />
     </header>
   );
 }

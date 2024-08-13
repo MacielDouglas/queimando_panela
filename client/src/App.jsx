@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Recipe from "./pages/Recipe";
 import Category from "./pages/Category";
 import Recipes from "./pages/Recipes";
+import Search from "./pages/Search";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
         <Route element={<OnlyAdminPrivateRoute />}>
           <Route path="/admin/dashboard" element={<Dashboard />} />
         </Route>
+        <Route path="/search" element={<Search />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

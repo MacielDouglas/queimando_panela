@@ -61,7 +61,7 @@ export default function Footer() {
         >
           <p>
             Junte-se agora ao{" "}
-            <span className="font-semibold">Queimado Panela</span> e embarque
+            <span className="font-semibold">Queimando Panela</span> e embarque
             numa viagem culinária para explorar, criar e saborear receitas
             incríveis
           </p>

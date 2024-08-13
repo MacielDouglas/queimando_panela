@@ -49,7 +49,21 @@ export default function Recipe() {
     );
   };
 
-  if (loading) return <Loading />;
+  const [showLoading, setShowLoading] = useState(true);
+
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setShowLoading(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setShowLoading(true);
+    }
+  }, [loading]);
+
+  if (showLoading) return <Loading />;
   if (!recipe) return <p>Recipe not found</p>;
 
   return (
