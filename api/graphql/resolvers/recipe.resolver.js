@@ -63,25 +63,6 @@ const recipeResolver = {
         throw new Error(`Erro ao buscar as receitas: ${error.message}`);
       }
     },
-
-    // getRecipes: async (_, { slug, input }) => {
-    //   console.log("getRecipes");
-    //   try {
-    //     if (slug) {
-    //       const recipe = await Recipe.findOne({ slug }).exec();
-    //       if (!recipe) {
-    //         throw new Error("Receita não encontrada");
-    //       }
-    //       return [recipe]; // Retorna um array com a receita encontrada
-    //     } else {
-    //       const query = buildQuery(input);
-    //       const recipes = await Recipe.find(query).exec();
-    //       return recipes;
-    //     }
-    //   } catch (error) {
-    //     throw new Error(`Erro ao buscar as receitas: ${error.message}`);
-    //   }
-    // },
   },
 
   Mutation: {

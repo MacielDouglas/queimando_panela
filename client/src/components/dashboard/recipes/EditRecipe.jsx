@@ -11,26 +11,34 @@ import TextAreaField from "../../formularios/TextArealField.jsx";
 
 import SelectField from "../../formularios/SelectField.jsx";
 import { useMutation } from "@apollo/client";
-import { NEW_RECIPE } from "./../../../graphql/mutation/recipe.mutation";
+import { UPDATE_RECIPE } from "./../../../graphql/mutation/recipe.mutation";
 import useToast from "../../../hooks/useToast.js";
+import PropTypes from "prop-types";
 
-export default function NewRecipe() {
+export default function EditRecipe({ recipeSlug }) {
   const user = useSelector((state) => state.auth.user);
-  const [newRecipe, { error }] = useMutation(NEW_RECIPE);
+  const { recipes } = useSelector((state) => state.recipes);
+
+  const recipe = recipes.find((recipe) => recipe.slug === recipeSlug);
+
+  const [updateRecipe, { data, error }] = useMutation(UPDATE_RECIPE);
   const navigate = useNavigate();
 
+  const [newImage, setNewImage] = useState(false);
+
+  console.log(data);
   const { showSuccess, showError } = useToast();
 
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    image: "",
-    ingredients: [],
+    title: recipe.title,
+    content: recipe.content,
+    image: recipe.image,
+    ingredients: recipe.ingredients,
     writer: user.username,
-    difficult: "",
-    description: "",
-    category: "",
-    time: "",
+    difficult: recipe.difficult,
+    description: recipe.description,
+    category: recipe.category,
+    time: recipe.time,
   });
   const [imageFileUrl, setImageFileUrl] = useState(null);
 
@@ -121,29 +129,49 @@ export default function NewRecipe() {
     }
 
     try {
-      await newRecipe({
+      const { data } = await updateRecipe({
         variables: {
-          newRecipe: {
+          updateRecipeId: recipe.id,
+          updateRecipe: {
             title: formData.title,
             content: formData.content,
-            image: imageFileUrl,
+            image: imageFileUrl || recipe.image,
+            category: formData.category,
             ingredients: formData.ingredients,
-            writer: user.username,
             difficult: formData.difficult,
             description: formData.description,
-            category: formData.category,
             time: formData.time,
           },
         },
       });
+      console.log("RESposta da nova Receita", data);
       showSuccess(
-        `Parabéns, foi criada a receita ${formData.title} com sucesso!`
+        `Parabéns, a receita ${formData.title}, foi alterada com sucesso!`
       );
-      navigate("/");
+      navigate(`/recipe/${recipe.slug}`);
     } catch (error) {
       showError(error.message);
+      console.error(error.message);
     }
   };
+
+  const clearForm = () => {
+    setFormData({
+      title: "",
+      content: "",
+      image: "",
+      ingredients: [],
+      writer: user.username,
+      difficult: "",
+      description: "",
+      category: "",
+      time: "",
+    });
+    navigate("/dashboard?tab=myRecipes");
+  };
+
+  console.log(formData.image);
+  console.log(recipe.image);
 
   if (error) return showError(error.message);
   return (
@@ -159,7 +187,7 @@ export default function NewRecipe() {
         }}
         className="font-oswald text-4xl border-b w-full pb-3 border-b-stone-600"
       >
-        Nova Receita
+        Editar Receita
       </motion.h1>
       <motion.div
         initial={{ opacity: 0, x: -100 }}
@@ -251,33 +279,56 @@ export default function NewRecipe() {
           <div className="flex-1 flex flex-col items-center gap-2 ">
             <p className="font-semibold">Imagem</p>
 
-            <ImageFormUpload
-              imageFileUrl={imageFileUrl}
-              setImageFileUrl={setImageFileUrl}
-              handleDeleteImage={handleDeleteImage}
-            />
+            {!newImage ? (
+              <>
+                <div className="flex flex-col items-center gap-5 mb-5">
+                  <img
+                    src={recipe.image}
+                    alt="Imagem da receita"
+                    className="w-64 h-32 object-cover"
+                  />
+                  <button
+                    className="p-2 rounded bg-slate-400"
+                    onClick={() => setNewImage(true)}
+                  >
+                    Quer trocar imagem?
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-col gap-5 mb-5">
+                <ImageFormUpload
+                  imageFileUrl={imageFileUrl}
+                  setImageFileUrl={setImageFileUrl}
+                  handleDeleteImage={handleDeleteImage}
+                />
+                <button
+                  className="p-2 rounded bg-slate-400"
+                  onClick={() => setNewImage(false)}
+                >
+                  Não quero trocar imagem!
+                </button>
+              </div>
+            )}
 
             <button
               type="submit"
               className="p-2 border rounded bg-green-500 text-white"
               // onClick={() => console.log("NovaReceita", formData)}
             >
-              Enviar Receita
+              Salvar Edição de Receita
+            </button>
+
+            <button
+              className="p-2 border rounded bg-red-500 text-white w-44"
+              onClick={() => clearForm()}
+            >
+              Voltar
             </button>
           </div>
         </form>
       </motion.div>
-      {/* <motion.div
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 100,
-          damping: 10,
-          delay: 1,
-        }}
-        className="flex gap-4 uppercase text-xs flex-wrap"
-      ></motion.div> */}
+
       <motion.div
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
@@ -305,3 +356,7 @@ export default function NewRecipe() {
     </section>
   );
 }
+
+EditRecipe.propTypes = {
+  recipeSlug: PropTypes.string,
+};

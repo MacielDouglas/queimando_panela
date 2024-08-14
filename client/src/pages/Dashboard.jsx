@@ -7,6 +7,7 @@ import UpdateProfile from "../components/dashboard/profile/UpdateProfile";
 import NewRecipe from "../components/dashboard/recipes/NewRecipe";
 import MyRecipes from "../components/dashboard/recipes/MyRecipes";
 import SaveRecipes from "../components/dashboard/recipes/SaveRecipes";
+import EditRecipe from "../components/dashboard/recipes/EditRecipe";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -25,12 +26,12 @@ export default function Dashboard() {
   }, [location.search]);
 
   // Função para extrair o ID do post da URL
-  //   const getPostIdFromTab = () => {
-  //     const match = tab.match(/^\/update-post\/(.+)/);
-  //     return match ? match[1] : null;
-  //   };
+  const getUpdateRecipeFromTab = () => {
+    const match = tab.match(/^\/editedRecipe\/(.+)/);
+    return match ? match[1] : null;
+  };
 
-  //   const postSlug = getPostIdFromTab();
+  const recipeSlug = getUpdateRecipeFromTab();
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-stone-200">
@@ -40,6 +41,8 @@ export default function Dashboard() {
       {tab === "newRecipe" && <NewRecipe />}
       {tab === "saveRecipe" && <SaveRecipes />}
       {tab === "myRecipes" && <MyRecipes />}
+      {tab === "editedRecipe/:slug" && <EditRecipe />}
+      {recipeSlug && <EditRecipe recipeSlug={recipeSlug} />}
       {/* {tab === "posts" && <DashPosts />} */}
       {/* {tab === "newPost" && <CreatePost />} */}
       {/* {postSlug && <UpdatePost postSlug={postSlug} />} */}

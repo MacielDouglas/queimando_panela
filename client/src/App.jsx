@@ -13,6 +13,7 @@ import Category from "./pages/Category";
 import Recipes from "./pages/Recipes";
 import Search from "./pages/Search";
 import About from "./pages/About";
+import EditRecipe from "./components/dashboard/recipes/EditRecipe";
 
 export default function App() {
   return (
@@ -33,6 +34,10 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/dashboard?tab=/editedRecipe/:recipeSlug"
+            element={<EditRecipe />}
+          />
         </Route>
       </Routes>
       <Footer />

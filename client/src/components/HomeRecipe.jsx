@@ -12,7 +12,7 @@ export default function HomeRecipe() {
     dispatch(fetchRecipes());
   }, [dispatch]);
 
-  if (loading || error || !recipes || recipes.length === 0) return <Loading />;
+  // if (loading || error || !recipes || recipes.length === 0) return <Loading />;
 
   const gridClasses = [
     "bg-pattern lg:col-span-2 ",
