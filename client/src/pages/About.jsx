@@ -1,3 +1,5 @@
+import maciel from "../assets/maciel_d.png";
+
 export default function About() {
   return (
     <section className="py-10 bg-gray-300">

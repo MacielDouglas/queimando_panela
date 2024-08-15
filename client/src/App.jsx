@@ -14,6 +14,7 @@ import Recipes from "./pages/Recipes";
 import Search from "./pages/Search";
 import About from "./pages/About";
 import EditRecipe from "./components/dashboard/recipes/EditRecipe";
+import Contact from "./pages/Contact";
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
         </Route>
         <Route path="/search" element={<Search />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route
