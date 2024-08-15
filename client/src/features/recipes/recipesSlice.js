@@ -20,6 +20,36 @@ const recipesSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    addRecipe: (state, action) => {
+      state.recipes.push(action.payload);
+    },
+    recipeUpdate: (state, action) => {
+      const { updateRecipeId, updatedRecipe } = action.payload;
+
+      if (!state.recipes) {
+        console.error("State.recipes está undefined.");
+        return;
+      }
+
+      const index = state.recipes.findIndex(
+        (recipe) => recipe.id === updateRecipeId
+      );
+
+      if (index === -1) {
+        console.error("Receita não encontrada para atualização.");
+        return;
+      }
+
+      state.recipes[index] = {
+        ...state.recipes[index], // Manter outros atributos inalterados
+        ...updatedRecipe, // Substituir os campos fornecidos
+      };
+    },
+
+    deleteRecipe: (state, action) => {
+      const id = action.payload;
+      state.recipes = state.recipes.filter((recipe) => recipe.id !== id);
+    },
     addRating: (state, action) => {
       const { recipeId, newRating } = action.payload;
       const recipe = state.recipes.find((recipe) => recipe.id === recipeId);
@@ -59,6 +89,9 @@ export const {
   fetchRecipesStart,
   fetchRecipesSuccess,
   fetchRecipesFailure,
+  addRecipe,
+  recipeUpdate,
+  deleteRecipe,
   addRating,
   deleteRatingSuccess,
   deleteRatingFailure,

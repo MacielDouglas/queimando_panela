@@ -18,12 +18,13 @@ export default function Recipe() {
     (sum, rating) => sum + rating?.rating,
     0
   );
+
   const averageRating = totalRating / recipe?.ratings.length;
 
   useEffect(() => {
     const selectedRecipe = recipes.find((recipe) => recipe.slug === slug);
     const selectedCategory = recipes.filter(
-      (item) => item.category === selectedRecipe.category
+      (item) => item.category === selectedRecipe?.category
     );
     setRecipe(selectedRecipe);
     setCategory(selectedCategory);

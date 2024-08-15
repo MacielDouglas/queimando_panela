@@ -31,7 +31,7 @@ export default function Dashboard() {
     return match ? match[1] : null;
   };
 
-  const recipeSlug = getUpdateRecipeFromTab();
+  const id = getUpdateRecipeFromTab();
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-stone-200">
@@ -42,7 +42,7 @@ export default function Dashboard() {
       {tab === "saveRecipe" && <SaveRecipes />}
       {tab === "myRecipes" && <MyRecipes />}
       {tab === "editedRecipe/:slug" && <EditRecipe />}
-      {recipeSlug && <EditRecipe recipeSlug={recipeSlug} />}
+      {id && <EditRecipe id={id} />}
       {/* {tab === "posts" && <DashPosts />} */}
       {/* {tab === "newPost" && <CreatePost />} */}
       {/* {postSlug && <UpdatePost postSlug={postSlug} />} */}

@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../../helper/Loading";
 import { useState } from "react";
 import Modal from "../../modal/Modal";
-import { useMutation } from "@apollo/client";
-import { DELETE_RECIPE } from "../../../graphql/mutation/recipe.mutation";
 import useToast from "../../../hooks/useToast";
+import { removeRecipe } from "../../../features/recipes/recipesThunck";
 
 export default function MyRecipes() {
   const user = useSelector((state) => state.auth.user);
@@ -14,19 +13,10 @@ export default function MyRecipes() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
-  const { showSuccess, showError } = useToast();
+  const { showSuccess } = useToast();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
-
-  const [deleteRecipe] = useMutation(DELETE_RECIPE, {
-    onCompleted: async (data) => {
-      if (data) await showSuccess("Receita excluída com sucesso!");
-    },
-
-    onError: (error) => {
-      showError(error.message);
-    },
-  });
 
   const myRecipes = recipes.filter((recipe) => recipe.userId === user.id);
 
@@ -43,12 +33,9 @@ export default function MyRecipes() {
           <button
             className="bg-red-500 text-white px-4 py-2 rounded"
             onClick={() => {
-              deleteRecipe({
-                variables: { recipeId: recipeId },
-              });
-              // Função para deletar receita
-              console.log(`Deletando receita ${recipeId}`);
+              dispatch(removeRecipe(recipeId));
               setIsModalOpen(false);
+              showSuccess(`A receita ${recipeName}, foi excluída com sucesso!`);
             }}
           >
             Deletar
@@ -139,7 +126,7 @@ export default function MyRecipes() {
                   <button
                     className="border py-1 px-3 rounded-md text-blue-600 hover:text-white hover:bg-blue-500 "
                     onClick={() =>
-                      navigate(`/dashboard?tab=/editedRecipe/${recipe.slug}`)
+                      navigate(`/dashboard?tab=/editedRecipe/${recipe.id}`)
                     }
                   >
                     Editar

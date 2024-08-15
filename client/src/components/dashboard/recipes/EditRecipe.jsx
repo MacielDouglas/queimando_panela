@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import recipeCategories from "../../../constants/recipeCategories.js";
 import recipeDifficulty from "../../../constants/recipeDifficulty.js";
 import ImageFormUpload from "../../formularios/ImageFormUpload.jsx";
@@ -10,35 +10,31 @@ import { getStorage, ref, deleteObject } from "firebase/storage";
 import TextAreaField from "../../formularios/TextArealField.jsx";
 
 import SelectField from "../../formularios/SelectField.jsx";
-import { useMutation } from "@apollo/client";
-import { UPDATE_RECIPE } from "./../../../graphql/mutation/recipe.mutation";
 import useToast from "../../../hooks/useToast.js";
 import PropTypes from "prop-types";
+import { editRecipe } from "../../../features/recipes/recipesThunck.js";
 
-export default function EditRecipe({ recipeSlug }) {
+export default function EditRecipe({ id }) {
   const user = useSelector((state) => state.auth.user);
   const { recipes } = useSelector((state) => state.recipes);
+  const recipe = recipes.find((recipe) => recipe.id === id);
 
-  const recipe = recipes.find((recipe) => recipe.slug === recipeSlug);
-
-  const [updateRecipe, { data, error }] = useMutation(UPDATE_RECIPE);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [newImage, setNewImage] = useState(false);
-
-  console.log(data);
   const { showSuccess, showError } = useToast();
 
   const [formData, setFormData] = useState({
-    title: recipe.title,
+    category: recipe.category,
     content: recipe.content,
+    description: recipe.description,
+    difficult: recipe.difficult,
     image: recipe.image,
     ingredients: recipe.ingredients,
-    writer: user.username,
-    difficult: recipe.difficult,
-    description: recipe.description,
-    category: recipe.category,
+    ratings: recipe.ratings,
     time: recipe.time,
+    title: recipe.title,
+    writer: user.username,
   });
   const [imageFileUrl, setImageFileUrl] = useState(null);
 
@@ -129,26 +125,24 @@ export default function EditRecipe({ recipeSlug }) {
     }
 
     try {
-      const { data } = await updateRecipe({
-        variables: {
-          updateRecipeId: recipe.id,
-          updateRecipe: {
-            title: formData.title,
-            content: formData.content,
-            image: imageFileUrl || recipe.image,
-            category: formData.category,
-            ingredients: formData.ingredients,
-            difficult: formData.difficult,
-            description: formData.description,
-            time: formData.time,
-          },
-        },
-      });
-      console.log("RESposta da nova Receita", data);
+      const updateRecipeId = recipe.id;
+      const updateRecipe = {
+        title: formData.title,
+        content: formData.content,
+        image: imageFileUrl || recipe.image,
+        category: formData.category,
+        ingredients: formData.ingredients,
+        difficult: formData.difficult,
+        description: formData.description,
+        time: formData.time,
+      };
+
+      const data = await dispatch(editRecipe(updateRecipeId, updateRecipe));
+
       showSuccess(
-        `Parabéns, a receita ${formData.title}, foi alterada com sucesso!`
+        `Parabéns, a receita ${data.updateRecipe.title}, foi alterada com sucesso!`
       );
-      navigate(`/recipe/${recipe.slug}`);
+      navigate("/dashboard?tab=myRecipes");
     } catch (error) {
       showError(error.message);
       console.error(error.message);
@@ -170,10 +164,6 @@ export default function EditRecipe({ recipeSlug }) {
     navigate("/dashboard?tab=myRecipes");
   };
 
-  console.log(formData.image);
-  console.log(recipe.image);
-
-  if (error) return showError(error.message);
   return (
     <section className="flex flex-col w-full items-start font-noto px-4 sm:px-8 md:px-20 lg:px-40 xl:px-52 py-8 bg-stone-100 gap-10">
       <motion.h1
@@ -314,7 +304,6 @@ export default function EditRecipe({ recipeSlug }) {
             <button
               type="submit"
               className="p-2 border rounded bg-green-500 text-white"
-              // onClick={() => console.log("NovaReceita", formData)}
             >
               Salvar Edição de Receita
             </button>
@@ -358,5 +347,5 @@ export default function EditRecipe({ recipeSlug }) {
 }
 
 EditRecipe.propTypes = {
-  recipeSlug: PropTypes.string,
+  id: PropTypes.string,
 };

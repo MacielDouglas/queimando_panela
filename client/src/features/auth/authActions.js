@@ -29,7 +29,6 @@ export const loginUser = createAsyncThunk(
       thunkAPI.dispatch(setUser(userData));
       showSuccess(`Seja bem vindo, ${userData.name}!`);
 
-      console.log("DATA_authActions:", data);
       return userData;
     } catch (error) {
       // Log and return a more descriptive error message

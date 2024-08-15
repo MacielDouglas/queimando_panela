@@ -3,16 +3,24 @@ import { gql } from "@apollo/client";
 export const NEW_RECIPE = gql`
   mutation newRecipe($newRecipe: NewRecipeInput!) {
     createRecipe(newRecipe: $newRecipe) {
-      title
-      description
-      difficult
       category
       content
+      description
+      difficult
+      id
       image
       ingredients
-      writer
-      userId
+      slug
+      title
       time
+      userId
+      writer
+      ratings {
+        rating
+        comment
+        userId
+      }
+      createdAt
     }
   }
 `;

@@ -35,7 +35,7 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route
-            path="/dashboard?tab=/editedRecipe/:recipeSlug"
+            path="/dashboard?tab=/editedRecipe/:id"
             element={<EditRecipe />}
           />
         </Route>

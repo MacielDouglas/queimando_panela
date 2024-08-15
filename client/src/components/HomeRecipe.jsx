@@ -27,7 +27,7 @@ export default function HomeRecipe() {
     <div className="w-full md:h-[800px] flex flex-col md:grid lg:grid-cols-3 md:grid-cols-2 grid-rows-2 text-white">
       {latestRecipes.map((recipe, index) => (
         <RecipeCard
-          key={recipe.slug}
+          key={recipe.id}
           recipe={recipe}
           extraClasses={gridClasses[index]}
         />
