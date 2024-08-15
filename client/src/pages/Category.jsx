@@ -54,6 +54,9 @@ export default function Category() {
         {category}
       </motion.h1>
       <div className="bg-white p-5 drop-shadow-lg">
+        <p className="my-4 text-xl font-medium">
+          Encontrado: {data?.getRecipes.length} receitas
+        </p>
         <motion.ul
           className="grid gap-10 grid-cols-2 md:grid-cols-3"
           initial={{ opacity: 0, y: 100 }}

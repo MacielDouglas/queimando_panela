@@ -9,10 +9,12 @@ export default function HomeRecipe() {
   const { recipes, loading, error } = useSelector((state) => state.recipes);
 
   useEffect(() => {
+    // Força o dispatch sempre que o componente monta
     dispatch(fetchRecipes());
-  }, [dispatch]);
+  }, [dispatch, recipes]);
 
-  // if (loading || error || !recipes || recipes.length === 0) return <Loading />;
+  // Tratamento de loading e erros
+  if (loading || error || !recipes || recipes.length === 0) return <Loading />;
 
   const gridClasses = [
     "bg-pattern lg:col-span-2 ",
