@@ -148,7 +148,7 @@ export default function BestRecipe() {
           </Link>
         </motion.article>
         <motion.article
-          className="flex flex-col gap-10 text-noto font-semibold pb-10 border-b border-b-slate-500 group"
+          className="flex-col gap-10 text-noto font-semibold pb-10 border-b border-b-slate-500 group"
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{
@@ -161,7 +161,7 @@ export default function BestRecipe() {
           <h1 className="text-2xl">Gosta de tecnologia?</h1>
           <Link
             className=""
-            to="https://macield.vercel.app/"
+            to="https://devlabblog.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -176,7 +176,7 @@ export default function BestRecipe() {
           </Link>
         </motion.article>
         <motion.article
-          className="flex flex-col gap-10 text-noto font-semibold pb-10 border-b border-b-slate-500 group"
+          className="hidden md:flex flex-col gap-10 text-noto font-semibold pb-10 border-b border-b-slate-500 group"
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{
@@ -204,7 +204,7 @@ export default function BestRecipe() {
           </Link>
         </motion.article>
         <motion.article
-          className="flex flex-col gap-10 text-noto font-semibold pb-10 border-b border-b-slate-500 group"
+          className="hidden md:flex flex-col gap-10 text-noto font-semibold pb-10 border-b border-b-slate-500 group"
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{

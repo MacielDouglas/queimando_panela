@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { useMutation } from "@apollo/client";
 import { NEW_USER } from "./../graphql/mutation/user.mutation";
 import useToast from "../hooks/useToast";
+import OAuth from "../components/OAuth";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -242,7 +243,19 @@ const LoginSection = ({
         {loading ? "Loading..." : "Entrar"}
       </button>
     </motion.form>
-    <motion.button
+    <motion.div
+      initial={{ opacity: 0, x: -300 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{
+        type: "spring",
+        stiffness: 100,
+        damping: 10,
+        delay: 1,
+      }}
+    >
+      <OAuth />
+    </motion.div>
+    {/* <motion.button
       type="button"
       className="w-56 bg-red-700 text-white rounded-md py-2 px-4 hover:bg-red-600 focus:outline-none focus:bg-red-500 disabled:bg-red-500 mt-4"
       disabled={loading}
@@ -256,7 +269,7 @@ const LoginSection = ({
       }}
     >
       {loading ? "Loading..." : "Entrar com Google"}
-    </motion.button>
+    </motion.button> */}
     <motion.div
       className="mt-10"
       initial={{ opacity: 0, y: 100 }}
@@ -391,9 +404,7 @@ const SignupSection = ({
         {loading ? "Cadastrando..." : "Cadastre-se"}
       </button>
     </motion.form>
-    <motion.button
-      type="button"
-      className="w-56 bg-red-700 text-white rounded-md py-2 px-4 hover:bg-red-600 focus:outline-none focus:bg-red-500 disabled:bg-red-500 mt-4"
+    <motion.div
       initial={{ opacity: 0, x: -300 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{
@@ -403,8 +414,8 @@ const SignupSection = ({
         delay: 1,
       }}
     >
-      Entrar com Google
-    </motion.button>
+      <OAuth />
+    </motion.div>
     <motion.div
       className="mt-10"
       initial={{ opacity: 0, y: 100 }}

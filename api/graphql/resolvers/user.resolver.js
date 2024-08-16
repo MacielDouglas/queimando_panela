@@ -1,5 +1,6 @@
 import User from "../../models/user.models.js";
 import bcrypt from "bcryptjs";
+// import { jwt } from "jsonwebtoken";
 import {
   createToken,
   setTokenCookie,
@@ -146,6 +147,39 @@ const userResolver = {
       } catch (error) {
         console.error(`Erro ao atualizar usuário: ${error.message}`);
         throw new Error(`Erro ao atualizar usuário: ${error.message}`);
+      }
+    },
+
+    loginGoogle: async (_, { user }, { res }) => {
+      const { email, displayName, profilePicture } = user;
+
+      try {
+        const existEmail = await User.findOne({ email: email });
+
+        if (!existEmail) {
+          const generatePassword =
+            Math.random().toString(36).slice(-8) +
+            Math.random().toString(36).slice(-8);
+
+          const hashedPassword = bcrypt.hashSync(generatePassword, 10);
+
+          const newUser = new User({
+            username:
+              displayName.toLowerCase().split(" ").join(".") +
+              Math.random().toString(9).slice(-4),
+            email,
+            name: displayName,
+            password: hashedPassword,
+            profilePicture: profilePicture,
+          });
+          await newUser.save();
+        }
+        const user = await User.findOne({ email: email });
+        const token = createToken(user);
+        setTokenCookie(res, token);
+        return sanitizeUser(user);
+      } catch (error) {
+        throw new Error(`Erro ao fazer login com Google: ${error.message}`);
       }
     },
   },

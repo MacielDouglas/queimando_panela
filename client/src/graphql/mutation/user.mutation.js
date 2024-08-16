@@ -17,3 +17,15 @@ export const UPDATE_USER = gql`
     }
   }
 `;
+
+export const LOGIN_GOOGLE = gql`
+  mutation userGoogle($user: UserGoogle!) {
+    loginGoogle(user: $user) {
+      isAdmin
+      profilePicture
+      username
+      name
+      id
+    }
+  }
+`;

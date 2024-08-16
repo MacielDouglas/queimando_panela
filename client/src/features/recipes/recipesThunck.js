@@ -15,14 +15,13 @@ import {
 } from "../../graphql/mutation/recipe.mutation";
 
 export const fetchRecipes = () => async (dispatch) => {
-  console.log("Chamou...");
   dispatch(fetchRecipesStart());
   try {
     const { data } = await client.query({
       query: ALL_RECIPES,
       variables: { input: {} }, // Passa um objeto vazio como input
     });
-    console.log(data);
+
     dispatch(fetchRecipesSuccess(data.getRecipes));
   } catch (error) {
     dispatch(fetchRecipesFailure(error.message));

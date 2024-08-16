@@ -34,6 +34,7 @@ type Mutation {
     createUser(user: NewUserInput!): User
     deleteUser(id: ID!): DeleteUserResponse
     updateUser(id: ID!, updateUserInput: UpdateUserInput!): UpdateUserResponse!
+    loginGoogle(user: UserGoogle!): LoginResponse!
 }
 
 input NewUserInput {
@@ -65,6 +66,14 @@ type UpdateUserResponse {
     profilePicture: String
     isAdmin: Boolean
     name: String
+}
+
+input UserGoogle {
+  displayName: String!
+  email: String!
+  profilePicture: String!
+  name: String
+
 }
 `;
 
