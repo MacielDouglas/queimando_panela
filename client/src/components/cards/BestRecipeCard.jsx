@@ -27,7 +27,7 @@ export default function BestRecipeCard({ recipe }) {
 
   return (
     <div className=" lg:w-full bg-white flex flex-col font-noto p-10 gap-5 text-stone-900 shadow-lg">
-      <h1 className="font-oswald text-2xl lg:text-[40px] font-bold">
+      <h1 className="font-oswald text-2xl lg:text-[40px] font-bold ">
         {recipe.title}
       </h1>
 

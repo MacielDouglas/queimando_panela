@@ -71,7 +71,7 @@ export default function Recipe() {
     <div className="py-36 px-6 font-noto flex flex-col bg-stone-200 md:grid md:grid-cols-3">
       <div className="col-span-2 ">
         <div className="flex flex-col gap-6 bg-white p-6">
-          <h1 className="font-oswald text-2xl lg:text-[40px] font-bold text-center mt-6 uppercase">
+          <h1 className="font-oswald text-2xl lg:text-[40px] font-bold text-center mt-6 uppercase text leading-10">
             {recipe.title}
           </h1>
           <motion.div

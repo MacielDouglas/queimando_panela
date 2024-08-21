@@ -13,13 +13,24 @@ import SelectField from "../../formularios/SelectField.jsx";
 import { useMutation } from "@apollo/client";
 import { NEW_RECIPE } from "./../../../graphql/mutation/recipe.mutation";
 import useToast from "../../../hooks/useToast.js";
-import { createRecipe } from "../../../features/recipes/recipesThunck.js";
+import { addRecipe } from "../../../features/recipes/recipesSlice.js";
 
 export default function NewRecipe() {
-  const user = useSelector((state) => state.auth.user);
-  // const [newRecipe, { error }] = useMutation(NEW_RECIPE);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const user = useSelector((state) => state.auth.user);
+  const [newRecipe, { loading, error }] = useMutation(NEW_RECIPE, {
+    onCompleted: async (data) => {
+      console.log("ENVIO: ", data);
+      dispatch(addRecipe(data.createRecipe));
+      navigate(`/recipe/${data.createRecipe.slug}`);
+    },
+
+    onError: (error) => {
+      showError(error.message);
+    },
+  });
 
   const { showSuccess, showError } = useToast();
 
@@ -123,19 +134,7 @@ export default function NewRecipe() {
     }
 
     try {
-      const newRecipe = {
-        title: formData.title,
-        content: formData.content,
-        image: imageFileUrl,
-        ingredients: formData.ingredients,
-        writer: user.username,
-        difficult: formData.difficult,
-        description: formData.description,
-        category: formData.category,
-        time: formData.time,
-      };
-
-      const slug = await dispatch(createRecipe(newRecipe));
+      await newRecipe({ variables: { newRecipe: formData } });
 
       showSuccess(
         `Parabéns, foi criada a receita ${newRecipe.title} com sucesso!`
@@ -152,15 +151,12 @@ export default function NewRecipe() {
         category: "",
         time: "",
       });
-
-      console.log("Slug", slug);
-      navigate(`/recipe/${slug}`);
     } catch (error) {
       showError(error.message);
     }
   };
 
-  // if (error) return showError(error.message);
+  if (error) return showError(error.message);
   return (
     <section className="flex flex-col w-full items-start font-noto px-4 sm:px-8 md:px-20 lg:px-40 xl:px-52 py-8 bg-stone-100 gap-10">
       <motion.h1
