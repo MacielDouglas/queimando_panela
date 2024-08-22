@@ -153,6 +153,8 @@ export default function Ratings({ ratings, id }) {
 
   if (loading) return <Loading />;
 
+  console.log(typeof ratings);
+
   return (
     <div className="bg-slate-400 -mx-14 -mb-20 font-noto p-10 z-30 relative">
       <h1 className="font-oswald text-xl uppercase tracking-widest text-center pb-5">

@@ -21,6 +21,22 @@ export const NEW_RECIPE = gql`
         userId
       }
       createdAt
+      cobertura {
+        content
+        ingredients
+      }
+      calda {
+        content
+        ingredients
+      }
+      massa {
+        content
+        ingredients
+      }
+      recheio {
+        content
+        ingredients
+      }
     }
   }
 `;
@@ -31,17 +47,33 @@ export const UPDATE_RECIPE = gql`
     $updateRecipe: UpdateRecipeInput!
   ) {
     updateRecipe(id: $updateRecipeId, updateRecipe: $updateRecipe) {
-      success
-      message
       title
-      slug
-      category
-      content
       description
-      difficult
+      content
       image
       ingredients
+      slug
+      difficult
+      category
       time
+      success
+      message
+      calda {
+        content
+        ingredients
+      }
+      cobertura {
+        ingredients
+        content
+      }
+      massa {
+        content
+        ingredients
+      }
+      recheio {
+        content
+        ingredients
+      }
     }
   }
 `;

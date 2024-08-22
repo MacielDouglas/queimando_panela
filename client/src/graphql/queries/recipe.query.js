@@ -20,6 +20,22 @@ export const ALL_RECIPES = gql`
         comment
         userId
       }
+      cobertura {
+        content
+        ingredients
+      }
+      calda {
+        content
+        ingredients
+      }
+      massa {
+        content
+        ingredients
+      }
+      recheio {
+        content
+        ingredients
+      }
       createdAt
     }
   }
