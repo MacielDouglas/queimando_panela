@@ -10,6 +10,7 @@ import Ratings from "../components/Ratings";
 import { useMutation } from "@apollo/client";
 import { ADD_FAVORITE } from "../graphql/mutation/user.mutation";
 import useToast from "../hooks/useToast";
+import recipeCategories from "../constants/recipeCategories";
 
 export default function Recipe() {
   const { recipes, loading } = useSelector((state) => state.recipes);
@@ -327,21 +328,13 @@ function CategorySidebar({ recipeCategory, category }) {
           Escolha uma categoria
         </h3>
         <div className="w-full flex items-center">
-          <div className="flex flex-wrap justify-center gap-5">
-            {Object.values(recipeIcons).map((item) => {
-              // Extrai o nome da categoria corretamente
-              const categoryName = item
-                .split("/")
-                .pop()
-                .replace(/(\.[^/.]+$|%7D.*$)/, ""); // Remove a extensão do arquivo e qualquer coisa após '%7D'
-
-              return (
-                <Link to={`/category/${encodeURI(categoryName)}`} key={item}>
+          <ul className="flex flex-wrap justify-center gap-5">
+            {recipeCategories.map((category) => (
+              <li key={category}>
+                <Link to={`/category/${category}`}>
                   <motion.img
                     className={`w-12 h-12 border border-stone-400 p-2 box hover:bg-yellow-500 ${
-                      item === recipeIcons[recipeCategory]
-                        ? "bg-yellow-500"
-                        : ""
+                      category === recipeCategory ? "bg-yellow-500" : ""
                     }`}
                     whileHover={{ scale: 1.2 }} // Escala ajustada para uma transição mais suave
                     whileTap={{ scale: 0.9 }}
@@ -350,13 +343,13 @@ function CategorySidebar({ recipeCategory, category }) {
                       stiffness: 1000,
                       damping: 20,
                     }}
-                    src={item}
-                    alt={`Ícone da categoria ${categoryName}`}
+                    src={recipeIcons[category]}
+                    alt={`Ícone da categoria ${category}`}
                   />
                 </Link>
-              );
-            })}
-          </div>
+              </li>
+            ))}
+          </ul>
         </div>
         <h3 className="my-10 uppercase font-oswald tracking-widest text-stone-600">
           Outras opções de {recipeCategory}
