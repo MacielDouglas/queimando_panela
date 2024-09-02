@@ -336,7 +336,7 @@ function CategorySidebar({ recipeCategory, category }) {
                 .replace(/(\.[^/.]+$|%7D.*$)/, ""); // Remove a extensão do arquivo e qualquer coisa após '%7D'
 
               return (
-                <Link to={`/category/${categoryName}`} key={item}>
+                <Link to={`/category/${encodeURI(categoryName)}`} key={item}>
                   <motion.img
                     className={`w-12 h-12 border border-stone-400 p-2 box hover:bg-yellow-500 ${
                       item === recipeIcons[recipeCategory]
