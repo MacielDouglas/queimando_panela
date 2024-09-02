@@ -8,6 +8,11 @@ type User {
     profilePicture: String!
     isAdmin: Boolean!
     name: String!
+    mySavedRecipes: [String]
+}
+
+type SavedRecipe {
+    recipeId: ID!
 }
 
 type Query {
@@ -23,6 +28,7 @@ type LoginResponse {
     profilePicture: String!
     isAdmin: Boolean!
     name: String!
+    mySavedRecipes: [String]
 }
 
 type LogoutResponse {
@@ -35,6 +41,7 @@ type Mutation {
     deleteUser(id: ID!): DeleteUserResponse
     updateUser(id: ID!, updateUserInput: UpdateUserInput!): UpdateUserResponse!
     loginGoogle(user: UserGoogle!): LoginResponse!
+    myRecipesSave(savedRecipe: [NewSavedRecipeInput]!): MyRecipeResponse
 }
 
 input NewUserInput {
@@ -46,7 +53,14 @@ input NewUserInput {
     name: String!
 }
 
+
+
 type DeleteUserResponse {
+    success: Boolean!
+    message: String!
+}
+
+type MyRecipeResponse {
     success: Boolean!
     message: String!
 }
@@ -74,6 +88,10 @@ input UserGoogle {
   profilePicture: String!
   name: String
 
+}
+
+input NewSavedRecipeInput {
+    recipeId: String!
 }
 `;
 

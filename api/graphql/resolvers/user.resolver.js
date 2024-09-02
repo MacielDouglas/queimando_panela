@@ -9,12 +9,14 @@ import {
   verifyAuthorization,
   existing,
 } from "../../utils/utils.js";
+import Recipe from "../../models/recipe.models.js";
 
 const userResolver = {
   Query: {
     getUser: async (_, { id }) => {
       try {
         const user = await existing(id, "usuario");
+        console.log(sanitizeUser(user));
         return sanitizeUser(user);
       } catch (error) {
         throw new Error(`Erro ao buscar usuário: ${error.message}`);
@@ -180,6 +182,53 @@ const userResolver = {
         return sanitizeUser(user);
       } catch (error) {
         throw new Error(`Erro ao fazer login com Google: ${error.message}`);
+      }
+    },
+
+    myRecipesSave: async (_, { savedRecipe }, { req }) => {
+      try {
+        const decodedToken = verifyAuthorization(req);
+        if (!decodedToken) {
+          throw new Error(
+            "Você não tem permissão para adicionar uma receita para esse usuário."
+          );
+        }
+
+        const { recipeId } = savedRecipe[0];
+
+        const recipe = await Recipe.findById(recipeId);
+        if (!recipe) {
+          throw new Error("Receita não encontrada");
+        }
+
+        const user = await User.findById(decodedToken.userId);
+
+        let result = "";
+
+        // Verifica se a receita já está nos favoritos
+        const existingFavoriteRecipeIndex = user.mySavedRecipes.findIndex(
+          (savedRecipeId) => savedRecipeId === recipeId
+        );
+
+        if (existingFavoriteRecipeIndex > -1) {
+          user.mySavedRecipes.splice(existingFavoriteRecipeIndex, 1);
+          result = "removido";
+        } else {
+          user.mySavedRecipes.push(recipeId);
+          result = "adicionada";
+        }
+
+        await user.save();
+        console.log("DEpois de salvo, ", user);
+
+        return {
+          success: true,
+          message: `A receita foi ${result} com sucesso.`,
+        };
+      } catch (error) {
+        throw new Error(
+          `Erro ao adicionar/remover receita favorita: ${error.message}`
+        );
       }
     },
   },

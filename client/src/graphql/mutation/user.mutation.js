@@ -26,6 +26,16 @@ export const LOGIN_GOOGLE = gql`
       username
       name
       id
+      mySavedRecipes
+    }
+  }
+`;
+
+export const ADD_FAVORITE = gql`
+  mutation saveRecipe($savedRecipe: [NewSavedRecipeInput]!) {
+    myRecipesSave(savedRecipe: $savedRecipe) {
+      success
+      message
     }
   }
 `;

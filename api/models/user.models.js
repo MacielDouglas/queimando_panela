@@ -26,6 +26,7 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    mySavedRecipes: { type: [String] },
   },
 
   { timestamps: true }
@@ -34,3 +35,10 @@ const userSchema = new Schema(
 const User = model("User", userSchema);
 
 export default User;
+
+// const savedRecipesSchema = new Schema({
+//   recipeId: {
+//     type: String,
+//     required: true,
+//   },
+// });

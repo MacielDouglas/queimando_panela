@@ -5,7 +5,12 @@ import Recipe from "../models/recipe.models.js";
 
 export const createToken = (user) => {
   return jwt.sign(
-    { userId: user._id, isAdmin: user.isAdmin, username: user.username },
+    {
+      userId: user._id,
+      isAdmin: user.isAdmin,
+      username: user.username,
+      mySavedRecipes: user.mySavedRecipes,
+    },
     process.env.JWT_SECRET,
     { expiresIn: "1h" }
   );
@@ -42,8 +47,15 @@ export const setTokenCookie = (res, token) => {
 };
 
 export const sanitizeUser = (user) => {
-  const { _id, isAdmin, username, profilePicture, name } = user;
-  return { id: _id, isAdmin, username, profilePicture, name };
+  const { _id, isAdmin, username, profilePicture, name, mySavedRecipes } = user;
+  return {
+    id: _id,
+    isAdmin,
+    username,
+    profilePicture,
+    name,
+    mySavedRecipes,
+  };
 };
 
 export const validateUserCredentials = async (email, password) => {

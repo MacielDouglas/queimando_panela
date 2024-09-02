@@ -7,13 +7,27 @@ import recipeIcons from "../assets/recipes/icons";
 import Loading from "../helper/Loading";
 import RecipeCard from "../components/cards/RecipeCard";
 import Ratings from "../components/Ratings";
+import { useMutation } from "@apollo/client";
+import { ADD_FAVORITE } from "../graphql/mutation/user.mutation";
+import useToast from "../hooks/useToast";
 
 export default function Recipe() {
   const { recipes, loading } = useSelector((state) => state.recipes);
+  const user = useSelector((state) => state.auth.user);
   const { slug } = useParams();
+  const { showSuccess, showError } = useToast();
   const [recipe, setRecipe] = useState(null);
   const [category, setCategory] = useState([]);
   const [optionalItens, setOptionalItens] = useState([]);
+  const [savedRecipe] = useMutation(ADD_FAVORITE, {
+    onCompleted: async (data) => {
+      showSuccess(data.myRecipesSave.message);
+    },
+
+    onError: (error) => {
+      showError(error.message);
+    },
+  });
 
   useEffect(() => {
     const selectedRecipe = recipes.find((recipe) => recipe.slug === slug);
@@ -90,12 +104,40 @@ export default function Recipe() {
     ingredients,
     content,
     ratings,
+    id,
   } = recipe;
+
+  // console.log(recipe);
+
+  const handleAddRecipe = async (id) => {
+    try {
+      await savedRecipe({
+        variables: {
+          savedRecipe: {
+            recipeId: id,
+          },
+        },
+      });
+    } catch (error) {
+      showError(error.message);
+      console.error(error.message);
+    }
+  };
+
+  console.log(user);
 
   return (
     <div className="py-36 px-6 font-noto flex flex-col bg-stone-200 md:grid md:grid-cols-3">
       <div className="col-span-2">
         <div className="flex flex-col gap-6 bg-white p-6">
+          {user && (
+            <button
+              onClick={() => handleAddRecipe(id)}
+              className="self-end -mb-10 p-2 bg-yellow-300 text-xs hover:bg-yellow-500"
+            >
+              adicionar favoritas
+            </button>
+          )}
           <h1 className="font-oswald text-2xl lg:text-[40px] font-bold text-center mt-6 uppercase leading-10">
             {title}
           </h1>
@@ -163,7 +205,7 @@ export default function Recipe() {
 
           <div className="flex flex-col gap-6 sm:px-5 lg:px-24">
             <div className="cols-span-1 lg:col-span-2 border-t-2 pt-10 p-5 md:p-0">
-              <div className="flex gap-6 md:gap-0 flex-col-reverse md:justify-between w-full md:flex-row ">
+              <div className="flex gap-6 md:gap-0 flex-col-reverse md:justify-between w-full md:flex-row mt-5">
                 <div>
                   <h2 className="font-oswald text-2xl text-stone-900 uppercase tracking-widest">
                     Ingredientes

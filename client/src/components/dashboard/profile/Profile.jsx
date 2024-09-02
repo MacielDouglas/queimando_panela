@@ -6,6 +6,8 @@ export default function Profile() {
   const user = useSelector((state) => state.auth.user);
   const { recipes, loading, error } = useSelector((state) => state.recipes);
 
+  console.log(user);
+
   const myRecipes = recipes.filter((recipe) => recipe.userId === user.id);
   const myRatings = recipes.filter((recipe) =>
     recipe.ratings.some((rating) => rating.userId === user.id)

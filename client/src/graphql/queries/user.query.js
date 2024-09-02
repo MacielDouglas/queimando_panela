@@ -8,6 +8,7 @@ export const LOGIN_USER = gql`
       isAdmin
       username
       profilePicture
+      mySavedRecipes
     }
   }
 `;
@@ -17,6 +18,7 @@ export const GET_USER = gql`
     getUser(id: $getUserId) {
       username
       name
+      mySavedRecipes
     }
   }
 `;
