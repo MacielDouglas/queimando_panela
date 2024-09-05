@@ -13,7 +13,7 @@ export default function Loading() {
   }, []);
 
   return (
-    <div className="absolute inset-0 z-50 flex bg-stone-800">
+    <div className="absolute inset-0 z-50 flex bg-stone-800 w-full h-full">
       <div className="m-auto flex flex-col items-center gap-12">
         <div>
           <svg

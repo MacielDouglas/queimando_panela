@@ -10,6 +10,7 @@ import Ratings from "../components/Ratings";
 import { useMutation } from "@apollo/client";
 import { ADD_FAVORITE } from "../graphql/mutation/user.mutation";
 import useToast from "../hooks/useToast";
+import PropTypes from "prop-types";
 import recipeCategories from "../constants/recipeCategories";
 
 export default function Recipe() {
@@ -108,8 +109,6 @@ export default function Recipe() {
     id,
   } = recipe;
 
-  // console.log(recipe);
-
   const handleAddRecipe = async (id) => {
     try {
       await savedRecipe({
@@ -124,8 +123,6 @@ export default function Recipe() {
       console.error(error.message);
     }
   };
-
-  console.log(user);
 
   return (
     <div className="py-36 px-6 font-noto flex flex-col bg-stone-200 md:grid md:grid-cols-3">
@@ -311,6 +308,34 @@ function Divider({ title }) {
 }
 
 function CategorySidebar({ recipeCategory, category }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+
+  // Função para selecionar aleatoriamente receitas
+  const randomizeRecipes = (recipes) => {
+    return [...recipes].sort(() => Math.random() - 0.5);
+  };
+
+  // Estado para manter a lista aleatória
+  const [randomizedRecipes, setRandomizedRecipes] = useState([]);
+
+  useEffect(() => {
+    setRandomizedRecipes(randomizeRecipes(category));
+  }, [category]);
+
+  // Cálculos para paginação
+  const totalPages = Math.ceil(randomizedRecipes.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const selectedRecipes = randomizedRecipes.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  // Funções para mudar de página
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -50 }}
@@ -323,7 +348,7 @@ function CategorySidebar({ recipeCategory, category }) {
       }}
       className="md:-my-12 col-span-1 bg-gradient-to-r to-stone-200 from-stone-300 pt-20 shadow-2xl shadow-stone-900/50 z-10"
     >
-      <div className="md:px-8 text-center indent-0 ">
+      <div className="md:px-8 text-center indent-0">
         <h3 className="my-10 uppercase font-oswald tracking-widest text-stone-600">
           Escolha uma categoria
         </h3>
@@ -351,6 +376,8 @@ function CategorySidebar({ recipeCategory, category }) {
             ))}
           </ul>
         </div>
+
+        {/* Aqui, exibimos as receitas aleatórias e paginadas */}
         <h3 className="my-10 uppercase font-oswald tracking-widest text-stone-600">
           Outras opções de {recipeCategory}
         </h3>
@@ -360,13 +387,42 @@ function CategorySidebar({ recipeCategory, category }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          {category.map((item) => (
-            <div key={item.id} className="shadow-xl text-white">
+          {selectedRecipes.map((item) => (
+            <div key={item.id} className="shadow-xl text-white ">
               <RecipeCard recipe={item} />
             </div>
           ))}
         </motion.div>
+
+        {/* Controles de paginação */}
+        <div className="flex justify-center my-10">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-3 py-1 mx-1 ${
+                currentPage === index + 1
+                  ? "bg-stone-600 text-white"
+                  : "bg-stone-200 text-stone-600"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
 }
+
+OptionalItems.propTypes = {
+  optionalItens: PropTypes.array,
+};
+Divider.propTypes = {
+  title: PropTypes.string,
+};
+
+CategorySidebar.propTypes = {
+  recipeCategory: PropTypes.string,
+  category: PropTypes.string,
+};

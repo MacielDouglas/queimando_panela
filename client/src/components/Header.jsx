@@ -124,7 +124,7 @@ export default function Header() {
                   {recipeCategories.map((category) => (
                     <li
                       key={category}
-                      className="flex items-center hover:bg-yellow-400 p-2 hover:underline cursor-pointer group"
+                      className="flex items-center hover:bg-yellow-400 p-2 hover:underline cursor-pointer group z-50 "
                     >
                       <img
                         src={recipeIcons[category]}
