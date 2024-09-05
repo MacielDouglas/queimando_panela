@@ -93,7 +93,7 @@ export default function BestRecipeCard({ recipe }) {
       </div>
       <Link
         to={`recipe/${recipe.slug}`}
-        className="border border-stone-300 hover:bg-stone-950 hover:text-white mt-4  py-3 px-6  rounded-3xl self-center  text-xs md:text-sm "
+        className="border border-stone-300 hover:bg-stone-950 hover:text-white mt-4  py-3 px-6  rounded self-center  text-xs md:text-sm "
       >
         VEJA A RECEITA
       </Link>

@@ -247,7 +247,7 @@ export default function Ratings({ ratings, id }) {
             <p>Faça login para enviar uma avaliação</p>
             <Link
               to="/login"
-              className="p-2 bg-stone-700 text-white w-40 text-center"
+              className="p-2 bg-stone-700 text-white w-40 text-center hover:bg-stone-900"
             >
               Login
             </Link>
