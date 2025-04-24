@@ -23,11 +23,6 @@ Acesse a versão online do projeto: [queimandopanela.vercel.app](https://queiman
 - **Node.js** com Express
 - **MongoDB** (Atlas) para banco de dados
 - **Firebase** para autenticação e storage
-- **Socket.IO** para comunicação em tempo real
-
-### Mobile
-
-- **React Native** (em desenvolvimento)
 
 ## 📌 Funcionalidades Principais
 
