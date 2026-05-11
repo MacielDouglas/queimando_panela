@@ -1,0 +1,149 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Receita principal
+model Recipe {
+  id         String           @id @default(cuid())
+  title      String
+  slug       String           @unique
+  summary    String? // resumo curto para cards / SEO
+  story      String? // história opcional da receita
+  difficulty RecipeDifficulty
+  type       RecipeType
+
+  prepTimeMinutes Int? // tempo de preparo (minutos)
+  cookTimeMinutes Int? // tempo de forno/fogo (minutos)
+  servings        Int? // quantas porções
+
+  suggestions String? // sugestões do autor (harmonização, variações)
+  notesAuthor String? // notas internas do autor
+  notesPublic String? // notas extras que aparecem para os leitores
+
+  modeOfPreparation String // texto livre, modo de preparo bruto
+
+  // flags de publicação
+  isPublished Boolean   @default(true)
+  publishedAt DateTime?
+
+  // relações
+  authorId String
+  // author   User      @relation(fields: [authorId], references: [id])
+
+  ingredients Ingredient[]
+  images      RecipeImage[]
+  comments    Comment[]
+  utensils    UtensilOnRecipe[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([authorId])
+  @@index([slug])
+  @@index([isPublished, publishedAt])
+}
+
+/// Ingredientes de uma receita
+model Ingredient {
+  id String @id @default(cuid())
+
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  // quantidade normalizada pela IA + usuário
+  amount       String? // ex: "4", "1 e meia"
+  unit         String? // ex: "xícara (chá)", "colher (sopa)"
+  name         String // ex: "leite em pó"
+  originalText String // trecho original vindo do texto do usuário
+
+  order Int // posição na lista de ingredientes
+
+  createdAt DateTime @default(now())
+
+  @@index([recipeId])
+}
+
+/// Imagens da receita (capa + galeria)
+model RecipeImage {
+  id String @id @default(cuid())
+
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  url     String
+  alt     String
+  isCover Boolean @default(false)
+  order   Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([recipeId])
+  @@index([recipeId, isCover])
+}
+
+/// Utensílios (tabela de referência)
+model Utensil {
+  id   String @id @default(cuid())
+  name String @unique
+
+  recipes UtensilOnRecipe[]
+
+  createdAt DateTime @default(now())
+}
+
+/// Tabela de junção N:N entre Recipe e Utensil
+model UtensilOnRecipe {
+  recipeId  String
+  utensilId String
+
+  recipe  Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  utensil Utensil @relation(fields: [utensilId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@id([recipeId, utensilId])
+  @@index([utensilId])
+}
+
+/// Comentários / notas dos usuários
+model Comment {
+  id String @id @default(cuid())
+
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  userId String? // opcional, caso permita comentários anônimos no futuro
+  // user      User?    @relation(fields: [userId], references: [id])
+
+  rating Int? // 1..5 opcional
+  title  String? // título curto opcional
+  body   String // texto do comentário
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([recipeId])
+  @@index([userId])
+}
+
+/// Dificuldade da receita
+enum RecipeDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+/// Tipo de receita (classificação ampla)
+enum RecipeType {
+  SWEET
+  SAVORY
+  DRINK
+  OTHER
+}
