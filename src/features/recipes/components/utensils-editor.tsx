@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import type { ParsedUtensil } from "../types/recipe-form.types";
+import type { ParsedUtensil } from '../types/recipe-form.types';
 
 type Props = {
   utensils: ParsedUtensil[];
@@ -9,11 +9,7 @@ type Props = {
 
 export function UtensilsEditor({ utensils, onChange }: Props) {
   if (utensils.length === 0) {
-    return (
-      <p className="text-sm text-stone-500">
-        Nenhum utensílio sugerido ainda.
-      </p>
-    );
+    return <p className="text-sm text-stone-500">Nenhum utensílio sugerido ainda.</p>;
   }
 
   return (

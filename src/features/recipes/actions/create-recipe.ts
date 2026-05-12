@@ -1,28 +1,29 @@
-"use server";
+'use server';
 
-import { z } from "zod";
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { slugify } from "@/lib/slugify";
-import type { CreateRecipeActionState, ParsedIngredient, ParsedUtensil } from "../types/recipe-form.types";
+import { z } from 'zod';
+import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
+import { auth } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
+import { slugify } from '@/lib/slugify';
+import type {
+  CreateRecipeActionState,
+  ParsedIngredient,
+  ParsedUtensil,
+} from '../types/recipe-form.types';
 
 // ─── Schema ────────────────────────────────────────────────────────────────────
 
 const recipeSchema = z.object({
-  title: z.string().trim().min(3, "Título com pelo menos 3 caracteres."),
-  summary: z.string().trim().max(180).optional().or(z.literal("")),
-  story: z.string().trim().optional().or(z.literal("")),
-  modeOfPreparation: z
-    .string()
-    .trim()
-    .min(20, "Modo de preparo muito curto."),
-  suggestions: z.string().trim().optional().or(z.literal("")),
-  notesAuthor: z.string().trim().optional().or(z.literal("")),
-  notesPublic: z.string().trim().optional().or(z.literal("")),
-  difficulty: z.enum(["EASY", "MEDIUM", "HARD"]),
-  type: z.enum(["SWEET", "SAVORY", "DRINK", "OTHER"]),
+  title: z.string().trim().min(3, 'Título com pelo menos 3 caracteres.'),
+  summary: z.string().trim().max(180).optional().or(z.literal('')),
+  story: z.string().trim().optional().or(z.literal('')),
+  modeOfPreparation: z.string().trim().min(20, 'Modo de preparo muito curto.'),
+  suggestions: z.string().trim().optional().or(z.literal('')),
+  notesAuthor: z.string().trim().optional().or(z.literal('')),
+  notesPublic: z.string().trim().optional().or(z.literal('')),
+  difficulty: z.enum(['EASY', 'MEDIUM', 'HARD']),
+  type: z.enum(['SWEET', 'SAVORY', 'DRINK', 'OTHER']),
   prepTimeMinutes: z.string().optional(),
   cookTimeMinutes: z.string().optional(),
   servings: z.string().optional(),
@@ -64,7 +65,7 @@ export async function createRecipeAction(
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session?.user?.id) {
-    return { status: "error", message: "Sessão expirada. Entre novamente." };
+    return { status: 'error', message: 'Sessão expirada. Entre novamente.' };
   }
 
   // 2. Valida schema
@@ -73,8 +74,8 @@ export async function createRecipeAction(
 
   if (!parsed.success) {
     return {
-      status: "error",
-      message: parsed.error.issues[0]?.message ?? "Dados inválidos.",
+      status: 'error',
+      message: parsed.error.issues[0]?.message ?? 'Dados inválidos.',
     };
   }
 
@@ -85,12 +86,12 @@ export async function createRecipeAction(
   let utensils: ParsedUtensil[] = [];
 
   try {
-    ingredients = JSON.parse(data.aiIngredients ?? "[]") as ParsedIngredient[];
-    utensils = JSON.parse(data.aiUtensils ?? "[]") as ParsedUtensil[];
+    ingredients = JSON.parse(data.aiIngredients ?? '[]') as ParsedIngredient[];
+    utensils = JSON.parse(data.aiUtensils ?? '[]') as ParsedUtensil[];
   } catch {
     return {
-      status: "error",
-      message: "Dados gerados pela IA inválidos. Gere novamente.",
+      status: 'error',
+      message: 'Dados gerados pela IA inválidos. Gere novamente.',
     };
   }
 

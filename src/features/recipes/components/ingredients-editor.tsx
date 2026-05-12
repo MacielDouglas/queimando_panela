@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import type { ParsedIngredient } from "../types/recipe-form.types";
+import type { ParsedIngredient } from '../types/recipe-form.types';
 
 type Props = {
   ingredients: ParsedIngredient[];
@@ -9,11 +9,7 @@ type Props = {
 
 export function IngredientsEditor({ ingredients, onChange }: Props) {
   if (ingredients.length === 0) {
-    return (
-      <p className="text-sm text-stone-500">
-        Nenhum ingrediente sugerido ainda.
-      </p>
-    );
+    return <p className="text-sm text-stone-500">Nenhum ingrediente sugerido ainda.</p>;
   }
 
   return (
@@ -26,7 +22,7 @@ export function IngredientsEditor({ ingredients, onChange }: Props) {
           <div className="grid gap-3 md:grid-cols-[120px_160px_1fr]">
             <input
               className="block w-full rounded-md border border-stone-300 bg-white px-3 py-2.5 text-sm text-stone-900 outline-none ring-2 ring-transparent transition placeholder:text-stone-400 focus:border-amber-500 focus:ring-amber-500"
-              value={ingredient.amount ?? ""}
+              value={ingredient.amount ?? ''}
               placeholder="Qtd."
               onChange={(e) => {
                 const next = [...ingredients];
@@ -36,7 +32,7 @@ export function IngredientsEditor({ ingredients, onChange }: Props) {
             />
             <input
               className="block w-full rounded-md border border-stone-300 bg-white px-3 py-2.5 text-sm text-stone-900 outline-none ring-2 ring-transparent transition placeholder:text-stone-400 focus:border-amber-500 focus:ring-amber-500"
-              value={ingredient.unit ?? ""}
+              value={ingredient.unit ?? ''}
               placeholder="Unidade"
               onChange={(e) => {
                 const next = [...ingredients];
@@ -57,7 +53,7 @@ export function IngredientsEditor({ ingredients, onChange }: Props) {
           </div>
           {ingredient.inferred && ingredient.suggestions?.length ? (
             <p className="mt-2 text-xs text-amber-700">
-              Sugestões: {ingredient.suggestions.join(" • ")}
+              Sugestões: {ingredient.suggestions.join(' • ')}
             </p>
           ) : null}
         </div>

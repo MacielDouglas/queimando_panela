@@ -1,64 +1,52 @@
-"use client";
+'use client';
 
-import { useActionState, useMemo, useState } from "react";
-import Link from "next/link";
-import {
-  createRecipeAction,
-} from "../actions/create-recipe";
-import { IngredientsEditor } from "./ingredients-editor";
-import { UtensilsEditor } from "./utensils-editor";
-import { AiClassification } from "./ai-classification";
-import { SubmitButton } from "./submit-button";
+import { useActionState, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { createRecipeAction } from '../actions/create-recipe';
+import { IngredientsEditor } from './ingredients-editor';
+import { UtensilsEditor } from './utensils-editor';
+import { AiClassification } from './ai-classification';
+import { SubmitButton } from './submit-button';
 import {
   type ParsedClassification,
   type ParsedIngredient,
   type ParseRecipeResponse,
   type ParsedUtensil,
   initialCreateRecipeState,
-} from "../types/recipe-form.types";
+} from '../types/recipe-form.types';
 
 export function RecipeForm() {
-  const [state, formAction] = useActionState(
-    createRecipeAction,
-    initialCreateRecipeState,
-  );
+  const [state, formAction] = useActionState(createRecipeAction, initialCreateRecipeState);
 
-  const [modeOfPreparation, setModeOfPreparation] = useState("");
+  const [modeOfPreparation, setModeOfPreparation] = useState('');
   const [isParsing, setIsParsing] = useState(false);
   const [parseError, setParseError] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState<ParsedIngredient[]>([]);
   const [utensils, setUtensils] = useState<ParsedUtensil[]>([]);
-  const [classification, setClassification] =
-    useState<ParsedClassification | null>(null);
+  const [classification, setClassification] = useState<ParsedClassification | null>(null);
 
-  const serializedIngredients = useMemo(
-    () => JSON.stringify(ingredients),
-    [ingredients],
-  );
+  const serializedIngredients = useMemo(() => JSON.stringify(ingredients), [ingredients]);
 
-  const serializedUtensils = useMemo(
-    () => JSON.stringify(utensils),
-    [utensils],
-  );
+  const serializedUtensils = useMemo(() => JSON.stringify(utensils), [utensils]);
 
   async function handleParseWithAi() {
     setParseError(null);
 
     if (!modeOfPreparation.trim()) {
-      setParseError("Escreva o modo de preparo antes de usar a IA.");
+      setParseError('Escreva o modo de preparo antes de usar a IA.');
       return;
     }
 
     setIsParsing(true);
 
     try {
-      const response = await fetch("/api/recipes/parse", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/recipes/parse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ modeOfPreparation }),
       });
 
-      if (!response.ok) throw new Error("Erro ao analisar.");
+      if (!response.ok) throw new Error('Erro ao analisar.');
 
       const data = (await response.json()) as ParseRecipeResponse;
 
@@ -66,7 +54,7 @@ export function RecipeForm() {
       setUtensils(data.utensils ?? []);
       setClassification(data.classification ?? null);
     } catch {
-      setParseError("Não foi possível analisar a receita com IA agora.");
+      setParseError('Não foi possível analisar a receita com IA agora.');
     } finally {
       setIsParsing(false);
     }
@@ -79,12 +67,9 @@ export function RecipeForm() {
     >
       {/* Cabeçalho */}
       <div className="border-b border-stone-200 px-5 py-5 md:px-8">
-        <h2 className="text-lg font-semibold text-stone-900">
-          Base da receita
-        </h2>
+        <h2 className="text-lg font-semibold text-stone-900">Base da receita</h2>
         <p className="mt-1 text-sm text-stone-600">
-          Preencha as informações e use a IA para sugerir ingredientes e
-          utensílios.
+          Preencha as informações e use a IA para sugerir ingredientes e utensílios.
         </p>
       </div>
 
@@ -92,12 +77,7 @@ export function RecipeForm() {
         {/* Título e Resumo */}
         <div className="grid gap-4 md:grid-cols-2">
           <Field label="Título" htmlFor="title">
-            <FormInput
-              id="title"
-              name="title"
-              required
-              placeholder="Bolo de banana da manhã"
-            />
+            <FormInput id="title" name="title" required placeholder="Bolo de banana da manhã" />
           </Field>
 
           <Field label="Resumo" htmlFor="summary">
@@ -140,28 +120,13 @@ export function RecipeForm() {
 
           <div className="grid grid-cols-3 gap-3">
             <Field label="Preparo (min)" htmlFor="prepTimeMinutes">
-              <FormInput
-                id="prepTimeMinutes"
-                name="prepTimeMinutes"
-                type="number"
-                min={0}
-              />
+              <FormInput id="prepTimeMinutes" name="prepTimeMinutes" type="number" min={0} />
             </Field>
             <Field label="Forno (min)" htmlFor="cookTimeMinutes">
-              <FormInput
-                id="cookTimeMinutes"
-                name="cookTimeMinutes"
-                type="number"
-                min={0}
-              />
+              <FormInput id="cookTimeMinutes" name="cookTimeMinutes" type="number" min={0} />
             </Field>
             <Field label="Porções" htmlFor="servings">
-              <FormInput
-                id="servings"
-                name="servings"
-                type="number"
-                min={1}
-              />
+              <FormInput id="servings" name="servings" type="number" min={1} />
             </Field>
           </div>
         </div>
@@ -170,15 +135,11 @@ export function RecipeForm() {
         <div className="space-y-1.5">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <label
-                htmlFor="modeOfPreparation"
-                className="text-sm font-medium text-stone-800"
-              >
+              <label htmlFor="modeOfPreparation" className="text-sm font-medium text-stone-800">
                 Modo de preparo
               </label>
               <p className="mt-0.5 text-xs text-stone-500">
-                Escreva livremente; a IA vai sugerir ingredientes, utensílios e
-                classificação.
+                Escreva livremente; a IA vai sugerir ingredientes, utensílios e classificação.
               </p>
             </div>
 
@@ -188,7 +149,7 @@ export function RecipeForm() {
               disabled={isParsing}
               className="shrink-0 inline-flex items-center justify-center rounded-md border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {isParsing ? "Analisando..." : "Gerar com IA"}
+              {isParsing ? 'Analisando...' : 'Gerar com IA'}
             </button>
           </div>
 
@@ -199,7 +160,9 @@ export function RecipeForm() {
             required
             value={modeOfPreparation}
             onChange={(e) => setModeOfPreparation(e.target.value)}
-            placeholder={"1. Bata os ovos com o açúcar...\n2. Acrescente a farinha...\n3. Leve ao forno..."}
+            placeholder={
+              '1. Bata os ovos com o açúcar...\n2. Acrescente a farinha...\n3. Leve ao forno...'
+            }
           />
         </div>
 
@@ -211,7 +174,7 @@ export function RecipeForm() {
         )}
 
         {/* Erro da action */}
-        {state.status === "error" && state.message && (
+        {state.status === 'error' && state.message && (
           <p
             role="alert"
             aria-live="assertive"
@@ -225,40 +188,25 @@ export function RecipeForm() {
         <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
           <section className="space-y-4 rounded-xl border border-stone-200 bg-stone-50 px-4 py-4">
             <div className="space-y-1">
-              <h3 className="text-base font-semibold text-stone-900">
-                Ingredientes sugeridos
-              </h3>
-              <p className="text-sm text-stone-600">
-                Revise e ajuste antes de salvar.
-              </p>
+              <h3 className="text-base font-semibold text-stone-900">Ingredientes sugeridos</h3>
+              <p className="text-sm text-stone-600">Revise e ajuste antes de salvar.</p>
             </div>
-            <IngredientsEditor
-              ingredients={ingredients}
-              onChange={setIngredients}
-            />
+            <IngredientsEditor ingredients={ingredients} onChange={setIngredients} />
           </section>
 
           <div className="space-y-6">
             <section className="space-y-4 rounded-xl border border-stone-200 bg-stone-50 px-4 py-4">
               <div className="space-y-1">
-                <h3 className="text-base font-semibold text-stone-900">
-                  Utensílios
-                </h3>
-                <p className="text-sm text-stone-600">
-                  Deduzidos a partir do preparo.
-                </p>
+                <h3 className="text-base font-semibold text-stone-900">Utensílios</h3>
+                <p className="text-sm text-stone-600">Deduzidos a partir do preparo.</p>
               </div>
               <UtensilsEditor utensils={utensils} onChange={setUtensils} />
             </section>
 
             <section className="rounded-xl border border-stone-200 bg-white px-4 py-4">
               <div className="space-y-1">
-                <h3 className="text-base font-semibold text-stone-900">
-                  Classificação sugerida
-                </h3>
-                <p className="text-sm text-stone-600">
-                  Apoio editorial para revisar.
-                </p>
+                <h3 className="text-base font-semibold text-stone-900">Classificação sugerida</h3>
+                <p className="text-sm text-stone-600">Apoio editorial para revisar.</p>
               </div>
               <div className="mt-4">
                 <AiClassification classification={classification} />
@@ -298,16 +246,8 @@ export function RecipeForm() {
         </Field>
 
         {/* Hidden fields para dados da IA */}
-        <input
-          type="hidden"
-          name="aiIngredients"
-          value={serializedIngredients}
-        />
-        <input
-          type="hidden"
-          name="aiUtensils"
-          value={serializedUtensils}
-        />
+        <input type="hidden" name="aiIngredients" value={serializedIngredients} />
+        <input type="hidden" name="aiUtensils" value={serializedUtensils} />
 
         {/* Ações */}
         <div className="flex flex-col-reverse gap-3 border-t border-stone-200 pt-6 sm:flex-row sm:items-center sm:justify-end">
@@ -354,9 +294,7 @@ function FormInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   );
 }
 
-function FormTextarea(
-  props: React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-) {
+function FormTextarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <textarea
       {...props}
@@ -365,9 +303,7 @@ function FormTextarea(
   );
 }
 
-function FormSelect(
-  props: React.SelectHTMLAttributes<HTMLSelectElement>,
-) {
+function FormSelect(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
       {...props}

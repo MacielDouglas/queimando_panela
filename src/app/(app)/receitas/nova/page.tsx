@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import { RecipeForm } from "@/features/recipes/components/recipe-form";
+import type { Metadata } from 'next';
+import { RecipeForm } from '@/features/recipes/components/recipe-form';
 
 export const metadata: Metadata = {
-  title: "Nova receita | Queimando Panela",
+  title: 'Nova receita | Queimando Panela',
 };
 
 export default function NewRecipePage() {
@@ -18,9 +18,8 @@ export default function NewRecipePage() {
               Nova receita
             </h1>
             <p className="max-w-2xl text-sm leading-6 text-stone-600 md:text-base">
-              Escreva o modo de preparo livremente e deixe a IA sugerir
-              ingredientes, utensílios e classificações para acelerar o
-              cadastro.
+              Escreva o modo de preparo livremente e deixe a IA sugerir ingredientes, utensílios e
+              classificações para acelerar o cadastro.
             </p>
           </div>
         </header>

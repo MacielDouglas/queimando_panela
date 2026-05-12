@@ -5,7 +5,14 @@ import prettier from 'eslint-config-prettier';
 const eslintConfig = defineConfig([
   ...nextVitals,
   prettier,
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'generated/**']),
+  globalIgnores([
+    '.next/**',
+    'out/**',
+    'build/**',
+    'next-env.d.ts',
+    'generated/**',
+    'test-results/**',
+  ]),
 ]);
 
 export default eslintConfig;

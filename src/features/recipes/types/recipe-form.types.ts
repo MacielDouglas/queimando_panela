@@ -25,11 +25,11 @@ export type ParseRecipeResponse = {
 };
 
 export type CreateRecipeActionState = {
-  status: "idle" | "error";
+  status: 'idle' | 'error';
   message: string;
 };
 
 export const initialCreateRecipeState: CreateRecipeActionState = {
-  status: "idle",
-  message: "",
+  status: 'idle',
+  message: '',
 };

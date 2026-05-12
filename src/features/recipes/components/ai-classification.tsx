@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import type { ParsedClassification } from "../types/recipe-form.types";
+import type { ParsedClassification } from '../types/recipe-form.types';
 
 type Props = {
   classification: ParsedClassification | null;
@@ -8,11 +8,7 @@ type Props = {
 
 export function AiClassification({ classification }: Props) {
   if (!classification) {
-    return (
-      <p className="text-sm text-stone-500">
-        Gere a análise para ver as classificações.
-      </p>
-    );
+    return <p className="text-sm text-stone-500">Gere a análise para ver as classificações.</p>;
   }
 
   return (
@@ -30,9 +26,7 @@ function BadgeGroup({ title, items }: { title: string; items: string[] }) {
 
   return (
     <div className="space-y-2">
-      <p className="text-xs font-medium uppercase tracking-[0.14em] text-stone-500">
-        {title}
-      </p>
+      <p className="text-xs font-medium uppercase tracking-[0.14em] text-stone-500">{title}</p>
       <div className="flex flex-wrap gap-2">
         {items.map((item) => (
           <span
