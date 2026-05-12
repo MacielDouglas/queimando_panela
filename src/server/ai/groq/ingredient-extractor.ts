@@ -171,12 +171,19 @@ NÃO inclua nenhum texto fora do JSON. Somente o objeto JSON.
 
   let parsed: ParsedRecipeData;
 
-  try {
-    parsed = JSON.parse(content) as ParsedRecipeData;
-  } catch (error) {
-    console.error('Erro ao fazer parse do JSON retornado pela IA:', content);
-    throw new Error('A resposta da IA não está em formato JSON válido.');
-  }
+function extractJsonFromContent(raw: string): string {
+  const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fenced?.[1]) return fenced[1].trim();
+  return raw.trim();
+}
+
+try {
+  const clean = extractJsonFromContent(content);
+  parsed = JSON.parse(clean);
+} catch (error) {
+  console.error('Erro ao fazer parse do JSON retornado pela IA:', content);
+  throw new Error('A resposta da IA não está em formato JSON válido.');
+}
 
   const ingredients = Array.isArray(parsed.ingredients) ? parsed.ingredients : [];
   const utensils = Array.isArray(parsed.utensils) ? parsed.utensils : [];

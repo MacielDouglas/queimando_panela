@@ -1,0 +1,35 @@
+export type ParsedIngredient = {
+  amount: string | null;
+  unit: string | null;
+  name: string;
+  originalText: string;
+  inferred?: boolean;
+  suggestions?: string[];
+};
+
+export type ParsedUtensil = {
+  name: string;
+};
+
+export type ParsedClassification = {
+  primaryGroup: string;
+  mainCategories: string[];
+  nutritionTags: string[];
+  courseTypes: string[];
+};
+
+export type ParseRecipeResponse = {
+  ingredients: ParsedIngredient[];
+  utensils: ParsedUtensil[];
+  classification: ParsedClassification;
+};
+
+export type CreateRecipeActionState = {
+  status: "idle" | "error";
+  message: string;
+};
+
+export const initialCreateRecipeState: CreateRecipeActionState = {
+  status: "idle",
+  message: "",
+};
