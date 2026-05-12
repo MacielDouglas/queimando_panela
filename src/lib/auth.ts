@@ -1,10 +1,11 @@
 import { betterAuth } from 'better-auth';
-import { prismaAdapter } from '@better-auth/prisma-adapter';
-import prisma from './prisma';
+import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { prisma } from './prisma';
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL, // usado para montar URLs de callback OAuth[web:143][web:146]
-  database: prismaAdapter(prisma, { provider: 'postgresql' }),
+  database: prismaAdapter(prisma, {
+    provider: 'postgresql',
+  }),
   emailAndPassword: {
     enabled: true,
   },
@@ -14,7 +15,5 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
-  experimental: {
-    joins: true,
-  },
+  secret: process.env.BETTER_AUTH_SECRET!,
 });

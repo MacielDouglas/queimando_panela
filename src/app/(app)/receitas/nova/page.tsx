@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import prisma from '@/lib/prisma';
 import { getServerSession } from '@/lib/get-server-session';
 import { slugify } from '@/lib/slugify';
 import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
 
 export const metadata: Metadata = {
   title: 'Nova receita | Queimando Panela',

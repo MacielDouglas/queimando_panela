@@ -1,24 +1,18 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { type SyntheticEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
 
 export function SignUpForm() {
   const router = useRouter();
-  const session = authClient.useSession(); // hook client do Better Auth[web:132]
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (session.data) {
-    // se já estiver logado, não faz sentido mostrar o form
-    router.replace('/');
-  }
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
     event.preventDefault();
     setIsSubmitting(true);
     setError(null);
@@ -28,14 +22,12 @@ export function SignUpForm() {
         name,
         email,
         password,
-      }); // fluxo recomendado para signUp.email[web:134][web:147]
-
+      });
       if (result.error) {
         setError(result.error.message ?? 'Não foi possível criar a conta.');
         return;
       }
 
-      // Por padrão o Better Auth já faz sign-in após signUp.email[web:134]
       router.replace('/');
       router.refresh();
     } catch {
@@ -49,7 +41,6 @@ export function SignUpForm() {
     setError(null);
 
     try {
-      // Social login Google: Better Auth cuida se é sign up ou sign in[web:134][web:143][web:149]
       const result = await authClient.signIn.social({
         provider: 'google',
       });
@@ -133,7 +124,7 @@ export function SignUpForm() {
       <p className="mt-2 text-center text-sm text-neutral-600">
         Já tem conta?{' '}
         <a
-          href="/entrar"
+          href="/login"
           className="font-medium text-neutral-900 underline-offset-4 hover:underline"
         >
           Entrar
