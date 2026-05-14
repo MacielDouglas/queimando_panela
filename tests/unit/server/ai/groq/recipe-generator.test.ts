@@ -42,11 +42,12 @@ afterEach(() => {
 });
 
 describe('generateRecipeFromGroq', () => {
-  it('lança erro se GROQ_API_KEY não estiver definida', async () => {
-    vi.unstubAllEnvs();
-    await expect(generateRecipeFromGroq('Bolo', 'Misture tudo.')).rejects.toThrow(/GROQ_API_KEY/);
-  });
-
+it('lança erro se GROQ_API_KEY não estiver definida', async () => {
+  vi.stubEnv('GROQ_API_KEY', ''); // ← força vazio em vez de vi.unstubAllEnvs()
+  await expect(generateRecipeFromGroq('Bolo', 'Misture tudo.')).rejects.toThrow(
+    /GROQ_API_KEY/,
+  );
+});
   it('lança erro se a API retornar status de erro', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,

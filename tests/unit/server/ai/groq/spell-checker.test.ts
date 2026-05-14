@@ -25,12 +25,12 @@ const makeOkResponse = (body: object) => ({
 });
 
 describe('spellCheckRecipeFields', () => {
-  it('lança erro se GROQ_API_KEY não estiver definido', async () => {
-    vi.unstubAllEnvs();
-    await expect(spellCheckRecipeFields({ title: 'Teste' })).rejects.toThrow(
-      /GROQ_API_KEY/i,
-    );
-  });
+it('lança erro se GROQ_API_KEY não estiver definido', async () => {
+  vi.stubEnv('GROQ_API_KEY', ''); // ← força vazio em vez de vi.unstubAllEnvs()
+  await expect(spellCheckRecipeFields({ title: 'Teste' })).rejects.toThrow(
+    /GROQ_API_KEY/i,
+  );
+});
 
   it('retorna campos corrigidos', async () => {
     mockFetch.mockResolvedValueOnce(
