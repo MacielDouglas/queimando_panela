@@ -7,9 +7,9 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { slugify } from '@/lib/slugify';
 import type {
-  CreateRecipeActionState,
   ParsedIngredient,
   ParsedUtensil,
+  UpdateRecipeActionState,
 } from '../types/recipe-form.types';
 import { Prisma } from '../../../../generated/prisma/client';
 
@@ -28,6 +28,7 @@ const recipeSchema = z.object({
   servings: z.string().optional(),
   aiIngredients: z.string().optional(),
   aiUtensils: z.string().optional(),
+  recipeId: z.string().min(1),
   nutritionSummary: z.string().trim().max(300).optional().or(z.literal('')),
   nutritionTable: z.string().optional(),
 });
@@ -42,10 +43,10 @@ function toNullable(value?: string): string | null {
   return value?.trim() ? value.trim() : null;
 }
 
-export async function createRecipeAction(
-  _prev: CreateRecipeActionState,
+export async function updateRecipeAction(
+  _prev: UpdateRecipeActionState,
   formData: FormData,
-): Promise<CreateRecipeActionState> {
+): Promise<UpdateRecipeActionState> {
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session?.user?.id) {
@@ -64,9 +65,21 @@ export async function createRecipeAction(
 
   const data = parsed.data;
 
+  const existing = await prisma.recipe.findUnique({
+    where: { id: data.recipeId },
+    select: { authorId: true, slug: true, title: true },
+  });
+
+  if (!existing) {
+    return { status: 'error', message: 'Receita não encontrada.' };
+  }
+
+  if (existing.authorId !== session.user.id) {
+    return { status: 'error', message: 'Sem permissão para editar esta receita.' };
+  }
+
   let ingredients: ParsedIngredient[] = [];
   let utensils: ParsedUtensil[] = [];
-
   try {
     ingredients = JSON.parse(data.aiIngredients ?? '[]') as ParsedIngredient[];
     utensils = JSON.parse(data.aiUtensils ?? '[]') as ParsedUtensil[];
@@ -91,11 +104,14 @@ export async function createRecipeAction(
     nutritionPer100g = Prisma.JsonNull;
   }
 
-  const baseSlug = slugify(data.title);
-  const count = await prisma.recipe.count({
-    where: { slug: { startsWith: baseSlug } },
-  });
-  const slug = count > 0 ? `${baseSlug}-${count + 1}` : baseSlug;
+  let slug = existing.slug;
+  if (slugify(data.title) !== slugify(existing.title)) {
+    const baseSlug = slugify(data.title);
+    const count = await prisma.recipe.count({
+      where: { slug: { startsWith: baseSlug }, NOT: { id: data.recipeId } },
+    });
+    slug = count > 0 ? `${baseSlug}-${count + 1}` : baseSlug;
+  }
 
   const validIngredients = ingredients
     .filter((i) => i?.name?.trim())
@@ -115,8 +131,9 @@ export async function createRecipeAction(
     ).values(),
   );
 
-  const recipe = await prisma.$transaction(async (tx) => {
-    const created = await tx.recipe.create({
+  await prisma.$transaction(async (tx) => {
+    await tx.recipe.update({
+      where: { id: data.recipeId },
       data: {
         title: data.title,
         slug,
@@ -133,17 +150,18 @@ export async function createRecipeAction(
         servings: toNullableNumber(data.servings),
         nutritionSummary: toNullable(data.nutritionSummary),
         nutritionPer100g,
-        authorId: session.user.id,
-        isPublished: true,
-        publishedAt: new Date(),
       },
     });
 
+    await tx.ingredient.deleteMany({ where: { recipeId: data.recipeId } });
+
     if (validIngredients.length > 0) {
       await tx.ingredient.createMany({
-        data: validIngredients.map((i) => ({ ...i, recipeId: created.id })),
+        data: validIngredients.map((i) => ({ ...i, recipeId: data.recipeId })),
       });
     }
+
+    await tx.utensilOnRecipe.deleteMany({ where: { recipeId: data.recipeId } });
 
     for (const name of uniqueUtensils) {
       const utensil = await tx.utensil.upsert({
@@ -153,12 +171,10 @@ export async function createRecipeAction(
       });
 
       await tx.utensilOnRecipe.create({
-        data: { recipeId: created.id, utensilId: utensil.id },
+        data: { recipeId: data.recipeId, utensilId: utensil.id },
       });
     }
-
-    return created;
   });
 
-  redirect(`/receitas/${recipe.slug}`);
+  redirect(`/receitas/${slug}`);
 }

@@ -107,12 +107,10 @@ describe('createRecipeAction — validação', () => {
     expect(result.status).toBe('error');
   });
 
-  it('retorna erro se type for inválido', async () => {
-    const result = await createRecipeAction(
-      initialCreateRecipeState,
-      makeFormData({ type: 'INVALID_TYPE' }),
-    );
+  it('retorna erro se type estiver vazio', async () => {
+    const result = await createRecipeAction(initialCreateRecipeState, makeFormData({ type: '' }));
     expect(result.status).toBe('error');
+    expect(result.message).toMatch(/tipo|receita/i);
   });
 
   it('retorna erro se aiIngredients não for JSON válido', async () => {
@@ -217,15 +215,16 @@ describe('createRecipeAction — criação', () => {
     expect(callArgs.data.authorId).toBe('user-123');
   });
 
-  it('cria receita com isPublished false por padrão', async () => {
+  it('cria receita com isPublished true por padrão', async () => {
     await expect(createRecipeAction(initialCreateRecipeState, makeFormData())).rejects.toThrow(
       'NEXT_REDIRECT:',
     );
 
     const callArgs = prisma.recipe.create.mock.calls[0]?.[0] as {
-      data: { isPublished: boolean };
+      data: { isPublished: boolean; publishedAt?: Date | null };
     };
-    expect(callArgs.data.isPublished).toBe(false);
+    expect(callArgs.data.isPublished).toBe(true);
+    expect(callArgs.data.publishedAt).toBeInstanceOf(Date);
   });
 
   it('converte prepTimeMinutes vazio para null', async () => {

@@ -41,6 +41,8 @@ export type RecipeClassification = {
    * Exemplos: "prato principal", "entrada", "sobremesa", "lanche", "café da manhã", "café da tarde".
    */
   courseTypes: string[];
+
+  typeSuggestions: string[]; // até 3 sugestões de tipo ex: ["Bolo", "Torta", "Biscoito"]
 };
 
 export type ParsedRecipeData = {

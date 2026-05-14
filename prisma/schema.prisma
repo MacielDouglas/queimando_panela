@@ -13,25 +13,33 @@ datasource db {
 }
 
 /// Receita principal
-
 model Recipe {
   id         String           @id @default(cuid())
   title      String
   slug       String           @unique
-  summary    String? // resumo curto para cards / SEO
-  story      String? // história opcional da receita
+  summary    String?          // resumo curto para cards / SEO
+  story      String?          // história opcional da receita
   difficulty RecipeDifficulty
-  type       RecipeType
+  type       String           // ex: "Bolo", "Sopa", "Torta", "Salada", etc.
 
-  prepTimeMinutes Int? // tempo de preparo (minutos)
-  cookTimeMinutes Int? // tempo de forno/fogo (minutos)
-  servings        Int? // quantas porções
+  prepTimeMinutes Int?        // tempo de preparo (minutos)
+  cookTimeMinutes Int?        // tempo de forno/fogo (minutos)
+  servings        Int?        // quantas porções
 
-  suggestions String? // sugestões do autor (harmonização, variações)
-  notesAuthor String? // notas internas do autor
-  notesPublic String? // notas extras que aparecem para os leitores
+  suggestions String?         // sugestões do autor (harmonização, variações)
+  notesAuthor String?         // notas internas do autor
+  notesPublic String?         // notas extras que aparecem para os leitores
 
-  modeOfPreparation String // texto livre, modo de preparo bruto
+  modeOfPreparation String    // texto livre, modo de preparo bruto
+
+  // ─── Novos campos de nutrição ──────────────────────────────────────────────
+
+  /// Resumo nutricional gerado pela IA (até ~300 caracteres)
+  nutritionSummary String?    @db.Text
+
+  /// Tabela nutricional estimada por 100 g (array de NutritionRow)
+  /// Ex.: [{ nutrient: "Carboidratos", amount: "52", unit: "g", dailyValue: "17%" }, ...]
+  nutritionPer100g Json?
 
   // flags de publicação
   isPublished Boolean   @default(true)
@@ -150,14 +158,6 @@ enum RecipeDifficulty {
   HARD
 }
 
-/// Tipo de receita (classificação ampla)
-
-enum RecipeType {
-  SWEET
-  SAVORY
-  DRINK
-  OTHER
-}
 
 model User {
   id            String    @id

@@ -5,9 +5,10 @@ import type { ParsedClassification } from '@/features/recipes/types/recipe-form.
 
 const mockClassification: ParsedClassification = {
   primaryGroup: 'CARBOIDRATOS',
-  mainCategories: ['bolo', 'sobremesa'],
+  mainCategories: ['bolo'],
   nutritionTags: ['rico em açúcar'],
-  courseTypes: ['lanche', 'café da manhã'],
+  courseTypes: ['sobremesa'],
+  typeSuggestions: ['Bolo', 'Torta'], // ← adicione
 };
 
 describe('AiClassification', () => {
@@ -34,7 +35,6 @@ describe('AiClassification', () => {
 
   it('renderiza ocasiões', () => {
     render(<AiClassification classification={mockClassification} />);
-    expect(screen.getByText('lanche')).toBeDefined();
-    expect(screen.getByText('café da manhã')).toBeDefined();
+    expect(screen.getByText('sobremesa')).toBeInTheDocument();
   });
 });

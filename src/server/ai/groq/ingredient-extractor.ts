@@ -1,11 +1,9 @@
 import { ParsedRecipeData } from './types';
 
-const GROQ_API_BASE = 'https://api.groq.com/openai/v1/chat/completions'; // endpoint OpenAI-compatible[web:15][web:229]
-
+const GROQ_API_BASE = 'https://api.groq.com/openai/v1/chat/completions';
 const DEFAULT_MODEL = process.env.GROQ_MODEL_ID ?? 'llama-3.3-70b-versatile';
 
 if (!process.env.GROQ_API_KEY) {
-  // falhar cedo ajuda a identificar problemas de config
   console.warn('GROQ_API_KEY não definido. A extração de ingredientes via IA não irá funcionar.');
 }
 
@@ -35,6 +33,7 @@ export async function extractIngredientsAndUtensilsFromGroq(
         mainCategories: [],
         nutritionTags: [],
         courseTypes: [],
+        typeSuggestions: [],
       },
     };
   }
@@ -57,66 +56,46 @@ INGREDIENTES:
   - "grama", "quilo", "mililitro", "litro", etc.
 - name: nome do ingrediente, ex: "leite em pó", "açúcar", "fubá".
 - originalText: trecho EXATO como apareceu no texto do usuário.
-- inferred: true se você precisou inferir quantidade ou unidade (por exemplo se o usuário escreveu "2 colher de farinha").
-- suggestions: lista de sugestões alternativas apenas quando houver inferência de unidade, ex:
-  - ["2 colheres (sopa)", "2 colheres (café)"].
+- inferred: true se você precisou inferir quantidade ou unidade.
+- suggestions: sugestões alternativas apenas quando houver inferência de unidade.
 
 REGRAS PARA INGREDIENTES:
 - Nunca invente ingredientes que não estejam implícitos no texto.
-- Quando a unidade estiver ausente ou ambígua (ex: "2 colher de farinha"):
-  - tente inferir a unidade mais provável (ex: "colher (sopa)") baseado em práticas culinárias comuns.
-  - marque inferred = true e inclua sugestões.
+- Quando a unidade estiver ausente ou ambígua, infira a mais provável, marque inferred = true e inclua sugestões.
 - Mantenha os nomes em português e em caixa-baixa, exceto nomes próprios.
 
 UTENSÍLIOS:
 - name: nome do utensílio, ex: "Liquidificador", "Refratário", "Forno", "Panela média".
-- Considere utensílios inferidos logicamente do modo de preparo (ex: se fala "leve ao forno", inclua "Forno").
+- Inclua utensílios inferidos logicamente do modo de preparo.
 
 CLASSIFICAÇÃO DA RECEITA:
 
-3.1) primaryGroup (grupo principal de nutrientes)
-Escolha UM dos valores abaixo, em MAIÚSCULAS:
-- "CARBOIDRATOS": receitas base de massas, pães, bolos, arroz, batata, mandioca, etc.
-- "REGULADORES": destaque para frutas, verduras e legumes.
-- "CONSTRUTORES": foco em proteínas (carnes, peixes, aves, ovos, leite, queijos, leguminosas).
-- "CALCIO": quando o destaque principal for cálcio (ex.: laticínios).
-- "LIPIDIOS": receitas predominantemente gordurosas (frituras, molhos muito gordurosos).
-- "OUTROS": quando nada acima for claramente predominante.
+3.1) primaryGroup — escolha UM em MAIÚSCULAS:
+- "CARBOIDRATOS": massas, pães, bolos, arroz, batata, mandioca, etc.
+- "REGULADORES": frutas, verduras e legumes.
+- "CONSTRUTORES": carnes, peixes, aves, ovos, leite, queijos, leguminosas.
+- "CALCIO": destaque principal para laticínios / cálcio.
+- "LIPIDIOS": frituras ou molhos muito gordurosos.
+- "OUTROS": quando nenhum grupo acima for claramente predominante.
 
-3.2) mainCategories (categorias culinárias principais)
-Lista de strings em minúsculas.
-Use 1 a 3 tags dentre, por exemplo:
-- "carne", "peixe", "ave", "ovo"
-- "pão", "bolo", "biscoito", "massa", "torta"
-- "sopa", "salada", "arroz", "doce de colher", "bebida", etc.
+3.2) mainCategories — lista de 1 a 3 strings em minúsculas.
+Exemplos: "carne", "peixe", "ave", "ovo", "pão", "bolo", "biscoito", "massa", "torta",
+"sopa", "salada", "arroz", "doce de colher", "bebida".
 
-3.3) nutritionTags (tags nutricionais)
-Lista de strings em minúsculas.
-Use tags como:
-- "nutritivo"
-- "rico em açucar"
-- "alto em gordura"
-- "rico em cálcio"
-- "rico em fibras"
-- "vegano"
-- "vegetariano"
-- "natural"
-- "ultraprocessado"
-Escolha apenas tags que façam sentido com os ingredientes identificados.
+3.3) nutritionTags — lista de strings em minúsculas relevantes para a receita.
+Exemplos: "nutritivo", "rico em açucar", "alto em gordura", "rico em cálcio",
+"rico em fibras", "vegano", "vegetariano", "natural", "ultraprocessado".
 
-3.4) courseTypes (tipo de prato / ocasião)
-Lista de strings em minúsculas, 1 a 2 tags.
-Use valores como:
-- "prato principal"
-- "entrada"
-- "sobremesa"
-- "lanche"
-- "café da manhã"
-- "café da tarde"
-- "acompanhamento"
+3.4) courseTypes — lista de 1 a 2 strings em minúsculas.
+Exemplos: "prato principal", "entrada", "sobremesa", "lanche",
+"café da manhã", "café da tarde", "acompanhamento".
 
-SAÍDA:
-Você DEVE responder APENAS com um JSON válido, no seguinte formato exato:
+3.5) typeSuggestions — lista de 1 a 3 strings com inicial maiúscula. OBRIGATÓRIO.
+Seja específico: prefira "Bolo de Café" a apenas "Bolo" quando o contexto permitir.
+Exemplos: "Bolo", "Torta", "Sopa", "Strogonoff", "Risoto", "Pão", "Cookie",
+"Omelete", "Frango Assado", "Mousse", "Pudim", "Crepe", "Wrap", "Pizza", "Macarrão".
+
+SAÍDA — responda APENAS com o JSON abaixo (sem nenhum texto fora dele):
 
 {
   "ingredients": [
@@ -137,11 +116,10 @@ Você DEVE responder APENAS com um JSON válido, no seguinte formato exato:
     "primaryGroup": "CARBOIDRATOS",
     "mainCategories": ["bolo"],
     "nutritionTags": ["rico em açucar"],
-    "courseTypes": ["sobremesa", "lanche"]
+    "courseTypes": ["sobremesa", "lanche"],
+    "typeSuggestions": ["Bolo de Fubá", "Broa", "Bolo"]
   }
 }
-
-NÃO inclua nenhum texto fora do JSON. Somente o objeto JSON.
 `.trim();
 
   const response = await fetch(GROQ_API_BASE, {
@@ -153,14 +131,11 @@ NÃO inclua nenhum texto fora do JSON. Somente o objeto JSON.
     body: JSON.stringify({
       model: DEFAULT_MODEL,
       temperature: 0.2,
-      max_tokens: 1024,
+      max_tokens: 2048,
       stream: false,
       messages: [
         { role: 'system', content: systemPrompt },
-        {
-          role: 'user',
-          content: instructions,
-        },
+        { role: 'user', content: instructions },
       ],
     }),
   });
@@ -172,7 +147,6 @@ NÃO inclua nenhum texto fora do JSON. Somente o objeto JSON.
   }
 
   const completion = (await response.json()) as GroqChatCompletionResponse;
-
   const content = completion.choices[0]?.message?.content ?? '';
 
   let parsed: ParsedRecipeData;
@@ -180,7 +154,7 @@ NÃO inclua nenhum texto fora do JSON. Somente o objeto JSON.
   try {
     const clean = extractJsonFromContent(content);
     parsed = JSON.parse(clean);
-  } catch (error) {
+  } catch {
     console.error('Erro ao fazer parse do JSON retornado pela IA:', content);
     throw new Error('A resposta da IA não está em formato JSON válido.');
   }
@@ -189,15 +163,22 @@ NÃO inclua nenhum texto fora do JSON. Somente o objeto JSON.
   const utensils = Array.isArray(parsed.utensils) ? parsed.utensils : [];
 
   const classification = parsed.classification ?? {
-    primaryGroup: 'OUTROS',
+    primaryGroup: 'OUTROS' as const,
     mainCategories: [],
     nutritionTags: [],
     courseTypes: [],
+    typeSuggestions: [],
   };
 
-  return {
-    ingredients,
-    utensils,
-    classification,
-  };
+  // Fallback: se o modelo omitir typeSuggestions, deriva de mainCategories
+  if (
+    !Array.isArray(classification.typeSuggestions) ||
+    classification.typeSuggestions.length === 0
+  ) {
+    classification.typeSuggestions = (classification.mainCategories ?? [])
+      .slice(0, 3)
+      .map((c: string) => c.charAt(0).toUpperCase() + c.slice(1));
+  }
+
+  return { ingredients, utensils, classification };
 }

@@ -5,7 +5,7 @@ import { RecipeForm } from '@/features/recipes/components/recipe-form';
 describe('RecipeForm', () => {
   it('renderiza o formulário sem quebrar', () => {
     render(<RecipeForm />);
-    expect(screen.getByText('Base da receita')).toBeDefined();
+    expect(screen.getByRole('button', { name: /gerar com ia/i })).toBeInTheDocument();
   });
 
   it('contém campo de título', () => {
@@ -26,8 +26,8 @@ describe('RecipeForm', () => {
 
   it('contém selects de dificuldade e tipo', () => {
     render(<RecipeForm />);
-    expect(screen.getByLabelText('Dificuldade')).toBeDefined();
-    expect(screen.getByLabelText('Tipo')).toBeDefined();
+    expect(screen.getByText('Dificuldade')).toBeInTheDocument();
+    expect(screen.getByText('Tipo')).toBeInTheDocument();
   });
 
   it('contém campos de tempo e porções', () => {

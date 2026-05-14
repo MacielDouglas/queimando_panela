@@ -1,8 +1,9 @@
 export type ParsedIngredient = {
+  id?: string;
+  name: string;
   amount: string | null;
   unit: string | null;
-  name: string;
-  originalText: string;
+  originalText?: string;
   inferred?: boolean;
   suggestions?: string[];
 };
@@ -16,6 +17,7 @@ export type ParsedClassification = {
   mainCategories: string[];
   nutritionTags: string[];
   courseTypes: string[];
+  typeSuggestions: string[];
 };
 
 export type ParseRecipeResponse = {
@@ -30,6 +32,16 @@ export type CreateRecipeActionState = {
 };
 
 export const initialCreateRecipeState: CreateRecipeActionState = {
+  status: 'idle',
+  message: '',
+};
+
+export type UpdateRecipeActionState = {
+  status: 'idle' | 'error';
+  message: string;
+};
+
+export const initialUpdateRecipeState: UpdateRecipeActionState = {
   status: 'idle',
   message: '',
 };

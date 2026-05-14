@@ -16,7 +16,7 @@ export function IngredientsEditor({ ingredients, onChange }: Props) {
     <div className="space-y-3">
       {ingredients.map((ingredient, index) => (
         <div
-          key={`${ingredient.name}-${index}`}
+          key={ingredient.id ?? index}
           className="rounded-lg border border-stone-200 bg-white p-3"
         >
           <div className="grid gap-3 md:grid-cols-[120px_160px_1fr]">
