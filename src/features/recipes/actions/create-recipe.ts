@@ -12,6 +12,7 @@ import type {
   ParsedUtensil,
 } from '../types/recipe-form.types';
 import { Prisma } from '../../../../generated/prisma/client';
+import { safeDeleteRecipeImage, uploadRecipeCoverImage } from '../server/recipe-image.service';
 
 const recipeSchema = z.object({
   title: z.string().trim().min(3, 'Título com pelo menos 3 caracteres.'),
@@ -159,6 +160,39 @@ export async function createRecipeAction(
 
     return created;
   });
+
+  const imageFile = formData.get('image');
+  const file = imageFile instanceof File ? imageFile : null;
+
+  if (file && file.size > 0) {
+    const uploaded = await uploadRecipeCoverImage({
+      recipeId: recipe.id,
+      file,
+      alt: `Capa da receita ${recipe.title}`,
+    });
+
+    if (uploaded) {
+      try {
+        await prisma.recipeImage.create({
+          data: {
+            recipeId: recipe.id,
+            key: uploaded.key,
+            url: uploaded.url,
+            alt: uploaded.alt,
+            contentType: uploaded.contentType,
+            sizeBytes: uploaded.sizeBytes,
+            width: uploaded.width,
+            height: uploaded.height,
+            isCover: true,
+            order: 0,
+          },
+        });
+      } catch (error) {
+        await safeDeleteRecipeImage(uploaded.key);
+        throw error;
+      }
+    }
+  }
 
   redirect(`/receitas/${recipe.slug}`);
 }

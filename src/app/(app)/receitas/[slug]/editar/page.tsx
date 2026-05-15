@@ -1,12 +1,13 @@
 import { notFound } from 'next/navigation';
-import { getRecipeBySlug } from '@/features/recipes/actions/get-recipe';
 import { RecipeForm } from '@/features/recipes/components/recipe-form';
+import { getRecipeBySlug } from '@/features/recipes/server/get-recipe-by-slug';
 
 type Props = { params: Promise<{ slug: string }> };
 
 export default async function EditRecipePage({ params }: Props) {
   const { slug } = await params;
   const recipe = await getRecipeBySlug(slug);
+
   if (!recipe) notFound();
 
   const initialData = {
@@ -32,6 +33,19 @@ export default async function EditRecipePage({ params }: Props) {
     utensils: recipe.utensils.map(({ utensil }) => ({
       name: utensil.name,
     })),
+    images: recipe.images.map((image) => ({
+      id: image.id,
+      key: image.key,
+      url: image.url,
+      alt: image.alt,
+      contentType: image.contentType,
+      sizeBytes: image.sizeBytes,
+      width: image.width,
+      height: image.height,
+      order: image.order,
+      isCover: image.isCover,
+      recipeId: image.recipeId,
+    })),
   };
 
   return (
@@ -40,6 +54,7 @@ export default async function EditRecipePage({ params }: Props) {
         <h1 className="text-2xl font-bold text-stone-900">Editar receita</h1>
         <p className="mt-1 text-sm text-stone-500">{recipe.title}</p>
       </div>
+
       <RecipeForm mode="edit" initialData={initialData} />
     </div>
   );

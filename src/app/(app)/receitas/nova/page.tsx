@@ -13,6 +13,7 @@ export default function NewRecipePage() {
           <span className="inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-amber-700">
             Caderno de receitas
           </span>
+
           <div className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-stone-900 md:text-4xl">
               Nova receita

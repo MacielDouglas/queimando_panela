@@ -12,7 +12,9 @@ beforeEach(() => {
 const mockData = {
   modeOfPreparation: '1. Misture tudo.',
   summary: 'Receita deliciosa.',
-  ingredients: [{ name: 'banana', amount: '3', unit: 'unidades', originalText: '3 bananas', order: 0 }],
+  ingredients: [
+    { name: 'banana', amount: '3', unit: 'unidades', originalText: '3 bananas', order: 0 },
+  ],
   utensils: [{ name: 'tigela' }],
   classification: {
     primaryGroup: 'CARBOIDRATOS' as const,

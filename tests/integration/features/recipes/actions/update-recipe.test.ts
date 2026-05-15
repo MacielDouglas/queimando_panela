@@ -16,10 +16,38 @@ const mockSession = {
 };
 
 const mockExistingRecipe = {
+  id: 'recipe-123',
   authorId: 'user-123',
   slug: 'bolo-de-banana',
   title: 'Bolo de Banana',
+  images: [],
 };
+
+const mockUpdatedRecipe = {
+  id: 'recipe-123',
+  slug: 'bolo-de-banana',
+};
+
+beforeEach(() => {
+  vi.clearAllMocks();
+
+  vi.mocked(auth.api.getSession).mockResolvedValue(mockSession as never);
+
+  prisma.recipe.findUnique.mockResolvedValue(mockExistingRecipe as never);
+  prisma.recipe.count.mockResolvedValue(0 as never);
+  prisma.recipe.update.mockResolvedValue(mockUpdatedRecipe as never);
+
+  prisma.ingredient.deleteMany.mockResolvedValue({ count: 0 } as never);
+  prisma.ingredient.createMany.mockResolvedValue({ count: 0 } as never);
+
+  prisma.utensilOnRecipe.deleteMany.mockResolvedValue({ count: 0 } as never);
+  prisma.utensil.upsert.mockResolvedValue({ id: 'utensil-1', name: 'tigela' } as never);
+  prisma.utensilOnRecipe.create.mockResolvedValue({} as never);
+
+  prisma.$transaction.mockImplementation(async (fn: (tx: typeof prisma) => Promise<unknown>) =>
+    fn(prisma),
+  );
+});
 
 function makeFormData(overrides: Record<string, string> = {}): FormData {
   const fd = new FormData();
@@ -47,8 +75,6 @@ function makeFormData(overrides: Record<string, string> = {}): FormData {
   Object.entries(defaults).forEach(([k, v]) => fd.append(k, v));
   return fd;
 }
-
-const mockUpdatedRecipe = { id: 'recipe-123', slug: 'bolo-de-banana' };
 
 beforeEach(() => {
   vi.clearAllMocks();

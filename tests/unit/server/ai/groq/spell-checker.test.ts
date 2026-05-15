@@ -25,12 +25,10 @@ const makeOkResponse = (body: object) => ({
 });
 
 describe('spellCheckRecipeFields', () => {
-it('lança erro se GROQ_API_KEY não estiver definido', async () => {
-  vi.stubEnv('GROQ_API_KEY', ''); // ← força vazio em vez de vi.unstubAllEnvs()
-  await expect(spellCheckRecipeFields({ title: 'Teste' })).rejects.toThrow(
-    /GROQ_API_KEY/i,
-  );
-});
+  it('lança erro se GROQ_API_KEY não estiver definido', async () => {
+    vi.stubEnv('GROQ_API_KEY', ''); // ← força vazio em vez de vi.unstubAllEnvs()
+    await expect(spellCheckRecipeFields({ title: 'Teste' })).rejects.toThrow(/GROQ_API_KEY/i);
+  });
 
   it('retorna campos corrigidos', async () => {
     mockFetch.mockResolvedValueOnce(
@@ -53,9 +51,7 @@ it('lança erro se GROQ_API_KEY não estiver definido', async () => {
       text: async () => 'Internal Server Error',
     });
 
-    await expect(spellCheckRecipeFields({ title: 'Teste' })).rejects.toThrow(
-      /500/,
-    );
+    await expect(spellCheckRecipeFields({ title: 'Teste' })).rejects.toThrow(/500/);
   });
 
   it('lança erro quando a resposta não é JSON válido', async () => {
@@ -67,9 +63,7 @@ it('lança erro se GROQ_API_KEY não estiver definido', async () => {
       }),
     });
 
-    await expect(spellCheckRecipeFields({ title: 'Teste' })).rejects.toThrow(
-      /JSON/i,
-    );
+    await expect(spellCheckRecipeFields({ title: 'Teste' })).rejects.toThrow(/JSON/i);
   });
 
   it('extrai JSON de bloco fenced ```json```', async () => {

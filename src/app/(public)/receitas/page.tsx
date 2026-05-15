@@ -104,13 +104,21 @@ export default async function ReceitasPage({ searchParams }: { searchParams: Sea
                   isFeature ? 'col-span-2 row-span-2' : ''
                 }`}
               >
-                <div className={`overflow-hidden ${isFeature ? 'h-80 md:h-96' : 'h-40 md:h-52'}`}>
+                <div
+                  className={`relative overflow-hidden ${isFeature ? 'h-80 md:h-96' : 'h-40 md:h-52'}`}
+                >
                   {cover ? (
                     <Image
                       src={cover.url}
                       alt={cover.alt}
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                      loading={isFeature ? 'eager' : 'lazy'}
+                      fill
+                      sizes={
+                        isFeature
+                          ? '(max-width: 768px) 100vw, 66vw'
+                          : '(max-width: 768px) 50vw, 25vw'
+                      }
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                      priority={isFeature}
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center bg-linear-to-br from-amber-50 to-stone-200 text-4xl">

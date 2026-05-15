@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useRef, useMemo, useState, forwardRef } from 'react';
+import { useActionState, useMemo, useRef, useState, forwardRef, type ChangeEvent } from 'react';
 import Link from 'next/link';
 import { createRecipeAction } from '../actions/create-recipe';
 import { updateRecipeAction } from '../actions/update-recipe';
@@ -23,32 +23,52 @@ import type { SpellCheckResult } from '@/server/ai/groq/spell-checker';
 import type { NutritionRow } from '@/server/ai/groq/recipe-generator.types';
 import { SpellCheckModal } from './spell-check-modal';
 import { TypeSelector } from './type-selector';
+import Image from 'next/image';
+
+type RecipeImageFormData = {
+  id: string;
+  key: string;
+  url: string;
+  alt: string;
+  contentType: string | null;
+  sizeBytes: number | null;
+  width: number | null;
+  height: number | null;
+  order: number;
+  isCover: boolean;
+  recipeId: string;
+};
+
+type RecipeFormInitialData = {
+  id: string;
+  title: string;
+  summary: string | null;
+  story: string | null;
+  modeOfPreparation: string;
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  type: string;
+  prepTimeMinutes: number | null;
+  cookTimeMinutes: number | null;
+  servings: number | null;
+  suggestions: string | null;
+  notesAuthor: string | null;
+  notesPublic: string | null;
+  ingredients: ParsedIngredient[];
+  utensils: ParsedUtensil[];
+  images?: RecipeImageFormData[];
+};
 
 type RecipeFormProps = {
   mode?: 'create' | 'edit';
-  initialData?: {
-    id: string;
-    title: string;
-    summary: string | null;
-    story: string | null;
-    modeOfPreparation: string;
-    difficulty: 'EASY' | 'MEDIUM' | 'HARD';
-    type: string;
-    prepTimeMinutes: number | null;
-    cookTimeMinutes: number | null;
-    servings: number | null;
-    suggestions: string | null;
-    notesAuthor: string | null;
-    notesPublic: string | null;
-    ingredients: ParsedIngredient[];
-    utensils: ParsedUtensil[];
-  };
+  initialData?: RecipeFormInitialData;
 };
 
 function withStableIds(items: ParsedIngredient[]): ParsedIngredient[] {
-  return items.map((item) => ({
+  return items.map((item, index) => ({
     ...item,
-    id: item.id ?? crypto.randomUUID(),
+    id:
+      item.id ??
+      `${index}-${item.name?.trim().toLowerCase() ?? 'ingrediente'}-${item.originalText?.trim().toLowerCase() ?? 'sem-texto'}`,
   }));
 }
 
@@ -66,7 +86,6 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
     isEdit ? initialUpdateRecipeState : initialCreateRecipeState,
   );
 
-  // ── Campos controlados ────────────────────────────────────────────────────
   const [modeOfPreparation, setModeOfPreparation] = useState(initialData?.modeOfPreparation ?? '');
   const [ingredients, setIngredients] = useState<ParsedIngredient[]>(
     withStableIds(initialData?.ingredients ?? []),
@@ -80,11 +99,13 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
   );
   const [nutritionTable, setNutritionTable] = useState<NutritionRow[]>([]);
   const [nutritionSummary, setNutritionSummary] = useState('');
+  const [removeCoverImage, setRemoveCoverImage] = useState(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
   const serializedIngredients = useMemo(() => JSON.stringify(ingredients), [ingredients]);
   const serializedUtensils = useMemo(() => JSON.stringify(utensils), [utensils]);
+  const serializedNutritionTable = useMemo(() => JSON.stringify(nutritionTable), [nutritionTable]);
 
-  // ── Refs para campos não controlados ─────────────────────────────────────
   const titleRef = useRef<HTMLInputElement>(null);
   const summaryRef = useRef<HTMLInputElement>(null);
   const storyRef = useRef<HTMLTextAreaElement>(null);
@@ -93,10 +114,13 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
   const notesAuthorRef = useRef<HTMLTextAreaElement>(null);
   const notesPublicRef = useRef<HTMLTextAreaElement>(null);
 
-  // ── IA: Gerador completo ──────────────────────────────────────────────────
   const { isGenerating, error: generateError, generate } = useRecipeGenerator();
+  const { isChecking, error: spellError, diffs, check, clear } = useSpellCheck();
+  const [correctedData, setCorrectedData] = useState<SpellCheckResult | null>(null);
 
-  const serializedNutritionTable = useMemo(() => JSON.stringify(nutritionTable), [nutritionTable]);
+  const coverImage = useMemo(() => {
+    return initialData?.images?.find((img) => img.isCover) ?? null;
+  }, [initialData]);
 
   async function handleGenerateWithAi() {
     const title = titleRef.current?.value?.trim() ?? '';
@@ -104,49 +128,38 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
       titleRef.current?.focus();
       return;
     }
+
     if (!modeOfPreparation.trim()) return;
 
     const result = await generate({ title, modeOfPreparation });
     if (!result) return;
 
-    // Preenche modo de preparo formatado
     setModeOfPreparation(result.modeOfPreparation);
 
-    // Preenche resumo
     if (summaryRef.current) summaryRef.current.value = result.summary;
 
-    // Preenche ingredientes e utensílios
     setIngredients(withStableIds(result.ingredients));
     setUtensils(result.utensils);
+    setClassification(result.classification as ParsedClassification);
 
-    // Preenche classificação
-    setClassification(result.classification as unknown as ParsedClassification);
     if (result.classification.typeSuggestions.length > 0) {
       setTypeSuggestions(result.classification.typeSuggestions);
       if (!recipeType) setRecipeType(result.classification.typeSuggestions[0] ?? '');
     }
 
-    // Preenche dificuldade
     if (result.difficulty) setDifficulty(result.difficulty);
 
-    // Preenche tempo de forno
     if (result.cookTimeMinutes && cookTimeRef.current) {
       cookTimeRef.current.value = String(result.cookTimeMinutes);
     }
 
-    // Preenche sugestões
     if (result.suggestions && suggestionsRef.current) {
       suggestionsRef.current.value = result.suggestions;
     }
 
-    // Preenche tabela nutricional
     setNutritionTable(result.nutritionTable ?? []);
     setNutritionSummary(result.nutritionSummary ?? '');
   }
-
-  // ── Revisor ortográfico ───────────────────────────────────────────────────
-  const { isChecking, error: spellError, diffs, check, clear } = useSpellCheck();
-  const [correctedData, setCorrectedData] = useState<SpellCheckResult | null>(null);
 
   async function handleSpellCheck() {
     const result = await check({
@@ -158,35 +171,73 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
       notesAuthor: notesAuthorRef.current?.value ?? '',
       notesPublic: notesPublicRef.current?.value ?? '',
     });
+
     if (result) setCorrectedData(result);
   }
 
   function handleApplyCorrections() {
     if (!correctedData) return;
+
     if (correctedData.title && titleRef.current) titleRef.current.value = correctedData.title;
-    if (correctedData.summary && summaryRef.current)
+    if (correctedData.summary && summaryRef.current) {
       summaryRef.current.value = correctedData.summary;
+    }
     if (correctedData.story && storyRef.current) storyRef.current.value = correctedData.story;
     if (correctedData.modeOfPreparation) setModeOfPreparation(correctedData.modeOfPreparation);
-    if (correctedData.suggestions && suggestionsRef.current)
+    if (correctedData.suggestions && suggestionsRef.current) {
       suggestionsRef.current.value = correctedData.suggestions;
-    if (correctedData.notesAuthor && notesAuthorRef.current)
+    }
+    if (correctedData.notesAuthor && notesAuthorRef.current) {
       notesAuthorRef.current.value = correctedData.notesAuthor;
-    if (correctedData.notesPublic && notesPublicRef.current)
+    }
+    if (correctedData.notesPublic && notesPublicRef.current) {
       notesPublicRef.current.value = correctedData.notesPublic;
+    }
+
     clear();
     setCorrectedData(null);
   }
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      setImagePreviewUrl(null);
+      return;
+    }
+
+    const maxBytes = 5 * 1024 * 1024;
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/webp'];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert('Envie PNG, JPG ou WebP.');
+      event.target.value = '';
+      setImagePreviewUrl(null);
+      return;
+    }
+
+    if (file.size > maxBytes) {
+      alert('A imagem deve ter no máximo 5 MB.');
+      event.target.value = '';
+      setImagePreviewUrl(null);
+      return;
+    }
+
+    setRemoveCoverImage(false);
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreviewUrl(previewUrl);
+  }
+
+  const showCurrentCover = !removeCoverImage && !imagePreviewUrl && !!coverImage;
+
   return (
     <form
       action={formAction}
       className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-[0_10px_30px_rgba(28,25,23,0.05)]"
     >
       {isEdit && initialData && <input type="hidden" name="recipeId" value={initialData.id} />}
+      <input type="hidden" name="removeCoverImage" value={removeCoverImage ? 'true' : 'false'} />
 
-      {/* Cabeçalho */}
       <div className="border-b border-stone-200 px-5 py-5 md:px-8">
         <h2 className="text-lg font-semibold text-stone-900">
           {isEdit ? 'Editar receita' : 'Nova receita'}
@@ -198,7 +249,6 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
       </div>
 
       <div className="grid gap-8 px-5 py-6 md:px-8">
-        {/* ── Bloco 1: Título + Modo de preparo (entrada para IA) ── */}
         <section className="space-y-4 rounded-xl border-2 border-amber-200 bg-amber-50/40 px-5 py-5">
           <div className="flex items-center justify-between gap-4">
             <div>
@@ -207,42 +257,14 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
                 Preencha o título e o modo de preparo. A IA irá sugerir todos os outros campos.
               </p>
             </div>
+
             <button
               type="button"
               onClick={handleGenerateWithAi}
               disabled={isGenerating}
               className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md bg-amber-500 px-4 py-2.5 text-sm font-semibold text-stone-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {isGenerating ? (
-                <>
-                  <svg
-                    className="animate-spin"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-                  </svg>
-                  Gerando…
-                </>
-              ) : (
-                <>
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                  </svg>
-                  Gerar com IA
-                </>
-              )}
+              {isGenerating ? 'Gerando…' : 'Gerar com IA'}
             </button>
           </div>
 
@@ -271,9 +293,7 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
               required
               value={modeOfPreparation}
               onChange={(e) => setModeOfPreparation(e.target.value)}
-              placeholder={
-                'Em um recipiente, coloque 2 xícaras de fubá...\nAcrescente os ovos e a manteiga...\nLeve ao forno a 180°C por 25 minutos.'
-              }
+              placeholder="Em um recipiente, coloque 2 xícaras de fubá..."
             />
           </div>
 
@@ -284,17 +304,15 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
           )}
         </section>
 
-        {/* ── Bloco 2: Campos sugeridos pela IA ── */}
         <section className="space-y-6">
           <div className="flex items-center gap-2">
             <div className="h-px flex-1 bg-stone-200" />
-            <span className="text-xs font-medium text-stone-400 uppercase tracking-wider">
+            <span className="text-xs font-medium uppercase tracking-wider text-stone-400">
               Campos sugeridos pela IA
             </span>
             <div className="h-px flex-1 bg-stone-200" />
           </div>
 
-          {/* Resumo */}
           <Field label="Resumo" htmlFor="summary">
             <FormInput
               ref={summaryRef}
@@ -305,7 +323,6 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
             />
           </Field>
 
-          {/* Dificuldade, Tipo, Tempos */}
           <div className="grid gap-4 md:grid-cols-3">
             <Field label="Dificuldade" htmlFor="difficulty">
               <FormSelect
@@ -314,9 +331,9 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value as 'EASY' | 'MEDIUM' | 'HARD')}
               >
-                <option value="EASY">Fácil</option>
-                <option value="MEDIUM">Média</option>
-                <option value="HARD">Difícil</option>
+                <option value="EASY">{DIFFICULTY_LABEL.EASY}</option>
+                <option value="MEDIUM">{DIFFICULTY_LABEL.MEDIUM}</option>
+                <option value="HARD">{DIFFICULTY_LABEL.HARD}</option>
               </FormSelect>
             </Field>
 
@@ -341,6 +358,7 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
                   defaultValue={initialData?.prepTimeMinutes ?? ''}
                 />
               </Field>
+
               <Field label="Forno (min)" htmlFor="cookTimeMinutes">
                 <FormInput
                   ref={cookTimeRef}
@@ -351,6 +369,7 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
                   defaultValue={initialData?.cookTimeMinutes ?? ''}
                 />
               </Field>
+
               <Field label="Porções" htmlFor="servings">
                 <FormInput
                   id="servings"
@@ -363,7 +382,6 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
             </div>
           </div>
 
-          {/* Ingredientes e Utensílios */}
           <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
             <section className="space-y-4 rounded-xl border border-stone-200 bg-stone-50 px-4 py-4">
               <div className="space-y-1">
@@ -394,12 +412,10 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
             </div>
           </div>
 
-          {/* Tabela nutricional */}
           {nutritionTable.length > 0 && (
             <NutritionTable rows={nutritionTable} summary={nutritionSummary} />
           )}
 
-          {/* Sugestões */}
           <Field label="Sugestões" htmlFor="suggestions">
             <FormTextarea
               ref={suggestionsRef}
@@ -412,11 +428,10 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
           </Field>
         </section>
 
-        {/* ── Bloco 3: História e notas (campos manuais) ── */}
         <section className="space-y-4">
           <div className="flex items-center gap-2">
             <div className="h-px flex-1 bg-stone-200" />
-            <span className="text-xs font-medium text-stone-400 uppercase tracking-wider">
+            <span className="text-xs font-medium uppercase tracking-wider text-stone-400">
               Campos manuais
             </span>
             <div className="h-px flex-1 bg-stone-200" />
@@ -444,6 +459,7 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
                 defaultValue={initialData?.notesAuthor ?? ''}
               />
             </Field>
+
             <Field label="Notas públicas" htmlFor="notesPublic">
               <FormTextarea
                 ref={notesPublicRef}
@@ -457,14 +473,76 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
           </div>
         </section>
 
-        {/* Campos ocultos */}
+        <section className="space-y-4 rounded-xl border border-stone-200 bg-stone-50 px-4 py-4">
+          <div className="space-y-1">
+            <h3 className="text-base font-semibold text-stone-900">Imagem da receita</h3>
+            <p className="text-sm text-stone-600">
+              Aceita qualquer imagem. O arquivo será convertido para WebP e otimizado para até 3 MB.
+            </p>
+          </div>
+
+          {showCurrentCover && coverImage && (
+            <div className="space-y-3">
+              <div className="relative aspect-4/3 w-full max-w-md overflow-hidden rounded-xl border border-stone-200 bg-white">
+                <Image
+                  src={coverImage.url}
+                  alt={coverImage.alt}
+                  fill
+                  unoptimized
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 448px"
+                />
+              </div>
+
+              <label className="inline-flex items-center gap-2 text-sm text-stone-700">
+                <input
+                  type="checkbox"
+                  checked={removeCoverImage}
+                  onChange={(e) => setRemoveCoverImage(e.target.checked)}
+                  className="h-4 w-4 rounded border-stone-300 text-amber-600 focus:ring-amber-500"
+                />
+                Remover imagem atual
+              </label>
+            </div>
+          )}
+
+          {imagePreviewUrl && (
+            <div className="space-y-2">
+              <div className="relative aspect-4/3 w-full max-w-md overflow-hidden rounded-xl border border-stone-200 bg-white">
+                <Image
+                  src={imagePreviewUrl}
+                  alt="Pré-visualização da nova imagem"
+                  fill
+                  unoptimized
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 448px"
+                />
+              </div>
+              <p className="text-xs text-stone-500">Nova imagem selecionada.</p>
+            </div>
+          )}
+
+          <div className="space-y-2">
+            <label htmlFor="image" className="block text-sm font-medium text-stone-800">
+              {isEdit ? 'Trocar imagem' : 'Enviar imagem'}
+            </label>
+            <input
+              id="image"
+              name="image"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="block w-full rounded-md border border-stone-300 bg-white px-3 py-2.5 text-sm text-stone-900 file:mr-4 file:rounded-md file:border-0 file:bg-amber-100 file:px-3 file:py-2 file:text-sm file:font-medium file:text-amber-900 hover:file:bg-amber-200"
+            />
+          </div>
+        </section>
+
         <input type="hidden" name="aiIngredients" value={serializedIngredients} />
         <input type="hidden" name="aiUtensils" value={serializedUtensils} />
-
         <input type="hidden" name="nutritionTable" value={serializedNutritionTable} />
         <input type="hidden" name="nutritionSummary" value={nutritionSummary} />
+        <input type="hidden" name="type" value={recipeType} />
 
-        {/* Erros do servidor */}
         {state.status === 'error' && state.message && (
           <p
             role="alert"
@@ -475,7 +553,6 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
           </p>
         )}
 
-        {/* ── Ações ── */}
         <div className="flex flex-col-reverse gap-3 border-t border-stone-200 pt-6 sm:flex-row sm:items-center sm:justify-end">
           <Link
             href={isEdit && initialData ? `/receitas/${slugify(initialData.title)}` : '/receitas'}
@@ -490,16 +567,6 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
             disabled={isChecking}
             className="inline-flex items-center justify-center gap-2 rounded-md border border-stone-300 bg-white px-5 py-3 text-sm font-medium text-stone-700 transition hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-            </svg>
             {isChecking ? 'Revisando…' : 'Revisar texto'}
           </button>
 
@@ -526,8 +593,6 @@ export function RecipeForm({ mode = 'create', initialData }: RecipeFormProps) {
     </form>
   );
 }
-
-// ─── Primitivos de UI ──────────────────────────────────────────────────────────
 
 function Field({
   label,

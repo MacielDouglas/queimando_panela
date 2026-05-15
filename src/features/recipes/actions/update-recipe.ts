@@ -6,6 +6,10 @@ import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { slugify } from '@/lib/slugify';
+import {
+  uploadRecipeCoverImage,
+  safeDeleteRecipeImage,
+} from '@/features/recipes/server/recipe-image.service';
 import type {
   ParsedIngredient,
   ParsedUtensil,
@@ -31,6 +35,7 @@ const recipeSchema = z.object({
   recipeId: z.string().min(1),
   nutritionSummary: z.string().trim().max(300).optional().or(z.literal('')),
   nutritionTable: z.string().optional(),
+  removeCoverImage: z.enum(['true', 'false']).optional(),
 });
 
 function toNullableNumber(value?: string): number | null {
@@ -64,10 +69,31 @@ export async function updateRecipeAction(
   }
 
   const data = parsed.data;
+  const imageFile = formData.get('image');
+  const newFile = imageFile instanceof File ? imageFile : null;
+
+  console.log('updateRecipeAction:image', {
+    hasFile: !!newFile,
+    name: newFile?.name,
+    type: newFile?.type,
+    size: newFile?.size,
+  });
+
+  const removeCoverImage = data.removeCoverImage === 'true';
 
   const existing = await prisma.recipe.findUnique({
     where: { id: data.recipeId },
-    select: { authorId: true, slug: true, title: true },
+    select: {
+      id: true,
+      authorId: true,
+      slug: true,
+      title: true,
+      images: {
+        where: { isCover: true },
+        take: 1,
+        select: { id: true, key: true },
+      },
+    },
   });
 
   if (!existing) {
@@ -80,6 +106,7 @@ export async function updateRecipeAction(
 
   let ingredients: ParsedIngredient[] = [];
   let utensils: ParsedUtensil[] = [];
+
   try {
     ingredients = JSON.parse(data.aiIngredients ?? '[]') as ParsedIngredient[];
     utensils = JSON.parse(data.aiUtensils ?? '[]') as ParsedUtensil[];
@@ -131,50 +158,118 @@ export async function updateRecipeAction(
     ).values(),
   );
 
-  await prisma.$transaction(async (tx) => {
-    await tx.recipe.update({
-      where: { id: data.recipeId },
-      data: {
-        title: data.title,
-        slug,
-        summary: toNullable(data.summary),
-        story: toNullable(data.story),
-        modeOfPreparation: data.modeOfPreparation,
-        suggestions: toNullable(data.suggestions),
-        notesAuthor: toNullable(data.notesAuthor),
-        notesPublic: toNullable(data.notesPublic),
-        difficulty: data.difficulty,
-        type: data.type,
-        prepTimeMinutes: toNullableNumber(data.prepTimeMinutes),
-        cookTimeMinutes: toNullableNumber(data.cookTimeMinutes),
-        servings: toNullableNumber(data.servings),
-        nutritionSummary: toNullable(data.nutritionSummary),
-        nutritionPer100g,
-      },
+  let newUploadedImage: {
+    key: string;
+    url: string;
+    alt: string;
+    contentType: string;
+    sizeBytes: number;
+    width: number;
+    height: number;
+    isCover: boolean;
+    order: number;
+  } | null = null;
+
+  try {
+    if (newFile && newFile.size > 0) {
+      newUploadedImage = await uploadRecipeCoverImage({
+        recipeId: existing.id,
+        file: newFile,
+        alt: `Capa da receita ${data.title}`,
+      });
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.recipe.update({
+        where: { id: data.recipeId },
+        data: {
+          title: data.title,
+          slug,
+          summary: toNullable(data.summary),
+          story: toNullable(data.story),
+          modeOfPreparation: data.modeOfPreparation,
+          suggestions: toNullable(data.suggestions),
+          notesAuthor: toNullable(data.notesAuthor),
+          notesPublic: toNullable(data.notesPublic),
+          difficulty: data.difficulty,
+          type: data.type,
+          prepTimeMinutes: toNullableNumber(data.prepTimeMinutes),
+          cookTimeMinutes: toNullableNumber(data.cookTimeMinutes),
+          servings: toNullableNumber(data.servings),
+          nutritionSummary: toNullable(data.nutritionSummary),
+          nutritionPer100g,
+        },
+      });
+
+      await tx.ingredient.deleteMany({ where: { recipeId: data.recipeId } });
+
+      if (validIngredients.length > 0) {
+        await tx.ingredient.createMany({
+          data: validIngredients.map((i) => ({ ...i, recipeId: data.recipeId })),
+        });
+      }
+
+      await tx.utensilOnRecipe.deleteMany({ where: { recipeId: data.recipeId } });
+
+      for (const name of uniqueUtensils) {
+        const utensil = await tx.utensil.upsert({
+          where: { name },
+          update: {},
+          create: { name },
+        });
+
+        await tx.utensilOnRecipe.create({
+          data: { recipeId: data.recipeId, utensilId: utensil.id },
+        });
+      }
+
+      const currentCover = existing.images?.[0] ?? null;
+
+      if (newUploadedImage) {
+        if (currentCover) {
+          await tx.recipeImage.delete({
+            where: { id: currentCover.id },
+          });
+        }
+
+        await tx.recipeImage.create({
+          data: {
+            recipeId: data.recipeId,
+            key: newUploadedImage.key,
+            url: newUploadedImage.url,
+            alt: newUploadedImage.alt,
+            contentType: newUploadedImage.contentType,
+            sizeBytes: newUploadedImage.sizeBytes,
+            width: newUploadedImage.width,
+            height: newUploadedImage.height,
+            isCover: true,
+            order: 0,
+          },
+        });
+      }
+
+      if (!newUploadedImage && removeCoverImage && currentCover) {
+        await tx.recipeImage.delete({
+          where: { id: currentCover.id },
+        });
+      }
     });
 
-    await tx.ingredient.deleteMany({ where: { recipeId: data.recipeId } });
+    if (existing.images[0]?.key && (newUploadedImage || removeCoverImage)) {
+      await safeDeleteRecipeImage(existing.images[0].key);
+    }
+  } catch (error) {
+    console.error('updateRecipeAction failed', error);
 
-    if (validIngredients.length > 0) {
-      await tx.ingredient.createMany({
-        data: validIngredients.map((i) => ({ ...i, recipeId: data.recipeId })),
-      });
+    if (newUploadedImage?.key) {
+      await safeDeleteRecipeImage(newUploadedImage.key);
     }
 
-    await tx.utensilOnRecipe.deleteMany({ where: { recipeId: data.recipeId } });
-
-    for (const name of uniqueUtensils) {
-      const utensil = await tx.utensil.upsert({
-        where: { name },
-        update: {},
-        create: { name },
-      });
-
-      await tx.utensilOnRecipe.create({
-        data: { recipeId: data.recipeId, utensilId: utensil.id },
-      });
-    }
-  });
+    return {
+      status: 'error',
+      message: 'Não foi possível atualizar a receita.',
+    };
+  }
 
   redirect(`/receitas/${slug}`);
 }
