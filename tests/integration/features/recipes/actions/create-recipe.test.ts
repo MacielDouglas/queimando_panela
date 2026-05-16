@@ -3,11 +3,20 @@ import { createRecipeAction } from '@/features/recipes/actions/create-recipe';
 import { initialCreateRecipeState } from '@/features/recipes/types/recipe-form.types';
 import { prisma } from '@/lib/__mocks__/prisma';
 import { auth } from '@/lib/auth';
+import {
+  safeDeleteRecipeImage,
+  uploadRecipeCoverImage,
+} from '@/features/recipes/server/recipe-image.service';
+import { Prisma } from '../../../../../generated/prisma/client';
 
 vi.mock('@/lib/prisma');
 vi.mock('@/lib/auth');
 vi.mock('@/lib/slugify', () => ({
   slugify: vi.fn((title: string) => title.toLowerCase().replace(/\s+/g, '-')),
+}));
+vi.mock('@/features/recipes/server/recipe-image.service', () => ({
+  uploadRecipeCoverImage: vi.fn(),
+  safeDeleteRecipeImage: vi.fn(),
 }));
 
 // ─── Fixtures ──────────────────────────────────────────────────────────────────
@@ -49,6 +58,9 @@ const mockCreatedRecipe = {
 // ─── Setup ─────────────────────────────────────────────────────────────────────
 
 beforeEach(() => {
+  vi.mocked(uploadRecipeCoverImage).mockResolvedValue(null as never);
+  vi.mocked(safeDeleteRecipeImage).mockResolvedValue(undefined as never);
+  prisma.recipeImage.create.mockResolvedValue({ id: 'img-1' } as never);
   vi.mocked(auth.api.getSession).mockResolvedValue(mockSession as never);
   prisma.recipe.count.mockResolvedValue(0);
   prisma.recipe.create.mockResolvedValue(mockCreatedRecipe as never);
@@ -311,5 +323,124 @@ describe('createRecipeAction — criação', () => {
         }),
       }),
     );
+  });
+});
+
+describe('createRecipeAction — imagem e nutrition', () => {
+  it('salva nutritionPer100g como Prisma.JsonNull quando nutritionTable é array vazio', async () => {
+    await expect(
+      createRecipeAction(initialCreateRecipeState, makeFormData({ nutritionTable: '[]' })),
+    ).rejects.toThrow('NEXT_REDIRECT:');
+
+    const callArgs = prisma.recipe.create.mock.calls[0]?.[0] as {
+      data: { nutritionPer100g: unknown };
+    };
+
+    expect(callArgs.data.nutritionPer100g).toBe(Prisma.JsonNull);
+  });
+
+  it('salva nutritionPer100g como Prisma.JsonNull quando nutritionTable é JSON inválido', async () => {
+    await expect(
+      createRecipeAction(
+        initialCreateRecipeState,
+        makeFormData({ nutritionTable: '{json-invalido' }),
+      ),
+    ).rejects.toThrow('NEXT_REDIRECT:');
+
+    const callArgs = prisma.recipe.create.mock.calls[0]?.[0] as {
+      data: { nutritionPer100g: unknown };
+    };
+
+    expect(callArgs.data.nutritionPer100g).toBe(Prisma.JsonNull);
+  });
+
+  it('não chama uploadRecipeCoverImage quando nenhum arquivo é enviado', async () => {
+    await expect(createRecipeAction(initialCreateRecipeState, makeFormData())).rejects.toThrow(
+      'NEXT_REDIRECT:',
+    );
+
+    expect(uploadRecipeCoverImage).not.toHaveBeenCalled();
+  });
+
+  it('não chama recipeImage.create quando upload retorna null', async () => {
+    const formData = makeFormData();
+    const file = new File(['data'], 'cover.webp', { type: 'image/webp' });
+    formData.append('image', file);
+
+    vi.mocked(uploadRecipeCoverImage).mockResolvedValue(null as never);
+
+    await expect(createRecipeAction(initialCreateRecipeState, formData)).rejects.toThrow(
+      'NEXT_REDIRECT:',
+    );
+
+    expect(uploadRecipeCoverImage).toHaveBeenCalledOnce();
+    expect(prisma.recipeImage.create).not.toHaveBeenCalled();
+  });
+
+  it('cria recipeImage quando upload retorna arquivo válido', async () => {
+    vi.mocked(uploadRecipeCoverImage).mockClear();
+    prisma.recipeImage.create.mockClear();
+
+    const formData = makeFormData();
+    const file = new File(['data'], 'cover.webp', { type: 'image/webp' });
+    formData.append('image', file);
+
+    vi.mocked(uploadRecipeCoverImage).mockResolvedValue({
+      key: 'recipes/recipe-123/cover.webp',
+      url: 'https://cdn.exemplo.com/cover.webp',
+      alt: 'Capa da receita Bolo de Banana',
+      contentType: 'image/webp',
+      sizeBytes: 12345,
+      width: 1200,
+      height: 900,
+      isCover: true,
+      order: 0,
+    } as never);
+
+    await expect(createRecipeAction(initialCreateRecipeState, formData)).rejects.toThrow(
+      'NEXT_REDIRECT:',
+    );
+
+    expect(uploadRecipeCoverImage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        recipeId: 'recipe-123',
+        file,
+        alt: expect.stringMatching(/capa da receita/i),
+      }),
+    );
+
+    expect(prisma.recipeImage.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          recipeId: 'recipe-123',
+          key: 'recipes/recipe-123/cover.webp',
+          isCover: true,
+        }),
+      }),
+    );
+  });
+
+  it('chama safeDeleteRecipeImage e relança erro quando recipeImage.create falha', async () => {
+    const formData = makeFormData();
+    const file = new File(['data'], 'cover.webp', { type: 'image/webp' });
+    formData.append('image', file);
+
+    vi.mocked(uploadRecipeCoverImage).mockResolvedValue({
+      key: 'recipes/recipe-123/cover.webp',
+      url: 'https://cdn.exemplo.com/cover.webp',
+      alt: 'Capa da receita Bolo de Banana',
+      contentType: 'image/webp',
+      sizeBytes: 12345,
+      width: 1200,
+      height: 900,
+      isCover: true,
+      order: 0,
+    } as never);
+
+    prisma.recipeImage.create.mockRejectedValueOnce(new Error('db fail') as never);
+
+    await expect(createRecipeAction(initialCreateRecipeState, formData)).rejects.toThrow('db fail');
+
+    expect(safeDeleteRecipeImage).toHaveBeenCalledWith('recipes/recipe-123/cover.webp');
   });
 });

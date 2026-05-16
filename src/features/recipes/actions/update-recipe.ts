@@ -72,13 +72,6 @@ export async function updateRecipeAction(
   const imageFile = formData.get('image');
   const newFile = imageFile instanceof File ? imageFile : null;
 
-  console.log('updateRecipeAction:image', {
-    hasFile: !!newFile,
-    name: newFile?.name,
-    type: newFile?.type,
-    size: newFile?.size,
-  });
-
   const removeCoverImage = data.removeCoverImage === 'true';
 
   const existing = await prisma.recipe.findUnique({

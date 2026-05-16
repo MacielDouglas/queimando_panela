@@ -337,4 +337,11 @@ describe('RecipeForm - branches', () => {
     expect(screen.getByText(/nova imagem selecionada/i)).toBeInTheDocument();
     expect(screen.getByAltText(/pré-visualização da nova imagem/i)).toBeInTheDocument();
   });
+
+  it('não aplica correções quando correctedData é null', async () => {
+    render(<RecipeForm />);
+
+    // modal não existe
+    expect(screen.queryByText(/Aplicar correções/i)).not.toBeInTheDocument();
+  });
 });
