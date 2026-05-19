@@ -20,9 +20,7 @@ describe('SignInPage', () => {
       screen.getByText(/Receitas autorais, histórias culinárias/i),
     ).toBeInTheDocument();
 
-    expect(
-      screen.getByText(/A cozinha já está quente/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/A cozinha já está quente/i)).toBeInTheDocument();
   });
 
   it('renderiza o card de login com formulário', () => {
