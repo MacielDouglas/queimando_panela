@@ -7,14 +7,16 @@ on:
     branches: [main, develop]
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
   quality:
-    name: Lint, Typecheck, Unit Tests, Build
+    name: Quality
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
       - name: Checkout
@@ -27,6 +29,9 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: bun run db:generate
 
       - name: Format check
         run: bun run format:check
@@ -37,7 +42,7 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
 
-      - name: Unit and integration tests
+      - name: Unit and integration tests with coverage
         run: bun run test:coverage
 
       - name: Build
@@ -48,6 +53,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: quality
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      CI: true
+      PORT: 3000
 
     steps:
       - name: Checkout
@@ -61,8 +70,36 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Generate Prisma Client
+        run: bun run db:generate
+
+      - name: Build application
+        run: bun run build
+
       - name: Install Playwright browsers
         run: bunx playwright install --with-deps chromium
 
+      - name: Start application
+        run: bun run start &
+
+      - name: Wait for application
+        run: bunx wait-on http://127.0.0.1:3000
+
       - name: Run Playwright tests
         run: bun run e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          if-no-files-found: ignore
+
+      - name: Upload Playwright test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results
+          if-no-files-found: ignore

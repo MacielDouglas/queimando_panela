@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "prisma generate",
+    "db:generate": "prisma generate",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -17,7 +17,8 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "e2e": "playwright test",
-    "check": "bun run format && bun run lint && bun run typecheck"
+    "check": "bun run format && bun run lint && bun run typecheck",
+    "ci": "bun run format:check && bun run lint && bun run typecheck && bun run test:coverage"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
@@ -62,7 +63,8 @@
     "tailwindcss": "^4",
     "tsx": "^4.22.2",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.6"
+    "vitest": "^4.1.6",
+    "wait-on": "^8.0.1"
   },
   "ignoreScripts": [
     "sharp",
