@@ -1,0 +1,236 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Receita Principal
+model Recipe {
+  id                String           @id @default(cuid())
+  slug              String           @unique
+  title             String
+  summary           String?
+  story             String?
+  modeOfPreparation String?
+  difficulty        RecipeDifficulty
+  type              String?
+  prepTimeMinutes   Int?
+  cookTimeMinutes   Int?
+  servings          Int?
+  suggestions       String?
+  notesAuthor       String?
+  notesPublic       String?
+  nutritionSummary  String?
+  nutritionPer100g  Json?
+  classification    Json?
+  isPublished       Boolean          @default(false)
+  publishedAt       DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  sections    RecipeSection[]
+  ingredients Ingredient[]
+  utensils    UtensilOnRecipe[]
+  images      RecipeImage[]
+  comments    Comment[] // <- ADICIONE
+
+  @@index([authorId])
+  @@index([type])
+}
+
+/// Etapas estruturadas da receita: massa, recheio, farofa, cobertura, etapa principal...
+model RecipeSection {
+  id String @id @default(cuid())
+
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  name              String // ex: "Massa", "Recheio", "Farofa", "Etapa principal"
+  ingredientsText   String? @db.Text
+  modeOfPreparation String  @db.Text
+  order             Int
+
+  ingredients Ingredient[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([recipeId, order])
+  @@index([recipeId])
+  @@index([recipeId, order])
+}
+
+/// Ingredientes extraídos/normalizados pela IA ou pelo usuário
+model Ingredient {
+  id String @id @default(cuid())
+
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  sectionId String?
+  section   RecipeSection? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  amount       String? // ex: "4", "1 e 1/2", "3/4"
+  unit         String? // ex: "xícara (chá)", "colher (sopa)"
+  name         String // ex: "uva preta"
+  originalText String  @db.Text
+  order        Int
+
+  createdAt DateTime @default(now())
+
+  @@index([recipeId])
+  @@index([sectionId])
+  @@index([recipeId, order])
+  @@index([sectionId, order])
+}
+
+/// Imagens da receita (capa + galeria)
+model RecipeImage {
+  id String @id @default(cuid())
+
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  key         String  @unique
+  url         String
+  alt         String
+  contentType String?
+  sizeBytes   Int?
+  width       Int?
+  height      Int?
+
+  isCover Boolean @default(false)
+  order   Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([recipeId])
+  @@index([recipeId, isCover])
+  @@index([recipeId, order])
+}
+
+/// Utensílios (tabela de referência)
+model Utensil {
+  id   String @id @default(cuid())
+  name String @unique
+
+  recipes UtensilOnRecipe[]
+
+  createdAt DateTime @default(now())
+}
+
+/// Tabela de junção N:N entre Recipe e Utensil
+model UtensilOnRecipe {
+  recipeId  String
+  utensilId String
+
+  recipe  Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  utensil Utensil @relation(fields: [utensilId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@id([recipeId, utensilId])
+  @@index([utensilId])
+}
+
+/// Comentários / notas dos usuários
+model Comment {
+  id String @id @default(cuid())
+
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  userId String?
+  rating Int?
+  title  String?
+  body   String  @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([recipeId])
+  @@index([userId])
+}
+
+enum RecipeDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model User {
+  id            String   @id
+  name          String
+  email         String
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions Session[]
+  accounts Account[]
+
+  recipes Recipe[] // <- ADICIONE
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
