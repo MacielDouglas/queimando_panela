@@ -131,7 +131,7 @@ export default function Home() {
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
-                className="relative overflow-hidden rounded-[2rem] border border-amber-100 bg-white/90 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.08)] backdrop-blur"
+                className="relative overflow-hidden rounded-4xl border border-amber-100 bg-white/90 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.08)] backdrop-blur"
               >
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">

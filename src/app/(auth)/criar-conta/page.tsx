@@ -60,7 +60,7 @@ export default function SignUpPage() {
 
           {/* Right auth card */}
           <div className="relative flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-amber-100 bg-white/85 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.08)] backdrop-blur">
+            <div className="relative w-full max-w-md overflow-hidden rounded-4xl border border-amber-100 bg-white/85 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.08)] backdrop-blur">
               {/* subtle glow */}
               <div
                 aria-hidden
