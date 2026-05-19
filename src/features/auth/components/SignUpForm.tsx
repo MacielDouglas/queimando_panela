@@ -51,10 +51,7 @@ export function SignUpForm() {
       });
 
       if (result.error) {
-        setFormError(
-          result.error.message ??
-            'Não foi possível criar a conta.',
-        );
+        setFormError(result.error.message ?? 'Não foi possível criar a conta.');
 
         return;
       }
@@ -78,24 +75,17 @@ export function SignUpForm() {
 
       if (result?.error) {
         setFormError(
-          result.error.message ??
-            'Não foi possível criar conta com Google.',
+          result.error.message ?? 'Não foi possível criar conta com Google.',
         );
       }
     } catch {
-      setFormError(
-        'Erro inesperado ao usar login com Google.',
-      );
+      setFormError('Erro inesperado ao usar login com Google.');
     }
   }
 
   return (
     <div className="space-y-6">
-      <form
-        onSubmit={handleSubmit}
-        noValidate
-        className="space-y-5"
-      >
+      <form onSubmit={handleSubmit} noValidate className="space-y-5">
         <FieldGroup>
           <Field>
             <FieldLabel>Nome</FieldLabel>
@@ -106,16 +96,9 @@ export function SignUpForm() {
                 autoComplete="name"
                 required
                 value={name}
-                onChange={(event) =>
-                  setName(event.target.value)
-                }
+                onChange={(event) => setName(event.target.value)}
                 placeholder="Seu nome"
-                  className="
-                  border-neutral-200
-                  bg-white/70
-                  focus-visible:border-amber-500
-                  focus-visible:ring-amber-500/20
-                "
+                className="border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
               />
             </FieldContent>
 
@@ -133,16 +116,9 @@ export function SignUpForm() {
                 autoComplete="email"
                 required
                 value={email}
-                onChange={(event) =>
-                  setEmail(event.target.value)
-                }
+                onChange={(event) => setEmail(event.target.value)}
                 placeholder="voce@email.com"
-                     className="
-                  border-neutral-200
-                  bg-white/70
-                  focus-visible:border-amber-500
-                  focus-visible:ring-amber-500/20
-                "
+                className="border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
               />
             </FieldContent>
           </Field>
@@ -157,16 +133,9 @@ export function SignUpForm() {
                 required
                 minLength={8}
                 value={password}
-                onChange={(event) =>
-                  setPassword(event.target.value)
-                }
+                onChange={(event) => setPassword(event.target.value)}
                 placeholder="••••••••"
-                   className="
-                  border-neutral-200
-                  bg-white/70
-                  focus-visible:border-amber-500
-                  focus-visible:ring-amber-500/20
-                "
+                className="border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
               />
             </FieldContent>
 
@@ -175,51 +144,35 @@ export function SignUpForm() {
             </FieldDescription>
           </Field>
 
-          {formError && (
-            <FieldError>{formError}</FieldError>
-          )}
+          {formError && <FieldError>{formError}</FieldError>}
         </FieldGroup>
 
         <Button
           type="submit"
           disabled={isSubmitting}
-             className="
-            h-11 w-full
-            bg-amber-500
-            font-semibold
-            text-neutral-950
-            transition-all duration-300
-            hover:bg-amber-400
-          "
+          className="h-11 w-full bg-amber-500 font-semibold text-neutral-950 transition-all duration-300 hover:bg-amber-400"
         >
-          {isSubmitting
-            ? 'Criando conta...'
-            : 'Criar conta'}
+          {isSubmitting ? 'Criando conta...' : 'Criar conta'}
         </Button>
       </form>
 
       <div className="flex items-center gap-3">
         <div className="h-px flex-1 bg-neutral-200" />
 
-        <span className="text-xs font-medium uppercase tracking-[0.2em] text-neutral-500">
+        <span className="text-xs font-medium tracking-[0.2em] text-neutral-500 uppercase">
           ou
         </span>
 
         <div className="h-px flex-1 bg-neutral-200" />
       </div>
 
-            <GoogleAuthButton
-              onClick={handleGoogleSignUp}
-            />
+      <GoogleAuthButton onClick={handleGoogleSignUp} />
 
       <p className="text-center text-sm text-neutral-600">
         Já tem conta?{' '}
         <Link
           href="/login"
-        className="
-            font-semibold text-amber-700
-            hover:text-amber-500
-          "
+          className="font-semibold text-amber-700 hover:text-amber-500"
         >
           Entrar
         </Link>

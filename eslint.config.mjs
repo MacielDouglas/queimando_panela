@@ -1,18 +1,41 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import { defineConfig, globalIgnores } from 'eslint/config';
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import nextTypescript from 'eslint-config-next/typescript';
+import prettierConfig from 'eslint-config-prettier';
 
-const eslintConfig = defineConfig([
+export default defineConfig([
   ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
+  ...nextTypescript,
+  prettierConfig,
   globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
+    '.next/**',
+    'node_modules/**',
+    'coverage/**',
+    'playwright-report/**',
+    'test-results/**',
+    'src/generated/**',
   ]),
+  {
+    rules: {
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports' },
+      ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+    },
+  },
+  {
+    files: ['tests/**/*.ts', 'tests/**/*.tsx'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+    },
+  },
 ]);
-
-export default eslintConfig;

@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -132,8 +132,8 @@
     @apply bg-background text-foreground;
     text-rendering: optimizeLegibility;
     font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
+      'rlig' 1,
+      'calt' 1;
   }
 
   h1,
