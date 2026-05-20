@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
@@ -29,7 +30,7 @@ describe('Button', () => {
   it('renderiza com asChild usando link', () => {
     render(
       <Button asChild>
-        <a href="/receitas">Receitas</a>
+        <Link href="/receitas">Receitas</Link>
       </Button>,
     );
 

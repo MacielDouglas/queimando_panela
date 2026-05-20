@@ -78,7 +78,7 @@ export default async function RecipesPage() {
 
               {session?.user && (
                 <Link
-                  href="/receitas/nova"
+                  href="/receitas/new"
                   className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-sm font-bold text-neutral-900 shadow-lg shadow-amber-500/20 transition-all duration-200 hover:scale-[1.02] hover:bg-amber-400"
                 >
                   <Plus className="h-4 w-4" />
