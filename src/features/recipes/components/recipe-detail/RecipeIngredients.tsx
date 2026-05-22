@@ -1,11 +1,15 @@
+import { Wheat, Wrench } from 'lucide-react';
+
+type Ingredient = {
+  id: string;
+  amount: string | null;
+  unit: string | null;
+  name: string;
+};
+
 type Section = {
   name: string;
-  ingredients: {
-    id: string;
-    amount: string | null;
-    unit: string | null;
-    name: string;
-  }[];
+  ingredients: Ingredient[];
 };
 
 type Props = {
@@ -13,61 +17,80 @@ type Props = {
   utensils: string[];
 };
 
+function formatIngredient(ingredient: Ingredient) {
+  return [ingredient.amount, ingredient.unit, ingredient.name]
+    .filter(Boolean)
+    .join(' ');
+}
+
 export function RecipeIngredients({ sections, utensils }: Props) {
   return (
-    <div className="space-y-8 rounded-3xl border border-amber-100 bg-white/70 p-8">
-      {sections.map((section, i) => (
-        <div key={i} className="space-y-4">
-          {sections.length > 1 && (
-            <h3 className="font-bold text-amber-700">{section.name}</h3>
-          )}
+    <section
+      aria-labelledby="recipe-ingredients-heading"
+      className="border border-neutral-200 bg-white p-5 sm:p-6"
+    >
+      <div className="mb-5 flex items-center gap-2 border-b border-neutral-200 pb-3">
+        <Wheat className="h-4 w-4 text-amber-500" />
+        <h2
+          id="recipe-ingredients-heading"
+          className="text-sm font-bold tracking-[0.16em] text-neutral-950 uppercase"
+        >
+          Ingredientes
+        </h2>
+      </div>
 
-          {sections.length === 1 && (
-            <h3 className="text-xs font-semibold tracking-widest text-neutral-500 uppercase">
-              Ingredientes
-            </h3>
-          )}
+      <div className="space-y-8">
+        {sections.map((section, index) => (
+          <section key={`${section.name}-${index}`} className="space-y-3">
+            {sections.length > 1 && (
+              <h3 className="text-sm font-semibold text-neutral-900">
+                {section.name}
+              </h3>
+            )}
 
-          <ul className="space-y-2">
-            {section.ingredients.map((ing) => (
-              <li
-                key={ing.id}
-                className="flex items-start gap-3 text-sm text-neutral-700"
-              >
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
-                <span>
-                  {ing.amount && (
-                    <span className="font-semibold">{ing.amount} </span>
-                  )}
-                  {ing.unit && (
-                    <span className="text-neutral-500">{ing.unit} </span>
-                  )}
-                  {ing.name}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+            <ul className="space-y-3">
+              {section.ingredients.map((ingredient) => (
+                <li
+                  key={ingredient.id}
+                  className="flex items-start gap-3 text-sm leading-6 text-neutral-700"
+                >
+                  <span
+                    aria-hidden
+                    className="mt-2 h-1.5 w-1.5 shrink-0 bg-amber-500"
+                  />
+                  <span>{formatIngredient(ingredient)}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
 
-      {utensils.length > 0 && (
-        <div className="space-y-3 border-t border-amber-100 pt-6">
-          <h3 className="text-xs font-semibold tracking-widest text-neutral-500 uppercase">
-            Utensílios
-          </h3>
-          <ul className="space-y-2">
-            {utensils.map((u, i) => (
-              <li
-                key={i}
-                className="flex items-center gap-3 text-sm text-neutral-700"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-neutral-300" />
-                {u}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+        {utensils.length > 0 && (
+          <section className="border-t border-neutral-200 pt-5">
+            <div className="mb-3 flex items-center gap-2">
+              <Wrench className="h-4 w-4 text-amber-500" />
+              <h3 className="text-sm font-bold tracking-[0.16em] text-neutral-700 uppercase">
+                Utensílios
+              </h3>
+            </div>
+
+            <ul className="space-y-2">
+              {utensils.map((utensil, index) => (
+                <li
+                  key={`${utensil}-${index}`}
+                  className="flex items-start gap-3 text-sm leading-6 text-neutral-700"
+                >
+                  <span
+                    aria-hidden
+                    className="mt-2 h-1.5 w-1.5 shrink-0 bg-neutral-400"
+                  />
+                  <span>{utensil}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
+    </section>
   );
 }

@@ -7,6 +7,109 @@ type Section = {
   modeOfPreparation: string;
 };
 
+function extractJsonObject(raw: string) {
+  const start = raw.indexOf('{');
+  if (start === -1) return null;
+
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+
+  for (let i = start; i < raw.length; i++) {
+    const char = raw[i];
+
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+
+    if (char === '\\') {
+      escaped = true;
+      continue;
+    }
+
+    if (char === '"') {
+      inString = !inString;
+      continue;
+    }
+
+    if (!inString) {
+      if (char === '{') depth++;
+      if (char === '}') depth--;
+
+      if (depth === 0) {
+        return raw.slice(start, i + 1);
+      }
+    }
+  }
+
+  return null;
+}
+
+function sanitizeJsonString(raw: string) {
+  let inString = false;
+  let escaped = false;
+  let result = '';
+
+  for (let i = 0; i < raw.length; i++) {
+    const char = raw[i];
+
+    if (escaped) {
+      result += char;
+      escaped = false;
+      continue;
+    }
+
+    if (char === '\\') {
+      result += char;
+      escaped = true;
+      continue;
+    }
+
+    if (char === '"') {
+      result += char;
+      inString = !inString;
+      continue;
+    }
+
+    if (inString) {
+      if (char === '\n') {
+        result += '\\n';
+        continue;
+      }
+
+      if (char === '\r') {
+        result += '\\r';
+        continue;
+      }
+
+      if (char === '\t') {
+        result += '\\t';
+        continue;
+      }
+    }
+
+    result += char;
+  }
+
+  return result;
+}
+
+function parseAiJson(raw: string) {
+  const extracted = extractJsonObject(raw);
+
+  if (!extracted) {
+    throw new Error('NO_JSON_OBJECT');
+  }
+
+  try {
+    return JSON.parse(extracted);
+  } catch {
+    const sanitized = sanitizeJsonString(extracted);
+    return JSON.parse(sanitized);
+  }
+}
+
 export async function POST(request: Request) {
   console.log('[api/recipes/analyze] POST reached');
 
@@ -63,18 +166,17 @@ REGRAS OBRIGATÓRIAS:
 3. Retorne SOMENTE JSON válido.
 4. Não use markdown.
 5. Não inclua explicações fora do JSON.
-6. "summary" deve ser um resumo apetitoso, animado e convidativo, com no máximo 200 caracteres.
-7. "suggestions" deve conter apenas substituições, adaptações e variações da receita, com no máximo 300 caracteres. Não use esse campo para sugerir acompanhamento.
-8. "utensils" deve listar utensílios reais, distintos, úteis e completos. Exemplo: "Frigideira grande", "Espátula", "Faca afiada", "Tábua de corte".
-9. "modeOfPreparation" em cada seção deve vir dividido em passos curtos e claros, separados por quebra de linha, no formato:
-   "n..."
+6. "summary" deve ser um resumo apetitoso, animado e convidativo, com no máximo 300 caracteres.
+7. "suggestions" deve ser em dois parágrafos com no máximo 350 caracteres. O primeiro deve conter apenas substituições, adaptações e variações da receita. O segundo deve ter sugestões de acompanhamentos que combinem com a receita. Dentro do JSON, quebras de linha devem ser escapadas como \\n.
+8. "utensils" deve listar utensílios reais, distintos, úteis e completos, identificados nos ingredientes e no modo de preparo.
+9. "modeOfPreparation" em cada seção deve vir dividido em passos curtos e claros, separados por \\n escapado em JSON, no formato "1. ...\\n2. ...\\n3. ...".
 10. "nutritionPer100g" deve trazer EXATAMENTE estes nutrientes:
-   - Calorias
-   - Carboidratos
-   - Proteínas
-   - Gorduras totais
-   - Gorduras saturadas
-   - Sódio
+- Calorias
+- Carboidratos
+- Proteínas
+- Gorduras totais
+- Gorduras saturadas
+- Sódio
 11. "difficultyLabel" deve ser uma string amigável em português: "Fácil", "Fácil a Médio", "Médio", "Médio a Difícil" ou "Difícil".
 12. "type" deve ser descritivo, por exemplo: "Prato principal / Carne / Clássico internacional".
 13. Se a receita tiver apenas uma etapa, use "Receita" como nome da seção.
@@ -111,7 +213,7 @@ Retorne este JSON exato:
     {
       "name": "string",
       "ingredients": ["string"],
-      "modeOfPreparation": "...\\n ...\\n ..."
+      "modeOfPreparation": "1. ...\\n2. ...\\n3. ..."
     }
   ]
 }
@@ -127,17 +229,8 @@ Retorne este JSON exato:
     const raw = completion.choices[0]?.message?.content ?? '';
     console.log('[api/recipes/analyze] raw response:', raw);
 
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-
-    if (!jsonMatch) {
-      return NextResponse.json(
-        { error: 'A IA respondeu, mas não retornou JSON válido.' },
-        { status: 422 },
-      );
-    }
-
     try {
-      const parsed = JSON.parse(jsonMatch[0]);
+      const parsed = parseAiJson(raw);
       return NextResponse.json({ data: parsed });
     } catch (error) {
       console.error('[api/recipes/analyze] JSON parse error:', error);

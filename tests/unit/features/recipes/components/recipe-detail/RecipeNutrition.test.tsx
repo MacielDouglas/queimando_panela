@@ -19,7 +19,7 @@ describe('RecipeNutrition', () => {
     expect(screen.getByText(/Resumo nutricional/)).toBeInTheDocument();
     expect(screen.getByText('Calorias')).toBeInTheDocument();
     expect(screen.getByText('200 kcal')).toBeInTheDocument();
-    expect(screen.getByText(/Sugestões de substituição/i)).toBeInTheDocument();
+    expect(screen.getByText(/Sugestões/i)).toBeInTheDocument();
     expect(
       screen.getByText(/Troque leite integral por desnatado./i),
     ).toBeInTheDocument();

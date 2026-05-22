@@ -7,7 +7,6 @@ import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-
 import type { RecipeFormData } from '../../../schemas/recipe.schema';
 
 type Props = {
@@ -27,9 +26,9 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
     form.formState.errors.sections?.[index]?.modeOfPreparation?.message;
 
   return (
-    <div className="space-y-4 rounded-3xl border border-amber-100 bg-white/70 p-6 shadow-sm">
-      <div className="flex items-center justify-between">
-        <h3 className="font-bold text-neutral-800">
+    <section className="space-y-4 border border-neutral-200 bg-neutral-50 p-4 sm:p-5">
+      <div className="flex items-center justify-between gap-4 border-b border-neutral-200 pb-3">
+        <h3 className="text-sm font-bold tracking-[0.16em] text-neutral-900 uppercase">
           {isFirst && isOnly ? 'Receita' : `Etapa ${index + 1}`}
         </h3>
 
@@ -39,7 +38,7 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
             variant="ghost"
             size="sm"
             onClick={onRemove}
-            className="h-8 w-8 rounded-full p-0 text-neutral-400 hover:bg-red-50 hover:text-red-500"
+            className="h-9 w-9 p-0 text-neutral-500 hover:bg-red-50 hover:text-red-600"
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -50,15 +49,15 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
         <Field data-invalid={Boolean(nameError)}>
           <FieldLabel
             htmlFor={`section-name-${index}`}
-            className="font-semibold text-neutral-700"
+            className="text-sm font-semibold text-neutral-800"
           >
             Nome da etapa
           </FieldLabel>
 
           <Input
             id={`section-name-${index}`}
-            placeholder="Ex: Massa, Recheio, Cobertura..."
-            className="rounded-xl border-amber-100 bg-white focus-visible:ring-amber-400"
+            placeholder="Ex: Massa, recheio, cobertura"
+            className="border-neutral-300 bg-white focus-visible:ring-amber-500"
             aria-invalid={Boolean(nameError)}
             {...form.register(`sections.${index}.name`)}
           />
@@ -70,15 +69,15 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
       <Field data-invalid={Boolean(ingredientsError)}>
         <FieldLabel
           htmlFor={`section-ingredients-${index}`}
-          className="font-semibold text-neutral-700"
+          className="text-sm font-semibold text-neutral-800"
         >
           Ingredientes
         </FieldLabel>
 
         <Textarea
           id={`section-ingredients-${index}`}
-          placeholder={`2 ovos\n1 xícara de farinha\n½ colher de sal`}
-          className="min-h-32 resize-none rounded-xl border-amber-100 bg-white font-mono text-sm leading-relaxed focus-visible:ring-amber-400"
+          placeholder={`2 ovos\n1 xícara de farinha\n1 colher de manteiga`}
+          className="min-h-32 resize-none border-neutral-300 bg-white text-sm leading-relaxed focus-visible:ring-amber-500"
           aria-invalid={Boolean(ingredientsError)}
           {...form.register(`sections.${index}.ingredientsText`)}
         />
@@ -89,21 +88,21 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
       <Field data-invalid={Boolean(modeError)}>
         <FieldLabel
           htmlFor={`section-mode-${index}`}
-          className="font-semibold text-neutral-700"
+          className="text-sm font-semibold text-neutral-800"
         >
           Modo de preparo
         </FieldLabel>
 
         <Textarea
           id={`section-mode-${index}`}
-          placeholder="Descreva o passo a passo..."
-          className="min-h-48 resize-none rounded-xl border-amber-100 bg-white text-sm leading-relaxed focus-visible:ring-amber-400"
+          placeholder="Descreva o passo a passo com clareza."
+          className="min-h-48 resize-none border-neutral-300 bg-white text-sm leading-relaxed focus-visible:ring-amber-500"
           aria-invalid={Boolean(modeError)}
           {...form.register(`sections.${index}.modeOfPreparation`)}
         />
 
         {modeError && <FieldError>{modeError}</FieldError>}
       </Field>
-    </div>
+    </section>
   );
 }

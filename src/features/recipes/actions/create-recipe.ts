@@ -24,10 +24,11 @@ export async function createRecipe(
   if (!session?.user) return { error: 'Não autorizado.' };
 
   const baseSlug = slugify(analysis.title);
-  const slug = `${baseSlug}-${Date.now()}`;
+  const slug = `${baseSlug}`;
 
   try {
-    await prisma.recipe.create({
+    // 1. Cria a receita com seções e utensílios
+    const recipe = await prisma.recipe.create({
       data: {
         slug,
         title: analysis.title,
@@ -40,7 +41,7 @@ export async function createRecipe(
         suggestions: analysis.suggestions,
         nutritionSummary: analysis.nutritionSummary,
         nutritionPer100g: analysis.nutritionPer100g,
-        isPublished: false,
+        isPublished: true,
         authorId: session.user.id,
         sections: {
           create: analysis.sections.map((s, i) => ({
@@ -60,7 +61,42 @@ export async function createRecipe(
           })),
         },
       },
+      include: {
+        sections: { orderBy: { order: 'asc' } },
+      },
     });
+
+    // 2. Insere ingredientes vinculados à seção correta
+    const ingredientData = analysis.sections.flatMap((s, sectionIndex) => {
+      const section = recipe.sections[sectionIndex];
+      if (!section) return [];
+
+      return s.ingredients.map((originalText, order) => {
+        // Tenta separar quantidade + unidade do nome
+        // Ex: "2 xícaras de farinha" → amount="2", unit="xícaras", name="farinha"
+        const match = originalText
+          .trim()
+          .match(/^([\d¼½¾⅓⅔.,/\s]+)?\s*([a-zA-ZÀ-ú()\s]+?)?\s+de\s+(.+)$/i);
+
+        const amount = match?.[1]?.trim() ?? null;
+        const unit = match?.[2]?.trim() ?? null;
+        const name = match?.[3]?.trim() ?? originalText.trim();
+
+        return {
+          recipeId: recipe.id,
+          sectionId: section.id,
+          originalText: originalText.trim(),
+          name,
+          amount,
+          unit,
+          order,
+        };
+      });
+    });
+
+    if (ingredientData.length > 0) {
+      await prisma.ingredient.createMany({ data: ingredientData });
+    }
   } catch (err) {
     console.error('Create recipe error:', err);
     return { error: 'Erro ao salvar a receita. Tente novamente.' };

@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import RecipesPage from '@/app/(public)/receitas/page';
 import { vi } from 'vitest';
 
-// Mock básico de next/link e next/image para RTL
 vi.mock('next/link', () => ({
   __esModule: true,
   default: ({ href, children, ...props }: any) => (
@@ -19,26 +18,97 @@ vi.mock('next/image', () => ({
   ),
 }));
 
-// Mock do getServerSession
 vi.mock('@/lib/get-server-session', () => ({
   getServerSession: vi.fn(),
 }));
 
-import { getServerSession } from '@/lib/get-server-session';
+vi.mock('@/features/recipes/actions/get-all-recipes', () => ({
+  getAllRecipes: vi.fn(),
+}));
 
-const mockGetServerSession = getServerSession as unknown as ReturnType<
-  typeof vi.fn
->;
+vi.mock('@/features/recipes/actions/get-latest-recipe', () => ({
+  getLatestRecipe: vi.fn(),
+}));
+
+vi.mock('@/features/recipes/actions/get-recipes-by-category', () => ({
+  getRecipesByCategory: vi.fn(),
+}));
+
+vi.mock('@/features/recipes/actions/get-recipe-by-utensil', () => ({
+  getRecipesByUtensil: vi.fn(),
+}));
+
+import { getServerSession } from '@/lib/get-server-session';
+import { getAllRecipes } from '@/features/recipes/actions/get-all-recipes';
+import { getLatestRecipe } from '@/features/recipes/actions/get-latest-recipe';
+import { getRecipesByCategory } from '@/features/recipes/actions/get-recipes-by-category';
+import { getRecipesByUtensil } from '@/features/recipes/actions/get-recipe-by-utensil';
+
+const mockGetServerSession = vi.mocked(getServerSession);
+const mockGetAllRecipes = vi.mocked(getAllRecipes);
+const mockGetLatestRecipe = vi.mocked(getLatestRecipe);
+const mockGetRecipesByCategory = vi.mocked(getRecipesByCategory);
+const mockGetRecipesByUtensil = vi.mocked(getRecipesByUtensil);
+
+const recipeList = [
+  {
+    id: '1',
+    slug: 'lasanha-cremosa',
+    title: 'Lasanha cremosa de queijo',
+    summary: 'Uma lasanha bem cremosa.',
+    type: 'Massas',
+    difficulty: 'EASY' as const,
+    prepTimeMinutes: 20,
+    cookTimeMinutes: 35,
+    createdAt: new Date(),
+    coverUrl: '/lasanha.jpg',
+    authorName: 'Douglas',
+  },
+  {
+    id: '2',
+    slug: 'frango-assado',
+    title: 'Frango assado com ervas',
+    summary: 'Frango dourado e perfumado.',
+    type: 'Carnes',
+    difficulty: 'MEDIUM' as const,
+    prepTimeMinutes: 15,
+    cookTimeMinutes: 50,
+    createdAt: new Date(),
+    coverUrl: '/frango.jpg',
+    authorName: 'Douglas',
+  },
+];
+
+function renderPage(searchParams?: {
+  q?: string | string[];
+  tipo?: string | string[];
+  dificuldade?: 'EASY' | 'MEDIUM' | 'HARD' | Array<'EASY' | 'MEDIUM' | 'HARD'>;
+  utensilio?: string | string[];
+  page?: string | string[];
+}) {
+  return RecipesPage({
+    searchParams: Promise.resolve(searchParams ?? {}),
+  });
+}
 
 describe('RecipesPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    mockGetAllRecipes.mockResolvedValue({
+      recipes: recipeList,
+      total: recipeList.length,
+    });
+
+    mockGetLatestRecipe.mockResolvedValue(recipeList[0]);
+    mockGetRecipesByCategory.mockResolvedValue([]);
+    mockGetRecipesByUtensil.mockResolvedValue([]);
   });
 
   it('renderiza o hero com título e descrição', async () => {
     mockGetServerSession.mockResolvedValueOnce(null);
 
-    render(await RecipesPage());
+    render(await renderPage());
 
     expect(
       screen.getByRole('heading', {
@@ -51,14 +121,16 @@ describe('RecipesPage', () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByPlaceholderText(/Busque por massas, bolos, carnes/i),
+      screen.getByPlaceholderText(
+        /Pesquise por ingrediente, prato ou categoria/i,
+      ),
     ).toBeInTheDocument();
   });
 
   it('não mostra o botão "Enviar nova receita" quando não há sessão', async () => {
     mockGetServerSession.mockResolvedValueOnce(null);
 
-    render(await RecipesPage());
+    render(await renderPage());
 
     expect(
       screen.queryByRole('link', { name: /Enviar nova receita/i }),
@@ -68,56 +140,46 @@ describe('RecipesPage', () => {
   it('mostra o botão "Enviar nova receita" quando há usuário logado', async () => {
     mockGetServerSession.mockResolvedValueOnce({
       user: { id: '1', name: 'Douglas', email: 'douglas@example.com' },
-    });
+    } as any);
 
-    render(await RecipesPage());
+    render(await renderPage());
 
     expect(
       screen.getByRole('link', { name: /Enviar nova receita/i }),
     ).toBeInTheDocument();
   });
 
-  it('renderiza as categorias de receitas', async () => {
+  it('renderiza os cards de receitas retornados pela action', async () => {
     mockGetServerSession.mockResolvedValueOnce(null);
 
-    render(await RecipesPage());
+    render(await renderPage());
 
-    const categorias = [
-      'Massas',
-      'Sobremesas',
-      'Carnes',
-      'Vegano',
-      'Café da manhã',
-      'Bolos',
-      'Brasileira',
-    ];
+    expect(
+      screen.getAllByRole('heading', { name: 'Lasanha cremosa de queijo' })
+        .length,
+    ).toBeGreaterThan(0);
 
-    for (const categoria of categorias) {
-      expect(
-        screen.getByRole('button', { name: categoria }),
-      ).toBeInTheDocument();
-    }
+    expect(
+      screen.getAllByRole('heading', { name: 'Frango assado com ervas' })
+        .length,
+    ).toBeGreaterThan(0);
+
+    expect(screen.getAllByRole('article').length).toBeGreaterThan(0);
   });
 
-  it('renderiza todos os cards de receitas em destaque', async () => {
+  it('quando filtrada, não tenta carregar blocos editoriais', async () => {
     mockGetServerSession.mockResolvedValueOnce(null);
 
-    render(await RecipesPage());
+    render(await renderPage({ q: 'Frango' }));
 
-    // títulos do array estático `recipes`
-    const titles = [
-      'Lasanha cremosa de queijo',
-      'Frango assado com ervas',
-      'Bolo fofinho de cenoura',
-      'Risoto de cogumelos',
-      'Panquecas americanas',
-      'Macarrão ao molho rústico',
-    ];
+    expect(mockGetLatestRecipe).not.toHaveBeenCalled();
+    expect(mockGetRecipesByCategory).not.toHaveBeenCalled();
+    expect(mockGetRecipesByUtensil).not.toHaveBeenCalled();
 
-    for (const title of titles) {
-      expect(screen.getByRole('heading', { name: title })).toBeInTheDocument();
-    }
-
-    expect(screen.getAllByRole('article')).toHaveLength(titles.length);
+    expect(mockGetAllRecipes).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: 'Frango',
+      }),
+    );
   });
 });

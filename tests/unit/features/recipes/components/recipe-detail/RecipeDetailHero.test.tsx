@@ -29,6 +29,7 @@ describe('RecipeDetailHero', () => {
         servings={8}
         coverUrl="/bolo.jpg"
         authorName="Douglas"
+        story={null}
       />,
     );
 

@@ -1,92 +1,433 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { RecipeFormShell } from '@/features/recipes/components/recipe-form/RecipeFormShell';
 
+const createRecipeMock = vi.fn();
+const updateRecipeMock = vi.fn();
+
 vi.mock('@/features/recipes/actions/create-recipe', () => ({
-  createRecipe: vi.fn(),
+  createRecipe: (...args: unknown[]) => createRecipeMock(...args),
+}));
+
+vi.mock('@/features/recipes/actions/update-recipe', () => ({
+  updateRecipe: (...args: unknown[]) => updateRecipeMock(...args),
 }));
 
 describe('RecipeFormShell', () => {
   beforeEach(() => {
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
+    vi.stubGlobal('fetch', vi.fn());
   });
 
-  it('não analisa quando o formulário é inválido', async () => {
-    const fetchSpy = vi.spyOn(global, 'fetch');
+  it('renderiza a estrutura básica no modo create', () => {
+    render(<RecipeFormShell mode="create" />);
 
-    render(<RecipeFormShell />);
-
-    fireEvent.click(
-      screen.getByRole('button', { name: /analisar receita com ia/i }),
-    );
-
-    await waitFor(() => {
-      expect(fetchSpy).not.toHaveBeenCalled();
-    });
+    expect(screen.getByLabelText(/Título da receita/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/História da receita/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Adicionar etapa/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Analisar receita com IA/i }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/Revisão final/i)).not.toBeInTheDocument();
   });
 
-  it('analisa receita válida e renderiza painel de revisão', async () => {
-    vi.spyOn(global, 'fetch').mockResolvedValue({
+  it('analisa receita válida, envia payload correto e renderiza painel de revisão', async () => {
+    const user = userEvent.setup();
+
+    const fetchMock = vi.mocked(global.fetch);
+    fetchMock.mockResolvedValue({
       ok: true,
-      status: 200,
       json: async () => ({
         data: {
-          title: 'Estrogonofe',
-          summary: 'Cremoso e saboroso.',
-          difficulty: 'MEDIUM',
-          difficultyLabel: 'Fácil a Médio',
-          type: 'Prato principal',
+          title: 'Bolo de milho',
+          summary: 'Fofo e cremoso',
+          difficulty: 'EASY',
+          difficultyLabel: 'Fácil',
+          type: 'Bolo',
           prepTimeMinutes: 15,
-          cookTimeMinutes: 20,
-          suggestions: 'Troque por frango.',
-          nutritionSummary: 'Resumo nutricional.',
-          nutritionPer100g: [{ nutrient: 'Calorias', quantity: '250 kcal' }],
-          utensils: ['Frigideira'],
+          cookTimeMinutes: 45,
+          suggestions: 'Troque leite integral por desnatado.',
+          nutritionSummary: 'Resumo nutricional',
+          nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
+          utensils: ['Forma'],
           sections: [
             {
               name: 'Receita',
-              ingredients: ['300g de filé'],
-              modeOfPreparation: '1. Refogue.',
+              ingredients: ['2 xícaras de milho', '1 xícara de leite'],
+              modeOfPreparation: 'Misture tudo e asse.',
             },
           ],
         },
       }),
     } as Response);
 
-    render(<RecipeFormShell />);
+    render(<RecipeFormShell mode="create" />);
 
-    fireEvent.change(screen.getByLabelText(/título da receita/i), {
-      target: { value: 'Estrogonofe' },
-    });
-
-    fireEvent.change(screen.getByLabelText(/história da receita/i), {
-      target: { value: 'Receita clássica da família do domingo' },
-    });
-
-    fireEvent.change(screen.getByLabelText(/^ingredientes$/i), {
-      target: { value: '300g de filé\n200ml de creme de leite' },
-    });
-
-    fireEvent.change(screen.getByLabelText(/modo de preparo/i), {
-      target: {
-        value:
-          'Refogue a cebola.\nAdicione a carne.\nFinalize com creme de leite.',
-      },
-    });
-
-    fireEvent.click(
-      screen.getByRole('button', { name: /analisar receita com ia/i }),
+    await user.type(
+      screen.getByLabelText(/Título da receita/i),
+      'Bolo de milho',
+    );
+    await user.type(
+      screen.getByLabelText(/Ingredientes/i),
+      '2 xícaras de milho',
+    );
+    await user.type(
+      screen.getByLabelText(/Modo de preparo/i),
+      'Misture tudo e asse.',
     );
 
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledTimes(1);
+    await user.click(
+      screen.getByRole('button', { name: /Analisar receita com IA/i }),
+    );
+
+    expect(fetchMock).toHaveBeenCalledWith('/api/recipes/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: 'Bolo de milho',
+        sections: [
+          {
+            name: 'Receita',
+            ingredientsText: '2 xícaras de milho',
+            modeOfPreparation: 'Misture tudo e asse.',
+          },
+        ],
+      }),
     });
 
-    await waitFor(() => {
-      expect(screen.getByText('Fácil a Médio')).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: /Revisão final/i }),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('textbox', {
+        name: /título da receita/i,
+      }),
+    ).toHaveValue('Bolo de milho');
+    expect(screen.getByDisplayValue('Fofo e cremoso')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Bolo')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Resumo nutricional')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Salvar receita/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('normaliza o nome da etapa para "Receita" quando o nome vem vazio na primeira seção', async () => {
+    const user = userEvent.setup();
+
+    const fetchMock = vi.mocked(global.fetch);
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: undefined }),
+    } as Response);
+
+    render(<RecipeFormShell mode="create" />);
+
+    await user.type(
+      screen.getByLabelText(/Título da receita/i),
+      'Bolo simples',
+    );
+    await user.type(screen.getByLabelText(/Ingredientes/i), 'Farinha');
+    await user.type(screen.getByLabelText(/Modo de preparo/i), 'Misture');
+
+    await user.click(
+      screen.getByRole('button', { name: /Analisar receita com IA/i }),
+    );
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/recipes/analyze',
+      expect.objectContaining({
+        body: JSON.stringify({
+          title: 'Bolo simples',
+          sections: [
+            {
+              name: 'Receita',
+              ingredientsText: 'Farinha',
+              modeOfPreparation: 'Misture',
+            },
+          ],
+        }),
+      }),
+    );
+  });
+
+  it('mostra erro quando a análise falha com erro da API', async () => {
+    const user = userEvent.setup();
+
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: false,
+      json: async () => ({
+        error: 'Falha ao analisar receita com IA.',
+      }),
+    } as Response);
+
+    render(<RecipeFormShell mode="create" />);
+
+    await user.type(
+      screen.getByLabelText(/Título da receita/i),
+      'Bolo de milho',
+    );
+    await user.type(screen.getByLabelText(/Ingredientes/i), 'Milho');
+    await user.type(screen.getByLabelText(/Modo de preparo/i), 'Misture tudo.');
+
+    await user.click(
+      screen.getByRole('button', { name: /Analisar receita com IA/i }),
+    );
+
+    expect(
+      await screen.findByText(/Falha ao analisar receita com IA/i),
+    ).toBeInTheDocument();
+  });
+
+  it('mostra erro amigável quando o fetch lança exceção', async () => {
+    const user = userEvent.setup();
+
+    vi.mocked(global.fetch).mockRejectedValue(new Error('network error'));
+
+    render(<RecipeFormShell mode="create" />);
+
+    await user.type(
+      screen.getByLabelText(/Título da receita/i),
+      'Bolo de milho',
+    );
+    await user.type(screen.getByLabelText(/Ingredientes/i), 'Milho');
+    await user.type(screen.getByLabelText(/Modo de preparo/i), 'Misture tudo.');
+
+    await user.click(
+      screen.getByRole('button', { name: /Analisar receita com IA/i }),
+    );
+
+    expect(
+      await screen.findByText(/Não foi possível analisar a receita agora/i),
+    ).toBeInTheDocument();
+  });
+
+  it('salva a receita no modo create após revisão', async () => {
+    const user = userEvent.setup();
+
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        data: {
+          title: 'Bolo de milho',
+          summary: 'Fofo e cremoso',
+          difficulty: 'EASY',
+          difficultyLabel: 'Fácil',
+          type: 'Bolo',
+          prepTimeMinutes: 15,
+          cookTimeMinutes: 45,
+          suggestions: 'Troque leite integral por desnatado.',
+          nutritionSummary: 'Resumo nutricional',
+          nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
+          utensils: ['Forma'],
+          sections: [
+            {
+              name: 'Receita',
+              ingredients: ['2 xícaras de milho'],
+              modeOfPreparation: 'Misture tudo e asse.',
+            },
+          ],
+        },
+      }),
+    } as Response);
+
+    createRecipeMock.mockResolvedValue(undefined);
+
+    render(<RecipeFormShell mode="create" />);
+
+    await user.type(
+      screen.getByLabelText(/Título da receita/i),
+      'Bolo de milho',
+    );
+    await user.type(
+      screen.getByLabelText(/História da receita/i),
+      'Receita da família',
+    );
+    await user.type(
+      screen.getByLabelText(/Ingredientes/i),
+      '2 xícaras de milho',
+    );
+    await user.type(
+      screen.getByLabelText(/Modo de preparo/i),
+      'Misture tudo e asse.',
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: /Analisar receita com IA/i }),
+    );
+
+    await screen.findByRole('heading', { name: /Revisão final/i });
+
+    await user.click(screen.getByRole('button', { name: /Salvar receita/i }));
+
+    expect(createRecipeMock).toHaveBeenCalledWith(
+      {
+        title: 'Bolo de milho',
+        summary: 'Fofo e cremoso',
+        difficulty: 'EASY',
+        difficultyLabel: 'Fácil',
+        type: 'Bolo',
+        prepTimeMinutes: 15,
+        cookTimeMinutes: 45,
+        suggestions: 'Troque leite integral por desnatado.',
+        nutritionSummary: 'Resumo nutricional',
+        nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
+        utensils: ['Forma'],
+        sections: [
+          {
+            name: 'Receita',
+            ingredients: ['2 xícaras de milho'],
+            modeOfPreparation: 'Misture tudo e asse.',
+          },
+        ],
+      },
+      'Receita da família',
+    );
+  });
+
+  it('mostra erro quando o salvamento no modo create falha', async () => {
+    const user = userEvent.setup();
+
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        data: {
+          title: 'Bolo de milho',
+          summary: 'Fofo e cremoso',
+          difficulty: 'EASY',
+          difficultyLabel: 'Fácil',
+          type: 'Bolo',
+          prepTimeMinutes: 15,
+          cookTimeMinutes: 45,
+          suggestions: 'Troque leite integral por desnatado.',
+          nutritionSummary: 'Resumo nutricional',
+          nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
+          utensils: ['Forma'],
+          sections: [
+            {
+              name: 'Receita',
+              ingredients: ['2 xícaras de milho'],
+              modeOfPreparation: 'Misture tudo e asse.',
+            },
+          ],
+        },
+      }),
+    } as Response);
+
+    createRecipeMock.mockResolvedValue({
+      error: 'Não foi possível salvar a receita.',
     });
 
-    expect(screen.getByText('Estrogonofe')).toBeInTheDocument();
+    render(<RecipeFormShell mode="create" />);
+
+    await user.type(
+      screen.getByLabelText(/Título da receita/i),
+      'Bolo de milho',
+    );
+    await user.type(
+      screen.getByLabelText(/Ingredientes/i),
+      '2 xícaras de milho',
+    );
+    await user.type(
+      screen.getByLabelText(/Modo de preparo/i),
+      'Misture tudo e asse.',
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: /Analisar receita com IA/i }),
+    );
+
+    await screen.findByRole('heading', { name: /Revisão final/i });
+
+    await user.click(screen.getByRole('button', { name: /Salvar receita/i }));
+
+    expect(
+      await screen.findByText(/Não foi possível salvar a receita/i),
+    ).toBeInTheDocument();
+  });
+
+  it('renderiza revisão inicial no modo edit e salva alterações', async () => {
+    const user = userEvent.setup();
+
+    updateRecipeMock.mockResolvedValue(undefined);
+
+    render(
+      <RecipeFormShell
+        mode="edit"
+        initialData={{
+          id: 'recipe-1',
+          slug: 'bolo-de-milho',
+          title: 'Bolo de milho',
+          story: 'Receita da família',
+          summary: 'Fofo e cremoso',
+          difficulty: 'EASY',
+          difficultyLabel: 'Fácil',
+          type: 'Bolo',
+          prepTimeMinutes: 15,
+          cookTimeMinutes: 45,
+          suggestions: 'Use menos açúcar',
+          nutritionSummary: 'Resumo nutricional',
+          nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
+          utensils: ['Forma'],
+          sections: [
+            {
+              name: 'Receita',
+              ingredients: ['2 xícaras de milho'],
+              modeOfPreparation: 'Misture tudo e asse.',
+            },
+          ],
+          images: [],
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole('textbox', {
+        name: /título da receita/i,
+      }),
+    ).toHaveValue('Bolo de milho');
+    expect(screen.getByDisplayValue('Receita da família')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Revisão final/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Salvar alterações/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Reanalisar receita com IA/i }),
+    ).toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole('button', { name: /Salvar alterações/i }),
+    );
+
+    expect(updateRecipeMock).toHaveBeenCalledWith(
+      'bolo-de-milho',
+      {
+        title: 'Bolo de milho',
+        summary: 'Fofo e cremoso',
+        difficulty: 'EASY',
+        difficultyLabel: 'Fácil',
+        type: 'Bolo',
+        prepTimeMinutes: 15,
+        cookTimeMinutes: 45,
+        suggestions: 'Use menos açúcar',
+        nutritionSummary: 'Resumo nutricional',
+        nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
+        utensils: ['Forma'],
+        sections: [
+          {
+            name: 'Receita',
+            ingredients: ['2 xícaras de milho'],
+            modeOfPreparation: 'Misture tudo e asse.',
+          },
+        ],
+      },
+      'Receita da família',
+    );
   });
 });

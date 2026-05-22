@@ -1,5 +1,9 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { prisma } from '@/lib/prisma';
+import { headers } from 'next/headers';
+
+import { auth } from '@/lib/auth';
+import { getRecipeBySlug } from '@/features/recipes/actions/get-recipe-by-slug';
 import { RecipeDetailHero } from '@/features/recipes/components/recipe-detail/RecipeDetailHero';
 import { RecipeIngredients } from '@/features/recipes/components/recipe-detail/RecipeIngredients';
 import { RecipeSteps } from '@/features/recipes/components/recipe-detail/RecipeSteps';
@@ -9,46 +13,81 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-async function getRecipe(slug: string) {
-  return prisma.recipe.findUnique({
-    where: { slug },
-    include: {
-      author: { select: { name: true } },
-      images: { orderBy: { order: 'asc' } },
-      sections: {
-        orderBy: { order: 'asc' },
-        include: {
-          ingredients: { orderBy: { order: 'asc' } },
-        },
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const recipe = await getRecipeBySlug(slug);
+
+  if (!recipe) {
+    return {
+      title: 'Receita não encontrada',
+      robots: {
+        index: false,
+        follow: false,
       },
-      ingredients: {
-        where: { sectionId: null },
-        orderBy: { order: 'asc' },
-      },
-      utensils: {
-        include: { utensil: true },
-      },
+    };
+  }
+
+  const cover = recipe.images.find((img) => img.isCover) ?? recipe.images[0];
+  const title = `${recipe.title} | Queimando Panela`;
+  const description =
+    recipe.summary?.slice(0, 160) ||
+    `Veja a receita de ${recipe.title} no Queimando Panela.`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/receitas/${recipe.slug}`,
     },
-  });
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      url: `/receitas/${recipe.slug}`,
+      images: cover?.url
+        ? [
+            {
+              url: cover.url,
+              alt: recipe.title,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: cover?.url ? [cover.url] : [],
+    },
+    robots: {
+      index: recipe.isPublished,
+      follow: recipe.isPublished,
+    },
+  };
 }
 
 export default async function RecipeDetailPage({ params }: Props) {
   const { slug } = await params;
-  const recipe = await getRecipe(slug);
+  const recipe = await getRecipeBySlug(slug);
 
   if (!recipe) notFound();
 
+  const session = await auth.api.getSession({ headers: await headers() });
+  const isAuthor = session?.user?.id === recipe.authorId;
+
   const cover = recipe.images.find((img) => img.isCover) ?? recipe.images[0];
   const utensils = recipe.utensils.map((u) => u.utensil.name);
+  const nutritionPer100g = recipe.nutritionPer100g as
+    | { nutrient: string; quantity: string }[]
+    | null;
 
-  // Monta seções para exibição
   const hasSections = recipe.sections.length > 0;
 
   const displaySections = hasSections
-    ? recipe.sections.map((s) => ({
-        name: s.name,
-        ingredients: s.ingredients,
-        modeOfPreparation: s.modeOfPreparation,
+    ? recipe.sections.map((section) => ({
+        name: section.name,
+        ingredients: section.ingredients,
+        modeOfPreparation: section.modeOfPreparation,
       }))
     : [
         {
@@ -58,12 +97,8 @@ export default async function RecipeDetailPage({ params }: Props) {
         },
       ];
 
-  const nutritionPer100g = recipe.nutritionPer100g as
-    | { nutrient: string; quantity: string }[]
-    | null;
-
   return (
-    <main className="pb-32">
+    <main className="bg-neutral-50 pb-20 text-neutral-900">
       <RecipeDetailHero
         title={recipe.title}
         summary={recipe.summary}
@@ -74,23 +109,23 @@ export default async function RecipeDetailPage({ params }: Props) {
         servings={recipe.servings}
         coverUrl={cover?.url ?? null}
         authorName={recipe.author.name}
+        story={recipe.story}
+        isAuthor={isAuthor}
+        editHref={`/receitas/${recipe.slug}/editar`}
       />
-
-      <section className="editorial-container mt-16">
-        <div className="grid gap-12 lg:grid-cols-[340px_1fr]">
-          {/* Sidebar */}
-          <aside className="space-y-8">
+      <section className="editorial-container py-8 sm:py-10 lg:py-14">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-12">
+          <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
             <RecipeIngredients sections={displaySections} utensils={utensils} />
+          </aside>
+
+          <div className="space-y-8">
+            <RecipeSteps sections={displaySections} />
             <RecipeNutrition
               summary={recipe.nutritionSummary}
               per100g={nutritionPer100g}
               suggestions={recipe.suggestions}
             />
-          </aside>
-
-          {/* Conteúdo principal */}
-          <div>
-            <RecipeSteps sections={displaySections} story={recipe.story} />
           </div>
         </div>
       </section>
