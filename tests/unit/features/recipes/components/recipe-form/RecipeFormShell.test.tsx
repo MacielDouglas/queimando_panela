@@ -15,6 +15,14 @@ vi.mock('@/features/recipes/actions/update-recipe', () => ({
   updateRecipe: (...args: unknown[]) => updateRecipeMock(...args),
 }));
 
+function readRecipeFormData(formData: FormData) {
+  return {
+    analysis: JSON.parse(String(formData.get('analysis') ?? '{}')),
+    story: String(formData.get('story') ?? ''),
+    existingImages: JSON.parse(String(formData.get('existingImages') ?? '[]')),
+  };
+}
+
 describe('RecipeFormShell', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -264,29 +272,35 @@ describe('RecipeFormShell', () => {
 
     await user.click(screen.getByRole('button', { name: /Salvar receita/i }));
 
-    expect(createRecipeMock).toHaveBeenCalledWith(
-      {
-        title: 'Bolo de milho',
-        summary: 'Fofo e cremoso',
-        difficulty: 'EASY',
-        difficultyLabel: 'Fácil',
-        type: 'Bolo',
-        prepTimeMinutes: 15,
-        cookTimeMinutes: 45,
-        suggestions: 'Troque leite integral por desnatado.',
-        nutritionSummary: 'Resumo nutricional',
-        nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
-        utensils: ['Forma'],
-        sections: [
-          {
-            name: 'Receita',
-            ingredients: ['2 xícaras de milho'],
-            modeOfPreparation: 'Misture tudo e asse.',
-          },
-        ],
-      },
-      'Receita da família',
-    );
+    expect(createRecipeMock).toHaveBeenCalledTimes(1);
+
+    const formData = createRecipeMock.mock.calls[0][0] as FormData;
+    expect(formData).toBeInstanceOf(FormData);
+
+    const payload = readRecipeFormData(formData);
+
+    expect(payload.story).toBe('Receita da família');
+    expect(payload.existingImages).toEqual([]);
+    expect(payload.analysis).toMatchObject({
+      title: 'Bolo de milho',
+      summary: 'Fofo e cremoso',
+      difficulty: 'EASY',
+      difficultyLabel: 'Fácil',
+      type: 'Bolo',
+      prepTimeMinutes: 15,
+      cookTimeMinutes: 45,
+      suggestions: 'Troque leite integral por desnatado.',
+      nutritionSummary: 'Resumo nutricional',
+      nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
+      utensils: ['Forma'],
+      sections: [
+        {
+          name: 'Receita',
+          ingredients: ['2 xícaras de milho'],
+          modeOfPreparation: 'Misture tudo e asse.',
+        },
+      ],
+    });
   });
 
   it('mostra erro quando o salvamento no modo create falha', async () => {
@@ -405,29 +419,35 @@ describe('RecipeFormShell', () => {
       screen.getByRole('button', { name: /Salvar alterações/i }),
     );
 
-    expect(updateRecipeMock).toHaveBeenCalledWith(
-      'bolo-de-milho',
-      {
-        title: 'Bolo de milho',
-        summary: 'Fofo e cremoso',
-        difficulty: 'EASY',
-        difficultyLabel: 'Fácil',
-        type: 'Bolo',
-        prepTimeMinutes: 15,
-        cookTimeMinutes: 45,
-        suggestions: 'Use menos açúcar',
-        nutritionSummary: 'Resumo nutricional',
-        nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
-        utensils: ['Forma'],
-        sections: [
-          {
-            name: 'Receita',
-            ingredients: ['2 xícaras de milho'],
-            modeOfPreparation: 'Misture tudo e asse.',
-          },
-        ],
-      },
-      'Receita da família',
-    );
+    expect(updateRecipeMock).toHaveBeenCalledTimes(1);
+    expect(updateRecipeMock.mock.calls[0][0]).toBe('bolo-de-milho');
+
+    const formData = updateRecipeMock.mock.calls[0][1] as FormData;
+    expect(formData).toBeInstanceOf(FormData);
+
+    const payload = readRecipeFormData(formData);
+
+    expect(payload.story).toBe('Receita da família');
+    expect(payload.existingImages).toEqual([]);
+    expect(payload.analysis).toMatchObject({
+      title: 'Bolo de milho',
+      summary: 'Fofo e cremoso',
+      difficulty: 'EASY',
+      difficultyLabel: 'Fácil',
+      type: 'Bolo',
+      prepTimeMinutes: 15,
+      cookTimeMinutes: 45,
+      suggestions: 'Use menos açúcar',
+      nutritionSummary: 'Resumo nutricional',
+      nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
+      utensils: ['Forma'],
+      sections: [
+        {
+          name: 'Receita',
+          ingredients: ['2 xícaras de milho'],
+          modeOfPreparation: 'Misture tudo e asse.',
+        },
+      ],
+    });
   });
 });
