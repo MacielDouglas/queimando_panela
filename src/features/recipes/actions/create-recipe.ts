@@ -2,8 +2,10 @@
 
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
+
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { uploadRecipeImage } from '@/features/recipes/server/recipe-image.service';
 import type { AiRecipeAnalysis } from '../types/recipe-ai.types';
 
 function slugify(text: string) {
@@ -17,17 +19,28 @@ function slugify(text: string) {
 }
 
 export async function createRecipe(
-  analysis: AiRecipeAnalysis,
-  story?: string,
+  formData: FormData,
 ): Promise<{ error?: string }> {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) return { error: 'Não autorizado.' };
+
+  const analysisRaw = formData.get('analysis');
+  const storyRaw = formData.get('story');
+  const imageFiles = formData
+    .getAll('images')
+    .filter((value): value is File => value instanceof File && value.size > 0);
+
+  if (!analysisRaw || typeof analysisRaw !== 'string') {
+    return { error: 'Dados da receita inválidos.' };
+  }
+
+  const analysis = JSON.parse(analysisRaw) as AiRecipeAnalysis;
+  const story = typeof storyRaw === 'string' ? storyRaw : undefined;
 
   const baseSlug = slugify(analysis.title);
   const slug = `${baseSlug}`;
 
   try {
-    // 1. Cria a receita com seções e utensílios
     const recipe = await prisma.recipe.create({
       data: {
         slug,
@@ -66,14 +79,11 @@ export async function createRecipe(
       },
     });
 
-    // 2. Insere ingredientes vinculados à seção correta
     const ingredientData = analysis.sections.flatMap((s, sectionIndex) => {
       const section = recipe.sections[sectionIndex];
       if (!section) return [];
 
       return s.ingredients.map((originalText, order) => {
-        // Tenta separar quantidade + unidade do nome
-        // Ex: "2 xícaras de farinha" → amount="2", unit="xícaras", name="farinha"
         const match = originalText
           .trim()
           .match(/^([\d¼½¾⅓⅔.,/\s]+)?\s*([a-zA-ZÀ-ú()\s]+?)?\s+de\s+(.+)$/i);
@@ -97,10 +107,39 @@ export async function createRecipe(
     if (ingredientData.length > 0) {
       await prisma.ingredient.createMany({ data: ingredientData });
     }
+
+    if (imageFiles.length > 0) {
+      const uploadedImages = await Promise.all(
+        imageFiles.slice(0, 3).map((file, index) =>
+          uploadRecipeImage({
+            recipeId: recipe.id,
+            file,
+            alt: `${analysis.title} - foto ${index + 1}`,
+            order: index,
+            isCover: index === 0,
+          }),
+        ),
+      );
+
+      await prisma.recipeImage.createMany({
+        data: uploadedImages.map((image) => ({
+          recipeId: recipe.id,
+          key: image.key,
+          url: image.url,
+          alt: image.alt,
+          contentType: image.contentType,
+          sizeBytes: image.sizeBytes,
+          width: image.width,
+          height: image.height,
+          order: image.order,
+          isCover: image.isCover,
+        })),
+      });
+    }
   } catch (err) {
     console.error('Create recipe error:', err);
     return { error: 'Erro ao salvar a receita. Tente novamente.' };
   }
 
-  redirect(`/receitas`);
+  redirect('/receitas');
 }

@@ -140,24 +140,24 @@ export function RecipeDetailHero({
             )}
           </div>
 
-          <div className="order-1 lg:order-2">
-            <div className="relative aspect-square overflow-hidden border border-neutral-200 bg-neutral-100">
-              {coverUrl ? (
-                <Image
-                  src={coverUrl}
-                  alt={title}
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 420px"
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center text-sm text-neutral-500">
-                  Sem imagem
-                </div>
-              )}
-            </div>
-          </div>
+<div className="order-1 lg:order-2">
+  <div className="relative aspect-4/3 overflow-hidden border border-neutral-200 bg-neutral-100 sm:aspect-16/10 lg:aspect-square">
+    {coverUrl ? (
+      <Image
+        src={coverUrl}
+        alt={title}
+        fill
+        priority
+        className="object-cover"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 420px"
+      />
+    ) : (
+      <div className="flex h-full items-center justify-center text-sm text-neutral-500">
+        Sem imagem
+      </div>
+    )}
+  </div>
+</div>
         </div>
       </div>
     </header>

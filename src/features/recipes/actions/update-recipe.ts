@@ -5,15 +5,44 @@ import { headers } from 'next/headers';
 
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import {
+  deleteRecipeImagesByKeys,
+  uploadRecipeImage,
+} from '@/features/recipes/server/recipe-image.service';
 import type { AiRecipeAnalysis } from '../types/recipe-ai.types';
+
+type ExistingImagePayload = {
+  id: string;
+  key: string;
+  url: string;
+  alt: string;
+};
 
 export async function updateRecipe(
   slug: string,
-  analysis: AiRecipeAnalysis,
-  story?: string,
+  formData: FormData,
 ): Promise<{ error?: string }> {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) return { error: 'Não autorizado.' };
+
+  const analysisRaw = formData.get('analysis');
+  const storyRaw = formData.get('story');
+  const existingImagesRaw = formData.get('existingImages');
+  const newImageFiles = formData
+    .getAll('images')
+    .filter((value): value is File => value instanceof File && value.size > 0);
+
+  if (!analysisRaw || typeof analysisRaw !== 'string') {
+    return { error: 'Dados da receita inválidos.' };
+  }
+
+  const analysis = JSON.parse(analysisRaw) as AiRecipeAnalysis;
+  const story = typeof storyRaw === 'string' ? storyRaw : undefined;
+
+  let existingImages: ExistingImagePayload[] = [];
+  if (typeof existingImagesRaw === 'string' && existingImagesRaw.trim()) {
+    existingImages = JSON.parse(existingImagesRaw) as ExistingImagePayload[];
+  }
 
   try {
     const recipe = await prisma.recipe.findFirst({
@@ -25,12 +54,20 @@ export async function updateRecipe(
         sections: {
           orderBy: { order: 'asc' },
         },
+        images: {
+          orderBy: { order: 'asc' },
+        },
       },
     });
 
     if (!recipe) {
       return { error: 'Receita não encontrada ou sem permissão de edição.' };
     }
+
+    const keptIds = new Set(existingImages.map((image) => image.id));
+    const removedImages = recipe.images.filter(
+      (image) => !keptIds.has(image.id),
+    );
 
     await prisma.$transaction(async (tx) => {
       await tx.ingredient.deleteMany({
@@ -115,7 +152,72 @@ export async function updateRecipe(
           data: ingredientData,
         });
       }
+
+      if (removedImages.length > 0) {
+        await tx.recipeImage.deleteMany({
+          where: {
+            id: {
+              in: removedImages.map((image) => image.id),
+            },
+          },
+        });
+      }
+
+      const uploadedNewImages = await Promise.all(
+        newImageFiles.slice(0, 3).map((file, index) =>
+          uploadRecipeImage({
+            recipeId: recipe.id,
+            file,
+            alt: `${analysis.title} - foto nova ${index + 1}`,
+            order: index,
+            isCover: false,
+          }),
+        ),
+      );
+
+      const finalImageSequence = [
+        ...existingImages.map((image) => ({
+          kind: 'existing' as const,
+          ...image,
+        })),
+        ...uploadedNewImages.map((image) => ({
+          kind: 'new' as const,
+          ...image,
+        })),
+      ].slice(0, 3);
+
+      for (const [index, image] of finalImageSequence.entries()) {
+        if (image.kind === 'existing') {
+          await tx.recipeImage.update({
+            where: { id: image.id },
+            data: {
+              order: index,
+              isCover: index === 0,
+              alt: image.alt || `${analysis.title} - foto ${index + 1}`,
+            },
+          });
+        } else {
+          await tx.recipeImage.create({
+            data: {
+              recipeId: recipe.id,
+              key: image.key,
+              url: image.url,
+              alt: image.alt,
+              contentType: image.contentType,
+              sizeBytes: image.sizeBytes,
+              width: image.width,
+              height: image.height,
+              order: index,
+              isCover: index === 0,
+            },
+          });
+        }
+      }
     });
+
+    if (removedImages.length > 0) {
+      await deleteRecipeImagesByKeys(removedImages.map((image) => image.key));
+    }
   } catch (error) {
     console.error('Update recipe error:', error);
     return { error: 'Erro ao atualizar a receita. Tente novamente.' };

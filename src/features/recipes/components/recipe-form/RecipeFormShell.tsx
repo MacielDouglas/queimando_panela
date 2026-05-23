@@ -6,10 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Plus, Save, Sparkles } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  recipeFormSchema,
-  type RecipeFormData,
-} from '../../schemas/recipe.schema';
+import { recipeFormSchema } from '../../schemas/recipe.schema';
 import {
   aiReviewSchema,
   type AiReviewFormData,
@@ -19,10 +16,22 @@ import { updateRecipe } from '../../actions/update-recipe';
 import type { AiRecipeAnalysis } from '../../types/recipe-ai.types';
 
 import { AiReviewPanel } from './AiReviewPanel';
-import { ImageUploadField } from './fields/ImageUploadField';
+import {
+  ImageUploadField,
+  type RecipeFormWithImages,
+} from './fields/ImageUploadField';
 import { SectionField } from './fields/SectionField';
 import { StoryField } from './fields/StoryField';
 import { TitleField } from './fields/TitleField';
+
+type EditableRecipeImage = {
+  id: string;
+  key: string;
+  url: string;
+  alt: string;
+  isCover: boolean;
+  order: number;
+};
 
 type EditableRecipeData = {
   id: string;
@@ -44,7 +53,7 @@ type EditableRecipeData = {
     ingredients: string[];
     modeOfPreparation: string;
   }[];
-  images: File[];
+  images: EditableRecipeImage[];
 };
 
 type Props = {
@@ -78,7 +87,7 @@ function formDataToAnalysis(data: AiReviewFormData): AiRecipeAnalysis {
 
 function editableRecipeToFormDefaults(
   initialData?: EditableRecipeData,
-): RecipeFormData {
+): RecipeFormWithImages {
   if (!initialData) {
     return {
       title: '',
@@ -99,7 +108,16 @@ function editableRecipeToFormDefaults(
             modeOfPreparation: section.modeOfPreparation,
           }))
         : [{ name: '', ingredientsText: '', modeOfPreparation: '' }],
-    images: initialData.images ?? [],
+    images:
+      initialData.images?.map((image, index) => ({
+        kind: 'existing' as const,
+        id: image.id,
+        key: image.key,
+        url: image.url,
+        alt: image.alt,
+        isCover: image.isCover,
+        order: image.order ?? index,
+      })) ?? [],
   };
 }
 
@@ -142,10 +160,11 @@ export function RecipeFormShell({ mode, initialData }: Props) {
     () => editableRecipeToReviewDefaults(initialData),
     [initialData],
   );
+
   const hasReviewDefaults = Boolean(reviewDefaults);
   const [showReview, setShowReview] = useState(hasReviewDefaults);
 
-  const form = useForm<RecipeFormData>({
+  const form = useForm<RecipeFormWithImages>({
     resolver: zodResolver(recipeFormSchema),
     defaultValues: formDefaults,
   });
@@ -166,7 +185,6 @@ export function RecipeFormShell({ mode, initialData }: Props) {
   }, [reviewDefaults, reviewForm]);
 
   const isReviewVisible = showReview || hasReviewDefaults;
-
   const sections = useWatch({ control: form.control, name: 'sections' }) ?? [];
 
   const addSection = () => {
@@ -245,18 +263,48 @@ export function RecipeFormShell({ mode, initialData }: Props) {
     setIsSaving(true);
     setAiError(null);
 
-    const analysis = formDataToAnalysis(reviewForm.getValues());
-    const story = form.getValues('story') ?? undefined;
+    try {
+      const analysis = formDataToAnalysis(reviewForm.getValues());
+      const story = form.getValues('story')?.trim() || '';
+      const images = form.getValues('images') ?? [];
 
-    const result =
-      mode === 'edit' && initialData
-        ? await updateRecipe(initialData.slug, analysis, story)
-        : await createRecipe(analysis, story);
+      const formData = new FormData();
+      formData.set('analysis', JSON.stringify(analysis));
+      formData.set('story', story);
 
-    setIsSaving(false);
+      const existingImages = images
+        .filter(
+          (image): image is Extract<typeof image, { kind: 'existing' }> =>
+            image.kind === 'existing',
+        )
+        .map((image) => ({
+          id: image.id,
+          key: image.key,
+          url: image.url,
+          alt: image.alt,
+        }));
 
-    if (result?.error) {
-      setAiError(result.error);
+      formData.set('existingImages', JSON.stringify(existingImages));
+
+      images.forEach((image) => {
+        if (image.kind === 'new') {
+          formData.append('images', image.file);
+        }
+      });
+
+      const result =
+        mode === 'edit' && initialData
+          ? await updateRecipe(initialData.slug, formData)
+          : await createRecipe(formData);
+
+      if (result?.error) {
+        setAiError(result.error);
+      }
+    } catch (error) {
+      console.error('[RecipeFormShell] save error:', error);
+      setAiError('Não foi possível salvar a receita agora.');
+    } finally {
+      setIsSaving(false);
     }
   };
 

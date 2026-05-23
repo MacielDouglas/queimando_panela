@@ -113,7 +113,7 @@ describe('updateRecipe', () => {
     };
 
     await expect(
-      updateRecipe('bolo-de-milho', analysis as any, 'História'),
+      updateRecipe('bolo-de-milho', analysis as any),
     ).rejects.toThrow('NEXT_REDIRECT:/receitas/bolo-de-milho');
 
     expect(deleteIngredientManyMock).toHaveBeenCalledWith({
