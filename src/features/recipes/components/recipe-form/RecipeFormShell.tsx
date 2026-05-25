@@ -41,7 +41,7 @@ type EditableRecipeData = {
   summary: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   difficultyLabel: string;
-  type: string;
+  types: string[];
   prepTimeMinutes: number;
   cookTimeMinutes: number;
   suggestions: string;
@@ -61,9 +61,27 @@ type Props = {
   initialData?: EditableRecipeData;
 };
 
+function normalizeDifficulty(
+  difficulty: AiRecipeAnalysis['difficulty'],
+): 'EASY' | 'MEDIUM' | 'HARD' {
+  if (
+    difficulty === 'EASY' ||
+    difficulty === 'MEDIUM' ||
+    difficulty === 'HARD'
+  ) {
+    return difficulty;
+  }
+
+  if (difficulty === 'EASY_MEDIUM') return 'MEDIUM';
+  if (difficulty === 'MEDIUM_HARD') return 'HARD';
+
+  return 'MEDIUM';
+}
+
 function aiAnalysisToFormData(data: AiRecipeAnalysis): AiReviewFormData {
   return {
     ...data,
+    difficulty: normalizeDifficulty(data.difficulty),
     utensils: data.utensils.map((name) => ({ name })),
     sections: data.sections.map((section) => ({
       name: section.name,
@@ -131,7 +149,7 @@ function editableRecipeToReviewDefaults(
     summary: initialData.summary,
     difficulty: initialData.difficulty,
     difficultyLabel: initialData.difficultyLabel,
-    type: initialData.type,
+    types: initialData.types,
     prepTimeMinutes: initialData.prepTimeMinutes,
     cookTimeMinutes: initialData.cookTimeMinutes,
     suggestions: initialData.suggestions,

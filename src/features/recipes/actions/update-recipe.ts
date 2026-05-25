@@ -9,6 +9,7 @@ import {
   deleteRecipeImagesByKeys,
   uploadRecipeImage,
 } from '@/features/recipes/server/recipe-image.service';
+import type { RecipeDifficulty } from '@/generated/prisma/client';
 import type { AiRecipeAnalysis } from '../types/recipe-ai.types';
 
 type ExistingImagePayload = {
@@ -17,6 +18,23 @@ type ExistingImagePayload = {
   url: string;
   alt: string;
 };
+
+function normalizeDifficulty(
+  difficulty: AiRecipeAnalysis['difficulty'],
+): RecipeDifficulty {
+  if (
+    difficulty === 'EASY' ||
+    difficulty === 'MEDIUM' ||
+    difficulty === 'HARD'
+  ) {
+    return difficulty;
+  }
+
+  if (difficulty === 'EASY_MEDIUM') return 'MEDIUM';
+  if (difficulty === 'MEDIUM_HARD') return 'HARD';
+
+  return 'MEDIUM';
+}
 
 export async function updateRecipe(
   slug: string,
@@ -88,8 +106,8 @@ export async function updateRecipe(
           title: analysis.title,
           summary: analysis.summary,
           story: story ?? null,
-          difficulty: analysis.difficulty,
-          type: analysis.type,
+          difficulty: normalizeDifficulty(analysis.difficulty),
+          types: analysis.types,
           prepTimeMinutes: analysis.prepTimeMinutes,
           cookTimeMinutes: analysis.cookTimeMinutes,
           suggestions: analysis.suggestions,
@@ -114,7 +132,9 @@ export async function updateRecipe(
           },
         },
         include: {
-          sections: { orderBy: { order: 'asc' } },
+          sections: {
+            orderBy: { order: 'asc' },
+          },
         },
       });
 

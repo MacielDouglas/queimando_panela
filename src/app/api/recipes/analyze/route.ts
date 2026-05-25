@@ -30,7 +30,7 @@ type AnalyzeResult = {
   summary: string;
   difficulty: 'EASY' | 'EASY_MEDIUM' | 'MEDIUM' | 'MEDIUM_HARD' | 'HARD';
   difficultyLabel: string;
-  type: string;
+  types: string[]; // era: type: string
   prepTimeMinutes: number;
   cookTimeMinutes: number;
   suggestions: string;
@@ -39,7 +39,6 @@ type AnalyzeResult = {
   utensils: string[];
   sections: AnalyzedSection[];
 };
-
 // ─── JSON Extraction ──────────────────────────────────────────────────────────
 
 function extractJsonObject(raw: string): string | null {
@@ -182,22 +181,22 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
   Desperte o desejo de preparar a receita.
 
 "difficulty"
-  Um dos valores: "EASY" | "EASY_MEDIUM" | "MEDIUM" | "MEDIUM_HARD" | "HARD"
+  Um dos valores: "EASY" | "MEDIUM" | "HARD"
   Considere técnicas, número de etapas, equipamentos e tempo total.
 
 "difficultyLabel"
-  Rótulo amigável em português correspondente ao difficulty:
-  "EASY" → "Fácil"
-  "EASY_MEDIUM" → "Fácil a Médio"
-  "MEDIUM" → "Médio"
-  "MEDIUM_HARD" → "Médio a Difícil"
-  "HARD" → "Difícil"
+  "EASY" -> "Fácil"
+  "MEDIUM" -> "Médio"
+  "HARD" -> "Difícil"
 
-"type"
-  Classificação descritiva da receita.
-  Exemplos: "Prato principal / Carne / Clássico brasileiro"
-            "Sobremesa / Doce / Forno"
-            "Lanche / Pão / Artesanal"
+"types"
+  Array de classificações da receita. Mínimo 1, máximo 3 itens.
+  Cada item deve ser uma categoria isolada e específica.
+  Exemplos válidos:
+    ["Prato principal", "Carne", "Clássico brasileiro"]
+    ["Sobremesa", "Doce", "Forno"]
+    ["Lanche", "Pão", "Artesanal"]
+  Nunca use separadores como "/" dentro de um item.
 
 "prepTimeMinutes"
   Tempo de preparo em minutos (inteiro). Inclui apenas mise en place e montagem a frio.
@@ -246,7 +245,7 @@ JSON ESPERADO (retorne apenas isso)
   "summary": "string",
   "difficulty": "EASY",
   "difficultyLabel": "string",
-  "type": "string",
+  "types": ["string"],
   "prepTimeMinutes": 0,
   "cookTimeMinutes": 0,
   "suggestions": "string",

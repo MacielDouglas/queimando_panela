@@ -39,21 +39,30 @@ export const getEditableRecipeBySlug = cache(
           : recipe.difficulty === 'MEDIUM'
             ? 'Médio'
             : 'Difícil',
-      type: recipe.type ?? '',
+      types: recipe.types,
       prepTimeMinutes: recipe.prepTimeMinutes ?? 0,
       cookTimeMinutes: recipe.cookTimeMinutes ?? 0,
       suggestions: recipe.suggestions ?? '',
       nutritionSummary: recipe.nutritionSummary ?? '',
-      nutritionPer100g: Array.isArray(recipe.nutritionPer100g)
-        ? (recipe.nutritionPer100g as { nutrient: string; quantity: string }[])
-        : [],
+      nutritionPer100g:
+        (recipe.nutritionPer100g as { nutrient: string; quantity: string }[]) ??
+        [],
       utensils: recipe.utensils.map((item) => item.utensil.name),
       sections: recipe.sections.map((section) => ({
         name: section.name,
-        ingredients: section.ingredients.map((ing) => ing.originalText),
+        ingredients: section.ingredients.map(
+          (ingredient) => ingredient.originalText,
+        ),
         modeOfPreparation: section.modeOfPreparation,
       })),
-      images: [],
+      images: recipe.images.map((image) => ({
+        id: image.id,
+        key: image.key,
+        url: image.url,
+        alt: image.alt,
+        isCover: image.isCover,
+        order: image.order,
+      })),
     };
   },
 );

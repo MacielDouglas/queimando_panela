@@ -22,7 +22,7 @@ describe('RecipeDetailHero', () => {
       <RecipeDetailHero
         title="Bolo de milho"
         summary="Fofo e cremoso"
-        type="Bolo"
+        types={['Bolo']}
         difficulty="EASY"
         prepTimeMinutes={15}
         cookTimeMinutes={45}

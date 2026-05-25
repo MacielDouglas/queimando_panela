@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
+import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
 import { RecipeUtensilRow } from '@/features/recipes/components/recipe-list/RecipeUtensilRow';
 
 const recipeCardMock = vi.fn();
@@ -12,17 +13,17 @@ vi.mock('@/features/recipes/components/recipe-list/RecipeCard', () => ({
   },
 }));
 
-const recipes = [
+const recipes: RecipeCardData[] = [
   {
     id: '1',
-    slug: 'bolo-de-milho',
-    title: 'Bolo de milho',
-    summary: 'Fofo',
-    type: 'Bolo',
-    difficulty: 'EASY' as const,
-    prepTimeMinutes: 15,
-    cookTimeMinutes: 45,
-    createdAt: new Date('2026-05-22T12:00:00.000Z'),
+    slug: 'bolo-de-fuba',
+    title: 'Bolo de fubá',
+    summary: 'Clássico da tarde',
+    types: ['Bolo'],
+    difficulty: 'EASY',
+    prepTimeMinutes: 10,
+    cookTimeMinutes: 35,
+    createdAt: new Date('2025-01-10'),
     coverUrl: '/bolo.jpg',
     authorName: 'Douglas',
   },
@@ -30,12 +31,12 @@ const recipes = [
     id: '2',
     slug: 'frango-assado',
     title: 'Frango assado',
-    summary: 'Dourado e suculento',
-    type: 'Carnes',
-    difficulty: 'MEDIUM' as const,
+    summary: 'Crosta dourada e suculento',
+    types: ['Prato principal'],
+    difficulty: 'MEDIUM',
     prepTimeMinutes: 20,
     cookTimeMinutes: 60,
-    createdAt: new Date('2026-05-21T12:00:00.000Z'),
+    createdAt: new Date('2025-01-11'),
     coverUrl: '/frango.jpg',
     authorName: 'Douglas',
   },
@@ -54,7 +55,6 @@ describe('RecipeUtensilRow', () => {
     render(<RecipeUtensilRow utensilName="Forma" recipes={recipes} />);
 
     expect(screen.getByRole('heading', { name: 'Forma' })).toBeInTheDocument();
-
     expect(screen.getByText('Método de preparo')).toBeInTheDocument();
 
     const link = screen.getByRole('link', { name: /Ver todas →/i });
@@ -66,7 +66,7 @@ describe('RecipeUtensilRow', () => {
       1,
       expect.objectContaining({
         recipe: recipes[0],
-        aspectRatio: '3/4',
+        aspectRatio: '16/9',
       }),
     );
 
@@ -74,7 +74,7 @@ describe('RecipeUtensilRow', () => {
       2,
       expect.objectContaining({
         recipe: recipes[1],
-        aspectRatio: '3/4',
+        aspectRatio: '16/9',
       }),
     );
   });
@@ -83,7 +83,6 @@ describe('RecipeUtensilRow', () => {
     render(<RecipeUtensilRow utensilName="Air Fryer" recipes={recipes} />);
 
     const link = screen.getByRole('link', { name: /Ver todas →/i });
-
     expect(link).toHaveAttribute('href', '/receitas?utensilio=Air%20Fryer');
   });
 });

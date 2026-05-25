@@ -14,19 +14,22 @@ type Props = {
   aspectRatio?: '4/5' | '3/4' | '16/9';
 };
 
-export function RecipeCard({ recipe, aspectRatio = '4/5' }: Props) {
+export function RecipeCard({ recipe, aspectRatio = '16/9' }: Props) {
   const totalTime =
     (recipe.prepTimeMinutes ?? 0) + (recipe.cookTimeMinutes ?? 0) || null;
 
-  const aspectClass = {
-    '4/5': 'aspect-[4/5]',
-    '3/4': 'aspect-[3/4]',
-    '16/9': 'aspect-video',
-  }[aspectRatio];
+  const aspectClass =
+    aspectRatio === '4/5'
+      ? 'aspect-[4/5]'
+      : aspectRatio === '3/4'
+        ? 'aspect-[3/4]'
+        : 'aspect-video';
 
   return (
     <article className="group flex h-full flex-col border border-neutral-200 bg-white">
-      <div className={`relative ${aspectClass} bg-neutral-100`}>
+      <div
+        className={`relative w-full overflow-hidden bg-neutral-100 ${aspectClass}`}
+      >
         {recipe.coverUrl ? (
           <Image
             src={recipe.coverUrl}
@@ -36,14 +39,14 @@ export function RecipeCard({ recipe, aspectRatio = '4/5' }: Props) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center bg-neutral-100">
+          <div className="flex h-full items-center justify-center">
             <span className="text-xs text-neutral-400">Sem imagem</span>
           </div>
         )}
 
-        {recipe.type && (
+        {recipe.types[0] && (
           <span className="absolute top-3 left-3 border border-amber-300 bg-amber-50/90 px-2 py-1 text-xs font-semibold tracking-[0.16em] text-amber-800 uppercase backdrop-blur-sm">
-            {recipe.type}
+            {recipe.types[0]}
           </span>
         )}
       </div>
@@ -69,6 +72,7 @@ export function RecipeCard({ recipe, aspectRatio = '4/5' }: Props) {
                 {totalTime} min
               </span>
             )}
+
             <span className="flex items-center gap-1">
               <Flame className="h-3.5 w-3.5 text-amber-500" />
               {difficultyLabel[recipe.difficulty]}

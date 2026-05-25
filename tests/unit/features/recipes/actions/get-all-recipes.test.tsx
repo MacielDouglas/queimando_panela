@@ -28,7 +28,7 @@ describe('getAllRecipes', () => {
         slug: 'bolo-de-milho',
         title: 'Bolo de milho',
         summary: 'Fofo e cremoso',
-        type: 'Bolo',
+        types: ['Bolo'],
         difficulty: 'EASY',
         prepTimeMinutes: 15,
         cookTimeMinutes: 45,
@@ -67,7 +67,7 @@ describe('getAllRecipes', () => {
           slug: 'bolo-de-milho',
           title: 'Bolo de milho',
           summary: 'Fofo e cremoso',
-          type: 'Bolo',
+          types: ['Bolo'],
           difficulty: 'EASY',
           prepTimeMinutes: 15,
           cookTimeMinutes: 45,
@@ -89,7 +89,7 @@ describe('getAllRecipes', () => {
         slug: 'bolo-de-milho',
         title: 'Bolo de milho',
         summary: null,
-        type: null,
+        types: [],
         difficulty: 'MEDIUM',
         prepTimeMinutes: null,
         cookTimeMinutes: null,
@@ -116,7 +116,7 @@ describe('getAllRecipes', () => {
         slug: 'bolo-de-milho',
         title: 'Bolo de milho',
         summary: null,
-        type: null,
+        types: [],
         difficulty: 'HARD',
         prepTimeMinutes: null,
         cookTimeMinutes: null,
@@ -145,36 +145,37 @@ describe('getAllRecipes', () => {
       utensilName: ' forma ',
       take: 12,
       skip: 24,
-    } as any);
+    });
 
-    expect(findManyMock).toHaveBeenCalledWith({
-      where: {
-        isPublished: true,
-        AND: [
-          {
-            OR: [
-              { title: { contains: 'milho', mode: 'insensitive' } },
-              { summary: { contains: 'milho', mode: 'insensitive' } },
-              { type: { contains: 'milho', mode: 'insensitive' } },
-            ],
-          },
-          {
-            type: { contains: 'bolo', mode: 'insensitive' },
-          },
-          {
-            difficulty: 'EASY',
-          },
-          {
-            utensils: {
-              some: {
-                utensil: {
-                  name: { contains: 'forma', mode: 'insensitive' },
-                },
+    const expectedWhere = {
+      isPublished: true,
+      AND: [
+        {
+          OR: [
+            { title: { contains: 'milho', mode: 'insensitive' } },
+            { summary: { contains: 'milho', mode: 'insensitive' } },
+          ],
+        },
+        {
+          types: { has: 'bolo' },
+        },
+        {
+          difficulty: 'EASY',
+        },
+        {
+          utensils: {
+            some: {
+              utensil: {
+                name: { contains: 'forma', mode: 'insensitive' },
               },
             },
           },
-        ],
-      },
+        },
+      ],
+    };
+
+    expect(findManyMock).toHaveBeenCalledWith({
+      where: expectedWhere,
       orderBy: { createdAt: 'desc' },
       take: 12,
       skip: 24,
@@ -185,33 +186,7 @@ describe('getAllRecipes', () => {
     });
 
     expect(countMock).toHaveBeenCalledWith({
-      where: {
-        isPublished: true,
-        AND: [
-          {
-            OR: [
-              { title: { contains: 'milho', mode: 'insensitive' } },
-              { summary: { contains: 'milho', mode: 'insensitive' } },
-              { type: { contains: 'milho', mode: 'insensitive' } },
-            ],
-          },
-          {
-            type: { contains: 'bolo', mode: 'insensitive' },
-          },
-          {
-            difficulty: 'EASY',
-          },
-          {
-            utensils: {
-              some: {
-                utensil: {
-                  name: { contains: 'forma', mode: 'insensitive' },
-                },
-              },
-            },
-          },
-        ],
-      },
+      where: expectedWhere,
     });
   });
 });

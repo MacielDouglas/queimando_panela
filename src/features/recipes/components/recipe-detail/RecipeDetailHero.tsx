@@ -5,7 +5,7 @@ import { Clock3, Flame, Pencil, ScrollText, Soup, Users } from 'lucide-react';
 type Props = {
   title: string;
   summary: string | null;
-  type: string | null;
+  types: string[];
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   prepTimeMinutes: number | null;
   cookTimeMinutes: number | null;
@@ -26,7 +26,7 @@ const difficultyLabel = {
 export function RecipeDetailHero({
   title,
   summary,
-  type,
+  types,
   difficulty,
   prepTimeMinutes,
   cookTimeMinutes,
@@ -45,11 +45,14 @@ export function RecipeDetailHero({
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,420px)] lg:items-start">
           <div className="order-2 space-y-6 lg:order-1">
             <div className="flex flex-wrap gap-2">
-              {type && (
-                <span className="inline-flex min-h-9 items-center border border-amber-500 px-3 text-xs font-semibold tracking-[0.16em] text-amber-700 uppercase">
-                  {type}
+              {types.map((t) => (
+                <span
+                  key={t}
+                  className="inline-flex min-h-9 items-center border border-amber-500 px-3 text-xs font-semibold tracking-[0.16em] text-amber-700 uppercase"
+                >
+                  {t}
                 </span>
-              )}
+              ))}
 
               <span className="inline-flex min-h-9 items-center gap-2 border border-neutral-300 px-3 text-xs font-semibold tracking-[0.16em] text-neutral-700 uppercase">
                 <Flame className="h-3.5 w-3.5 text-amber-500" />

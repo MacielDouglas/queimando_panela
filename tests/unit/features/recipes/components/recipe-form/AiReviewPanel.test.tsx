@@ -29,7 +29,7 @@ const defaultValues: AiReviewFormData = {
   summary: 'Cremoso e saboroso.',
   difficulty: 'MEDIUM',
   difficultyLabel: 'Fácil a Médio',
-  type: 'Prato principal',
+  types: ['Prato principal'],
   prepTimeMinutes: 15,
   cookTimeMinutes: 20,
   suggestions: 'Troque por frango.',

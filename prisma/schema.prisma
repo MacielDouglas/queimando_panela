@@ -21,7 +21,7 @@ model Recipe {
   story             String?
   modeOfPreparation String?
   difficulty        RecipeDifficulty
-  type              String?
+  types             String[]
   prepTimeMinutes   Int?
   cookTimeMinutes   Int?
   servings          Int?
@@ -46,7 +46,7 @@ model Recipe {
   comments    Comment[] // <- ADICIONE
 
   @@index([authorId])
-  @@index([type])
+  @@index([types])
 }
 
 /// Etapas estruturadas da receita: massa, recheio, farofa, cobertura, etapa principal...

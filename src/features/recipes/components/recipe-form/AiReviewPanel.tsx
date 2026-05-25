@@ -1,6 +1,5 @@
 'use client';
 
-// import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import {
   Plus,
   Trash2,
@@ -16,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel } from '@/components/ui/field';
-import { useFieldArray, type UseFormReturn } from 'react-hook-form';
+import { Controller, useFieldArray, type UseFormReturn } from 'react-hook-form';
 import type { AiReviewFormData } from '../../schemas/recipe-ai-review-schema';
 
 type Props = {
@@ -49,7 +48,6 @@ export function AiReviewPanel({ form }: Props) {
 
   return (
     <div className="space-y-6 rounded-3xl border border-amber-200 bg-linear-to-br from-amber-50 to-white p-6 shadow-sm">
-      {/* Cabeçalho */}
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-100">
           <ChefHat className="h-5 w-5 text-amber-600" />
@@ -61,7 +59,6 @@ export function AiReviewPanel({ form }: Props) {
         </div>
       </div>
 
-      {/* Título */}
       <Field>
         <FieldLabel className="font-semibold text-neutral-700">
           Título
@@ -72,7 +69,6 @@ export function AiReviewPanel({ form }: Props) {
         />
       </Field>
 
-      {/* Resumo */}
       <Field>
         <FieldLabel className="font-semibold text-neutral-700">
           Resumo
@@ -84,19 +80,18 @@ export function AiReviewPanel({ form }: Props) {
         />
       </Field>
 
-      {/* Badges editáveis */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Field>
           <FieldLabel className="text-xs text-neutral-500">
             Dificuldade
           </FieldLabel>
           <select
-            className={`w-full rounded-full border-0 px-3 py-1 text-xs font-semibold ${difficultyColor[difficulty ?? 'EASY']}`}
+            className={`w-full rounded-full border-0 px-3 py-2 text-xs font-semibold ${difficultyColor[difficulty ?? 'EASY']}`}
             {...form.register('difficulty')}
           >
-            {difficultyOptions.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
+            {difficultyOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
             ))}
           </select>
@@ -129,17 +124,32 @@ export function AiReviewPanel({ form }: Props) {
         </Field>
 
         <Field>
-          <FieldLabel className="text-xs text-neutral-500">Tipo</FieldLabel>
-          <Input
-            className="rounded-xl border-amber-100 bg-white text-sm"
-            {...form.register('type')}
+          <FieldLabel className="text-xs text-neutral-500">Tipos</FieldLabel>
+          <Controller
+            control={form.control}
+            name="types"
+            render={({ field }) => (
+              <Input
+                value={field.value.join(', ')}
+                onChange={(e) => {
+                  const nextTypes = e.target.value
+                    .split(',')
+                    .map((item) => item.trim())
+                    .filter(Boolean)
+                    .slice(0, 3);
+
+                  field.onChange(nextTypes);
+                }}
+                className="rounded-xl border-amber-100 bg-white text-sm"
+                placeholder="Ex.: Prato principal, Sem carne"
+              />
+            )}
           />
         </Field>
       </div>
 
       <Separator className="bg-amber-100" />
 
-      {/* Seções editáveis */}
       {sections.map((section, si) => (
         <div
           key={section.id}
@@ -164,10 +174,8 @@ export function AiReviewPanel({ form }: Props) {
             )}
           </div>
 
-          {/* Ingredientes */}
           <IngredientList form={form} sectionIndex={si} />
 
-          {/* Modo de preparo */}
           <Field>
             <FieldLabel className="text-xs font-semibold tracking-widest text-neutral-500 uppercase">
               Modo de preparo
@@ -198,10 +206,8 @@ export function AiReviewPanel({ form }: Props) {
 
       <Separator className="bg-amber-100" />
 
-      {/* Utensílios */}
       <UtensilList form={form} />
 
-      {/* Sugestões */}
       <div className="rounded-2xl bg-blue-50 px-4 py-3">
         <div className="mb-1 flex items-center gap-2">
           <Lightbulb className="h-4 w-4 text-blue-500" />
@@ -216,12 +222,11 @@ export function AiReviewPanel({ form }: Props) {
         />
       </div>
 
-      {/* Tabela nutricional */}
       <div>
         <div className="mb-2 flex items-center gap-2">
           <Leaf className="h-4 w-4 text-green-500" />
           <p className="text-xs font-semibold tracking-widest text-neutral-500 uppercase">
-            Tabela Nutricional (por 100g)
+            Tabela nutricional (por 100g)
           </p>
         </div>
         <Textarea
@@ -238,8 +243,6 @@ export function AiReviewPanel({ form }: Props) {
     </div>
   );
 }
-
-// --- Sub-componentes internos ---
 
 function IngredientList({
   form,

@@ -51,7 +51,7 @@ describe('getEditableRecipeBySlug', () => {
       story: null,
       summary: 'Resumo',
       difficulty: 'MEDIUM',
-      type: null,
+      types: ['Bolo'],
       prepTimeMinutes: null,
       cookTimeMinutes: 20,
       suggestions: null,
@@ -71,6 +71,7 @@ describe('getEditableRecipeBySlug', () => {
           ],
         },
       ],
+      images: [],
     });
 
     const result = await getEditableRecipeBySlug('bolo-de-milho', 'user-1');
@@ -83,7 +84,7 @@ describe('getEditableRecipeBySlug', () => {
       summary: 'Resumo',
       difficulty: 'MEDIUM',
       difficultyLabel: 'Médio',
-      type: '',
+      types: ['Bolo'],
       prepTimeMinutes: 0,
       cookTimeMinutes: 20,
       suggestions: '',
@@ -109,7 +110,7 @@ describe('getEditableRecipeBySlug', () => {
       story: 'História',
       summary: 'Resumo',
       difficulty: 'HARD',
-      type: 'Bolo',
+      types: ['Bolo'],
       prepTimeMinutes: 15,
       cookTimeMinutes: 25,
       suggestions: 'Dica',
@@ -117,6 +118,7 @@ describe('getEditableRecipeBySlug', () => {
       nutritionPer100g: null,
       utensils: [],
       sections: [],
+      images: [],
     });
 
     const result = await getEditableRecipeBySlug('bolo-de-milho', 'user-1');

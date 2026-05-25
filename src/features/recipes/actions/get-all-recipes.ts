@@ -15,13 +15,13 @@ export type RecipeCardData = {
   slug: string;
   title: string;
   summary: string | null;
-  type: string | null;
+  types: string[];
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   prepTimeMinutes: number | null;
   cookTimeMinutes: number | null;
   createdAt: Date;
   coverUrl: string | null;
-  authorName?: string | null;
+  authorName: string | null;
 };
 
 export type GetAllRecipesParams = {
@@ -38,7 +38,7 @@ function buildRecipeCard(recipe: {
   slug: string;
   title: string;
   summary: string | null;
-  type: string | null;
+  types: string[];
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   prepTimeMinutes: number | null;
   cookTimeMinutes: number | null;
@@ -54,7 +54,7 @@ function buildRecipeCard(recipe: {
     slug: recipe.slug,
     title: recipe.title,
     summary: recipe.summary,
-    type: recipe.type,
+    types: recipe.types,
     difficulty: recipe.difficulty,
     prepTimeMinutes: recipe.prepTimeMinutes,
     cookTimeMinutes: recipe.cookTimeMinutes,
@@ -88,14 +88,13 @@ export const getAllRecipes = cache(
         OR: [
           { title: { contains: normalizedQuery, mode: 'insensitive' } },
           { summary: { contains: normalizedQuery, mode: 'insensitive' } },
-          { type: { contains: normalizedQuery, mode: 'insensitive' } },
         ],
       });
     }
 
     if (normalizedType) {
       andFilters.push({
-        type: { contains: normalizedType, mode: 'insensitive' },
+        types: { has: normalizedType },
       });
     }
 

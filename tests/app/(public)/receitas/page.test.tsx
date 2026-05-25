@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import RecipesPage from '@/app/(public)/receitas/page';
 import { vi } from 'vitest';
 
+import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
+
 vi.mock('next/link', () => ({
   __esModule: true,
   default: ({ href, children, ...props }: any) => (
@@ -50,31 +52,31 @@ const mockGetLatestRecipe = vi.mocked(getLatestRecipe);
 const mockGetRecipesByCategory = vi.mocked(getRecipesByCategory);
 const mockGetRecipesByUtensil = vi.mocked(getRecipesByUtensil);
 
-const recipeList = [
+const recipeList: RecipeCardData[] = [
   {
     id: '1',
-    slug: 'lasanha-cremosa',
-    title: 'Lasanha cremosa de queijo',
-    summary: 'Uma lasanha bem cremosa.',
-    type: 'Massas',
-    difficulty: 'EASY' as const,
-    prepTimeMinutes: 20,
+    slug: 'bolo-de-cenoura',
+    title: 'Bolo de cenoura',
+    summary: 'Fofo e simples',
+    types: ['Bolo'],
+    difficulty: 'EASY',
+    prepTimeMinutes: 15,
     cookTimeMinutes: 35,
-    createdAt: new Date(),
-    coverUrl: '/lasanha.jpg',
+    createdAt: new Date('2025-01-01'),
+    coverUrl: '/images/bolo.jpg',
     authorName: 'Douglas',
   },
   {
     id: '2',
-    slug: 'frango-assado',
-    title: 'Frango assado com ervas',
-    summary: 'Frango dourado e perfumado.',
-    type: 'Carnes',
-    difficulty: 'MEDIUM' as const,
-    prepTimeMinutes: 15,
-    cookTimeMinutes: 50,
-    createdAt: new Date(),
-    coverUrl: '/frango.jpg',
+    slug: 'lasanha',
+    title: 'Lasanha',
+    summary: 'Molho rico e massa perfeita',
+    types: ['Prato principal'],
+    difficulty: 'MEDIUM',
+    prepTimeMinutes: 30,
+    cookTimeMinutes: 40,
+    createdAt: new Date('2025-01-02'),
+    coverUrl: '/images/lasanha.jpg',
     authorName: 'Douglas',
   },
 ];
@@ -112,7 +114,7 @@ describe('RecipesPage', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /Receitas para aquecer a alma e a cozinha\./i,
+        name: /Receitas para aquecer o coração e a cozinha\./i,
       }),
     ).toBeInTheDocument();
 
@@ -155,14 +157,12 @@ describe('RecipesPage', () => {
     render(await renderPage());
 
     expect(
-      screen.getAllByRole('heading', { name: 'Lasanha cremosa de queijo' })
-        .length,
+      screen.getAllByRole('heading', { name: 'Bolo de cenoura' }).length,
     ).toBeGreaterThan(0);
 
     expect(
-      screen.getAllByRole('heading', { name: 'Frango assado com ervas' })
-        .length,
-    ).toBeGreaterThan(0);
+      screen.getByRole('heading', { name: 'Lasanha', level: 3 }),
+    ).toBeInTheDocument();
 
     expect(screen.getAllByRole('article').length).toBeGreaterThan(0);
   });

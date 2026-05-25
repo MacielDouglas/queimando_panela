@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { RecipeCard } from './RecipeCard';
 import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
 
@@ -20,17 +21,18 @@ export function RecipeCategoryRow({ type, recipes }: Props) {
             {type}
           </h2>
         </div>
-        <a
+
+        <Link
           href={`/receitas?tipo=${encodeURIComponent(type)}`}
           className="shrink-0 text-xs font-semibold text-amber-700 hover:text-amber-500"
         >
           Ver todas →
-        </a>
+        </Link>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {recipes.map((recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} aspectRatio="3/4" />
+          <RecipeCard key={recipe.id} recipe={recipe} aspectRatio="16/9" />
         ))}
       </div>
     </section>

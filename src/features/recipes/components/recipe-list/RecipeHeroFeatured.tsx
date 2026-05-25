@@ -53,9 +53,9 @@ export function RecipeHeroFeatured({ recipe }: Props) {
           )}
 
           <div className="flex flex-wrap gap-3 text-xs text-neutral-600">
-            {recipe.type && (
+            {recipe.types[0] && (
               <span className="border border-amber-200 bg-amber-50 px-3 py-1 font-semibold tracking-[0.14em] text-amber-800 uppercase">
-                {recipe.type}
+                {recipe.types[0]}
               </span>
             )}
 
@@ -84,7 +84,7 @@ export function RecipeHeroFeatured({ recipe }: Props) {
 
         <Link
           href={`/receitas/${recipe.slug}`}
-          className="inline-flex w-full items-center justify-center gap-2 border border-neutral-900 bg-neutral-900 px-4 py-3 text-sm font-semibold text-white transition hover:border-amber-500 hover:bg-amber-500 hover:text-neutral-950"
+          className="inline-flex min-h-11 w-full items-center justify-center gap-2 border border-neutral-900 bg-neutral-900 px-4 py-3 text-sm font-semibold text-white transition hover:border-amber-500 hover:bg-amber-500 hover:text-neutral-950"
         >
           Ver receita completa
           <ArrowRight className="h-4 w-4" />

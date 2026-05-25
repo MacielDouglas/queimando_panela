@@ -60,7 +60,7 @@ function makeAnalysis() {
     summary: 'Resumo',
     difficulty: 'EASY',
     difficultyLabel: 'Fácil',
-    type: 'Bolo',
+    types: ['Bolo'],
     prepTimeMinutes: 15,
     cookTimeMinutes: 40,
     suggestions: 'Sirva com café.',

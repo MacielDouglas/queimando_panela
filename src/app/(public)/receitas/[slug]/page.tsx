@@ -102,7 +102,7 @@ export default async function RecipeDetailPage({ params }: Props) {
       <RecipeDetailHero
         title={recipe.title}
         summary={recipe.summary}
-        type={recipe.type}
+        types={recipe.types}
         difficulty={recipe.difficulty}
         prepTimeMinutes={recipe.prepTimeMinutes}
         cookTimeMinutes={recipe.cookTimeMinutes}

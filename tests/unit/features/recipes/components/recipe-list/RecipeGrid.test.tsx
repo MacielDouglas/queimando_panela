@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { RecipeGrid } from '@/features/recipes/components/recipe-list/RecipeGrid';
+import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
 
 const recipeCardMock = vi.fn();
 
@@ -12,14 +13,14 @@ vi.mock('@/features/recipes/components/recipe-list/RecipeCard', () => ({
   },
 }));
 
-const recipes = [
+const recipes: RecipeCardData[] = [
   {
     id: '1',
     slug: 'bolo-de-milho',
     title: 'Bolo de milho',
     summary: 'Fofo',
-    type: 'Bolo',
-    difficulty: 'EASY' as const,
+    types: ['Bolo'],
+    difficulty: 'EASY',
     prepTimeMinutes: 15,
     cookTimeMinutes: 45,
     createdAt: new Date('2026-05-22T12:00:00.000Z'),
@@ -31,8 +32,8 @@ const recipes = [
     slug: 'coxinha',
     title: 'Coxinha',
     summary: 'Crocante',
-    type: 'Salgado',
-    difficulty: 'MEDIUM' as const,
+    types: ['Salgado'],
+    difficulty: 'MEDIUM',
     prepTimeMinutes: 20,
     cookTimeMinutes: 30,
     createdAt: new Date('2026-05-21T12:00:00.000Z'),

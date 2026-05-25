@@ -6,18 +6,21 @@ export type NutritionRow = {
 export type AiRecipeAnalysis = {
   title: string;
   summary: string;
-  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  difficulty: 'EASY' | 'EASY_MEDIUM' | 'MEDIUM' | 'MEDIUM_HARD' | 'HARD';
   difficultyLabel: string;
-  type: string;
+  types: string[];
   prepTimeMinutes: number;
   cookTimeMinutes: number;
   suggestions: string;
   nutritionSummary: string;
-  nutritionPer100g: NutritionRow[];
+  nutritionPer100g: { nutrient: string; quantity: string }[];
   utensils: string[];
-  sections: AiSection[];
+  sections: {
+    name: string;
+    ingredients: string[];
+    modeOfPreparation: string;
+  }[];
 };
-
 export type AiSection = {
   name: string;
   ingredients: string[];

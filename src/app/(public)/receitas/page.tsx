@@ -98,7 +98,7 @@ export default async function RecipesPage({ searchParams }: Props) {
           </div>
 
           <h1 className="mt-6 max-w-3xl text-4xl leading-tight font-bold tracking-tight text-neutral-950 sm:text-5xl lg:text-6xl">
-            Receitas para aquecer a alma e a cozinha.
+            Receitas para aquecer o coração e a cozinha.
           </h1>
 
           <p className="mt-4 max-w-2xl text-base leading-7 text-neutral-700">

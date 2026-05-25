@@ -116,7 +116,7 @@ describe('EditRecipePage', () => {
       summary: 'Fofo e cremoso',
       difficulty: 'EASY',
       difficultyLabel: 'Fácil',
-      type: 'Bolo',
+      types: ['Bolo'],
       prepTimeMinutes: 15,
       cookTimeMinutes: 45,
       suggestions: 'Use milho fresco.',

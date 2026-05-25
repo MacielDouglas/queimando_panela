@@ -67,7 +67,7 @@ const recipeBase = {
   title: 'Bolo de milho',
   summary: 'Fofo e cremoso',
   story: 'Receita de família',
-  type: 'Bolo',
+  types: ['Bolo'],
   difficulty: 'EASY' as const,
   prepTimeMinutes: 15,
   cookTimeMinutes: 45,
