@@ -25,9 +25,7 @@ export function SignInForm() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [formError, setFormError] = useState<string | null>(null);
 
   async function handleSubmit(
@@ -53,7 +51,6 @@ export function SignInForm() {
 
       if (result.error) {
         setFormError(result.error.message ?? 'Não foi possível entrar.');
-
         return;
       }
 
@@ -81,12 +78,15 @@ export function SignInForm() {
       <form onSubmit={handleSubmit} noValidate className="space-y-5">
         <FieldGroup>
           <Field>
-            <FieldLabel>E-mail</FieldLabel>
+            <FieldLabel htmlFor="email">E-mail</FieldLabel>
 
             <FieldContent>
               <Input
+                id="email"
+                name="email"
                 type="email"
                 autoComplete="email"
+                inputMode="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="voce@email.com"
@@ -98,10 +98,12 @@ export function SignInForm() {
           </Field>
 
           <Field>
-            <FieldLabel>Senha</FieldLabel>
+            <FieldLabel htmlFor="password">Senha</FieldLabel>
 
             <FieldContent>
               <Input
+                id="password"
+                name="password"
                 type="password"
                 autoComplete="current-password"
                 value={password}
@@ -112,7 +114,7 @@ export function SignInForm() {
             </FieldContent>
           </Field>
 
-          {formError && <FieldError>{formError}</FieldError>}
+          {formError ? <FieldError>{formError}</FieldError> : null}
         </FieldGroup>
 
         <Button

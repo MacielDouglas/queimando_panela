@@ -11,6 +11,8 @@
 # testing
 /coverage
 /test-results
+/playwright-report
+/playwright/.auth
 
 # next.js
 /.next/
@@ -44,7 +46,3 @@ next-env.d.ts
 # prisma generated client
 /src/generated/prisma
 /generated/prisma
-
-# Coverage
-test-results/
-coverage/
