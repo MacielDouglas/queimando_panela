@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldLabel } from '@/components/ui/field';
 import { Controller, useFieldArray, type UseFormReturn } from 'react-hook-form';
 import type { AiReviewFormData } from '../../schemas/recipe-ai-review-schema';
+import type { RecipeDifficultyValue } from '../../types/recipe.types';
 
 type Props = {
   form: UseFormReturn<AiReviewFormData>;
@@ -24,13 +25,17 @@ type Props = {
 
 const difficultyOptions = [
   { value: 'EASY', label: 'Fácil' },
+  { value: 'EASY_MEDIUM', label: 'Fácil / Médio' },
   { value: 'MEDIUM', label: 'Médio' },
+  { value: 'MEDIUM_HARD', label: 'Médio / Difícil' },
   { value: 'HARD', label: 'Difícil' },
 ] as const;
 
-const difficultyColor = {
+const difficultyColor: Record<RecipeDifficultyValue, string> = {
   EASY: 'bg-green-100 text-green-700',
+  EASY_MEDIUM: 'bg-green-100 text-green-700', // escolha a cor que fizer sentido
   MEDIUM: 'bg-amber-100 text-amber-700',
+  MEDIUM_HARD: 'bg-amber-100 text-amber-700',
   HARD: 'bg-red-100 text-red-700',
 };
 
@@ -194,7 +199,7 @@ export function AiReviewPanel({ form }: Props) {
         onClick={() =>
           appendSection({
             name: '',
-            ingredients: [{ text: '' }],
+            ingredients: [{ originalText: '', name: '', generalName: '' }],
             modeOfPreparation: '',
           })
         }
@@ -268,7 +273,7 @@ function IngredientList({
             <Input
               className="rounded-xl border-amber-100 bg-white text-sm focus-visible:ring-amber-400"
               {...form.register(
-                `sections.${sectionIndex}.ingredients.${ii}.text`,
+                `sections.${sectionIndex}.ingredients.${ii}.originalText` as const,
               )}
             />
             {fields.length > 1 && (
@@ -288,7 +293,9 @@ function IngredientList({
           type="button"
           variant="ghost"
           size="sm"
-          onClick={() => append({ text: '' })}
+          onClick={() =>
+            append({ originalText: '', name: '', generalName: '' })
+          }
           className="text-xs text-amber-600 hover:text-amber-700"
         >
           <Plus className="mr-1 h-3 w-3" />

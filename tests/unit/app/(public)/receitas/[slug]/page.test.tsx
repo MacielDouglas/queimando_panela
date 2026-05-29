@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import RecipeDetailPage from '@/app/(public)/receitas/[slug]/page';
+import { makeRecipeMock } from '@/../tests/unit/factories/make-recipe-mock';
 
 const notFoundMock = vi.fn(() => {
   throw new Error('NEXT_NOT_FOUND');
@@ -61,14 +62,13 @@ vi.mock('@/features/recipes/actions/get-recipe-by-slug', () => ({
   getRecipeBySlug: (slug: string) => getRecipeBySlugMock(slug),
 }));
 
-const recipeBase = {
+const recipeBase = makeRecipeMock({
   id: 'recipe-1',
   slug: 'bolo-de-milho',
   title: 'Bolo de milho',
   summary: 'Fofo e cremoso',
   story: 'Receita de família',
-  types: ['Bolo'],
-  difficulty: 'EASY' as const,
+  difficulty: 'EASY',
   prepTimeMinutes: 15,
   cookTimeMinutes: 45,
   servings: 8,
@@ -77,8 +77,9 @@ const recipeBase = {
   nutritionSummary: 'Resumo nutricional',
   nutritionPer100g: [{ nutrient: 'Calorias', quantity: '200 kcal' }],
   suggestions: 'Troque leite integral por desnatado.',
-  images: [{ url: '/bolo.jpg', alt: 'Bolo de milho', isCover: true }],
+  images: [{ url: '/bolo.jpg', alt: 'Bolo de milho', isCover: true, order: 0 }],
   utensils: [{ utensil: { name: 'Forma' } }],
+  recipeTypes: [{ recipeType: { name: 'Bolo' } }],
   sections: [
     {
       id: 'section-1',
@@ -90,7 +91,7 @@ const recipeBase = {
       ],
     },
   ],
-};
+});
 
 describe('RecipeDetailPage', () => {
   beforeEach(() => {
@@ -123,7 +124,6 @@ describe('RecipeDetailPage', () => {
       ingredients: ['2 xícaras de milho', '1 xícara de leite'],
       modeOfPreparation: 'Misture tudo e asse.',
     });
-
     render(
       await RecipeDetailPage({
         params: Promise.resolve({ slug: 'bolo-de-milho' }),

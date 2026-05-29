@@ -76,13 +76,18 @@ describe('RecipeGrid', () => {
         recipes={recipes}
         total={2}
         currentPage={1}
-        totalPages={1}
-        q="milho"
+        totalPages={3}
+        q="chocolate"
+        categoria="Sobremesa"
+        tipo={['Bolo']}
+        dificuldade="EASY"
+        utensilio={['Forma']}
+        ingrediente={['Chocolate']}
       />,
     );
 
     expect(
-      screen.getByRole('heading', { name: 'Resultados para "milho"' }),
+      screen.getByRole('heading', { name: 'Resultados para "chocolate"' }),
     ).toBeInTheDocument();
   });
 
@@ -117,13 +122,15 @@ describe('RecipeGrid', () => {
     render(
       <RecipeGrid
         recipes={recipes}
-        total={10}
+        total={2}
         currentPage={2}
         totalPages={4}
-        q="milho"
-        tipo="Bolo"
+        q="chocolate"
+        categoria="Sobremesa"
+        tipo={['Bolo']}
         dificuldade="EASY"
-        utensilio="Forma"
+        utensilio={['Forma']}
+        ingrediente={['Chocolate']}
       />,
     );
 
@@ -138,12 +145,12 @@ describe('RecipeGrid', () => {
 
     expect(prevLink).toHaveAttribute(
       'href',
-      '/receitas?q=milho&tipo=Bolo&dificuldade=EASY&utensilio=Forma',
+      '/receitas?q=chocolate&categoria=Sobremesa&dificuldade=EASY&tipo=Bolo&utensilio=Forma&ingrediente=Chocolate',
     );
 
     expect(nextLink).toHaveAttribute(
       'href',
-      '/receitas?page=3&q=milho&tipo=Bolo&dificuldade=EASY&utensilio=Forma',
+      '/receitas?q=chocolate&categoria=Sobremesa&dificuldade=EASY&tipo=Bolo&utensilio=Forma&ingrediente=Chocolate&page=3',
     );
   });
 
@@ -166,7 +173,7 @@ describe('RecipeGrid', () => {
     ).not.toBeInTheDocument();
 
     const nextLink = screen.getByRole('link', { name: /Próxima →/i });
-    expect(nextLink).toHaveAttribute('href', '/receitas?page=2&q=bolo');
+    expect(nextLink).toHaveAttribute('href', '/receitas?q=bolo&page=2');
   });
 
   it('renderiza paginação desabilitada no fim', () => {

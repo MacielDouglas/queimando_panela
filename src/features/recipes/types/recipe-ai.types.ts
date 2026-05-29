@@ -1,28 +1,33 @@
+import type { RecipeDifficultyValue } from './recipe.types';
+
 export type NutritionRow = {
   nutrient: string;
   quantity: string;
 };
 
+export type AiIngredient = {
+  originalText: string;
+  name: string;
+  generalName: string;
+};
+
+export type AiSection = {
+  name: string;
+  ingredients: AiIngredient[];
+  modeOfPreparation: string;
+};
+
 export type AiRecipeAnalysis = {
   title: string;
   summary: string;
-  difficulty: 'EASY' | 'EASY_MEDIUM' | 'MEDIUM' | 'MEDIUM_HARD' | 'HARD';
+  difficulty: RecipeDifficultyValue;
   difficultyLabel: string;
   types: string[];
   prepTimeMinutes: number;
   cookTimeMinutes: number;
   suggestions: string;
   nutritionSummary: string;
-  nutritionPer100g: { nutrient: string; quantity: string }[];
+  nutritionPer100g: NutritionRow[];
   utensils: string[];
-  sections: {
-    name: string;
-    ingredients: string[];
-    modeOfPreparation: string;
-  }[];
-};
-export type AiSection = {
-  name: string;
-  ingredients: string[];
-  modeOfPreparation: string;
+  sections: AiSection[];
 };

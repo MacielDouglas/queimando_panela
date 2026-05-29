@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "RecipeDifficulty" AS ENUM ('EASY', 'MEDIUM', 'HARD');
+CREATE TYPE "RecipeDifficulty" AS ENUM ('EASY', 'EASY_MEDIUM', 'MEDIUM', 'MEDIUM_HARD', 'HARD');
 
 -- CreateTable
 CREATE TABLE "Recipe" (
@@ -10,7 +10,6 @@ CREATE TABLE "Recipe" (
     "story" TEXT,
     "modeOfPreparation" TEXT,
     "difficulty" "RecipeDifficulty" NOT NULL,
-    "type" TEXT,
     "prepTimeMinutes" INTEGER,
     "cookTimeMinutes" INTEGER,
     "servings" INTEGER,
@@ -48,6 +47,7 @@ CREATE TABLE "Ingredient" (
     "id" TEXT NOT NULL,
     "recipeId" TEXT NOT NULL,
     "sectionId" TEXT,
+    "generalIngredientId" TEXT,
     "amount" TEXT,
     "unit" TEXT,
     "name" TEXT NOT NULL,
@@ -56,6 +56,33 @@ CREATE TABLE "Ingredient" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Ingredient_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "GeneralIngredient" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "GeneralIngredient_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RecipeType" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "RecipeType_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RecipeTypeOnRecipe" (
+    "recipeId" TEXT NOT NULL,
+    "recipeTypeId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "RecipeTypeOnRecipe_pkey" PRIMARY KEY ("recipeId","recipeTypeId")
 );
 
 -- CreateTable
@@ -173,9 +200,6 @@ CREATE UNIQUE INDEX "Recipe_slug_key" ON "Recipe"("slug");
 CREATE INDEX "Recipe_authorId_idx" ON "Recipe"("authorId");
 
 -- CreateIndex
-CREATE INDEX "Recipe_type_idx" ON "Recipe"("type");
-
--- CreateIndex
 CREATE INDEX "RecipeSection_recipeId_idx" ON "RecipeSection"("recipeId");
 
 -- CreateIndex
@@ -191,10 +215,22 @@ CREATE INDEX "Ingredient_recipeId_idx" ON "Ingredient"("recipeId");
 CREATE INDEX "Ingredient_sectionId_idx" ON "Ingredient"("sectionId");
 
 -- CreateIndex
+CREATE INDEX "Ingredient_generalIngredientId_idx" ON "Ingredient"("generalIngredientId");
+
+-- CreateIndex
 CREATE INDEX "Ingredient_recipeId_order_idx" ON "Ingredient"("recipeId", "order");
 
 -- CreateIndex
 CREATE INDEX "Ingredient_sectionId_order_idx" ON "Ingredient"("sectionId", "order");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "GeneralIngredient_name_key" ON "GeneralIngredient"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RecipeType_name_key" ON "RecipeType"("name");
+
+-- CreateIndex
+CREATE INDEX "RecipeTypeOnRecipe_recipeTypeId_idx" ON "RecipeTypeOnRecipe"("recipeTypeId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "RecipeImage_key_key" ON "RecipeImage"("key");
@@ -246,6 +282,15 @@ ALTER TABLE "Ingredient" ADD CONSTRAINT "Ingredient_recipeId_fkey" FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE "Ingredient" ADD CONSTRAINT "Ingredient_sectionId_fkey" FOREIGN KEY ("sectionId") REFERENCES "RecipeSection"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Ingredient" ADD CONSTRAINT "Ingredient_generalIngredientId_fkey" FOREIGN KEY ("generalIngredientId") REFERENCES "GeneralIngredient"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RecipeTypeOnRecipe" ADD CONSTRAINT "RecipeTypeOnRecipe_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES "Recipe"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RecipeTypeOnRecipe" ADD CONSTRAINT "RecipeTypeOnRecipe_recipeTypeId_fkey" FOREIGN KEY ("recipeTypeId") REFERENCES "RecipeType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RecipeImage" ADD CONSTRAINT "RecipeImage_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES "Recipe"("id") ON DELETE CASCADE ON UPDATE CASCADE;

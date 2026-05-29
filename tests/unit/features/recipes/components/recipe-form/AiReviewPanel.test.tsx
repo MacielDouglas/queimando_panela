@@ -40,8 +40,16 @@ const defaultValues: AiReviewFormData = {
     {
       name: 'Receita',
       ingredients: [
-        { text: '300g de filé' },
-        { text: '200ml de creme de leite' },
+        {
+          originalText: '300g de filé',
+          name: 'filé',
+          generalName: 'filé',
+        },
+        {
+          originalText: '200ml de creme de leite',
+          name: 'creme de leite',
+          generalName: 'creme de leite',
+        },
       ],
       modeOfPreparation: 'Refogue.\nFinalize com creme.',
     },

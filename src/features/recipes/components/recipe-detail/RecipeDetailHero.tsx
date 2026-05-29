@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Clock3, Flame, Pencil, ScrollText, Soup, Users } from 'lucide-react';
+import { DeleteRecipeButton } from '../DeleteRecipeButton';
+import type { RecipeDifficultyValue } from '../../types/recipe.types';
 
 type Props = {
   title: string;
   summary: string | null;
   types: string[];
-  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  difficulty: RecipeDifficultyValue;
   prepTimeMinutes: number | null;
   cookTimeMinutes: number | null;
   servings: number | null;
@@ -15,11 +17,14 @@ type Props = {
   story: string | null;
   isAuthor?: boolean;
   editHref?: string;
+  slug: string;
 };
 
 const difficultyLabel = {
   EASY: 'Fácil',
+  EASY_MEDIUM: 'Fácil/Médio',
   MEDIUM: 'Médio',
+  MEDIUM_HARD: 'Médio/Difícil',
   HARD: 'Difícil',
 };
 
@@ -36,6 +41,7 @@ export function RecipeDetailHero({
   story,
   isAuthor = false,
   editHref,
+  slug,
 }: Props) {
   const totalTime = (prepTimeMinutes ?? 0) + (cookTimeMinutes ?? 0);
 
@@ -115,13 +121,16 @@ export function RecipeDetailHero({
               </p>
 
               {isAuthor && editHref ? (
-                <Link
-                  href={editHref}
-                  className="inline-flex min-h-11 items-center gap-2 border border-neutral-900 bg-neutral-900 px-4 text-sm font-semibold text-white transition hover:border-amber-500 hover:bg-amber-500 hover:text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
-                >
-                  <Pencil className="h-4 w-4" />
-                  Editar receita
-                </Link>
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={editHref}
+                    className="inline-flex min-h-11 items-center gap-2 border border-neutral-900 bg-neutral-900 px-4 text-sm font-semibold text-white transition hover:border-amber-500 hover:bg-amber-500 hover:text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
+                  >
+                    <Pencil className="h-4 w-4" />
+                    Editar receita
+                  </Link>
+                  <DeleteRecipeButton slug={slug} title={title} />
+                </div>
               ) : null}
             </div>
 

@@ -3,10 +3,8 @@
 import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import type { Prisma } from '@/generated/prisma/client';
-import {
-  normalizeString,
-  normalizeDifficulty,
-} from '@/features/recipes/lib/recipe-params';
+import { normalizeString } from '@/features/recipes/lib/recipe-params';
+import type { RecipeDifficultyValue } from '../types/recipe.types';
 
 type MaybeArray<T> = T | T[] | undefined;
 
@@ -16,7 +14,7 @@ export type RecipeCardData = {
   title: string;
   summary: string | null;
   types: string[];
-  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  difficulty: RecipeDifficultyValue;
   prepTimeMinutes: number | null;
   cookTimeMinutes: number | null;
   createdAt: Date;
@@ -26,25 +24,58 @@ export type RecipeCardData = {
 
 export type GetAllRecipesParams = {
   query?: MaybeArray<string>;
-  type?: MaybeArray<string>;
-  difficulty?: MaybeArray<'EASY' | 'MEDIUM' | 'HARD'>;
-  utensilName?: MaybeArray<string>;
+  category?: MaybeArray<string>;
+  types?: MaybeArray<string>;
+  difficulty?: MaybeArray<RecipeDifficultyValue>;
+  utensils?: MaybeArray<string>;
+  ingredients?: MaybeArray<string>;
   take?: number;
   skip?: number;
 };
+
+function normalizeStringList(value: MaybeArray<string>): string[] {
+  const values = Array.isArray(value) ? value : value ? [value] : [];
+
+  return Array.from(
+    new Set(
+      values
+        .map((item) => normalizeString(item))
+        .filter((item): item is string => Boolean(item)),
+    ),
+  );
+}
+
+function normalizeDifficultyList(
+  value: MaybeArray<RecipeDifficultyValue>,
+): RecipeDifficultyValue[] {
+  const values = Array.isArray(value) ? value : value ? [value] : [];
+
+  return Array.from(
+    new Set(
+      values.filter(
+        (item): item is RecipeDifficultyValue =>
+          item === 'EASY' ||
+          item === 'EASY_MEDIUM' ||
+          item === 'MEDIUM' ||
+          item === 'MEDIUM_HARD' ||
+          item === 'HARD',
+      ),
+    ),
+  );
+}
 
 function buildRecipeCard(recipe: {
   id: string;
   slug: string;
   title: string;
   summary: string | null;
-  types: string[];
-  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  difficulty: RecipeDifficultyValue;
   prepTimeMinutes: number | null;
   cookTimeMinutes: number | null;
   createdAt: Date;
   images: { url: string; isCover: boolean; order: number }[];
   author?: { name: string | null } | null;
+  recipeTypes: { recipeType: { name: string } }[];
 }): RecipeCardData {
   const cover =
     recipe.images.find((img) => img.isCover) ?? recipe.images[0] ?? null;
@@ -54,7 +85,7 @@ function buildRecipeCard(recipe: {
     slug: recipe.slug,
     title: recipe.title,
     summary: recipe.summary,
-    types: recipe.types,
+    types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
     difficulty: recipe.difficulty,
     prepTimeMinutes: recipe.prepTimeMinutes,
     cookTimeMinutes: recipe.cookTimeMinutes,
@@ -67,9 +98,11 @@ function buildRecipeCard(recipe: {
 export const getAllRecipes = cache(
   async ({
     query,
-    type,
+    category,
+    types,
     difficulty,
-    utensilName,
+    utensils,
+    ingredients,
     take = 24,
     skip = 0,
   }: GetAllRecipesParams): Promise<{
@@ -77,9 +110,11 @@ export const getAllRecipes = cache(
     total: number;
   }> => {
     const normalizedQuery = normalizeString(query);
-    const normalizedType = normalizeString(type);
-    const normalizedDifficulty = normalizeDifficulty(difficulty);
-    const normalizedUtensil = normalizeString(utensilName);
+    const normalizedCategory = normalizeString(category);
+    const normalizedTypes = normalizeStringList(types);
+    const normalizedDifficulties = normalizeDifficultyList(difficulty);
+    const normalizedUtensils = normalizeStringList(utensils);
+    const normalizedIngredients = normalizeStringList(ingredients);
 
     const andFilters: Prisma.RecipeWhereInput[] = [];
 
@@ -88,31 +123,98 @@ export const getAllRecipes = cache(
         OR: [
           { title: { contains: normalizedQuery, mode: 'insensitive' } },
           { summary: { contains: normalizedQuery, mode: 'insensitive' } },
+          { story: { contains: normalizedQuery, mode: 'insensitive' } },
         ],
       });
     }
 
-    if (normalizedType) {
+    if (normalizedCategory) {
       andFilters.push({
-        types: { has: normalizedType },
+        recipeTypes: {
+          some: {
+            recipeType: {
+              name: {
+                equals: normalizedCategory,
+                mode: 'insensitive',
+              },
+            },
+          },
+        },
       });
     }
 
-    if (normalizedDifficulty) {
+    if (normalizedTypes.length > 0) {
       andFilters.push({
-        difficulty: normalizedDifficulty,
+        recipeTypes: {
+          some: {
+            recipeType: {
+              name: {
+                in: normalizedTypes,
+              },
+            },
+          },
+        },
       });
     }
 
-    if (normalizedUtensil) {
+    if (normalizedDifficulties.length === 1) {
+      andFilters.push({
+        difficulty: normalizedDifficulties[0],
+      });
+    }
+
+    if (normalizedDifficulties.length > 1) {
+      andFilters.push({
+        difficulty: {
+          in: normalizedDifficulties,
+        },
+      });
+    }
+
+    if (normalizedUtensils.length > 0) {
       andFilters.push({
         utensils: {
           some: {
             utensil: {
-              name: { contains: normalizedUtensil, mode: 'insensitive' },
+              name: {
+                in: normalizedUtensils,
+              },
             },
           },
         },
+      });
+    }
+
+    if (normalizedIngredients.length > 0) {
+      andFilters.push({
+        OR: [
+          {
+            ingredients: {
+              some: {
+                generalIngredient: {
+                  name: {
+                    in: normalizedIngredients,
+                  },
+                },
+              },
+            },
+          },
+          {
+            sections: {
+              some: {
+                ingredients: {
+                  some: {
+                    generalIngredient: {
+                      name: {
+                        in: normalizedIngredients,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        ],
       });
     }
 
@@ -130,6 +232,9 @@ export const getAllRecipes = cache(
         include: {
           images: { orderBy: { order: 'asc' } },
           author: { select: { name: true } },
+          recipeTypes: {
+            include: { recipeType: true },
+          },
         },
       }),
       prisma.recipe.count({ where }),

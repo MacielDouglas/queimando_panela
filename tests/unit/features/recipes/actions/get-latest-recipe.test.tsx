@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { makeRecipeMock } from '@/../tests/unit/factories/make-recipe-mock';
+
 const findFirstMock = vi.fn();
 
 vi.mock('@/lib/prisma', () => ({
@@ -28,22 +30,24 @@ describe('getLatestRecipe', () => {
   it('retorna a receita mais recente com capa correta', async () => {
     const createdAt = new Date('2026-05-22T12:00:00.000Z');
 
-    findFirstMock.mockResolvedValue({
-      id: '1',
-      slug: 'bolo-de-milho',
-      title: 'Bolo de milho',
-      summary: 'Fofo e cremoso',
-      types: ['Bolo'],
-      difficulty: 'EASY',
-      prepTimeMinutes: 15,
-      cookTimeMinutes: 45,
-      createdAt,
-      images: [
-        { url: '/capa.jpg', isCover: true, order: 0 },
-        { url: '/outra.jpg', isCover: false, order: 1 },
-      ],
-      author: { name: 'Douglas' },
-    });
+    findFirstMock.mockResolvedValue(
+      makeRecipeMock({
+        id: '1',
+        slug: 'bolo-de-milho',
+        title: 'Bolo de milho',
+        summary: 'Fofo e cremoso',
+        difficulty: 'EASY',
+        prepTimeMinutes: 15,
+        cookTimeMinutes: 45,
+        createdAt,
+        images: [
+          { url: '/capa.jpg', alt: 'Capa', isCover: true, order: 0 },
+          { url: '/outra.jpg', alt: 'Outra', isCover: false, order: 1 },
+        ],
+        author: { id: 'user-1', name: 'Douglas' },
+        recipeTypes: [{ recipeType: { name: 'Bolo' } }],
+      }),
+    );
 
     const result = await getLatestRecipe();
 
@@ -53,6 +57,9 @@ describe('getLatestRecipe', () => {
       include: {
         images: { orderBy: { order: 'asc' } },
         author: { select: { name: true } },
+        recipeTypes: {
+          include: { recipeType: true },
+        },
       },
     });
 

@@ -4,13 +4,11 @@ import Link from 'next/link';
 
 import { getServerSession } from '@/lib/get-server-session';
 import { getAllRecipes } from '@/features/recipes/actions/get-all-recipes';
-import {
-  normalizeString,
-  normalizeDifficulty,
-} from '@/features/recipes/lib/recipe-params';
+import { normalizeString } from '@/features/recipes/lib/recipe-params';
 import { getLatestRecipe } from '@/features/recipes/actions/get-latest-recipe';
 import { getRecipesByCategory } from '@/features/recipes/actions/get-recipes-by-category';
 import { getRecipesByUtensil } from '@/features/recipes/actions/get-recipe-by-utensil';
+import { getRecipeFilterOptions } from '@/features/recipes/actions/get-recipe-filter-options';
 
 import { RecipeHeroFeatured } from '@/features/recipes/components/recipe-list/RecipeHeroFeatured';
 import { RecipeSearch } from '@/features/recipes/components/recipe-list/RecipeSearch';
@@ -18,19 +16,18 @@ import { RecipeFilters } from '@/features/recipes/components/recipe-list/RecipeF
 import { RecipeCategoryRow } from '@/features/recipes/components/recipe-list/RecipeCategoryRow';
 import { RecipeUtensilRow } from '@/features/recipes/components/recipe-list/RecipeUtensilRow';
 import { RecipeGrid } from '@/features/recipes/components/recipe-list/RecipeGrid';
+import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
 
 type SearchValue = string | string[] | undefined;
 
 type Props = {
   searchParams: Promise<{
     q?: SearchValue;
+    categoria?: SearchValue;
     tipo?: SearchValue;
-    dificuldade?:
-      | 'EASY'
-      | 'MEDIUM'
-      | 'HARD'
-      | Array<'EASY' | 'MEDIUM' | 'HARD'>;
+    dificuldade?: RecipeDifficultyValue | RecipeDifficultyValue[];
     utensilio?: SearchValue;
+    ingrediente?: SearchValue;
     page?: SearchValue;
   }>;
 };
@@ -41,34 +38,76 @@ export const metadata: Metadata = {
     'Receitas caseiras, afetivas e compartilhadas pela comunidade do Queimando Panela.',
 };
 
+function getSingle(value: SearchValue) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function getMany(value: SearchValue) {
+  if (!value) return [];
+
+  return Array.isArray(value)
+    ? value.map((item) => item.trim()).filter(Boolean)
+    : [value.trim()].filter(Boolean);
+}
+
+function parseDifficulty(
+  value: SearchValue,
+): RecipeDifficultyValue | undefined {
+  const raw = getSingle(value);
+
+  if (
+    raw === 'EASY' ||
+    raw === 'EASY_MEDIUM' ||
+    raw === 'MEDIUM' ||
+    raw === 'MEDIUM_HARD' ||
+    raw === 'HARD'
+  ) {
+    return raw;
+  }
+
+  return undefined;
+}
+
 export default async function RecipesPage({ searchParams }: Props) {
   const session = await getServerSession();
   const params = await searchParams;
 
   const query = normalizeString(params.q);
-  const type = normalizeString(params.tipo);
-  const difficulty = normalizeDifficulty(params.dificuldade);
-  const utensil = normalizeString(params.utensilio);
+  const category = normalizeString(getSingle(params.categoria));
+  const types = getMany(params.tipo);
+  const difficulty = parseDifficulty(params.dificuldade);
+  const utensils = getMany(params.utensilio);
+  const ingredients = getMany(params.ingrediente);
   const rawPage = normalizeString(params.page);
   const currentPage = Math.max(Number(rawPage ?? '1'), 1);
   const take = 24;
   const skip = (currentPage - 1) * take;
 
-  const isFiltered = !!(query || type || difficulty || utensil);
+  const isFiltered = !!(
+    query ||
+    category ||
+    difficulty ||
+    types.length > 0 ||
+    utensils.length > 0 ||
+    ingredients.length > 0
+  );
 
-  const [latest, categoryRows, utensilRows, allRecipesResult] =
+  const [latest, categoryRows, utensilRows, allRecipesResult, filterOptions] =
     await Promise.all([
       isFiltered ? Promise.resolve(null) : getLatestRecipe(),
       isFiltered ? Promise.resolve([]) : getRecipesByCategory(4),
       isFiltered ? Promise.resolve([]) : getRecipesByUtensil(4),
       getAllRecipes({
         query,
-        type,
+        category,
+        types,
         difficulty,
-        utensilName: utensil,
+        utensils,
+        ingredients,
         take,
         skip,
       }),
+      getRecipeFilterOptions(),
     ]);
 
   const { recipes, total } = allRecipesResult;
@@ -148,18 +187,26 @@ export default async function RecipesPage({ searchParams }: Props) {
               currentPage={currentPage}
               totalPages={totalPages}
               q={query}
-              tipo={type}
+              categoria={category}
+              tipo={types}
               dificuldade={difficulty}
-              utensilio={utensil}
+              utensilio={utensils}
+              ingrediente={ingredients}
             />
           </div>
 
           <aside className="lg:sticky lg:top-24">
             <RecipeFilters
               currentQuery={query}
-              currentType={type}
-              currentDifficulty={difficulty}
-              currentUtensil={utensil}
+              currentCategory={category}
+              currentDifficulty={difficulty ?? ''}
+              currentTypes={types}
+              currentUtensils={utensils}
+              currentIngredients={ingredients}
+              categories={filterOptions.categories}
+              types={filterOptions.types}
+              utensils={filterOptions.utensils}
+              ingredients={filterOptions.ingredients}
             />
           </aside>
         </div>

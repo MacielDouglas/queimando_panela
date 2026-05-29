@@ -75,6 +75,8 @@ export default async function RecipeDetailPage({ params }: Props) {
   const session = await auth.api.getSession({ headers: await headers() });
   const isAuthor = session?.user?.id === recipe.authorId;
 
+  const types = recipe.recipeTypes.map((rt) => rt.recipeType.name);
+
   const cover = recipe.images.find((img) => img.isCover) ?? recipe.images[0];
   const utensils = recipe.utensils.map((u) => u.utensil.name);
   const nutritionPer100g = recipe.nutritionPer100g as
@@ -102,7 +104,7 @@ export default async function RecipeDetailPage({ params }: Props) {
       <RecipeDetailHero
         title={recipe.title}
         summary={recipe.summary}
-        types={recipe.types}
+        types={types}
         difficulty={recipe.difficulty}
         prepTimeMinutes={recipe.prepTimeMinutes}
         cookTimeMinutes={recipe.cookTimeMinutes}
@@ -112,6 +114,7 @@ export default async function RecipeDetailPage({ params }: Props) {
         story={recipe.story}
         isAuthor={isAuthor}
         editHref={`/receitas/${recipe.slug}/editar`}
+        slug={recipe.slug}
       />
       <section className="editorial-container py-8 sm:py-10 lg:py-14">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-12">

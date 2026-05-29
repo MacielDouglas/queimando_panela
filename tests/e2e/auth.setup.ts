@@ -58,14 +58,30 @@ async function resolvePasswordInput(page: Page): Promise<Locator> {
 }
 
 async function signIn(page: Page, email: string, password: string) {
-  await page.goto('/login');
+  await page.goto('/login', { waitUntil: 'domcontentloaded' });
+  await expect(page).toHaveURL(/\/login/i);
 
   const emailInput = await resolveEmailInput(page);
   const passwordInput = await resolvePasswordInput(page);
 
   await emailInput.fill(email);
   await passwordInput.fill(password);
-  await page.getByRole('button', { name: /entrar|login|acessar/i }).click();
+
+  const submitButton = page.getByRole('button', {
+    name: /entrar|login|acessar/i,
+  });
+
+  await expect(submitButton).toBeVisible({ timeout: 10_000 });
+
+  // Espera um sinal concreto: sair da página de login OU aparecer algo típico do app autenticado
+  await Promise.all([
+    page
+      .waitForURL((url) => !/\/login/i.test(url.pathname + url.search), {
+        timeout: 15_000,
+      })
+      .catch(() => null),
+    submitButton.click(),
+  ]);
 }
 
 setup('authenticate user', async ({ page, baseURL }) => {
@@ -79,24 +95,12 @@ setup('authenticate user', async ({ page, baseURL }) => {
     );
   }
 
+  // Tenta logar diretamente
   await signIn(page, email, password);
 
-  const loginError = page.getByText(
-    /não foi possível entrar|erro inesperado|invalid password|senha|credenciais/i,
-  );
-
-  const loggedIn = await Promise.race([
-    page
-      .waitForURL(/\/$/, { timeout: 10_000 })
-      .then(() => true)
-      .catch(() => false),
-    loginError
-      .waitFor({ state: 'visible', timeout: 10_000 })
-      .then(() => false)
-      .catch(() => false),
-  ]);
-
-  if (!loggedIn) {
+  // Se ainda estiver na tela de login, tenta criar usuário e logar de novo
+  const stillOnLogin = /\/login/i.test(new URL(page.url()).pathname);
+  if (stillOnLogin) {
     const api = await request.newContext({
       baseURL,
       extraHTTPHeaders: {
@@ -105,16 +109,11 @@ setup('authenticate user', async ({ page, baseURL }) => {
     });
 
     const signUpResponse = await api.post('/api/auth/sign-up/email', {
-      data: {
-        email,
-        password,
-        name,
-      },
+      data: { email, password, name },
     });
 
     if (!signUpResponse.ok()) {
       const responseText = await signUpResponse.text();
-
       const alreadyExists =
         signUpResponse.status() === 409 ||
         /already exists|user already exists|duplicate|exists/i.test(
@@ -129,9 +128,11 @@ setup('authenticate user', async ({ page, baseURL }) => {
     }
 
     await signIn(page, email, password);
-    await page.waitForURL(/\/$/, { timeout: 15_000 });
   }
 
-  await expect(page).toHaveURL(/\/$/);
+  // Última validação: o login não pode continuar na rota /login
+  await expect(page).not.toHaveURL(/\/login/i);
+
+  // Salva estado
   await page.context().storageState({ path: authFile });
 });

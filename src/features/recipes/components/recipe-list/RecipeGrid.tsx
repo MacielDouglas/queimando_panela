@@ -1,5 +1,8 @@
+import Link from 'next/link';
+
 import { RecipeCard } from './RecipeCard';
 import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
+import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
 
 type Props = {
   recipes: RecipeCardData[];
@@ -7,10 +10,94 @@ type Props = {
   currentPage: number;
   totalPages: number;
   q?: string;
-  tipo?: string;
-  dificuldade?: string;
-  utensilio?: string;
+  categoria?: string;
+  tipo?: string[];
+  dificuldade?: RecipeDifficultyValue;
+  utensilio?: string[];
+  ingrediente?: string[];
 };
+
+function buildPageHref({
+  page,
+  q,
+  categoria,
+  tipo = [],
+  dificuldade,
+  utensilio = [],
+  ingrediente = [],
+}: {
+  page: number;
+  q?: string;
+  categoria?: string;
+  tipo?: string[];
+  dificuldade?: RecipeDifficultyValue;
+  utensilio?: string[];
+  ingrediente?: string[];
+}) {
+  const params = new URLSearchParams();
+
+  if (q) params.set('q', q);
+  if (categoria) params.set('categoria', categoria);
+  if (dificuldade) params.set('dificuldade', dificuldade);
+
+  tipo.forEach((item) => params.append('tipo', item));
+  utensilio.forEach((item) => params.append('utensilio', item));
+  ingrediente.forEach((item) => params.append('ingrediente', item));
+
+  if (page > 1) params.set('page', String(page));
+
+  const query = params.toString();
+  return query ? `/receitas?${query}` : '/receitas';
+}
+
+function PaginationLink({
+  label,
+  page,
+  disabled,
+  q,
+  categoria,
+  tipo,
+  dificuldade,
+  utensilio,
+  ingrediente,
+}: {
+  label: string;
+  page: number;
+  disabled: boolean;
+  q?: string;
+  categoria?: string;
+  tipo?: string[];
+  dificuldade?: RecipeDifficultyValue;
+  utensilio?: string[];
+  ingrediente?: string[];
+}) {
+  if (disabled) {
+    return (
+      <span className="cursor-not-allowed border border-neutral-200 bg-neutral-100 px-3 py-1.5 text-xs text-neutral-400">
+        {label}
+      </span>
+    );
+  }
+
+  const href = buildPageHref({
+    page,
+    q,
+    categoria,
+    tipo,
+    dificuldade,
+    utensilio,
+    ingrediente,
+  });
+
+  return (
+    <Link
+      href={href}
+      className="border border-neutral-300 bg-white px-3 py-1.5 text-xs text-neutral-700 hover:border-amber-500 hover:text-amber-700"
+    >
+      {label}
+    </Link>
+  );
+}
 
 export function RecipeGrid({
   recipes,
@@ -18,9 +105,11 @@ export function RecipeGrid({
   currentPage,
   totalPages,
   q,
+  categoria,
   tipo,
   dificuldade,
   utensilio,
+  ingrediente,
 }: Props) {
   return (
     <section>
@@ -33,6 +122,7 @@ export function RecipeGrid({
             {q ? `Resultados para "${q}"` : 'Todas as receitas'}
           </h2>
         </div>
+
         <p className="text-xs text-neutral-500">
           {total === 0
             ? 'Nenhuma receita'
@@ -69,70 +159,32 @@ export function RecipeGrid({
                 page={currentPage - 1}
                 disabled={currentPage <= 1}
                 q={q}
+                categoria={categoria}
                 tipo={tipo}
                 dificuldade={dificuldade}
                 utensilio={utensilio}
+                ingrediente={ingrediente}
               />
+
               <span className="text-xs text-neutral-600">
                 {currentPage} / {totalPages}
               </span>
+
               <PaginationLink
                 label="Próxima →"
                 page={currentPage + 1}
                 disabled={currentPage >= totalPages}
                 q={q}
+                categoria={categoria}
                 tipo={tipo}
                 dificuldade={dificuldade}
                 utensilio={utensilio}
+                ingrediente={ingrediente}
               />
             </nav>
           )}
         </>
       )}
     </section>
-  );
-}
-
-function PaginationLink({
-  label,
-  page,
-  disabled,
-  q,
-  tipo,
-  dificuldade,
-  utensilio,
-}: {
-  label: string;
-  page: number;
-  disabled: boolean;
-  q?: string;
-  tipo?: string;
-  dificuldade?: string;
-  utensilio?: string;
-}) {
-  if (disabled) {
-    return (
-      <span className="cursor-not-allowed border border-neutral-200 bg-neutral-100 px-3 py-1.5 text-xs text-neutral-400">
-        {label}
-      </span>
-    );
-  }
-
-  const search = new URLSearchParams();
-  if (page > 1) search.set('page', String(page));
-  if (q) search.set('q', q);
-  if (tipo) search.set('tipo', tipo);
-  if (dificuldade) search.set('dificuldade', dificuldade);
-  if (utensilio) search.set('utensilio', utensilio);
-
-  const href = `/receitas?${search.toString()}`;
-
-  return (
-    <a
-      href={href}
-      className="border border-neutral-300 bg-white px-3 py-1.5 text-xs text-neutral-700 hover:border-amber-500 hover:text-amber-700"
-    >
-      {label}
-    </a>
   );
 }

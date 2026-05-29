@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
 export const aiReviewIngredientSchema = z.object({
-  text: z.string(),
+  originalText: z.string(),
+  name: z.string(),
+  generalName: z.string(),
 });
 
 export const aiReviewUtensilSchema = z.object({
@@ -17,7 +19,7 @@ export const aiReviewSectionSchema = z.object({
 export const aiReviewSchema = z.object({
   title: z.string(),
   summary: z.string(),
-  difficulty: z.enum(['EASY', 'MEDIUM', 'HARD']),
+  difficulty: z.enum(['EASY', 'EASY_MEDIUM', 'MEDIUM', 'MEDIUM_HARD', 'HARD']),
   difficultyLabel: z.string(),
   types: z.array(z.string()).min(1).max(3),
   prepTimeMinutes: z.number(),

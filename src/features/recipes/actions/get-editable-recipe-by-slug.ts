@@ -15,11 +15,19 @@ export const getEditableRecipeBySlug = cache(
         sections: {
           orderBy: { order: 'asc' },
           include: {
-            ingredients: { orderBy: { order: 'asc' } },
+            ingredients: {
+              orderBy: { order: 'asc' },
+              include: {
+                generalIngredient: true,
+              },
+            },
           },
         },
         utensils: {
           include: { utensil: true },
+        },
+        recipeTypes: {
+          include: { recipeType: true },
         },
       },
     });
@@ -39,7 +47,7 @@ export const getEditableRecipeBySlug = cache(
           : recipe.difficulty === 'MEDIUM'
             ? 'Médio'
             : 'Difícil',
-      types: recipe.types,
+      types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
       prepTimeMinutes: recipe.prepTimeMinutes ?? 0,
       cookTimeMinutes: recipe.cookTimeMinutes ?? 0,
       suggestions: recipe.suggestions ?? '',
@@ -50,9 +58,12 @@ export const getEditableRecipeBySlug = cache(
       utensils: recipe.utensils.map((item) => item.utensil.name),
       sections: recipe.sections.map((section) => ({
         name: section.name,
-        ingredients: section.ingredients.map(
-          (ingredient) => ingredient.originalText,
-        ),
+        ingredients: section.ingredients.map((ingredient) => ({
+          originalText: ingredient.originalText,
+          name: ingredient.name,
+          generalName:
+            ingredient.generalIngredient?.name ?? ingredient.name.toLowerCase(),
+        })),
         modeOfPreparation: section.modeOfPreparation,
       })),
       images: recipe.images.map((image) => ({

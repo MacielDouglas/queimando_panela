@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import Groq from 'groq-sdk';
+import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -19,18 +20,24 @@ type NutrientEntry = {
   quantity: string;
 };
 
+type AnalyzedIngredient = {
+  originalText: string;
+  name: string;
+  generalName: string;
+};
+
 type AnalyzedSection = {
   name: string;
-  ingredients: string[];
+  ingredients: AnalyzedIngredient[];
   modeOfPreparation: string;
 };
 
 type AnalyzeResult = {
   title: string;
   summary: string;
-  difficulty: 'EASY' | 'EASY_MEDIUM' | 'MEDIUM' | 'MEDIUM_HARD' | 'HARD';
+  difficulty: RecipeDifficultyValue;
   difficultyLabel: string;
-  types: string[]; // era: type: string
+  types: string[];
   prepTimeMinutes: number;
   cookTimeMinutes: number;
   suggestions: string;
@@ -192,8 +199,12 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
 "types"
   Array de classificações da receita. Mínimo 1, máximo 3 itens.
   Cada item deve ser uma categoria isolada e específica.
+    Os 3 itens devem ser distintos entre si.
+  Nunca repita categorias.
+  Todos devem ser em português.
   Exemplos válidos:
     ["Prato principal", "Carne", "Clássico brasileiro"]
+    ["Entrada", "Petisco", "Vegetariano"]
     ["Sobremesa", "Doce", "Forno"]
     ["Lanche", "Pão", "Artesanal"]
   Nunca use separadores como "/" dentro de um item.
@@ -232,10 +243,16 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
 "sections"
   Array de seções revisadas da receita.
   - Se houver apenas uma seção, use "Receita" como name.
-  - "ingredients": lista limpa, um item por string, com medidas padronizadas.
+  - "ingredients": lista de objetos.
+  - Cada ingrediente deve conter:
+    - "originalText": texto completo padronizado do ingrediente, preservando quantidade, unidade e detalhes.
+    - "name": nome específico do ingrediente, sem quantidade.
+    - "generalName": nome genérico do ingrediente, em português e lowercase, próprio para indexação e busca.
+  - Exemplos:
+    { "originalText": "50 g de manteiga em ponto pomada", "name": "manteiga em ponto pomada", "generalName": "manteiga" }
+    { "originalText": "1 disco de pizza de frigideira", "name": "pizza de frigideira", "generalName": "pizza" }
+    { "originalText": "¼ de xícara (chá) de vinho branco", "name": "vinho branco", "generalName": "vinho branco" }
   - "modeOfPreparation": passos numerados, curtos e claros.
-    Formato obrigatório: "1. ...\\n2. ...\\n3. ..."
-    Cada passo deve ter no máximo 2 ações relacionadas.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 JSON ESPERADO (retorne apenas isso)
@@ -260,13 +277,19 @@ JSON ESPERADO (retorne apenas isso)
     { "nutrient": "Sódio",               "quantity": "0 mg"   }
   ],
   "utensils": ["string"],
-  "sections": [
-    {
-      "name": "string",
-      "ingredients": ["string"],
-      "modeOfPreparation": "1. ...\\n2. ...\\n3. ..."
-    }
-  ]
+"sections": [
+  {
+    "name": "string",
+    "ingredients": [
+      {
+        "originalText": "string",
+        "name": "string",
+        "generalName": "string"
+      }
+    ],
+    "modeOfPreparation": "1. ...\n2. ...\n3. ..."
+  }
+]
 }
 `.trim();
 }

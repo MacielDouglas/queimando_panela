@@ -12,6 +12,9 @@ export const getLatestRecipe = cache(
       include: {
         images: { orderBy: { order: 'asc' } },
         author: { select: { name: true } },
+        recipeTypes: {
+          include: { recipeType: true },
+        },
       },
     });
 
@@ -25,7 +28,7 @@ export const getLatestRecipe = cache(
       slug: recipe.slug,
       title: recipe.title,
       summary: recipe.summary,
-      types: recipe.types,
+      types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
       difficulty: recipe.difficulty,
       prepTimeMinutes: recipe.prepTimeMinutes,
       cookTimeMinutes: recipe.cookTimeMinutes,

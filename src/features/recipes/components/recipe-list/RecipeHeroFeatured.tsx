@@ -2,10 +2,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Clock3, Flame, ArrowRight } from 'lucide-react';
 import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
+import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
 
-const difficultyLabel: Record<'EASY' | 'MEDIUM' | 'HARD', string> = {
+const difficultyLabel: Record<RecipeDifficultyValue, string> = {
   EASY: 'Fácil',
+  EASY_MEDIUM: 'Fácil / Médio',
   MEDIUM: 'Médio',
+  MEDIUM_HARD: 'Médio / Difícil',
   HARD: 'Difícil',
 };
 

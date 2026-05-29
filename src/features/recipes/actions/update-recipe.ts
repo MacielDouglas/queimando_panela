@@ -9,8 +9,9 @@ import {
   deleteRecipeImagesByKeys,
   uploadRecipeImage,
 } from '@/features/recipes/server/recipe-image.service';
-import type { RecipeDifficulty } from '@/generated/prisma/client';
 import type { AiRecipeAnalysis } from '../types/recipe-ai.types';
+import { buildRecipeCoreData, normalizeLower } from './recipe-core';
+import { buildFinalImageSequence } from './recipe-imagem-helpers';
 
 type ExistingImagePayload = {
   id: string;
@@ -18,23 +19,6 @@ type ExistingImagePayload = {
   url: string;
   alt: string;
 };
-
-function normalizeDifficulty(
-  difficulty: AiRecipeAnalysis['difficulty'],
-): RecipeDifficulty {
-  if (
-    difficulty === 'EASY' ||
-    difficulty === 'MEDIUM' ||
-    difficulty === 'HARD'
-  ) {
-    return difficulty;
-  }
-
-  if (difficulty === 'EASY_MEDIUM') return 'MEDIUM';
-  if (difficulty === 'MEDIUM_HARD') return 'HARD';
-
-  return 'MEDIUM';
-}
 
 export async function updateRecipe(
   slug: string,
@@ -87,12 +71,19 @@ export async function updateRecipe(
       (image) => !keptIds.has(image.id),
     );
 
+    const coreData = buildRecipeCoreData(analysis, story);
+
     await prisma.$transaction(async (tx) => {
+      // limpa derivados de IA
       await tx.ingredient.deleteMany({
         where: { recipeId: recipe.id },
       });
 
       await tx.utensilOnRecipe.deleteMany({
+        where: { recipeId: recipe.id },
+      });
+
+      await tx.recipeTypeOnRecipe.deleteMany({
         where: { recipeId: recipe.id },
       });
 
@@ -102,35 +93,7 @@ export async function updateRecipe(
 
       const updated = await tx.recipe.update({
         where: { id: recipe.id },
-        data: {
-          title: analysis.title,
-          summary: analysis.summary,
-          story: story ?? null,
-          difficulty: normalizeDifficulty(analysis.difficulty),
-          types: analysis.types,
-          prepTimeMinutes: analysis.prepTimeMinutes,
-          cookTimeMinutes: analysis.cookTimeMinutes,
-          suggestions: analysis.suggestions,
-          nutritionSummary: analysis.nutritionSummary,
-          nutritionPer100g: analysis.nutritionPer100g,
-          sections: {
-            create: analysis.sections.map((section, index) => ({
-              name: section.name,
-              modeOfPreparation: section.modeOfPreparation,
-              order: index,
-            })),
-          },
-          utensils: {
-            create: analysis.utensils.map((name) => ({
-              utensil: {
-                connectOrCreate: {
-                  where: { name },
-                  create: { name },
-                },
-              },
-            })),
-          },
-        },
+        data: coreData,
         include: {
           sections: {
             orderBy: { order: 'asc' },
@@ -138,39 +101,35 @@ export async function updateRecipe(
         },
       });
 
-      const ingredientData = analysis.sections.flatMap(
-        (section, sectionIndex) => {
-          const createdSection = updated.sections[sectionIndex];
-          if (!createdSection) return [];
+      // ingredientes + GeneralIngredient
+      for (const [sectionIndex, section] of analysis.sections.entries()) {
+        const createdSection = updated.sections[sectionIndex];
+        if (!createdSection) continue;
 
-          return section.ingredients.map((originalText, order) => {
-            const match = originalText
-              .trim()
-              .match(
-                /^([\d¼½¾⅓⅔.,/\s]+)?\s*([a-zA-ZÀ-ú()%.\s]+?)?\s+de\s+(.+)$/i,
-              );
+        for (const [order, ingredient] of section.ingredients.entries()) {
+          const generalName = normalizeLower(ingredient.generalName);
 
-            const amount = match?.[1]?.trim() ?? null;
-            const unit = match?.[2]?.trim() ?? null;
-            const name = match?.[3]?.trim() ?? originalText.trim();
+          const generalIngredient = generalName
+            ? await tx.generalIngredient.upsert({
+                where: { name: generalName },
+                update: {},
+                create: { name: generalName },
+              })
+            : null;
 
-            return {
+          await tx.ingredient.create({
+            data: {
               recipeId: updated.id,
               sectionId: createdSection.id,
-              originalText: originalText.trim(),
-              name,
-              amount,
-              unit,
+              originalText: ingredient.originalText.trim(),
+              name: ingredient.name.trim(),
+              amount: null,
+              unit: null,
               order,
-            };
+              generalIngredientId: generalIngredient?.id,
+            },
           });
-        },
-      );
-
-      if (ingredientData.length > 0) {
-        await tx.ingredient.createMany({
-          data: ingredientData,
-        });
+        }
       }
 
       if (removedImages.length > 0) {
@@ -195,25 +154,21 @@ export async function updateRecipe(
         ),
       );
 
-      const finalImageSequence = [
-        ...existingImages.map((image) => ({
-          kind: 'existing' as const,
-          ...image,
-        })),
-        ...uploadedNewImages.map((image) => ({
-          kind: 'new' as const,
-          ...image,
-        })),
-      ].slice(0, 3);
+      const finalImageSequence = buildFinalImageSequence({
+        title: analysis.title,
+        existingImages,
+        uploadedImages: uploadedNewImages,
+        maxImages: 3,
+      });
 
-      for (const [index, image] of finalImageSequence.entries()) {
+      for (const image of finalImageSequence) {
         if (image.kind === 'existing') {
           await tx.recipeImage.update({
             where: { id: image.id },
             data: {
-              order: index,
-              isCover: index === 0,
-              alt: image.alt || `${analysis.title} - foto ${index + 1}`,
+              order: image.order,
+              isCover: image.isCover,
+              alt: image.alt,
             },
           });
         } else {
@@ -223,12 +178,12 @@ export async function updateRecipe(
               key: image.key,
               url: image.url,
               alt: image.alt,
-              contentType: image.contentType,
-              sizeBytes: image.sizeBytes,
-              width: image.width,
-              height: image.height,
-              order: index,
-              isCover: index === 0,
+              contentType: image.contentType ?? null,
+              sizeBytes: image.sizeBytes ?? null,
+              width: image.width ?? null,
+              height: image.height ?? null,
+              order: image.order,
+              isCover: image.isCover,
             },
           });
         }

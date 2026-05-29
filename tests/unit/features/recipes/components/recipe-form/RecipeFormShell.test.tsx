@@ -390,7 +390,13 @@ describe('RecipeFormShell', () => {
           sections: [
             {
               name: 'Receita',
-              ingredients: ['2 xícaras de milho'],
+              ingredients: [
+                {
+                  originalText: '2 xícaras de milho',
+                  name: 'milho',
+                  generalName: 'milho',
+                },
+              ],
               modeOfPreparation: 'Misture tudo e asse.',
             },
           ],

@@ -3,11 +3,22 @@
 import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import type { RecipeCardData } from './get-all-recipes';
+import type { RecipeDifficulty } from '@/generated/prisma/client';
 
 type UtensilRow = {
   utensilName: string;
   recipes: RecipeCardData[];
 };
+
+function mapDifficulty(
+  difficulty: RecipeDifficulty,
+): 'EASY' | 'MEDIUM' | 'HARD' {
+  if (difficulty === 'EASY') return 'EASY';
+  if (difficulty === 'HARD') return 'HARD';
+
+  // EASY_MEDIUM, MEDIUM, MEDIUM_HARD caem aqui
+  return 'MEDIUM';
+}
 
 export const getRecipesByUtensil = cache(
   async (take = 4): Promise<UtensilRow[]> => {
@@ -38,6 +49,9 @@ export const getRecipesByUtensil = cache(
           include: {
             images: { orderBy: { order: 'asc' } },
             author: { select: { name: true } },
+            recipeTypes: {
+              include: { recipeType: true },
+            },
           },
         });
 
@@ -54,8 +68,8 @@ export const getRecipesByUtensil = cache(
               slug: recipe.slug,
               title: recipe.title,
               summary: recipe.summary,
-              types: recipe.types,
-              difficulty: recipe.difficulty,
+              types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
+              difficulty: mapDifficulty(recipe.difficulty),
               prepTimeMinutes: recipe.prepTimeMinutes,
               cookTimeMinutes: recipe.cookTimeMinutes,
               createdAt: recipe.createdAt,

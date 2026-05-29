@@ -1,4 +1,5 @@
 'use server';
+
 import { prisma } from '@/lib/prisma';
 import { cache } from 'react';
 
@@ -20,6 +21,9 @@ export const getRecipeBySlug = cache(async (slug: string) => {
       },
       utensils: {
         include: { utensil: true },
+      },
+      recipeTypes: {
+        include: { recipeType: true },
       },
     },
   });

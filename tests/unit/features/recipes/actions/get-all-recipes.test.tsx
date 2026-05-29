@@ -140,9 +140,9 @@ describe('getAllRecipes', () => {
 
     await getAllRecipes({
       query: '  milho  ',
-      type: '  bolo ',
+      types: '  bolo ',
       difficulty: 'EASY',
-      utensilName: ' forma ',
+      utensils: 'forma',
       take: 12,
       skip: 24,
     });

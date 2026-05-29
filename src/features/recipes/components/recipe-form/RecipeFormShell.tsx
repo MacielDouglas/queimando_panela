@@ -23,6 +23,7 @@ import {
 import { SectionField } from './fields/SectionField';
 import { StoryField } from './fields/StoryField';
 import { TitleField } from './fields/TitleField';
+import type { RecipeDifficultyValue } from '../../types/recipe.types';
 
 type EditableRecipeImage = {
   id: string;
@@ -33,13 +34,19 @@ type EditableRecipeImage = {
   order: number;
 };
 
+type EditableIngredient = {
+  originalText: string;
+  name: string;
+  generalName: string;
+};
+
 type EditableRecipeData = {
   id: string;
   slug: string;
   title: string;
   story: string;
   summary: string;
-  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  difficulty: RecipeDifficultyValue;
   difficultyLabel: string;
   types: string[];
   prepTimeMinutes: number;
@@ -50,7 +57,7 @@ type EditableRecipeData = {
   utensils: string[];
   sections: {
     name: string;
-    ingredients: string[];
+    ingredients: EditableIngredient[];
     modeOfPreparation: string;
   }[];
   images: EditableRecipeImage[];
@@ -63,7 +70,7 @@ type Props = {
 
 function normalizeDifficulty(
   difficulty: AiRecipeAnalysis['difficulty'],
-): 'EASY' | 'MEDIUM' | 'HARD' {
+): RecipeDifficultyValue {
   if (
     difficulty === 'EASY' ||
     difficulty === 'MEDIUM' ||
@@ -86,7 +93,11 @@ function aiAnalysisToFormData(data: AiRecipeAnalysis): AiReviewFormData {
     sections: data.sections.map((section) => ({
       name: section.name,
       modeOfPreparation: section.modeOfPreparation,
-      ingredients: section.ingredients.map((text) => ({ text })),
+      ingredients: section.ingredients.map((ingredient) => ({
+        originalText: ingredient.originalText,
+        name: ingredient.name,
+        generalName: ingredient.generalName,
+      })),
     })),
   };
 }
@@ -98,7 +109,16 @@ function formDataToAnalysis(data: AiReviewFormData): AiRecipeAnalysis {
     sections: data.sections.map((section) => ({
       name: section.name,
       modeOfPreparation: section.modeOfPreparation,
-      ingredients: section.ingredients.map((i) => i.text).filter(Boolean),
+      ingredients: section.ingredients
+        .filter((i) => i.originalText?.trim().length > 0)
+        .map((i) => {
+          const originalText = i.originalText.trim();
+          const name = i.name?.trim() || originalText;
+          const generalName =
+            i.generalName?.trim().toLowerCase() || name.toLowerCase();
+
+          return { originalText, name, generalName };
+        }),
     })),
   };
 }
@@ -159,7 +179,11 @@ function editableRecipeToReviewDefaults(
     sections: initialData.sections.map((section) => ({
       name: section.name,
       modeOfPreparation: section.modeOfPreparation,
-      ingredients: section.ingredients.map((text) => ({ text })),
+      ingredients: section.ingredients.map((ingredient) => ({
+        originalText: ingredient.originalText,
+        name: ingredient.name,
+        generalName: ingredient.generalName,
+      })),
     })),
   };
 }

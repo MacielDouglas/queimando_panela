@@ -6,35 +6,12 @@ import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { uploadRecipeImage } from '@/features/recipes/server/recipe-image.service';
-import type { RecipeDifficulty } from '@/generated/prisma/client';
 import type { AiRecipeAnalysis } from '../types/recipe-ai.types';
-
-function slugify(text: string) {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-');
-}
-
-function normalizeDifficulty(
-  difficulty: AiRecipeAnalysis['difficulty'],
-): RecipeDifficulty {
-  if (
-    difficulty === 'EASY' ||
-    difficulty === 'MEDIUM' ||
-    difficulty === 'HARD'
-  ) {
-    return difficulty;
-  }
-
-  if (difficulty === 'EASY_MEDIUM') return 'MEDIUM';
-  if (difficulty === 'MEDIUM_HARD') return 'HARD';
-
-  return 'MEDIUM';
-}
+import { buildRecipeCoreData, normalizeLower, slugify } from './recipe-core';
+import {
+  buildFinalImageSequence,
+  type FinalNewImage,
+} from './recipe-imagem-helpers';
 
 export async function createRecipe(
   formData: FormData,
@@ -57,38 +34,14 @@ export async function createRecipe(
   const slug = slugify(analysis.title);
 
   try {
+    const coreData = buildRecipeCoreData(analysis, story);
+
     const recipe = await prisma.recipe.create({
       data: {
         slug,
-        title: analysis.title,
-        summary: analysis.summary,
-        story: story ?? null,
-        difficulty: normalizeDifficulty(analysis.difficulty),
-        types: analysis.types,
-        prepTimeMinutes: analysis.prepTimeMinutes,
-        cookTimeMinutes: analysis.cookTimeMinutes,
-        suggestions: analysis.suggestions,
-        nutritionSummary: analysis.nutritionSummary,
-        nutritionPer100g: analysis.nutritionPer100g,
         isPublished: true,
         authorId: session.user.id,
-        sections: {
-          create: analysis.sections.map((section, index) => ({
-            name: section.name,
-            modeOfPreparation: section.modeOfPreparation,
-            order: index,
-          })),
-        },
-        utensils: {
-          create: analysis.utensils.map((name) => ({
-            utensil: {
-              connectOrCreate: {
-                where: { name },
-                create: { name },
-              },
-            },
-          })),
-        },
+        ...coreData,
       },
       include: {
         sections: {
@@ -97,37 +50,35 @@ export async function createRecipe(
       },
     });
 
-    const ingredientData = analysis.sections.flatMap(
-      (section, sectionIndex) => {
-        const createdSection = recipe.sections[sectionIndex];
-        if (!createdSection) return [];
+    // criação de ingredientes + GeneralIngredient (versão nova)
+    for (const [sectionIndex, section] of analysis.sections.entries()) {
+      const createdSection = recipe.sections[sectionIndex];
+      if (!createdSection) continue;
 
-        return section.ingredients.map((originalText, order) => {
-          const match = originalText
-            .trim()
-            .match(
-              /^([\d¼½¾⅓⅔.,/\s]+)?\s*([a-zA-ZÀ-ú()%.\s]+?)?\s+de\s+(.+)$/i,
-            );
+      for (const [order, ingredient] of section.ingredients.entries()) {
+        const generalName = normalizeLower(ingredient.generalName);
 
-          const amount = match?.[1]?.trim() ?? null;
-          const unit = match?.[2]?.trim() ?? null;
-          const name = match?.[3]?.trim() ?? originalText.trim();
+        const generalIngredient = generalName
+          ? await prisma.generalIngredient.upsert({
+              where: { name: generalName },
+              update: {},
+              create: { name: generalName },
+            })
+          : null;
 
-          return {
+        await prisma.ingredient.create({
+          data: {
             recipeId: recipe.id,
             sectionId: createdSection.id,
-            originalText: originalText.trim(),
-            name,
-            amount,
-            unit,
+            originalText: ingredient.originalText.trim(),
+            name: ingredient.name.trim(),
+            amount: null,
+            unit: null,
             order,
-          };
+            generalIngredientId: generalIngredient?.id,
+          },
         });
-      },
-    );
-
-    if (ingredientData.length > 0) {
-      await prisma.ingredient.createMany({ data: ingredientData });
+      }
     }
 
     if (imageFiles.length > 0) {
@@ -143,16 +94,28 @@ export async function createRecipe(
         ),
       );
 
+      const finalImages = buildFinalImageSequence({
+        title: analysis.title,
+        existingImages: [],
+        uploadedImages,
+        maxImages: 3,
+      });
+
+      // como não há imagens existentes no create, filtramos:
+      const finalNewImages = finalImages.filter(
+        (img): img is FinalNewImage => img.kind === 'new',
+      );
+
       await prisma.recipeImage.createMany({
-        data: uploadedImages.map((image) => ({
+        data: finalNewImages.map((image) => ({
           recipeId: recipe.id,
           key: image.key,
           url: image.url,
           alt: image.alt,
-          contentType: image.contentType,
-          sizeBytes: image.sizeBytes,
-          width: image.width,
-          height: image.height,
+          contentType: image.contentType ?? null,
+          sizeBytes: image.sizeBytes ?? null,
+          width: image.width ?? null,
+          height: image.height ?? null,
           order: image.order,
           isCover: image.isCover,
         })),

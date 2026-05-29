@@ -11,20 +11,25 @@ type CategoryRow = {
 
 export const getRecipesByCategory = cache(
   async (take = 4): Promise<CategoryRow[]> => {
-    // Busca todas as receitas publicadas com tipos definidos
     const published = await prisma.recipe.findMany({
       where: {
         isPublished: true,
-        types: { isEmpty: false },
+        recipeTypes: {
+          some: {},
+        },
       },
       orderBy: { createdAt: 'desc' },
-      select: { types: true },
+      select: {
+        recipeTypes: {
+          include: { recipeType: true },
+        },
+      },
     });
 
-    // Extrai os primeiros 4 tipos distintos (preservando ordem de aparição)
     const seen = new Set<string>();
-    for (const { types } of published) {
-      for (const t of types) {
+    for (const { recipeTypes } of published) {
+      for (const rt of recipeTypes) {
+        const t = rt.recipeType.name;
         if (!seen.has(t)) seen.add(t);
         if (seen.size >= 4) break;
       }
@@ -38,13 +43,20 @@ export const getRecipesByCategory = cache(
         const items = await prisma.recipe.findMany({
           where: {
             isPublished: true,
-            types: { has: type },
+            recipeTypes: {
+              some: {
+                recipeType: { name: type },
+              },
+            },
           },
           orderBy: { createdAt: 'desc' },
-          take,
+          take, // <- aqui o parâmetro é de fato usado
           include: {
             images: { orderBy: { order: 'asc' } },
             author: { select: { name: true } },
+            recipeTypes: {
+              include: { recipeType: true },
+            },
           },
         });
 
@@ -61,7 +73,7 @@ export const getRecipesByCategory = cache(
               slug: recipe.slug,
               title: recipe.title,
               summary: recipe.summary,
-              types: recipe.types,
+              types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
               difficulty: recipe.difficulty,
               prepTimeMinutes: recipe.prepTimeMinutes,
               cookTimeMinutes: recipe.cookTimeMinutes,

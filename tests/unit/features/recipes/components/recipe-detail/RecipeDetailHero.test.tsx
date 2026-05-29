@@ -20,12 +20,13 @@ describe('RecipeDetailHero', () => {
   it('renderiza título, resumo e metadados', () => {
     render(
       <RecipeDetailHero
-        title="Bolo de milho"
-        summary="Fofo e cremoso"
+        slug="bolo-de-cenoura"
+        title="Bolo de Cenoura"
+        summary="Fofo"
         types={['Bolo']}
         difficulty="EASY"
-        prepTimeMinutes={15}
-        cookTimeMinutes={45}
+        prepTimeMinutes={10}
+        cookTimeMinutes={20}
         servings={8}
         coverUrl="/bolo.jpg"
         authorName="Douglas"
