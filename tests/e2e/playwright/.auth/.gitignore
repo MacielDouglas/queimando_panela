@@ -1,0 +1,2 @@
+# Playwright auth state — contém tokens de sessão reais
+tests/e2e/playwright/.auth/user.json

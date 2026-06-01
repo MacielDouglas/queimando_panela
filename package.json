@@ -22,6 +22,7 @@
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:auth": "playwright test --project chromium-auth",
     "test:e2e:setup": "playwright test --project setup",
+    "test:e2e:report": "playwright show-report",
     "check": "bun run format && bun run lint && bun run typecheck",
     "ci": "bun run format:check && bun run lint && bun run typecheck && bun run test:coverage"
   },

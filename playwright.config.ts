@@ -1,57 +1,45 @@
-import { loadEnvConfig } from '@next/env';
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
 
-loadEnvConfig(process.cwd());
-
-const PORT = Number(process.env.PORT ?? 3000);
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://localhost:${PORT}`;
+dotenv.config();
 
 export default defineConfig({
   testDir: './tests/e2e',
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
+  timeout: 60_000,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: process.env.CI ? 'dot' : 'list',
-  timeout: 30_000,
-  expect: {
-    timeout: 5_000,
-  },
+  workers: 1,
+  reporter: 'html',
+
   use: {
-    baseURL,
+    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    headless: true,
+    video: 'on-first-retry',
   },
+
   projects: [
+    // Projeto de setup: faz login e salva o estado de autenticação
     {
       name: 'setup',
-      testMatch: /.*\.setup\.ts/,
-      use: {
-        ...devices['Desktop Chrome'],
-      },
+      testMatch: '**/auth.setup.ts',
     },
+
+    // Testes rodando com sessão autenticada salva
     {
       name: 'chromium',
-      testIgnore: [/.*\.setup\.ts/, /.*authenticated\/.*\.spec\.ts/],
       use: {
         ...devices['Desktop Chrome'],
+        storageState: 'tests/e2e/playwright/.auth/user.json',
       },
-    },
-    {
-      name: 'chromium-auth',
-      testMatch: /.*authenticated\/.*\.spec\.ts/,
       dependencies: ['setup'],
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: 'playwright/.auth/user.json',
-      },
     },
   ],
+
   webServer: {
-    command: 'bun run dev',
-    url: baseURL,
+    command: 'bun run start',
+    url: process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000',
     timeout: 120_000,
     reuseExistingServer: !process.env.CI,
   },

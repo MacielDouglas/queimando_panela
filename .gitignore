@@ -13,6 +13,8 @@
 /test-results
 /playwright-report
 /playwright/.auth
+# Playwright auth state — contém tokens de sessão reais
+tests/e2e/playwright/.auth/user.json
 
 # next.js
 /.next/
@@ -46,3 +48,8 @@ next-env.d.ts
 # prisma generated client
 /src/generated/prisma
 /generated/prisma
+
+# Playwright
+node_modules/
+/blob-report/
+/playwright/.cache/
