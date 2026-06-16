@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export function SignOutButton() {
   const router = useRouter();
@@ -21,7 +21,6 @@ export function SignOutButton() {
         return;
       }
 
-      router.replace('/login');
       router.refresh();
     } catch {
       setError('Erro inesperado ao sair.');

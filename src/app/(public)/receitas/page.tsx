@@ -1,21 +1,21 @@
-import type { Metadata } from 'next';
 import { ChefHat, Plus } from 'lucide-react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import { getServerSession } from '@/lib/get-server-session';
 import { getAllRecipes } from '@/features/recipes/actions/get-all-recipes';
-import { normalizeString } from '@/features/recipes/lib/recipe-params';
 import { getLatestRecipe } from '@/features/recipes/actions/get-latest-recipe';
-import { getRecipesByCategory } from '@/features/recipes/actions/get-recipes-by-category';
 import { getRecipesByUtensil } from '@/features/recipes/actions/get-recipe-by-utensil';
 import { getRecipeFilterOptions } from '@/features/recipes/actions/get-recipe-filter-options';
+import { getRecipesByCategory } from '@/features/recipes/actions/get-recipes-by-category';
+import { normalizeString } from '@/features/recipes/lib/recipe-params';
+import { getServerSession } from '@/lib/get-server-session';
 
+import { RecipeCategoryRow } from '@/features/recipes/components/recipe-list/RecipeCategoryRow';
+import { RecipeFilters } from '@/features/recipes/components/recipe-list/RecipeFilters';
+import { RecipeGrid } from '@/features/recipes/components/recipe-list/RecipeGrid';
 import { RecipeHeroFeatured } from '@/features/recipes/components/recipe-list/RecipeHeroFeatured';
 import { RecipeSearch } from '@/features/recipes/components/recipe-list/RecipeSearch';
-import { RecipeFilters } from '@/features/recipes/components/recipe-list/RecipeFilters';
-import { RecipeCategoryRow } from '@/features/recipes/components/recipe-list/RecipeCategoryRow';
 import { RecipeUtensilRow } from '@/features/recipes/components/recipe-list/RecipeUtensilRow';
-import { RecipeGrid } from '@/features/recipes/components/recipe-list/RecipeGrid';
 import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
 
 type SearchValue = string | string[] | undefined;
@@ -114,7 +114,7 @@ export default async function RecipesPage({ searchParams }: Props) {
   const totalPages = Math.max(Math.ceil(total / take), 1);
 
   return (
-    <main className="min-h-dvh bg-neutral-50 pb-20 text-neutral-900">
+    <main className="min-h-dvh bg-neutral-50 pt-24 pb-20 text-neutral-900">
       <section className="border-b border-neutral-200 bg-white">
         <div className="editorial-container py-6 sm:py-8">
           <div className="flex flex-wrap items-center justify-between gap-4">

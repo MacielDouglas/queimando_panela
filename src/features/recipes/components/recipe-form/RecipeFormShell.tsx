@@ -1,20 +1,21 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Plus, Save, Sparkles } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
-import { recipeFormSchema } from '../../schemas/recipe.schema';
+import { createRecipe } from '../../actions/create-recipe';
+import { updateRecipe } from '../../actions/update-recipe';
 import {
   aiReviewSchema,
   type AiReviewFormData,
 } from '../../schemas/recipe-ai-review-schema';
-import { createRecipe } from '../../actions/create-recipe';
-import { updateRecipe } from '../../actions/update-recipe';
+import { recipeFormSchema } from '../../schemas/recipe.schema';
 import type { AiRecipeAnalysis } from '../../types/recipe-ai.types';
 
+import type { RecipeDifficultyValue } from '../../types/recipe.types';
 import { AiReviewPanel } from './AiReviewPanel';
 import {
   ImageUploadField,
@@ -23,7 +24,6 @@ import {
 import { SectionField } from './fields/SectionField';
 import { StoryField } from './fields/StoryField';
 import { TitleField } from './fields/TitleField';
-import type { RecipeDifficultyValue } from '../../types/recipe.types';
 
 type EditableRecipeImage = {
   id: string;
@@ -142,7 +142,9 @@ function editableRecipeToFormDefaults(
       initialData.sections.length > 0
         ? initialData.sections.map((section) => ({
             name: section.name,
-            ingredientsText: section.ingredients.join('\n'),
+            ingredientsText: section.ingredients
+              .map((ing) => ing.originalText) // ← fix aqui
+              .join('\n'),
             modeOfPreparation: section.modeOfPreparation,
           }))
         : [{ name: '', ingredientsText: '', modeOfPreparation: '' }],

@@ -2,9 +2,7 @@
 
 import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-// import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
 type Props = {
   href: string;
@@ -31,7 +29,7 @@ export function NavLink({ href, label, onClick, exit }: Props) {
     <Link
       href={href}
       onClick={exit ? handleSignOut : onClick}
-      className={`relative py-0.5 text-sm font-medium transition-colors duration-200 before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-right before:scale-x-0 before:rounded-full before:bg-stone-800 before:transition-transform before:duration-300 before:ease-in-out hover:before:origin-left hover:before:scale-x-100 ${isActive ? 'text-stone-900 before:origin-left before:scale-x-100' : 'text-stone-600 hover:text-stone-900'} `}
+      className={`relative py-0.5 text-lg font-medium transition-colors duration-200 before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-right before:scale-x-0 before:rounded-full before:bg-amber-500 before:transition-transform before:duration-300 before:ease-in-out hover:before:origin-left hover:before:scale-x-100 ${isActive ? 'text-zinc-400 before:origin-left before:scale-x-100' : 'text-zinc-600 hover:text-zinc-300'} `}
     >
       {label}
     </Link>

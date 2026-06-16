@@ -1,8 +1,10 @@
-import Link from 'next/link';
-import { getServerSession } from '@/lib/get-server-session';
-import { NavLink } from './NavLink';
-import { MobileMenu } from './MobileMenu';
 import { getMobileMenuCategories } from '@/features/recipes/actions/get-mobile-menu-categories';
+import { getServerSession } from '@/lib/get-server-session';
+import Link from 'next/link';
+import { SignOutButton } from '../auth/sign-out-button';
+import { Logo } from './Logo';
+import { MobileMenu } from './MobileMenu';
+import { NavLink } from './NavLink';
 
 const links = [
   { href: '/', label: 'Home' },
@@ -15,24 +17,9 @@ export default async function Header() {
   const categories = await getMobileMenuCategories();
 
   return (
-    <header className="w-full border-b border-neutral-100 bg-white">
+    <header className="absolute z-20 w-full">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-        <Link
-          href="/"
-          className="inline-flex items-start gap-3 text-stone-800 transition-opacity hover:opacity-80"
-        >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-orange-200 text-[0.9rem] font-bold tracking-[-0.08em]">
-            QP
-          </div>
-          <div className="pt-0.5 leading-none">
-            <span className="font-heading block text-[1.05rem] font-extrabold tracking-[-0.04em]">
-              Queimando
-            </span>
-            <span className="font-heading block text-[1.05rem] font-extrabold tracking-[-0.04em]">
-              Panela
-            </span>
-          </div>
-        </Link>
+        <Logo />
 
         <nav
           aria-label="Navegação principal"
@@ -42,6 +29,21 @@ export default async function Header() {
             <NavLink key={link.href} href={link.href} label={link.label} />
           ))}
         </nav>
+
+        {/* BRAND DIREITA — desktop */}
+        <div className="hidden items-center gap-6 lg:flex">
+          {session?.user ? (
+            <SignOutButton />
+          ) : (
+            <Link
+              href="/login"
+              aria-label="Entrar na conta"
+              className="bg-amber-500 px-4 py-2 text-sm font-bold tracking-widest text-zinc-900 uppercase transition-colors duration-300 hover:bg-amber-600 hover:text-zinc-800"
+            >
+              Login
+            </Link>
+          )}
+        </div>
 
         <MobileMenu
           links={links}

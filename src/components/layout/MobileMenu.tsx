@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { FaGithub, FaLinkedin } from 'react-icons/fa6';
 import { SignOutButton } from '../auth/sign-out-button';
 
 type Props = {
@@ -178,22 +179,22 @@ export function MobileMenu({ links, categories, isLoggedIn }: Props) {
 
           <div className="mt-4 flex items-center gap-4">
             <Link
-              href="https://github.com/seu-usuario"
+              href="https://github.com/MacielDouglas"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium text-stone-700 transition hover:text-stone-950"
             >
-              <span className="text-base">🐙</span>
+              <FaGithub className="text-stone-500" />
               GitHub
             </Link>
 
             <Link
-              href="https://linkedin.com/in/seu-usuario"
+              href="https://www.linkedin.com/in/douglas-maciel-4943461b0/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium text-stone-700 transition hover:text-stone-950"
             >
-              <span className="text-base">💼</span>
+              <FaLinkedin className="text-stone-500" />
               LinkedIn
             </Link>
           </div>

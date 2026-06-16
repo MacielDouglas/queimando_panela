@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import { headers } from 'next/headers';
+import { notFound } from 'next/navigation';
 
-import { auth } from '@/lib/auth';
 import { getRecipeBySlug } from '@/features/recipes/actions/get-recipe-by-slug';
 import { RecipeDetailHero } from '@/features/recipes/components/recipe-detail/RecipeDetailHero';
 import { RecipeIngredients } from '@/features/recipes/components/recipe-detail/RecipeIngredients';
-import { RecipeSteps } from '@/features/recipes/components/recipe-detail/RecipeSteps';
 import { RecipeNutrition } from '@/features/recipes/components/recipe-detail/RecipeNutrition';
+import { RecipeSteps } from '@/features/recipes/components/recipe-detail/RecipeSteps';
+import { auth } from '@/lib/auth';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -72,6 +72,8 @@ export default async function RecipeDetailPage({ params }: Props) {
 
   if (!recipe) notFound();
 
+  console.log(recipe);
+
   const session = await auth.api.getSession({ headers: await headers() });
   const isAuthor = session?.user?.id === recipe.authorId;
 
@@ -100,7 +102,7 @@ export default async function RecipeDetailPage({ params }: Props) {
       ];
 
   return (
-    <main className="bg-neutral-50 pb-20 text-neutral-900">
+    <main className="bg-neutral-50 pt-24 pb-20 text-neutral-900">
       <RecipeDetailHero
         title={recipe.title}
         summary={recipe.summary}

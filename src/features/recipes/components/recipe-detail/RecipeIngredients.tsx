@@ -4,7 +4,7 @@ type Ingredient = {
   id: string;
   amount: string | null;
   unit: string | null;
-  name: string;
+  originalText: string;
 };
 
 type Section = {
@@ -18,7 +18,7 @@ type Props = {
 };
 
 function formatIngredient(ingredient: Ingredient) {
-  return [ingredient.amount, ingredient.unit, ingredient.name]
+  return [ingredient.amount, ingredient.unit, ingredient.originalText]
     .filter(Boolean)
     .join(' ');
 }

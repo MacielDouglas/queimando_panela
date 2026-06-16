@@ -16,7 +16,7 @@ export function GoogleAuthButton({
       type="button"
       variant="outline"
       onClick={onClick}
-      className="w-full border-amber-200 bg-white/80 backdrop-blur transition-all hover:border-amber-500 hover:bg-amber-50"
+      className="w-full rounded-none border-amber-200 bg-white/80 backdrop-blur transition-all hover:border-amber-500 hover:bg-amber-50"
     >
       <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
         <path

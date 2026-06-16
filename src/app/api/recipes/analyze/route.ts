@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import Groq from 'groq-sdk';
 import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
+import Groq from 'groq-sdk';
+import { NextResponse } from 'next/server';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -184,19 +184,22 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
   Título corrigido e aprimorado, mantendo a identidade da receita original.
 
 "summary"
-  Resumo apetitoso, animado e convidativo. Máximo 300 caracteres.
+  Resumo apetitoso, animado e convidativo. Máximo 400 caracteres.
   Desperte o desejo de preparar a receita.
 
 "difficulty"
-  Um dos valores: "EASY" | "MEDIUM" | "HARD"
+  Um dos valores: "EASY" |  "EASY_MEDIUM" | "MEDIUM" |  "MEDIUM_HARD" | "HARD"
   Considere técnicas, número de etapas, equipamentos e tempo total.
 
 "difficultyLabel"
   "EASY" -> "Fácil"
+  "EASY_MEDIUM" -> "Fácil a Médio"
   "MEDIUM" -> "Médio"
+  "MEDIUM_HARD" -> "Médio a Difícil"
   "HARD" -> "Difícil"
 
-"types"
+
+  "types"
   Array de classificações da receita. Mínimo 1, máximo 3 itens.
   Cada item deve ser uma categoria isolada e específica.
     Os 3 itens devem ser distintos entre si.
@@ -216,25 +219,30 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
   Tempo de cozimento em minutos (inteiro). Inclui forno, fogão, grelha, fritadeira, etc.
 
 "suggestions"
-  Dois parágrafos separados por \\n\\n:
-  - Parágrafo 1 (até 350 caracteres): substituições de ingredientes, adaptações e variações da receita.
-  - Parágrafo 2 (até 350 caracteres): sugestões de acompanhamentos e harmonizações que combinem com o prato.
+  Três parágrafos separados por \\n\\n:
+  - Parágrafo 1 (até 400 caracteres): substituições de ingredientes, adaptações e variações da receita.
+  - Parágrafo 2 (até 400 caracteres): traga um alerta para um ingrediente muito calórico, que tenha muito açúcar e muito sódio.
+  - Parágrafo 3 (até 400 caracteres): sugestões de acompanhamentos e harmonizações que combinem com o prato.
   Quebras de linha dentro do JSON devem ser escapadas como \\n.
 
 "nutritionSummary"
-  Frase curta e acessível resumindo o perfil nutricional da receita.
+  Frase curta e acessível resumindo o perfil nutricional da receita (até 200 caracteres).
   Exemplo: "Receita rica em proteínas e com baixo teor de carboidratos."
 
 "nutritionPer100g"
   Tabela nutricional estimada por 100g da receita pronta.
-  Deve conter EXATAMENTE estes 7 nutrientes, nesta ordem:
-  1. Calorias       → formato: "000 kcal"
+  Deve conter EXATAMENTE estes 11 nutrientes, nesta ordem:
+  1. Valor energético (kcal) → formato: "000 kcal"
   2. Carboidratos   → formato: "0,0 g"
-  3. Proteínas      → formato: "0,0 g"
-  4. Gorduras totais → formato: "0,0 g"
-  5. Gorduras saturadas → formato: "0,0 g"
-  6. Fibras         → formato: "0,0 g"
-  7. Sódio          → formato: "0 mg"
+  3. Açúcares      → formato: "0,0 g"
+  4. Proteínas      → formato: "0,0 g"
+  5. Gorduras totais → formato: "0,0 g"
+  6. Gorduras saturadas → formato: "0,0 g"
+  7. Colesterol          → formato: "0 mg"
+  8. Cálcio       → formato: "0 mg"
+  9. Fibras         → formato: "0,0 g"
+  10. Ferro          → formato: "0,0 mg"
+  11. Sódio          → formato: "0 mg"
 
 "utensils"
   Lista de utensílios reais, distintos e necessários identificados no preparo.

@@ -3,10 +3,10 @@
 import { Trash2 } from 'lucide-react';
 import type { UseFormReturn } from 'react-hook-form';
 
+import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 import type { RecipeFormData } from '../../../schemas/recipe.schema';
 
 type Props = {
@@ -68,7 +68,7 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
 
       <Field data-invalid={Boolean(ingredientsError)}>
         <FieldLabel
-          htmlFor={`section-ingredients-${index}`}
+          htmlFor={`section-ingredients-${index}-name`}
           className="text-sm font-semibold text-neutral-800"
         >
           Ingredientes
