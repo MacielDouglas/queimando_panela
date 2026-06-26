@@ -173,7 +173,7 @@ CREATE TABLE "Comment" (
 CREATE TABLE "user" (
     "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
-    "email" CITEXT NOT NULL,
+    "email" VARCHAR(320) NOT NULL,
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "image" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

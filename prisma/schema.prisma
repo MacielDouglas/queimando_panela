@@ -244,7 +244,7 @@ enum RecipeDifficulty {
 model User {
   id             String    @id @default(uuid()) @db.Uuid
   name           String
-  email          String    @db.Citext
+  email          String    @db.VarChar(320)
   emailVerified  Boolean   @default(false)
   image          String?
   createdAt      DateTime  @default(now())
