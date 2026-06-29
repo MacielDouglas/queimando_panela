@@ -33,14 +33,7 @@ export function GoogleAuthButton({
       variant="outline"
       disabled={loading}
       onClick={handleClick}
-      className="
-mt-5
-h-13
-w-full
-border-zinc-300
-bg-white
-hover:bg-zinc-50
-"
+      className="mt-5 h-13 w-full border-zinc-300 bg-white hover:bg-zinc-50 "
     >
       <svg className="mr-3 h-4 w-4" viewBox="0 0 24 24" aria-hidden />
 

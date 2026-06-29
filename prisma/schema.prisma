@@ -9,34 +9,44 @@ datasource db {
 }
 
 model Recipe {
-  id                 String               @id @default(uuid()) @db.Uuid
-  slug               String               @unique @db.VarChar(150)
-  title              String               @db.VarChar(180)
-  summary            String?              @db.VarChar(500)
-  story              String?              @db.Text
-  modeOfPreparation  String?              @db.Text
-  difficulty         RecipeDifficulty
-  prepTimeMinutes    Int?
-  cookTimeMinutes    Int?
-  servings           Int?
-  suggestions        String?              @db.Text
-  notesAuthor        String?              @db.Text
-  notesPublic        String?              @db.Text
-  nutritionSummary   String?              @db.Text
-  nutritionPer100g   Json?
-  isPublished        Boolean              @default(false)
+  id                String   @id @default(uuid()) @db.Uuid
+  slug              String   @unique @db.VarChar(150)
+  title             String   @db.VarChar(180)
+  summary           String?  @db.VarChar(500)
+  story             String?  @db.Text
+  modeOfPreparation String?  @db.Text
+
+  difficulty        RecipeDifficulty
+  prepTimeMinutes   Int?
+  cookTimeMinutes   Int?
+  servings          Int?
+
+  suggestions       String?  @db.Text
+  notesAuthor       String?  @db.Text
+  notesPublic       String?  @db.Text
+
+  nutritionSummary  String?  @db.Text
+  nutritionPer100g  Json?
+
+  // Onde é mais consumida no Brasil
+  consumptionSummary String? @db.Text
+
+  // Texto de origem histórica/cultural da receita
+  originSummary      String? @db.Text
+
+  isPublished        Boolean  @default(false)
   publishedAt        DateTime?
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
-  authorId           String               @db.Uuid
-  author             User                 @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId           String   @db.Uuid
+  author             User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
-  classificationId   String?              @db.Uuid
+  classificationId   String?  @db.Uuid
   classification     RecipeClassification? @relation(fields: [classificationId], references: [id], onDelete: SetNull)
 
-  worldOriginId      String?              @db.Uuid
-  worldOrigin        WorldOrigin?         @relation(fields: [worldOriginId], references: [id], onDelete: SetNull)
+  worldOriginId      String?  @db.Uuid
+  worldOrigin        WorldOrigin? @relation(fields: [worldOriginId], references: [id], onDelete: SetNull)
 
   sections           RecipeSection[]
   ingredients        Ingredient[]
@@ -44,6 +54,8 @@ model Recipe {
   images             RecipeImage[]
   comments           Comment[]
   recipeTypes        RecipeTypeOnRecipe[]
+
+  steps              RecipeStep[]
 
   @@index([authorId])
   @@index([classificationId])
@@ -53,71 +65,92 @@ model Recipe {
   @@index([createdAt])
 }
 
-model RecipeClassification {
-  id         String   @id @default(uuid()) @db.Uuid
-  name       String   @unique
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model RecipeStep {
+  id        String   @id @default(uuid()) @db.Uuid
+  recipeId  String   @db.Uuid
+  sectionId String?  @db.Uuid
 
-  recipes    Recipe[]
+  recipe    Recipe        @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  section   RecipeSection? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
-  @@index([name])
-}
+  order     Int
+  text      String  @db.Text
 
-model WorldOrigin {
-  id         String   @id @default(uuid()) @db.Uuid
-  name       String   @unique
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  recipes    Recipe[]
-
-  @@index([name])
+  @@index([recipeId])
+  @@index([sectionId])
+  @@index([recipeId, order])
+  @@index([sectionId, order])
 }
 
 model RecipeSection {
-  id                 String   @id @default(uuid()) @db.Uuid
+  id                String   @id @default(uuid()) @db.Uuid
+  recipeId          String   @db.Uuid
+  recipe            Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
-  recipeId           String   @db.Uuid
-  recipe             Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  name              String
+  ingredientsText   String? @db.Text
+  modeOfPreparation String   @db.Text
+  order             Int
 
-  name               String
-  ingredientsText    String?  @db.Text
-  modeOfPreparation  String   @db.Text
-  order              Int
+  ingredients       Ingredient[]
+  steps             RecipeStep[]
 
-  ingredients        Ingredient[]
-
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@unique([recipeId, order])
   @@index([recipeId])
   @@index([recipeId, order])
 }
 
+model RecipeClassification {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  recipes   Recipe[]
+
+  @@index([name])
+}
+
+model WorldOrigin {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  recipes   Recipe[]
+
+  @@index([name])
+}
+
 model Ingredient {
-  id                  String              @id @default(uuid()) @db.Uuid
+  id                  String             @id @default(uuid()) @db.Uuid
 
-  recipeId            String              @db.Uuid
-  recipe              Recipe              @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId            String             @db.Uuid
+  recipe              Recipe             @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
-  sectionId           String?             @db.Uuid
-  section             RecipeSection?      @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId           String?            @db.Uuid
+  section             RecipeSection?     @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
-  generalIngredientId String?             @db.Uuid
-  generalIngredient   GeneralIngredient?  @relation(fields: [generalIngredientId], references: [id], onDelete: SetNull)
+  generalIngredientId String?            @db.Uuid
+  generalIngredient   GeneralIngredient? @relation(fields: [generalIngredientId], references: [id], onDelete: SetNull)
 
-  measurementUnitId   String?             @db.Uuid
-  measurementUnit     MeasurementUnit?    @relation(fields: [measurementUnitId], references: [id], onDelete: SetNull)
+  measurementUnitId   String?            @db.Uuid
+  measurementUnit     MeasurementUnit?   @relation(fields: [measurementUnitId], references: [id], onDelete: SetNull)
 
   amount              String?
   unitText            String?
   name                String
-  originalText        String              @db.Text
+  originalText        String             @db.Text
   order               Int
 
-  createdAt           DateTime            @default(now())
+  createdAt           DateTime           @default(now())
+
   @@index([recipeId])
   @@index([sectionId])
   @@index([generalIngredientId])
@@ -127,14 +160,14 @@ model Ingredient {
 }
 
 model MeasurementUnit {
-  id          String       @id @default(uuid()) @db.Uuid
-  code        String       @unique
-  label       String       @unique
-  pluralLabel String       @unique
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id           String       @id @default(uuid()) @db.Uuid
+  code         String       @unique
+  label        String       @unique
+  pluralLabel  String       @unique
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 
-  ingredients Ingredient[]
+  ingredients  Ingredient[]
 
   @@index([label])
 }
@@ -143,49 +176,51 @@ model GeneralIngredient {
   id          String       @id @default(uuid()) @db.Uuid
   name        String       @unique
   createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   ingredients Ingredient[]
 }
 
 model RecipeType {
-  id        String               @id @default(uuid()) @db.Uuid
-  name      String               @unique
-  createdAt DateTime             @default(now())
+  id        String             @id @default(uuid()) @db.Uuid
+  name      String             @unique
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
 
   recipes   RecipeTypeOnRecipe[]
 }
 
 model RecipeTypeOnRecipe {
-  recipeId      String     @db.Uuid
-  recipeTypeId  String     @db.Uuid
+  recipeId     String     @db.Uuid
+  recipeTypeId String     @db.Uuid
 
-  recipe        Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  recipeType    RecipeType @relation(fields: [recipeTypeId], references: [id], onDelete: Cascade)
+  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeType   RecipeType @relation(fields: [recipeTypeId], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime   @default(now())
+  createdAt    DateTime   @default(now())
 
   @@id([recipeId, recipeTypeId])
   @@index([recipeTypeId])
 }
 
 model RecipeImage {
-  id           String    @id @default(uuid()) @db.Uuid
+  id          String   @id @default(uuid()) @db.Uuid
 
-  recipeId     String    @db.Uuid
-  recipe       Recipe    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId    String   @db.Uuid
+  recipe      Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
-  key          String    @unique
-  url          String
-  alt          String
-  contentType  String?
-  sizeBytes    Int?
-  width        Int?
-  height       Int?
+  key         String   @unique
+  url         String
+  alt         String
+  contentType String?
+  sizeBytes   Int?
+  width       Int?
+  height      Int?
 
-  isCover      Boolean   @default(false)
-  order        Int       @default(0)
+  isCover     Boolean  @default(false)
+  order       Int      @default(0)
 
-  createdAt    DateTime  @default(now())
+  createdAt   DateTime @default(now())
 
   @@index([recipeId])
   @@index([recipeId, isCover])
@@ -193,41 +228,42 @@ model RecipeImage {
 }
 
 model Utensil {
-  id         String            @id @default(uuid()) @db.Uuid
-  name       String            @unique
-  createdAt  DateTime          @default(now())
+  id        String          @id @default(uuid()) @db.Uuid
+  name      String          @unique
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 
-  recipes    UtensilOnRecipe[]
+  recipes   UtensilOnRecipe[]
 }
 
 model UtensilOnRecipe {
-  recipeId    String   @db.Uuid
-  utensilId   String   @db.Uuid
+  recipeId  String   @db.Uuid
+  utensilId String   @db.Uuid
 
-  recipe      Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  utensil     Utensil  @relation(fields: [utensilId], references: [id], onDelete: Cascade)
+  recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  utensil   Utensil  @relation(fields: [utensilId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@id([recipeId, utensilId])
   @@index([utensilId])
 }
 
 model Comment {
-  id         String    @id @default(uuid()) @db.Uuid
+  id        String   @id @default(uuid()) @db.Uuid
 
-  recipeId   String    @db.Uuid
-  recipe     Recipe    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId  String   @db.Uuid
+  recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
-  userId     String?   @db.Uuid
-  user       User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?  @db.Uuid
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  rating     Int?
-  title      String?
-  body       String    @db.Text
+  rating    Int?
+  title     String?
+  body      String   @db.Text
 
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([recipeId])
   @@index([userId])
@@ -242,18 +278,18 @@ enum RecipeDifficulty {
 }
 
 model User {
-  id             String    @id @default(uuid()) @db.Uuid
-  name           String
-  email          String    @db.VarChar(320)
-  emailVerified  Boolean   @default(false)
-  image          String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id            String    @id @default(uuid()) @db.Uuid
+  name          String
+  email         String    @db.VarChar(320)
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  sessions       Session[]
-  accounts       Account[]
-  recipes        Recipe[]
-  comments       Comment[]
+  sessions      Session[]
+  accounts      Account[]
+  recipes       Recipe[]
+  comments      Comment[]
 
   @@unique([email])
   @@index([createdAt])
@@ -261,15 +297,15 @@ model User {
 }
 
 model Session {
-  id         String    @id @default(uuid()) @db.Uuid
-  expiresAt  DateTime
-  token      String    @unique
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  ipAddress  String?
-  userAgent  String?
-  userId     String    @db.Uuid
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id @default(uuid()) @db.Uuid
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([userId, expiresAt])
@@ -278,11 +314,11 @@ model Session {
 }
 
 model Account {
-  id                    String    @id @default(uuid()) @db.Uuid
+  id                    String   @id @default(uuid()) @db.Uuid
   accountId             String
   providerId            String
-  userId                String    @db.Uuid
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String   @db.Uuid
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -290,8 +326,8 @@ model Account {
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 
   @@unique([providerId, accountId])
   @@index([userId])
@@ -300,12 +336,12 @@ model Account {
 }
 
 model Verification {
-  id         String    @id @default(uuid()) @db.Uuid
+  id         String   @id @default(uuid()) @db.Uuid
   identifier String
   value      String
   expiresAt  DateTime
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([identifier])
   @@index([expiresAt])

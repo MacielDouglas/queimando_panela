@@ -52,16 +52,7 @@ export function SignInForm() {
               required
               autoComplete="email"
               placeholder="voce@email.com"
-              className="
-              h-12
-              rounded-none
-              border-neutral-300
-              bg-white
-              text-sm
-              placeholder:text-neutral-400
-              focus-visible:border-amber-500
-              focus-visible:ring-amber-500/20
-              "
+              className="h-12 rounded-none border-neutral-300 bg-white text-sm placeholder:text-neutral-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
             />
           </FieldContent>
         </Field>
@@ -86,16 +77,7 @@ export function SignInForm() {
               required
               autoComplete="current-password"
               placeholder="••••••••"
-              className="
-              h-12
-              rounded-none
-              border-neutral-300
-              bg-white
-              text-sm
-              placeholder:text-neutral-400
-              focus-visible:border-amber-500
-              focus-visible:ring-amber-500/20
-              "
+              className="h-12  rounded-none border-neutral-300  bg-white text-sm placeholder:text-neutral-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
             />
           </FieldContent>
         </Field>
@@ -132,12 +114,7 @@ export function SignInForm() {
         Não possui conta?
         <Link
           href="/criar-conta"
-          className={`
-    ml-1
-    font-medium
-    text-neutral-900
-    hover:text-amber-600
-  `}
+          className={`ml-1 font-medium text-neutral-900 hover:text-amber-600`}
         >
           Criar conta
         </Link>

@@ -1,10 +1,11 @@
 {
   "name": "queimando_panela",
-  "version": "0.1.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
+    "db:generate": "prisma generate",
     "dev": "next dev",
-    "build": "next build",
+    "build": "bun run db:generate && next build",
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
