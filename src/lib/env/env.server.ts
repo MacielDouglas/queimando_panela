@@ -17,6 +17,8 @@ const envServerSchema = z.object({
   R2_SECRET_ACCESS_KEY: z.string(),
   R2_BUCKET_NAME: z.string(),
 
+  GROQ_API_KEY: z.string(),
+
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
