@@ -1,149 +1,36 @@
-# 🔥 Queimando Panela - Blog gastronômico de cozinheiro amadores.
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Status: Em Desenvolvimento](https://img.shields.io/badge/Status-Em%20Desenvolvimento-orange)
+## Getting Started
 
-Plataforma completa para delivery de marmitas com acompanhamento em tempo real.
-
-## 🌐 Demonstração
-
-Acesse a versão online do projeto: [queimandopanela.vercel.app](https://queimandopanela.vercel.app)
-
-## 🚀 Tecnologias Utilizadas
-
-### Frontend
-
-- **React** com Vite.js
-- **Tailwind CSS** para estilização
-- **React Router** para navegação
-- **React Icons** para ícones
-
-### Backend
-
-- **Node.js** com Express
-- **MongoDB** (Atlas) para banco de dados
-- **Firebase** para autenticação e storage
-
-## 📌 Funcionalidades Principais
-
-✔️ Cadastro de usuários  
-✔️ Receitas com categorias  
-✔️ Sistema de avaliações em tempo real  
-✔️ Painel administrativo
-
-## 🛠️ Como Executar
-
-### Pré-requisitos
-
-- Node.js (v18+)
-- MongoDB Atlas
-- Conta Firebase
-
-### Passo a Passo
-
-1. Clone o repositório:
+First, run the development server:
 
 ```bash
-git clone https://github.com/MacielDouglas/queimando_panela.git
-cd queimando_panela
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-2. Instale as dependências:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-npm install
-cd client && npm install
-cd ../server && npm install
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-3. Configure as variáveis de ambiente:
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-```bash
-cp .env.example .env
-```
+## Learn More
 
-4. Inicie os servidores:
+To learn more about Next.js, take a look at the following resources:
 
-```bash
-# Em um terminal:
-npm run server
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-# Em outro terminal:
-npm run client
-```
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## 🔐 Variáveis de Ambiente
+## Deploy on Vercel
 
-Crie um arquivo `.env` na raiz do projeto:
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-```env
-# Banco de Dados
-MONGO_URI=mongodb+srv://user:password@cluster.mongodb.net/queimando_panela
-
-# Firebase
-FIREBASE_API_KEY=your_key
-FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-FIREBASE_PROJECT_ID=your_project_id
-FIREBASE_STORAGE_BUCKET=your_bucket.appspot.com
-
-# Servidor
-PORT=5000
-JWT_SECRET=your_jwt_secret
-```
-
-## 📂 Estrutura do Projeto
-
-```
-queimando_panela/
-├── client/          # Aplicação React
-│   ├── public/
-│   └── src/
-│       ├── apollo/
-│       ├── assets/
-│       ├── components/
-│       ├── constants/
-│       ├── features/
-│       ├── graphql/
-│       ├── helper/
-│       ├── hooks/
-│       └── pages/
-└── api/          # Backend Node.js
-    ├── graphql/
-    ├── models/
-    └── socket/
-```
-
-## 🤝 Como Contribuir
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature:
-
-```bash
-git checkout -b feature/nova-feature
-```
-
-3. Commit suas mudanças:
-
-```bash
-git commit -m 'Adiciona nova feature'
-```
-
-4. Envie para o repositório:
-
-```bash
-git push origin feature/nova-feature
-```
-
-5. Abra um Pull Request
-
-## 📞 Suporte
-
-Para reportar problemas ou solicitar features, abra uma [issue](https://github.com/MacielDouglas/queimando_panela/issues).
-
-## 📄 Licença
-
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE.md) para detalhes.
-
----
-
-Desenvolvido com ❤️ por [Maciel Douglas](https://github.com/MacielDouglas)
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -1,0 +1,451 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum DifficultyLevel {
+  MUITO_FACIL
+  FACIL
+  MEDIA
+  AVANCADA
+  PROFISSIONAL
+}
+
+enum RecipeCategory {
+  APERITIVO
+  ENTRADA
+  PRATO_PRINCIPAL
+  ACOMPANHAMENTO
+  LANCHE
+  SOBREMESA
+  BEBIDA
+  CAFE_DA_MANHA
+  MOLHO
+  CALDO
+  SOPA
+  SALADA
+  MASSA
+  BOLO
+  TORTA
+  DOCE
+  OUTRO
+}
+
+enum CuisineType {
+  BRASILEIRA
+  FRANCESA
+  ITALO_AMERICANA
+  AMERICANA
+  ITALIANA
+  PORTUGUESA
+  MEXICANA
+  ARABE
+  JAPONESA
+  CHINESA
+  INDIANA
+  MEDITERRANEA
+  NORDESTINA
+  MINEIRA
+  BAIANA
+  VEGANA
+  VEGETARIANA
+  OUTRA
+}
+
+enum FlavorType {
+  SALGADO
+  DOCE
+  AZEDO
+  AMARGO
+  UMAMI
+  PICANTE
+  AGRIDOCE
+}
+
+enum StyleType {
+  TRADICIONAL
+  CLASSICO
+  REGIONAL
+  CASEIRO
+  RUSTICO
+  POPULAR
+  CASUAL
+  PIZZARIA
+  FAST_FOOD
+  COMIDA_DE_RUA
+  REFINADO
+  SAUDAVEL
+  FESTIVO
+  CONTEMPORANEO
+  OUTRO
+}
+
+enum CookingMethodType {
+  COZIDO
+  ENSOPADO
+  COCCAO_LENTA
+  ASSADO
+  FRITO
+  GRELHADO
+  CHAPA
+  VAPOR
+  REFOGADO
+  MONTAGEM
+  CRU
+  LIQUIDIFICADO
+  FERMENTADO
+  OUTRO
+}
+
+enum ServingTemperatureType {
+  QUENTE
+  MORNO
+  FRIO
+  GELADO
+  AMBIENTE
+}
+
+enum ConsumptionOccasionType {
+  CAFE_DA_MANHA
+  ALMOCO
+  JANTAR
+  LANCHE
+  SOBREMESA
+  EVENTO
+  FAMILIAR
+  COMPARTILHAMENTO
+  FESTA
+  PIQUENIQUE
+  OUTRA
+}
+
+enum UnitOfMeasure {
+  G
+  KG
+  ML
+  L
+  XICARA
+  COLHER_CAFE
+  COLHER_CHA
+  COLHER_SOPA
+  UNIDADE
+  PITADA
+  A_GOSTO
+}
+
+model User {
+  id            String   @id
+  name          String
+  email         String   @unique
+  emailVerified Boolean
+  image         String?
+  role          UserRole @default(USER)
+  createdAt     DateTime
+  updatedAt     DateTime
+
+  sessions Session[]
+  accounts Account[]
+  recipes  Recipe[]
+  aiJobs   RecipeAiJob[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@index([userId])
+  @@index([providerId, accountId])
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Recipe {
+  id      String  @id @default(cuid())
+  slug    String  @unique
+  title   String
+  excerpt String
+  story   String?
+
+  coverImageUrl String?
+  coverImageKey String?
+  imageAlt      String?
+
+  prepTimeMinutes    Int?
+  cookTimeMinutes    Int?
+  totalTimeMinutes   Int?
+  servings           Int?
+  caloriesPerServing Int?
+
+  utensils String[] @default([])
+  tags     String[] @default([])
+
+  aiGeneratedFields String[]  @default([])
+  aiModelUsed       String?
+  aiLastEnrichedAt  DateTime?
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  classification RecipeClassification?
+  nutrition      RecipeNutrition?
+  steps          RecipeStep[]
+  ingredients    RecipeIngredient[]
+  instructions   RecipeInstruction[]
+  substitutions  RecipeSubstitution[]
+  images         RecipeImage[]
+  aiJobs         RecipeAiJob[]
+
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([authorId])
+  @@index([publishedAt])
+  @@index([title])
+  @@index([createdAt])
+  @@map("recipe")
+}
+
+model RecipeClassification {
+  id       String @id @default(cuid())
+  recipeId String @unique
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  category   RecipeCategory
+  complexity DifficultyLevel
+
+  cuisines             CuisineType[]             @default([])
+  flavors              FlavorType[]              @default([])
+  styles               StyleType[]               @default([])
+  cookingMethods       CookingMethodType[]       @default([])
+  servingTemperatures  ServingTemperatureType[]  @default([])
+  consumptionOccasions ConsumptionOccasionType[] @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("recipe_classification")
+}
+
+model RecipeNutrition {
+  id       String @id @default(cuid())
+  recipeId String @unique
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  portionDescription String?
+  portionGrams       Decimal? @db.Decimal(8, 2)
+
+  caloriesKcal        Decimal? @db.Decimal(10, 2)
+  carbohydratesG      Decimal? @db.Decimal(10, 2)
+  proteinsG           Decimal? @db.Decimal(10, 2)
+  totalFatG           Decimal? @db.Decimal(10, 2)
+  saturatedFatG       Decimal? @db.Decimal(10, 2)
+  transFatG           Decimal? @db.Decimal(10, 2)
+  monounsaturatedFatG Decimal? @db.Decimal(10, 2)
+  polyunsaturatedFatG Decimal? @db.Decimal(10, 2)
+
+  cholesterolMg Decimal? @db.Decimal(10, 2)
+  fiberG        Decimal? @db.Decimal(10, 2)
+  sugarsG       Decimal? @db.Decimal(10, 2)
+  addedSugarsG  Decimal? @db.Decimal(10, 2)
+  sodiumMg      Decimal? @db.Decimal(10, 2)
+  potassiumMg   Decimal? @db.Decimal(10, 2)
+  calciumMg     Decimal? @db.Decimal(10, 2)
+  ironMg        Decimal? @db.Decimal(10, 2)
+  vitaminAMcg   Decimal? @db.Decimal(10, 2)
+  vitaminCMg    Decimal? @db.Decimal(10, 2)
+  vitaminDMcg   Decimal? @db.Decimal(10, 2)
+  vitaminB12Mcg Decimal? @db.Decimal(10, 2)
+  magnesiumMg   Decimal? @db.Decimal(10, 2)
+  zincMg        Decimal? @db.Decimal(10, 2)
+
+  notes         String?
+  generatedByAi Boolean  @default(false)
+  confidence    Decimal? @db.Decimal(5, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("recipe_nutrition")
+}
+
+model RecipeStep {
+  id       String @id @default(cuid())
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  title       String?
+  description String?
+  position    Int
+
+  ingredients  RecipeIngredient[]
+  instructions RecipeInstruction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([recipeId, position])
+  @@index([recipeId])
+  @@map("recipe_step")
+}
+
+model RecipeIngredient {
+  id       String @id @default(cuid())
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  stepId String?
+  step   RecipeStep? @relation(fields: [stepId], references: [id], onDelete: Cascade)
+
+  name          String
+  quantityText  String?
+  quantityValue Decimal?       @db.Decimal(10, 2)
+  unit          UnitOfMeasure?
+  notes         String?
+  optional      Boolean        @default(false)
+  position      Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([recipeId, stepId, position])
+  @@index([recipeId])
+  @@index([stepId])
+  @@map("recipe_ingredient")
+}
+
+model RecipeInstruction {
+  id       String @id @default(cuid())
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  stepId String?
+  step   RecipeStep? @relation(fields: [stepId], references: [id], onDelete: Cascade)
+
+  text     String
+  position Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([recipeId, stepId, position])
+  @@index([recipeId])
+  @@index([stepId])
+  @@map("recipe_instruction")
+}
+
+model RecipeSubstitution {
+  id       String @id @default(cuid())
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  ingredientName      String
+  originalIngredient  String?
+  suggestedSubstitute String
+  reason              String?
+  notes               String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([recipeId])
+  @@map("recipe_substitution")
+}
+
+model RecipeImage {
+  id       String @id @default(cuid())
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  r2Key     String  @unique
+  url       String
+  alt       String?
+  width     Int?
+  height    Int?
+  mimeType  String?
+  sizeBytes Int?
+  position  Int     @default(0)
+  isCover   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([recipeId, position])
+  @@index([recipeId])
+  @@map("recipe_image")
+}
+
+model RecipeAiJob {
+  id       String @id @default(cuid())
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  requestedByUserId String
+  requestedByUser   User   @relation(fields: [requestedByUserId], references: [id], onDelete: Restrict)
+
+  model         String
+  provider      String
+  inputHash     String?
+  status        String
+  promptVersion String?
+  responseJson  Json?
+  errorMessage  String?
+
+  startedAt  DateTime?
+  finishedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([recipeId])
+  @@index([requestedByUserId])
+  @@index([status])
+  @@map("recipe_ai_job")
+}
