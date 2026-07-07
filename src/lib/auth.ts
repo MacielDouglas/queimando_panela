@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
+import { sendResetPasswordEmail } from "@/lib/email/send-reset-password-email";
 import { envServer } from "@/lib/env/env.server";
 import { prisma } from "@/lib/prisma";
 
@@ -20,6 +21,17 @@ export const auth = betterAuth({
     autoSignIn: true,
     minPasswordLength: 8,
     maxPasswordLength: 128,
+    revokeSessionsOnPasswordReset: true,
+    sendResetPassword: async ({ user, url }) => {
+      void sendResetPasswordEmail({
+        to: user.email,
+        resetUrl: url,
+        name: user.name,
+      });
+    },
+    onPasswordReset: async ({ user }) => {
+      console.log(`Senha redefinida com sucesso para ${user.email}`);
+    },
   },
 
   socialProviders:
@@ -52,8 +64,6 @@ export const auth = betterAuth({
     },
   },
 
-  trustedOrigins: [
-    envServer.BETTER_AUTH_URL || "http://localhost:3000",
-  ],
+  trustedOrigins: [envServer.BETTER_AUTH_URL || "http://localhost:3000"],
   plugins: [nextCookies()],
 });

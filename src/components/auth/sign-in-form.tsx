@@ -1,16 +1,15 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { authClient } from "@/lib/auth-client";
-import { signInSchema, type SignInInput } from "@/lib/validations/auth";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
+import { authClient } from "@/lib/auth-client";
+import { type SignInInput, signInSchema } from "@/lib/validations/auth";
 
 export function SignInForm() {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -103,9 +102,7 @@ export function SignInForm() {
           )}
         </div>
 
-        {serverError && (
-          <p className="text-sm text-red-600">{serverError}</p>
-        )}
+        {serverError && <p className="text-sm text-red-600">{serverError}</p>}
 
         <Button
           type="submit"

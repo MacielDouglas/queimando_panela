@@ -1,15 +1,14 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { authClient } from "@/lib/auth-client";
-import { signUpSchema, type SignUpInput } from "@/lib/validations/auth";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
+import { authClient } from "@/lib/auth-client";
+import { type SignUpInput, signUpSchema } from "@/lib/validations/auth";
 
 export function SignUpForm() {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -42,7 +41,9 @@ export function SignUpForm() {
       },
       {
         onError(context) {
-          setServerError(context.error.message || "Não foi possível criar sua conta.");
+          setServerError(
+            context.error.message || "Não foi possível criar sua conta.",
+          );
         },
       },
     );
@@ -128,9 +129,7 @@ export function SignUpForm() {
           )}
         </div>
 
-        {serverError && (
-          <p className="text-sm text-red-600">{serverError}</p>
-        )}
+        {serverError && <p className="text-sm text-red-600">{serverError}</p>}
 
         <p className="text-sm leading-6 text-stone-500">
           Ao continuar, você concorda com nossos termos de uso e política de

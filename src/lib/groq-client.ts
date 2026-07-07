@@ -1,5 +1,5 @@
 import Groq from "groq-sdk";
-import { envServer } from "./env/env.server";
+import { envServer } from "@/lib/env/env.server";
 
 const groq = new Groq({
   apiKey: envServer.GROQ_API_KEY,

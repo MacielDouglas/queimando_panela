@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { auth } from "./auth";
+import { auth } from "@/lib/auth";
 
 export async function getServerSession() {
   const hdrs = await headers();

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
 
 export function GoogleSignInButton() {
   const [isPending, setIsPending] = useState(false);
