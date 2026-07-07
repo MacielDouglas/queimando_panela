@@ -37,23 +37,25 @@ export function MobileMenu() {
       >
         <SheetHeader className="border-b border-stone-200 px-6 py-5 text-left">
           <SheetTitle asChild>
-            <Link
-              href="/"
-              className="inline-flex items-center gap-3 text-stone-950"
-            >
-              <span className="text-amber-500">
-                <QPMark className="size-10" />
-              </span>
+            <SheetClose asChild>
+              <Link
+                href="/"
+                className="inline-flex items-center gap-3 text-stone-950"
+              >
+                <span className="text-amber-500">
+                  <QPMark className="size-10" />
+                </span>
 
-              <span className="flex flex-col">
-                <span className="text-sm font-semibold uppercase tracking-[0.18em]">
-                  Queimando
+                <span className="flex flex-col">
+                  <span className="text-sm font-semibold uppercase tracking-[0.18em]">
+                    Queimando
+                  </span>
+                  <span className="text-sm font-semibold uppercase tracking-[0.18em]">
+                    Panela
+                  </span>
                 </span>
-                <span className="text-sm font-semibold uppercase tracking-[0.18em]">
-                  Panela
-                </span>
-              </span>
-            </Link>
+              </Link>
+            </SheetClose>
           </SheetTitle>
         </SheetHeader>
 
@@ -76,16 +78,17 @@ export function MobileMenu() {
               const Icon = item.icon;
 
               return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-stone-700 transition-colors hover:text-amber-500"
-                >
-                  <Icon className="size-4" />
-                  <span>{item.label}</span>
-                </a>
+                <SheetClose asChild key={item.href}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-stone-700 transition-colors hover:text-amber-500"
+                  >
+                    <Icon className="size-4" />
+                    <span>{item.label}</span>
+                  </a>
+                </SheetClose>
               );
             })}
           </div>

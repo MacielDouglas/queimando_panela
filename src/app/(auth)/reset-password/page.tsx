@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { AuthShell } from "@/components/auth/auth-shell";
 import { ResetPasswordForm } from "@/components/auth/reset-password-form";
 
@@ -10,7 +12,19 @@ export default function ResetPasswordPage() {
       footerLinkHref="/sign-in"
       footerLinkLabel="Entrar"
     >
-      <ResetPasswordForm />
+      <Suspense fallback={<ResetPasswordFormFallback />}>
+        <ResetPasswordForm />
+      </Suspense>
     </AuthShell>
+  );
+}
+
+function ResetPasswordFormFallback() {
+  return (
+    <div className="space-y-5">
+      <div className="h-11 w-full animate-pulse rounded-none bg-stone-100" />
+      <div className="h-11 w-full animate-pulse rounded-none bg-stone-100" />
+      <div className="h-11 w-full animate-pulse rounded-none bg-amber-100" />
+    </div>
   );
 }
