@@ -23,10 +23,12 @@ export const auth = betterAuth({
     maxPasswordLength: 128,
     revokeSessionsOnPasswordReset: true,
     sendResetPassword: async ({ user, url }) => {
-      void sendResetPasswordEmail({
+      sendResetPasswordEmail({
         to: user.email,
-        resetUrl: url,
         name: user.name,
+        resetUrl: url,
+      }).catch((error) => {
+        console.error("Erro ao enviar email de reset:", error);
       });
     },
     onPasswordReset: async ({ user }) => {

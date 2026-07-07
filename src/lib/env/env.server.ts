@@ -16,6 +16,7 @@ const envServerSchema = z.object({
   R2_ACCESS_KEY_ID: z.string(),
   R2_SECRET_ACCESS_KEY: z.string(),
   R2_BUCKET_NAME: z.string(),
+  RESEND_API_KEY: z.string(),
 
   GROQ_API_KEY: z.string(),
 
