@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { QPMark } from "@/components/brand/qp-mark";
+import { AuthNavButton } from "@/components/layout/auth-nav-button";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import { NavLinks } from "@/components/layout/nav-links";
 import { navItems } from "@/components/layout/navigation-data";
@@ -30,6 +31,10 @@ export function SiteHeader() {
         <nav aria-label="Navegação principal" className="hidden md:block">
           <NavLinks items={navItems} variant="header" />
         </nav>
+
+        <div className="hidden md:block">
+          <AuthNavButton />
+        </div>
 
         <div className="md:hidden">
           <MobileMenu />

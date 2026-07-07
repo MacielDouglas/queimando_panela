@@ -4,6 +4,7 @@ import Link from "next/link";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 
 import { QPMark } from "@/components/brand/qp-mark";
+import { AuthNavButton } from "@/components/layout/auth-nav-button";
 import { NavLinks } from "@/components/layout/nav-links";
 import { developerLinks, navItems } from "@/components/layout/navigation-data";
 import { Button } from "@/components/ui/button";
@@ -67,6 +68,12 @@ export function MobileMenu() {
             wrapItem={(link) => <SheetClose asChild>{link}</SheetClose>}
           />
         </nav>
+
+        <div className="border-t border-stone-200 px-6 py-5">
+          <SheetClose asChild>
+            <AuthNavButton className="w-full" />
+          </SheetClose>
+        </div>
 
         <div className="border-t border-stone-200 px-6 py-5">
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-stone-500">
