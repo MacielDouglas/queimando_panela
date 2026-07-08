@@ -28,9 +28,6 @@ export default async function Home() {
     getRandomRecipe(),
   ]);
 
-  console.log('Lateste', latestRecipes);
-  console.log('Classic', classicRecipes);
-  console.log('Feauredteste', featuredRecipe);
 
   return (
     <main className="bg-background min-h-screen pt-24">
