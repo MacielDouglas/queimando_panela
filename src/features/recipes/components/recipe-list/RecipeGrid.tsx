@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-import { RecipeCard } from './RecipeCard';
 import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
 import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
+import { RecipeCard } from './RecipeCard';
 
 type Props = {
   recipes: RecipeCardData[];

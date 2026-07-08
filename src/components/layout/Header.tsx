@@ -1,55 +1,44 @@
-import { getMobileMenuCategories } from '@/features/recipes/actions/get-mobile-menu-categories';
-import { getServerSession } from '@/lib/get-server-session';
 import Link from 'next/link';
-import { SignOutButton } from '../auth/sign-out-button';
-import { Logo } from './Logo';
-import { MobileMenu } from './MobileMenu';
-import { NavLink } from './NavLink';
 
-const links = [
-  { href: '/', label: 'Home' },
-  { href: '/receitas', label: 'Receitas' },
-  { href: '/sobre', label: 'Sobre' },
-];
+import { QPMark } from '@/components/brand/qp-mark';
+import { AuthNavButton } from '@/components/layout/auth-nav-button';
+import { MobileMenu } from '@/components/layout/mobile-menu';
+import { NavLinks } from '@/components/layout/nav-links';
+import { navItems } from '@/components/layout/navigation-data';
 
-export default async function Header() {
-  const session = await getServerSession();
-  const categories = await getMobileMenuCategories();
-
+export default function Header() {
   return (
-    <header className="absolute z-20 w-full">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-        <Logo />
-
-        <nav
-          aria-label="Navegação principal"
-          className="hidden items-center gap-8 lg:flex"
+    <header className="border-b border-stone-200 bg-white">
+      <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-3 text-stone-950 transition-colors hover:text-amber-500"
         >
-          {links.map((link) => (
-            <NavLink key={link.href} href={link.href} label={link.label} />
-          ))}
+          <span className="text-amber-500">
+            <QPMark className="size-10" />
+          </span>
+
+          <span className="flex flex-col">
+            <span className="text-sm font-semibold tracking-[0.18em] uppercase">
+              Queimando
+            </span>
+            <span className="text-sm font-semibold tracking-[0.18em] uppercase">
+              Panela
+            </span>
+          </span>
+        </Link>
+
+        <nav aria-label="Navegação principal" className="hidden md:block">
+          <NavLinks items={navItems} variant="header" />
         </nav>
 
-        {/* BRAND DIREITA — desktop */}
-        <div className="hidden items-center gap-6 lg:flex">
-          {session?.user ? (
-            <SignOutButton />
-          ) : (
-            <Link
-              href="/login"
-              aria-label="Entrar na conta"
-              className="bg-amber-500 px-4 py-2 text-sm font-bold tracking-widest text-zinc-900 uppercase transition-colors duration-300 hover:bg-amber-600 hover:text-zinc-800"
-            >
-              Login
-            </Link>
-          )}
+        <div className="hidden md:block">
+          <AuthNavButton />
         </div>
 
-        <MobileMenu
-          links={links}
-          isLoggedIn={Boolean(session?.user)}
-          categories={categories}
-        />
+        <div className="md:hidden">
+          <MobileMenu />
+        </div>
       </div>
     </header>
   );

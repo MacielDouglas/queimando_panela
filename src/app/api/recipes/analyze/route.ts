@@ -184,8 +184,8 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
   Título corrigido e aprimorado, mantendo a identidade da receita original.
 
 "summary"
-  Resumo apetitoso, animado e convidativo. Máximo 400 caracteres.
-  Desperte o desejo de preparar a receita.
+  Resumo animado, convidativo, apetitoso que dê vontade de comer. Máximo 400 caracteres.
+  Desperte o desejo de preparar a receita, criando expectativa, faça sentir notas, sabores, cheiro.
 
 "difficulty"
   Um dos valores: "EASY" |  "EASY_MEDIUM" | "MEDIUM" |  "MEDIUM_HARD" | "HARD"

@@ -4,3 +4,11 @@ export type RecipeDifficultyValue =
   | 'MEDIUM'
   | 'MEDIUM_HARD'
   | 'HARD';
+
+export const difficultyLabel: Record<RecipeDifficultyValue, string> = {
+  EASY: 'Fácil',
+  EASY_MEDIUM: 'Fácil / Médio',
+  MEDIUM: 'Médio',
+  MEDIUM_HARD: 'Médio / Difícil',
+  HARD: 'Difícil',
+};

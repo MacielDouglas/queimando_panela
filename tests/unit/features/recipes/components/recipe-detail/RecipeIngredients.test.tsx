@@ -15,13 +15,13 @@ describe('RecipeIngredients', () => {
                 id: '1',
                 amount: '2',
                 unit: null,
-                name: 'ovos',
+                originalText: '2 ovos',
               },
               {
                 id: '2',
                 amount: '1',
                 unit: 'xícara',
-                name: 'farinha',
+                originalText: '1 xícara de farinha',
               },
             ],
           },
@@ -30,11 +30,8 @@ describe('RecipeIngredients', () => {
       />,
     );
 
-    expect(screen.getByText(/2/)).toBeInTheDocument();
-    expect(screen.getByText(/ovos/i)).toBeInTheDocument();
-    expect(screen.getByText(/1/)).toBeInTheDocument();
-    expect(screen.getByText(/xícara/i)).toBeInTheDocument();
-    expect(screen.getByText(/farinha/i)).toBeInTheDocument();
+    expect(screen.getByText(/2 ovos/)).toBeInTheDocument();
+    expect(screen.getByText(/1 xícara de farinha/)).toBeInTheDocument();
     expect(screen.getByText('Batedor')).toBeInTheDocument();
     expect(screen.getByText('Tigela')).toBeInTheDocument();
   });
@@ -50,7 +47,7 @@ describe('RecipeIngredients', () => {
                 id: '1',
                 amount: '2',
                 unit: null,
-                name: 'ovos',
+                originalText: '2 ovos',
               },
             ],
           },
@@ -61,7 +58,7 @@ describe('RecipeIngredients', () => {
                 id: '2',
                 amount: '1',
                 unit: 'xícara',
-                name: 'chocolate',
+                originalText: '1 xícara de chocolate',
               },
             ],
           },

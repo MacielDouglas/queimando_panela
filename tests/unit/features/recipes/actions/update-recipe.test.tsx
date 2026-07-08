@@ -70,7 +70,18 @@ function makeAnalysis() {
     sections: [
       {
         name: 'Receita',
-        ingredients: ['2 xícaras de milho', '1 xícara de leite'],
+        ingredients: [
+          {
+            originalText: '2 xícaras de milho',
+            name: 'milho',
+            generalName: 'milho',
+          },
+          {
+            originalText: '1 xícara de leite',
+            name: 'leite',
+            generalName: 'leite',
+          },
+        ],
         modeOfPreparation: '1. Bata.\n2. Asse.',
       },
     ],

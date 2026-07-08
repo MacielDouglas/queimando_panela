@@ -1,12 +1,10 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const replace = vi.fn();
 const refresh = vi.fn();
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
-    replace,
     refresh,
   }),
 }));
@@ -30,7 +28,7 @@ describe('SignOutButton', () => {
     expect(screen.getByRole('button', { name: /sair/i })).toBeInTheDocument();
   });
 
-  it('redireciona para login ao sair com sucesso', async () => {
+  it('atualiza a sessão ao sair com sucesso', async () => {
     vi.mocked(authClient.signOut).mockResolvedValue({ error: null });
 
     render(<SignOutButton />);
@@ -38,7 +36,6 @@ describe('SignOutButton', () => {
 
     await waitFor(() => {
       expect(authClient.signOut).toHaveBeenCalled();
-      expect(replace).toHaveBeenCalledWith('/login');
       expect(refresh).toHaveBeenCalled();
     });
   });

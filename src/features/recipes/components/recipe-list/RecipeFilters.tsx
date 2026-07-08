@@ -220,6 +220,15 @@ export function RecipeFilters({
           </div>
         </div>
 
+        <FilterGroup
+          title="Ingredientes"
+          options={ingredients.slice(0, 12)}
+          activeValues={currentIngredients}
+          getHref={(value) =>
+            toggleMultiParam(baseParams, 'ingrediente', value)
+          }
+        />
+
         <div className="space-y-2 border-t border-neutral-200 pt-4">
           <SectionTitle>Dificuldade</SectionTitle>
 
@@ -261,15 +270,6 @@ export function RecipeFilters({
           options={utensils.slice(0, 6)}
           activeValues={currentUtensils}
           getHref={(value) => toggleMultiParam(baseParams, 'utensilio', value)}
-        />
-
-        <FilterGroup
-          title="Ingredientes"
-          options={ingredients.slice(0, 12)}
-          activeValues={currentIngredients}
-          getHref={(value) =>
-            toggleMultiParam(baseParams, 'ingrediente', value)
-          }
         />
 
         {hasActiveFilters && (

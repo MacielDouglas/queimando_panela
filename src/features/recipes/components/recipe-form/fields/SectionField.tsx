@@ -68,7 +68,7 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
 
       <Field data-invalid={Boolean(ingredientsError)}>
         <FieldLabel
-          htmlFor={`section-ingredients-${index}-name`}
+          htmlFor={`section-ingredients-${index}`}
           className="text-sm font-semibold text-neutral-800"
         >
           Ingredientes

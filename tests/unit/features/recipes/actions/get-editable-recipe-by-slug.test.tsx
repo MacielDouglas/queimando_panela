@@ -33,11 +33,19 @@ describe('getEditableRecipeBySlug', () => {
         sections: {
           orderBy: { order: 'asc' },
           include: {
-            ingredients: { orderBy: { order: 'asc' } },
+            ingredients: {
+              orderBy: { order: 'asc' },
+              include: {
+                generalIngredient: true,
+              },
+            },
           },
         },
         utensils: {
           include: { utensil: true },
+        },
+        recipeTypes: {
+          include: { recipeType: true },
         },
       },
     });
@@ -66,12 +74,23 @@ describe('getEditableRecipeBySlug', () => {
           name: 'Massa',
           modeOfPreparation: 'Misture.',
           ingredients: [
-            { originalText: '2 ovos', order: 0 },
-            { originalText: '1 xícara de leite', order: 1 },
+            {
+              originalText: '2 ovos',
+              name: 'ovos',
+              order: 0,
+              generalIngredient: { name: 'ovo' },
+            },
+            {
+              originalText: '1 xícara de leite',
+              name: 'leite',
+              order: 1,
+              generalIngredient: { name: 'leite' },
+            },
           ],
         },
       ],
       images: [],
+      recipeTypes: [{ recipeType: { name: 'Bolo' } }],
     });
 
     const result = await getEditableRecipeBySlug('bolo-de-milho', 'user-1');
@@ -94,7 +113,18 @@ describe('getEditableRecipeBySlug', () => {
       sections: [
         {
           name: 'Massa',
-          ingredients: ['2 ovos', '1 xícara de leite'],
+          ingredients: [
+            {
+              originalText: '2 ovos',
+              name: 'ovos',
+              generalName: 'ovo',
+            },
+            {
+              originalText: '1 xícara de leite',
+              name: 'leite',
+              generalName: 'leite',
+            },
+          ],
           modeOfPreparation: 'Misture.',
         },
       ],
@@ -119,6 +149,7 @@ describe('getEditableRecipeBySlug', () => {
       utensils: [],
       sections: [],
       images: [],
+      recipeTypes: [{ recipeType: { name: 'Bolo' } }],
     });
 
     const result = await getEditableRecipeBySlug('bolo-de-milho', 'user-1');

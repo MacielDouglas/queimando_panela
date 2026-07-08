@@ -1,8 +1,11 @@
+import { Clock3, Flame, Pencil, ScrollText, Soup, Users } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Clock3, Flame, Pencil, ScrollText, Soup, Users } from 'lucide-react';
+import {
+  difficultyLabel,
+  type RecipeDifficultyValue,
+} from '../../types/recipe.types';
 import { DeleteRecipeButton } from '../DeleteRecipeButton';
-import type { RecipeDifficultyValue } from '../../types/recipe.types';
 
 type Props = {
   title: string;
@@ -18,14 +21,6 @@ type Props = {
   isAuthor?: boolean;
   editHref?: string;
   slug: string;
-};
-
-const difficultyLabel = {
-  EASY: 'Fácil',
-  EASY_MEDIUM: 'Fácil/Médio',
-  MEDIUM: 'Médio',
-  MEDIUM_HARD: 'Médio/Difícil',
-  HARD: 'Difícil',
 };
 
 export function RecipeDetailHero({

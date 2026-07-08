@@ -1,16 +1,8 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { Clock3, Flame, ArrowRight } from 'lucide-react';
 import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
-import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
-
-const difficultyLabel: Record<RecipeDifficultyValue, string> = {
-  EASY: 'Fácil',
-  EASY_MEDIUM: 'Fácil / Médio',
-  MEDIUM: 'Médio',
-  MEDIUM_HARD: 'Médio / Difícil',
-  HARD: 'Difícil',
-};
+import { ArrowRight, Clock3, Flame } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { difficultyLabel } from '../../types/recipe.types';
 
 type Props = {
   recipe: RecipeCardData;
