@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import {
   RiArrowRightLine,
-  RiBrainLine,
   RiHeart2Line,
   RiLeafLine,
   RiScalesLine,
@@ -30,31 +29,30 @@ const fadeUpVariants: Variants = {
   }),
 };
 
-// ── Features da IA ──
-const aiFeatures = [
+const features = [
   {
     icon: RiSparklingLine,
     title: 'Resumo apetitoso',
     description:
-      'A IA cria um resumo que faz a boca água — cheiro, sabor e textura em palavras.',
+      'Toda receita ganha um resumo que faz a boca água — cheiro, sabor e textura em palavras.',
   },
   {
     icon: RiScalesLine,
     title: 'Dificuldade real',
     description:
-      'Ela avalia técnica, etapas e tempo pra dizer se é Fácil, Médio ou Difícil de verdade.',
+      'Classificamos por técnica, etapas e tempo pra dizer se é Fácil, Médio ou Difícil de verdade.',
   },
   {
     icon: RiLeafLine,
     title: 'Tabela nutricional',
     description:
-      'Calorias, proteínas, fibras e mais — tudo estimado por 100g da receita pronta.',
+      'Calorias, proteínas, fibras e mais — tudo calculado por 100g da receita pronta.',
   },
   {
     icon: RiToolsLine,
     title: 'Utensílios e dicas',
     description:
-      'Lista o que você vai precisar e sugere substituições, harmonizações e variações.',
+      'Mostra o que você vai precisar e sugere substituições, harmonizações e variações.',
   },
 ];
 
@@ -87,6 +85,13 @@ function NeuralCanvas() {
     if (!ctx) return;
 
     let animId: number;
+    let isVisible = true;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => { isVisible = entry.isIntersecting; },
+      { threshold: 0 },
+    );
+    observer.observe(canvas);
     const NODE_COUNT = 38;
     const CONNECTION_DISTANCE = 160;
     const nodes: Node[] = [];
@@ -138,6 +143,7 @@ function NeuralCanvas() {
 
     function draw() {
       if (!canvas || !ctx) return;
+      if (!isVisible) { animId = requestAnimationFrame(draw); return; }
       const w = canvas.offsetWidth;
       const h = canvas.offsetHeight;
 
@@ -250,6 +256,7 @@ function NeuralCanvas() {
     return () => {
       cancelAnimationFrame(animId);
       ro.disconnect();
+      observer.disconnect();
     };
   }, []);
 
@@ -286,18 +293,10 @@ export default function SignUpSection() {
           viewport={{ once: true, margin: '-60px' }}
           className="mb-12 text-center"
         >
-          <motion.p
-            variants={fadeUpVariants}
-            custom={0}
-            className="text-[11px] font-semibold tracking-[0.2em] text-amber-500 uppercase"
-          >
-            Comunidade
-          </motion.p>
-
           <motion.h2
             id="signup-title"
             variants={fadeUpVariants}
-            custom={1}
+            custom={0}
             className="mt-3 text-3xl leading-tight font-bold tracking-tight text-white sm:text-4xl lg:text-5xl"
           >
             Sua receita merece{' '}
@@ -306,7 +305,7 @@ export default function SignUpSection() {
 
           <motion.p
             variants={fadeUpVariants}
-            custom={2}
+            custom={1}
             className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-neutral-400 sm:text-lg"
           >
             Compartilhe as receitas de família, as criativas e até aquelas que
@@ -315,36 +314,18 @@ export default function SignUpSection() {
           </motion.p>
         </motion.header>
 
-        {/* ── Bloco da IA ── */}
+        {/* ── Grid de funcionalidades ── */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-40px' }}
           className="mb-12"
         >
-          {/* Badge da IA */}
-          <motion.div
-            variants={fadeUpVariants}
-            custom={0}
-            className="mb-8 flex items-center justify-center gap-3"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/15 ring-1 ring-amber-500/30">
-              <RiBrainLine
-                className="h-5 w-5 text-amber-400"
-                aria-hidden="true"
-              />
-            </div>
-            <p className="text-sm font-semibold text-amber-400 sm:text-base">
-              Cada receita passa por análise com IA
-            </p>
-          </motion.div>
-
-          {/* Grid de features */}
           <ul
             role="list"
             className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
           >
-            {aiFeatures.map((feature, i) => (
+            {features.map((feature, i) => (
               <motion.li
                 key={feature.title}
                 variants={fadeUpVariants}

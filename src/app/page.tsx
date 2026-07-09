@@ -3,7 +3,6 @@ import { HeroSection } from '@/components/home/HeroSection';
 import { LatestRecipesSection } from '@/components/home/LatestRecipesSection';
 import OtherProjects from '@/components/home/OtherProjects';
 import SignUpSection from '@/components/home/SignUpSection';
-import Footer from '@/components/layout/Footer';
 import { getClassicRecipes } from '@/features/recipes/actions/get-classic-recipes';
 import { getLatestRecipes } from '@/features/recipes/actions/get-latest-recipes';
 import { getRandomRecipe } from '@/features/recipes/actions/get-random-recipe';
@@ -36,7 +35,6 @@ export default async function Home() {
       <ClassicRecipesSection rows={classicRecipes} />
       <SignUpSection />
       <OtherProjects />
-      <Footer />
     </main>
   );
 }

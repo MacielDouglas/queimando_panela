@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-09T09:39:00-03:00",
+  "title": "Design System: Queimando Panela",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Papel de Caderno",
+        "canonical": "oklch(0.985 0.012 85)",
+        "tonalRamp": ["oklch(0.15 0.012 85)", "oklch(0.27 0.012 85)", "oklch(0.39 0.012 85)", "oklch(0.51 0.012 85)", "oklch(0.63 0.012 85)", "oklch(0.75 0.012 85)", "oklch(0.87 0.012 85)", "oklch(0.985 0.012 85)"]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "oklch(0.24 0.02 40)",
+        "tonalRamp": ["oklch(0.24 0.02 40)", "oklch(0.34 0.02 40)", "oklch(0.44 0.02 40)", "oklch(0.54 0.02 40)", "oklch(0.64 0.02 40)", "oklch(0.74 0.02 40)", "oklch(0.84 0.02 40)", "oklch(0.94 0.02 40)"]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Mel Queimado",
+        "canonical": "oklch(0.78 0.17 72)",
+        "tonalRamp": ["oklch(0.15 0.17 72)", "oklch(0.24 0.17 72)", "oklch(0.33 0.17 72)", "oklch(0.42 0.17 72)", "oklch(0.51 0.17 72)", "oklch(0.6 0.17 72)", "oklch(0.69 0.17 72)", "oklch(0.78 0.17 72)"]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Barro",
+        "canonical": "oklch(0.5 0.02 50)",
+        "tonalRamp": ["oklch(0.2 0.02 50)", "oklch(0.3 0.02 50)", "oklch(0.4 0.02 50)", "oklch(0.5 0.02 50)", "oklch(0.6 0.02 50)", "oklch(0.7 0.02 50)", "oklch(0.8 0.02 50)", "oklch(0.9 0.02 50)"]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Linho",
+        "canonical": "oklch(0.9 0.015 80)",
+        "tonalRamp": ["oklch(0.2 0.015 80)", "oklch(0.3 0.015 80)", "oklch(0.4 0.015 80)", "oklch(0.5 0.015 80)", "oklch(0.6 0.015 80)", "oklch(0.7 0.015 80)", "oklch(0.8 0.015 80)", "oklch(0.9 0.015 80)"]
+      },
+      "destructive": {
+        "role": "accent",
+        "displayName": "Vermelho Fogão",
+        "canonical": "oklch(0.62 0.23 28)",
+        "tonalRamp": ["oklch(0.15 0.23 28)", "oklch(0.22 0.23 28)", "oklch(0.29 0.23 28)", "oklch(0.36 0.23 28)", "oklch(0.43 0.23 28)", "oklch(0.5 0.23 28)", "oklch(0.57 0.23 28)", "oklch(0.62 0.23 28)"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headlines da home e títulos de página."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Títulos de seção na home e páginas internas."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Títulos de card e subtítulos."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto corrido, parágrafos de receita."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Eyebrows, badges, navegação, labels de formulário."
+      }
+    },
+    "shadows": [
+      {
+        "name": "tooltip",
+        "value": "0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.1)",
+        "purpose": "Sombra funcional para tooltips e elementos flutuantes."
+      },
+      {
+        "name": "modal-overlay",
+        "value": "0 8px 32px rgba(0,0,0,0.3)",
+        "purpose": "Sombra do backdrop de modal."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Curva de saída padrão para transições de estado."
+      },
+      {
+        "name": "duration-state",
+        "value": "200ms",
+        "purpose": "Duração de transições de hover/foco."
+      },
+      {
+        "name": "duration-entrance",
+        "value": "700ms",
+        "purpose": "Duração de animações de entrada (hero)."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-default",
+      "description": "Botão de ação principal. Fundo Mel Queimado (amber). Usado para CTAs e ações primárias.",
+      "html": "<button class=\"ds-btn-primary\">Publicar receita</button>",
+      "css": ".ds-btn-primary { background: oklch(0.78 0.17 72); color: oklch(0.22 0.02 40); padding: 4px 16px; height: 28px; border-radius: 8px; border: none; font-size: clamp(0.75rem, 0.73rem + 0.08vw, 0.8125rem); font-weight: 500; line-height: 1.45; font-family: Inter, sans-serif; cursor: pointer; transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1); display: inline-flex; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; } .ds-btn-primary:hover { background: oklch(0.7 0.17 72); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: none; border: 1px solid oklch(0.78 0.17 72); box-shadow: 0 0 0 2px oklch(0.78 0.17 72 / 0.3); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Botão secundário com borda. Usado para ações complementares.",
+      "html": "<button class=\"ds-btn-outline\">Cancelar</button>",
+      "css": ".ds-btn-outline { background: transparent; color: oklch(0.24 0.02 40); padding: 4px 16px; height: 28px; border-radius: 8px; border: 1px solid oklch(0.9 0.015 80); font-size: clamp(0.75rem, 0.73rem + 0.08vw, 0.8125rem); font-weight: 500; line-height: 1.45; font-family: Inter, sans-serif; cursor: pointer; transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1); display: inline-flex; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; } .ds-btn-outline:hover { background: oklch(0.9 0.015 80 / 0.5); } .ds-btn-outline:focus-visible { outline: none; border-color: oklch(0.78 0.17 72); box-shadow: 0 0 0 2px oklch(0.78 0.17 72 / 0.3); }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "Campo de texto padrão. Borda Linho, foco Mel Queimado.",
+      "html": "<input class=\"ds-input-text\" type=\"text\" placeholder=\"Buscar receita...\" />",
+      "css": ".ds-input-text { background: oklch(0.9 0.015 80 / 0.2); color: oklch(0.24 0.02 40); padding: 2px 8px; height: 28px; border-radius: 8px; border: 1px solid oklch(0.9 0.015 80); font-size: clamp(0.875rem, 0.84rem + 0.15vw, 0.95rem); font-family: Inter, sans-serif; line-height: 1.45; width: 100%; min-width: 0; outline: none; transition: border-color 200ms, box-shadow 200ms; } .ds-input-text::placeholder { color: oklch(0.5 0.02 50); } .ds-input-text:focus { border-color: oklch(0.78 0.17 72); box-shadow: 0 0 0 2px oklch(0.78 0.17 72 / 0.3); } .ds-input-text:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Default Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "Card de conteúdo padrão. Fundo branco translúcido com ring sutil. Usado para receitas e seções.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-title\">Bolo de Cenoura da Vó</div><div class=\"ds-card-desc\">Receita clássica com cobertura de chocolate, 45 min</div></div>",
+      "css": ".ds-card { background: oklch(1 0 0 / 0.82); color: oklch(0.24 0.02 40); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 0 0 1px oklch(0.24 0.02 40 / 0.1); font-family: Inter, sans-serif; } .ds-card-title { font-family: Inter, sans-serif; font-size: clamp(0.875rem, 0.84rem + 0.15vw, 0.95rem); font-weight: 500; line-height: 1.45; } .ds-card-desc { color: oklch(0.5 0.02 50); font-size: clamp(0.75rem, 0.73rem + 0.08vw, 0.8125rem); line-height: 1.45; }"
+    },
+    {
+      "name": "Default Badge",
+      "kind": "chip",
+      "refersTo": "badge-default",
+      "description": "Badge/pill de categoria. Fundo Mel Queimado, totalmente arredondado.",
+      "html": "<span class=\"ds-badge\">Sobremesa</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; height: 20px; padding: 2px 8px; border-radius: 9999px; background: oklch(0.78 0.17 72); color: oklch(0.22 0.02 40); font-size: 0.625rem; font-weight: 500; font-family: Inter, sans-serif; white-space: nowrap; border: none; line-height: 1; }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "navigation-header",
+      "description": "Link de navegação do header principal. Uppercase, tracking largo.",
+      "html": "<nav class=\"ds-nav-header\"><a class=\"ds-nav-link ds-nav-link-active\" href=\"/\">Home</a><a class=\"ds-nav-link\" href=\"/receitas\">Receitas</a><a class=\"ds-nav-link\" href=\"/sobre\">Sobre</a></nav>",
+      "css": ".ds-nav-header { display: flex; align-items: center; gap: 32px; font-family: Inter, sans-serif; } .ds-nav-link { font-size: clamp(0.75rem, 0.73rem + 0.08vw, 0.8125rem); font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; color: oklch(0.45 0.02 45); transition: color 200ms; } .ds-nav-link:hover { color: oklch(0.78 0.17 72); } .ds-nav-link-active { color: oklch(0.78 0.17 72); }"
+    },
+    {
+      "name": "Footer Section Title",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Título de seção no footer. Uppercase, tracking muito largo, cor muted.",
+      "html": "<p class=\"ds-footer-label\">Navegação</p>",
+      "css": ".ds-footer-label { font-size: clamp(0.75rem, 0.73rem + 0.08vw, 0.8125rem); font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: oklch(0.6 0.02 55); font-family: Inter, sans-serif; margin: 0; }"
+    },
+    {
+      "name": "Modal Dialog",
+      "kind": "custom",
+      "refersTo": "dialog-content",
+      "description": "Conteúdo do modal/dialog. Cantos arredondados 16px, ring sutil, fade+zoom ao abrir.",
+      "html": "<div class=\"ds-dialog\"><div class=\"ds-dialog-title\">Publicar receita</div><p class=\"ds-dialog-desc\">Preencha os campos para compartilhar sua receita.</p><div style=\"display:flex;gap:8px;justify-content:flex-end;margin-top:16px\"><button class=\"ds-btn-outline\">Cancelar</button><button class=\"ds-btn-primary\">Publicar</button></div></div>",
+      "css": ".ds-dialog { background: oklch(1 0 0); color: oklch(0.24 0.02 40); border-radius: 16px; padding: 16px; box-shadow: 0 0 0 1px oklch(0.24 0.02 40 / 0.1), 0 8px 32px rgba(0,0,0,0.3); font-family: Inter, sans-serif; display: flex; flex-direction: column; gap: 4px; animation: ds-dialog-in 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-dialog-title { font-family: Inter, sans-serif; font-size: clamp(0.875rem, 0.84rem + 0.15vw, 0.95rem); font-weight: 500; } .ds-dialog-desc { color: oklch(0.5 0.02 50); font-size: clamp(0.75rem, 0.73rem + 0.08vw, 0.8125rem); line-height: 1.45; margin: 0; } @keyframes ds-dialog-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "O Caderno de Receitas",
+    "overview": "Cada tela é uma página de caderno — manuscrita, autoral, prática. O sistema visual trata receitas como documentos vivos: têm dono, história, marcas de uso. A estética é limpa sem ser fria, afetiva sem ser piegas, direta sem ser bruta. As cores vêm da cozinha (mel queimado, barro, palha, papel amassado pelo uso), a tipografia é uma família só (Inter) escolhida pela legibilidade em qualquer luz de cozinha, e o layout prioriza o conteúdo sobre a moldura.\n\nO Queimando Panela rejeita explicitamente o que a web de receitas se tornou: pop-ups, anúncios, navegação confusa, SEO sobre experiência. Aqui medida de \"colher de pau\" vale tanto quanto grama, e o visual comunica isso — sem frescura, sem fingimento.",
+    "keyCharacteristics": [
+      "Tipografia limpa e legível com uma família só (Inter)",
+      "Paleta quente com âncora em mel queimado (amber), neutros que parecem papel e barro",
+      "Cards com borda sutil (ring), não sombra pesada — como uma ficha de receita sobre a mesa",
+      "Componentes robustos e diretos: botões com hover evidente, inputs com foco claro",
+      "Contraste alto para leitura em tela pequena, luz ambiente ruim de cozinha"
+    ],
+    "rules": [
+      { "name": "A Regra do Mel Queimado", "body": "O primário ocupa no máximo 10% de qualquer tela. Raridade é a razão de ser — quando aparece, guia a ação.", "section": "colors" },
+      { "name": "A Regra do Papel", "body": "Nenhum fundo bege genérico. O chroma máximo dos neutros é 0.015; acima disso vira \"tema de site de receita\".", "section": "colors" },
+      { "name": "A Regra do Caderno", "body": "Texto de receita usa body leading 1.7 e max-width 72ch. Linhas mais curtas e arejadas = receita mais fácil de seguir.", "section": "typography" },
+      { "name": "A Regra da Mesa", "body": "Nenhum card tem sombra em repouso. Só elementos que precisam flutuar (tooltips, modais) ganham sombra. Superfícies são planas até que a interação as levante.", "section": "elevation" }
+    ],
+    "dos": [
+      "Usar Mel Queimado com moderação. ≤10% da tela.",
+      "Usar Papel de Caderno como fundo de página. Nunca branco puro (#fff).",
+      "Garantir contraste ≥4.5:1 para corpo de texto. Barro (#7a6e5e) sobre Papel de Caderno (#faf5ed) passa. Texto mais claro que Barro em fundo claro é proibido.",
+      "Usar Inter em todos os pesos e tamanhos. Uma família só.",
+      "Usar cards com ring-1, não com sombra. A Regra da Mesa.",
+      "Prefaciar classes de componente com `ds-` quando forem para documentação/sidecar.",
+      "Priorizar acessibilidade: touch targets ≥44px, foco visível com ring Mel Queimado, reduced motion respeitado."
+    ],
+    "donts": [
+      "Usar background beige/cream/sand genérico tipo \"tema AI\". Papel de Caderno é o único off-white permitido.",
+      "Usar sombra em cards em repouso.",
+      "Usar gradient text (background-clip: text + gradient). Uma cor sólida apenas.",
+      "Usar glassmorphism decorativo.",
+      "Usar side-stripe borders (border-left >1px colorido).",
+      "Usar número de seção (01, 02, 03) como scaffold de landing page.",
+      "Repetir tiny uppercase eyebrow acima de toda seção. Um kicker com voz própria é permitido; scaffolding automático não.",
+      "Usar border-radius >16px em cards ou containers. 12px é o teto para cards; 8px para inputs e botões.",
+      "Usar anúncios, pop-ups, ou padrões de UX que priorizam pageview sobre cozinhar — o anti-reference do TudoGostoso.",
+      "Usar o mesmo layout de card para toda seção. Varie a apresentação.",
+      "Usar grid backgrounds decorativos (linear-gradient simulando grid). Superfícies devem ser limpas.",
+      "Substituir fotografia de receita por placeholders de cor sólida. Hero sem imagem é um bug."
+    ]
+  }
+}

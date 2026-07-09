@@ -11,7 +11,29 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ featuredRecipe }: HeroSectionProps) {
-  if (!featuredRecipe) return null;
+  if (!featuredRecipe) {
+    return (
+      <section aria-labelledby="hero-recipe-title">
+        <div className="relative mx-auto flex aspect-4/3 max-w-7xl items-center justify-center bg-linear-to-br from-amber-100 to-amber-50 sm:aspect-video lg:aspect-21/9">
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-amber-200/60" aria-hidden="true">
+              <svg viewBox="0 0 64 64" className="size-8 text-amber-600" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <rect x="1.5" y="1.5" width="61" height="61" rx="4" />
+                <path d="M16 25.5C16 19.7 20.5 16 26.6 16C32.7 16 37.2 19.8 37.2 25.5C37.2 31.3 32.7 35.2 26.6 35.2C20.5 35.2 16 31.3 16 25.5ZM21 25.5C21 28.7 23.2 31 26.6 31C30 31 32.2 28.7 32.2 25.5C32.2 22.4 30 20.2 26.6 20.2C23.2 20.2 21 22.4 21 25.5ZM29.8 32.8L37.6 40.8" />
+                <path d="M41 16V41M41 16H49.8C55.1 16 58 19.2 58 23.9C58 28.6 55.1 31.8 49.8 31.8H41" />
+              </svg>
+            </div>
+            <h2 id="hero-recipe-title" className="text-xl font-bold tracking-tight text-amber-900 sm:text-2xl lg:text-3xl">
+              Queimando Panela
+            </h2>
+            <p className="mt-2 max-w-md px-4 text-sm leading-relaxed text-amber-700">
+              Nenhuma receita em destaque no momento. Volte em breve para descobrir novos pratos.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section aria-labelledby="hero-recipe-title">
@@ -37,10 +59,14 @@ export function HeroSection({ featuredRecipe }: HeroSectionProps) {
             />
           ) : (
             <div
-              className="flex h-full w-full items-center justify-center bg-neutral-200"
+              className="flex h-full w-full items-center justify-center bg-linear-to-br from-amber-100 to-amber-50"
               aria-hidden="true"
             >
-              <span className="text-sm text-neutral-400">Sem imagem</span>
+              <svg viewBox="0 0 64 64" className="size-12 text-amber-400" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="1.5" y="1.5" width="61" height="61" rx="4" />
+                <path d="M16 25.5C16 19.7 20.5 16 26.6 16C32.7 16 37.2 19.8 37.2 25.5C37.2 31.3 32.7 35.2 26.6 35.2C20.5 35.2 16 31.3 16 25.5ZM21 25.5C21 28.7 23.2 31 26.6 31C30 31 32.2 28.7 32.2 25.5C32.2 22.4 30 20.2 26.6 20.2C23.2 20.2 21 22.4 21 25.5ZM29.8 32.8L37.6 40.8" />
+                <path d="M41 16V41M41 16H49.8C55.1 16 58 19.2 58 23.9C58 28.6 55.1 31.8 49.8 31.8H41" />
+              </svg>
             </div>
           )}
 

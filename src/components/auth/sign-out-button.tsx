@@ -41,7 +41,7 @@ export function SignOutButton() {
       </button>
 
       {error && (
-        <p className="text-[11px] text-red-600" role="alert">
+        <p className="text-xs text-red-600" role="alert">
           {error}
         </p>
       )}
