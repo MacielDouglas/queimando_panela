@@ -40,9 +40,19 @@ vi.mock('@/features/recipes/actions/get-recipe-by-utensil', () => ({
   getRecipesByUtensil: vi.fn(),
 }));
 
+vi.mock('@/features/recipes/actions/get-recipe-filter-options', () => ({
+  getRecipeFilterOptions: vi.fn().mockResolvedValue({
+    categories: [],
+    types: [],
+    utensils: [],
+    ingredients: [],
+  }),
+}));
+
 import { getAllRecipes } from '@/features/recipes/actions/get-all-recipes';
 import { getLatestRecipe } from '@/features/recipes/actions/get-latest-recipe';
 import { getRecipesByUtensil } from '@/features/recipes/actions/get-recipe-by-utensil';
+import { getRecipeFilterOptions } from '@/features/recipes/actions/get-recipe-filter-options';
 import { getRecipesByCategory } from '@/features/recipes/actions/get-recipes-by-category';
 import { getServerSession } from '@/lib/get-server-session';
 
@@ -51,6 +61,7 @@ const mockGetAllRecipes = vi.mocked(getAllRecipes);
 const mockGetLatestRecipe = vi.mocked(getLatestRecipe);
 const mockGetRecipesByCategory = vi.mocked(getRecipesByCategory);
 const mockGetRecipesByUtensil = vi.mocked(getRecipesByUtensil);
+const mockGetRecipeFilterOptions = vi.mocked(getRecipeFilterOptions);
 
 const recipeList: RecipeCardData[] = [
   {
@@ -105,6 +116,12 @@ describe('RecipesPage', () => {
     mockGetLatestRecipe.mockResolvedValue(recipeList[0]);
     mockGetRecipesByCategory.mockResolvedValue([]);
     mockGetRecipesByUtensil.mockResolvedValue([]);
+    mockGetRecipeFilterOptions.mockResolvedValue({
+      categories: [],
+      types: [],
+      utensils: [],
+      ingredients: [],
+    });
   });
 
   it('renderiza o hero com título e descrição', async () => {
