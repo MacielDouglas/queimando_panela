@@ -1,46 +1,37 @@
 import Link from 'next/link';
 import { QPMark } from '@/components/brand/qp-mark';
-import { Button } from '@/components/ui/button';
 
 export default function NotFound() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center bg-stone-50 px-6 py-16 text-center">
-      <span className="text-amber-500">
-        <QPMark className="size-14" />
-      </span>
-
-      <p className="mt-8 text-xs font-medium uppercase tracking-[0.3em] text-amber-500">
-        Erro 404
-      </p>
-
-      <h1 className="mt-4 max-w-lg text-4xl font-semibold tracking-tight text-stone-950 sm:text-5xl">
-        Essa receita queimou.
-      </h1>
-
-      <p className="mt-5 max-w-md text-base leading-7 text-stone-600">
-        Procuramos em todas as panelas, mas essa página não estava em nenhuma
-        delas. Deve ter virado carvão em algum lugar do fogão.
-      </p>
-
-      <p className="mt-2 max-w-md text-sm leading-6 text-stone-500">
-        Que bom que você tem outra chance — sem precisar limpar a fumaça.
-      </p>
-
-      <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-        <Button
-          asChild
-          className="h-11 rounded-none bg-amber-500 px-8 text-sm font-medium uppercase tracking-[0.16em] text-stone-950 hover:bg-amber-600"
-        >
-          <Link href="/">Voltar para o menu principal</Link>
-        </Button>
-
-        <Button
-          asChild
-          variant="outline"
-          className="h-11 rounded-none border-stone-300 px-8 text-sm font-medium uppercase tracking-[0.16em] text-stone-700 hover:bg-stone-100"
-        >
-          <Link href="/receitas">Ver receitas</Link>
-        </Button>
+    <main className="min-h-dvh bg-white grid place-items-center p-6">
+      <div className="w-full max-w-lg border-2 border-[#0a0a0a] bg-white p-8 text-center">
+        <span className="mx-auto grid size-14 place-items-center border-2 border-[#0a0a0a] bg-[#ffb900] text-[#0a0a0a]">
+          <QPMark className="size-8" />
+        </span>
+        <p className="mt-4 inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-white">
+          Erro 404
+        </p>
+        <h1 className="mt-3 font-display text-3xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#0a0a0a]">
+          Essa receita queimou.
+        </h1>
+        <p className="mx-auto mt-4 max-w-md border-l-[4px] border-[#ffb900] pl-3 text-left font-sans text-sm leading-6 text-[#6b6b6b]">
+          Procuramos em todas as panelas, mas essa página virou carvão. Sem
+          drama — volte ao menu.
+        </p>
+        <div className="mt-8 grid gap-3 sm:grid-cols-2">
+          <Link
+            href="/"
+            className="grid h-12 place-items-center border-2 border-[#0a0a0a] bg-[#ffb900] font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
+          >
+            Voltar ao menu
+          </Link>
+          <Link
+            href="/receitas"
+            className="grid h-12 place-items-center border-2 border-[#0a0a0a] bg-white font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
+          >
+            Ver receitas
+          </Link>
+        </div>
       </div>
     </main>
   );

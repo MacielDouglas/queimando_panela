@@ -1,41 +1,36 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 
 export default function UnauthorizedPage() {
   return (
-    <main className="min-h-dvh bg-stone-50 text-stone-900">
-      <div className="mx-auto flex min-h-dvh max-w-3xl items-center justify-center px-4 py-12">
-        <section className="w-full border border-stone-200 bg-white p-8 sm:p-10">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-500">
+    <main className="min-h-dvh bg-white grid place-items-center p-6">
+      <div className="w-full max-w-xl border-2 border-[#0a0a0a] bg-white">
+        <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
+        <div className="p-8">
+          <p className="inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#ffb900]">
             Acesso restrito
           </p>
-
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-stone-900">
-            Você não tem permissão para acessar esta página.
+          <h1 className="mt-3 font-display text-3xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#0a0a0a]">
+            Sem permissão para acessar.
           </h1>
-
-          <p className="mt-4 max-w-xl text-sm leading-6 text-stone-600">
-            Faça login com uma conta válida ou volte para continuar navegando
-            pelas receitas públicas.
+          <p className="mt-3 max-w-lg border-l-[4px] border-[#ffb900] pl-3 font-sans text-sm leading-6 text-[#6b6b6b]">
+            Faça login com conta válida ou volte para as receitas públicas —
+            quadrado e amarelo.
           </p>
-
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button
-              asChild
-              className="h-11 rounded-none bg-amber-500 text-stone-950 hover:bg-amber-600"
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <Link
+              href="/sign-in"
+              className="grid h-12 place-items-center border-2 border-[#0a0a0a] bg-[#ffb900] font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
             >
-              <Link href="/sign-in">Entrar</Link>
-            </Button>
-
-            <Button
-              asChild
-              variant="outline"
-              className="h-11 rounded-none border-stone-300"
+              Entrar
+            </Link>
+            <Link
+              href="/"
+              className="grid h-12 place-items-center border-2 border-[#0a0a0a] bg-white font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
             >
-              <Link href="/">Voltar para a página inicial</Link>
-            </Button>
+              Voltar ao início
+            </Link>
           </div>
-        </section>
+        </div>
       </div>
     </main>
   );
