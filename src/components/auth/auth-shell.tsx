@@ -38,7 +38,7 @@ export function AuthShell({
               </Link>
               <div className="mt-12 max-w-md space-y-4">
                 <p className="inline-block bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
-                  Blog culinário Estapar
+                  Blog culinário Queimando Panela
                 </p>
                 <h1 className="font-display text-4xl font-extrabold uppercase leading-none tracking-[-0.02em] text-white">
                   Receitas para

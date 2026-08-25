@@ -31,7 +31,7 @@ export default function OtherProjects() {
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           <div>
             <p className="inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-white">
-              Estapar Panelinha
+              Queimando Panela
             </p>
             <h2 className="mt-3 font-display text-3xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-4xl">
               A cozinha é

@@ -38,7 +38,7 @@
 }
 
 :root {
-  /* Estapar Panelinha — Light quadrado, #ffb900 restrained 10% */
+  /* Queimando Panela — Light quadrado, #ffb900 restrained 10% */
   --background: oklch(1 0 0); /* #FFFFFF */
   --foreground: oklch(0.145 0 0); /* #0a0a0a */
 
@@ -61,7 +61,7 @@
   --accent-foreground: oklch(1 0 0);
 
   --border: oklch(0.92 0 0); /* #e5e5e5 */
-  --input: oklch(0.145 0 0); /* borda input preta Estapar */
+  --input: oklch(0.145 0 0); /* borda input preta Queimando Panela */
   --ring: oklch(0.87 0.17 84.5);
   --destructive: oklch(0.55 0.22 27);
 
@@ -169,7 +169,7 @@
     color: var(--foreground);
   }
 
-  /* Focus Estapar - quadrado preto */
+  /* Focus Queimando Panela - quadrado preto */
   :focus-visible {
     outline: 2px solid var(--foreground);
     outline-offset: 2px;
@@ -187,13 +187,13 @@
     margin-inline: auto;
   }
 
-  /* Estapar faixa amarela */
-  .estapar-stripe {
+  /* Queimando Panela faixa amarela */
+  .queimando-panela-stripe {
     background: var(--primary);
     color: var(--foreground);
   }
 
-  .eyebrow-estapar {
+  .eyebrow-queimando-panela {
     font-family: var(--font-display), sans-serif;
     font-size: 0.7rem;
     font-weight: 800;

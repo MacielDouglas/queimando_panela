@@ -86,7 +86,7 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
           <div className="flex items-center gap-2 border-b-2 border-[#0a0a0a] pb-2">
             <Lightbulb className="size-4 text-[#0a0a0a]" />
             <h2 className="font-display text-sm font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
-              Sugestões Estapar
+              Sugestões Queimando Panela
             </h2>
           </div>
           <ul className="mt-3 space-y-2">

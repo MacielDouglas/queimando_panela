@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: '%s | Queimando Panela',
   },
   description:
-    'Receitas caseiras, afetivas e autorais. A Estapar da cozinha brasileira — direta, quadrada, amarela e sem frescura.',
+    'Receitas caseiras, afetivas e autorais. Queimando Panela — direta, quadrada, amarela e sem frescura.',
 };
 
 export default async function RootLayout({

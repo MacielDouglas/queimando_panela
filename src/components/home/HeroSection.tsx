@@ -19,7 +19,7 @@ export function HeroSection({ featuredRecipe }: HeroSectionProps) {
                 Queimando Panela
               </p>
               <h1 className="mt-4 font-display text-4xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-5xl lg:text-6xl">
-                A Estapar
+                A Queimando Panela
                 <br />
                 <span className="bg-[#ffb900] px-1">da cozinha</span>
                 <br />
@@ -27,7 +27,8 @@ export function HeroSection({ featuredRecipe }: HeroSectionProps) {
               </h1>
               <p className="mt-4 max-w-lg font-sans text-base leading-6 text-[#6b6b6b]">
                 Receitas reais, quadradas e amarelas. Sem pop-up, sem enrolação.
-                A Panelinha que a Estapar faria se vendesse panela.
+                A Queimando Panela que a Queimando Panela faria se vendesse
+                panela.
               </p>
               <div className="mt-6 flex gap-3">
                 <Link
@@ -65,7 +66,7 @@ export function HeroSection({ featuredRecipe }: HeroSectionProps) {
     <section className="border-t-[6px] border-[#ffb900] bg-white">
       <div className="editorial-container py-8 lg:py-12">
         <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
-          {/* Texto Estapar */}
+          {/* Texto Queimando Panela */}
           <div>
             <p className="inline-flex items-center gap-2 bg-[#ffb900] px-3 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
               <span className="size-1.5 bg-[#0a0a0a]" aria-hidden="true" />
@@ -74,7 +75,7 @@ export function HeroSection({ featuredRecipe }: HeroSectionProps) {
 
             {featuredRecipe.types[0] && (
               <p className="mt-3 font-display text-xs font-bold uppercase tracking-[0.16em] text-[#6b6b6b]">
-                {featuredRecipe.types[0]} • Panelinha do dia
+                {featuredRecipe.types[0]} • Queimando Panela do dia
               </p>
             )}
 
@@ -118,7 +119,7 @@ export function HeroSection({ featuredRecipe }: HeroSectionProps) {
             </div>
           </div>
 
-          {/* Imagem quadrada Estapar */}
+          {/* Imagem quadrada Queimando Panela */}
           <Link
             href={`/receitas/${featuredRecipe.slug}`}
             className="group relative block border-2 border-[#0a0a0a] bg-white p-2 hover:border-[#ffb900]"

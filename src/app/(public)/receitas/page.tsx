@@ -34,7 +34,7 @@ type Props = {
 export const metadata: Metadata = {
   title: 'Receitas — Queimando Panela',
   description:
-    'Todas as receitas Estapar Panelinha — quadradas, amarelas e sem frescura.',
+    'Todas as receitas Queimando Panela — quadradas, amarelas e sem frescura.',
 };
 
 function getSingle(value: SearchValue) {
@@ -111,17 +111,17 @@ export default async function RecipesPage({ searchParams }: Props) {
 
   return (
     <main className="bg-white">
-      {/* Faixa Estapar */}
+      {/* Faixa Queimando Panela */}
       <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
 
-      {/* Header Estapar Panelinha */}
+      {/* Header Queimando Panela */}
       <section className="border-b-2 border-[#0a0a0a] bg-white">
         <div className="editorial-container py-8 lg:py-10">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-center gap-3">
               <span className="inline-flex items-center gap-2 border-2 border-[#0a0a0a] bg-[#ffb900] px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
                 <ChefHat className="size-4" />
-                Panelinha Estapar
+                Queimando Panela
               </span>
               <span
                 className="hidden h-6 w-px bg-[#e5e5e5] sm:block"
@@ -149,13 +149,13 @@ export default async function RecipesPage({ searchParams }: Props) {
             <span className="bg-[#ffb900] px-1">aquecer</span> a cozinha.
           </h1>
           <p className="mt-4 max-w-2xl font-sans text-sm leading-6 text-[#6b6b6b]">
-            Grid Panelinha 3 colunas, filtro Estapar quadrado. Clique no chip, a
-            página recarrega quadrada.
+            Grid Queimando Panela 3 colunas, filtro Queimando Panela quadrado.
+            Clique no chip, a página recarrega quadrada.
           </p>
         </div>
       </section>
 
-      {/* Busca — faixa preta Estapar */}
+      {/* Busca — faixa preta Queimando Panela */}
       <section className="border-b-2 border-[#0a0a0a] bg-[#0a0a0a]">
         <div className="editorial-container py-6">
           <div className="flex items-center gap-3">
@@ -220,7 +220,7 @@ export default async function RecipesPage({ searchParams }: Props) {
             <div className="border-2 border-[#0a0a0a] bg-white">
               <div className="border-b-2 border-[#0a0a0a] bg-[#0a0a0a] px-4 py-3">
                 <p className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#ffb900]">
-                  Filtros Panelinha
+                  Filtros Queimando Panela
                 </p>
               </div>
               <div className="p-4">
@@ -241,7 +241,7 @@ export default async function RecipesPage({ searchParams }: Props) {
 
             <div className="mt-4 border-2 border-[#ffb900] bg-[#ffb900] p-4">
               <p className="font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
-                Dica Estapar
+                Dica Queimando Panela
               </p>
               <p className="mt-2 font-sans text-sm leading-5 text-[#0a0a0a]">
                 Use o chip amarelo para filtrar. Quadrado, preto e amarelo — sem

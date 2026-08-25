@@ -1,6 +1,6 @@
 ---
-name: "Queimando Panela — Estapar Panelinha"
-description: "Copia da Estapar voltada para culinária, com alma Panelinha. Light quadrado, #ffb900 restrained 10%, tipografia grotesk."
+name: "Queimando Panela"
+description: "Comunidade para preservar e descobrir receitas caseiras, afetivas e autorais brasileiras. Light quadrado, #ffb900 restrained 10%, tipografia grotesk."
 colors:
   background: "#FFFFFF"
   foreground: "#0a0a0a"
@@ -98,25 +98,25 @@ components:
     height: "24px"
 ---
 
-# Design System: Queimando Panela — Estapar Panelinha
+# Design System: Queimando Panela
 
-## 1. Overview — North Star: "Estapar da Cozinha"
+## 1. Overview — North Star: "O Caderno Queimando Panela"
 
-Copiamos a lógica da Estapar (estacionamento): faixas amarelas, header quadrado, grid denso, footer institucional preto, tipografia grotesk em caixa alta, tudo 0px. Voltamos para culinária com alma Panelinha: foto grande, categorias em chips, receita do dia, linguagem direta.
+Faixas amarelas, header quadrado #ffb900, grid denso, footer institucional preto, tipografia grotesk Sora em caixa alta, tudo 0px. Foto grande, categorias em chips, receita do dia, linguagem direta.
 
 **Contrato:**
 - Light sempre: fundo #FFFFFF, tinta #0a0a0a.
 - Amarelo #ffb900 só onde importa: CTA, badge, faixa fina, focus. Nunca mais que 10% da tela (restrained).
 - Tudo quadrado: radius 0px em buttons, cards, inputs, sheets, dialogs.
-- Estapar = estrutura (faixas, densidade, ritmo corporativo). Panelinha = conteúdo (foto, categoria, afeto).
+- Estrutura = faixas, densidade, ritmo institucional. Conteúdo = foto, categoria, afeto.
 
-## 2. Colors — Restrained Estapar
+## 2. Colors — Restrained Queimando Panela
 
 - **#ffb900** — Primary. CTA, badge, faixa, ring. Texto sobre amarelo é sempre #0a0a0a (7.2:1).
 - **#0a0a0a** — Ink. Títulos, header/footer preto, bordas de input, botões secundários.
 - **#FFFFFF** — Fundo. Cards e página.
 - **#f2f2f2 / #f5f5f5** — Muted/secondary para zebra e hover.
-- **#e5e5e5** — Border. Linhas finas Estapar.
+- **#e5e5e5** — Border. Linhas finas Queimando Panela.
 - **#6b6b6b** — Muted-foreground. Único cinza permitido para descrição (4.5:1 sobre branco).
 - **#cc1f1f** — Destructive.
 
@@ -126,21 +126,21 @@ Copiamos a lógica da Estapar (estacionamento): faixas amarelas, header quadrado
 
 ## 3. Typography — Sora Grotesk + Inter
 
-**Display / Headings:** Sora 800, uppercase, tracking -0.02 a -0.03, leading 0.95-1.0. Estapar fala gritando mas com precisão.
+**Display / Headings:** Sora 800, uppercase, tracking -0.02 a -0.03, leading 0.95-1.0. Queimando Panela fala gritando mas com precisão.
 **Body:** Inter 400, leading 1.6, max 72ch.
 **Label:** Sora 800, 0.7rem, tracking 0.14em, uppercase. Usado em eyebrow, kicker, navegação.
 
 Hierarquia bem marcada: H1 800 amarelo-preto, H2 800 preto, body Inter solto.
 
-## 4. Layout — Estapar Grid
+## 4. Layout — Queimando Panela Grid
 
-- **Container:** `w-[min(100%-1.5rem,84rem)]` centralizado. Respiro curto nas laterais (1.5rem) como Estapar.
-- **Grid Panelinha:** `repeat(auto-fit, minmax(280px,1fr))` para cards. Lista de receitas 3 colunas no desktop, 2 no tablet, 1 no mobile.
-- **Faixas Estapar:** cada seção começa com faixa amarela de 6px no topo (`border-t-[6px] border-[#ffb900]`) ou bloco amarelo lateral de 4px.
+- **Container:** `w-[min(100%-1.5rem,84rem)]` centralizado. Respiro curto nas laterais (1.5rem) como Queimando Panela.
+- **Grid Queimando Panela:** `repeat(auto-fit, minmax(280px,1fr))` para cards. Lista de receitas 3 colunas no desktop, 2 no tablet, 1 no mobile.
+- **Faixas Queimando Panela:** cada seção começa com faixa amarela de 6px no topo (`border-t-[6px] border-[#ffb900]`) ou bloco amarelo lateral de 4px.
 - **Header:** 64px, #ffb900, borda inferior preta 1px, navegação Sora 800 uppercase, CTA preto.
-- **Footer:** preto #0a0a0a, texto #FFFFFF, faixas amarelas finas, grid 3 colunas Estapar institucional.
+- **Footer:** preto #0a0a0a, texto #FFFFFF, faixas amarelas finas, grid 3 colunas Queimando Panela institucional.
 
-## 5. Components — Quadrado Estapar
+## 5. Components — Quadrado Queimando Panela
 
 ### Buttons
 - 0px, 48px altura, Sora 800 uppercase tracking 0.08em.
@@ -148,15 +148,15 @@ Hierarquia bem marcada: H1 800 amarelo-preto, H2 800 preto, body Inter solto.
 - Secondary: #0a0a0a + branco, hover #1a1a1a.
 - Outline: borda 1px #0a0a0a, hover fundo #0a0a0a texto branco.
 
-### Cards — Panelinha quadrada
+### Cards — Queimando Panela quadrada
 - 0px, borda 1px #e5e5e5, sem sombra, imagem 4:3 quadrada, sem radius na imagem.
-- Faixa amarela 4px no topo do card (Estapar).
+- Faixa amarela 4px no topo do card (Queimando Panela).
 - Título Sora 700 uppercase, descrição Inter cinza #6b6b6b.
 
 ### Inputs
 - 0px, borda 1px #0a0a0a, fundo branco, placeholder #6b6b6b, focus ring #ffb900 2px.
 
-### Badges/Chips — Estapar quadrado
+### Badges/Chips — Queimando Panela quadrado
 - 0px, padding 4px 8px, Sora 800 uppercase 0.7rem.
 - Default: #ffb900 + preto. Active: preto + branco. Inactive: branco + borda #e5e5e5.
 
@@ -166,13 +166,13 @@ Hierarquia bem marcada: H1 800 amarelo-preto, H2 800 preto, body Inter solto.
 ### Footer
 - `bg-[#0a0a0a] text-white`, colunas com título Sora uppercase amarelo #ffb900, links branco 14px, hover #ffb900.
 
-## 6. Do's and Don'ts — Estapar Panelinha
+## 6. Do's and Don'ts — Queimando Panela
 
 Do:
 - Tudo 0px.
 - Amarelo só onde converte.
 - Foto grande quadrada (4:3) em todo card — sem placeholder colorido.
-- Faixa amarela de 4-6px para separar seções (DNA Estapar).
+- Faixa amarela de 4-6px para separar seções (DNA Queimando Panela).
 - Sora uppercase para títulos, Inter para leitura.
 
 Don't:

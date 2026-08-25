@@ -11,11 +11,11 @@ import { getRandomRecipe } from '@/features/recipes/actions/get-random-recipe';
 export const metadata: Metadata = {
   title: 'Queimando Panela — Receitas caseiras, afetivas e autorais',
   description:
-    'A Estapar da cozinha — direta, quadrada, amarela e sem frescura. Receitas que parecem da sua mãe.',
+    'A Queimando Panela da cozinha — direta, quadrada, amarela e sem frescura. Receitas que parecem da sua mãe.',
   openGraph: {
-    title: 'Queimando Panela — Estapar Panelinha',
+    title: 'Queimando Panela — Queimando Panela',
     description:
-      'A Estapar da cozinha — direta, quadrada, amarela e sem frescura.',
+      'A Queimando Panela da cozinha — direta, quadrada, amarela e sem frescura.',
     type: 'website',
   },
 };

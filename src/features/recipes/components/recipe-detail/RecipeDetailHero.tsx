@@ -163,7 +163,7 @@ export function RecipeDetailHero({
                 </div>
               )}
               <span className="absolute left-2 top-2 border-2 border-[#0a0a0a] bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase text-[#0a0a0a]">
-                Panelinha
+                Queimando Panela
               </span>
             </div>
           </div>

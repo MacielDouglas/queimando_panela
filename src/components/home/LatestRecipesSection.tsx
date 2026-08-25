@@ -40,13 +40,13 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
         <div className="flex flex-wrap items-end justify-between gap-4 border-b-2 border-[#0a0a0a] pb-4">
           <div>
             <p className="inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-white">
-              Panelinha
+              Queimando Panela
             </p>
             <h2 className="mt-3 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.01em] text-[#0a0a0a] sm:text-3xl">
               O que acabou de sair do forno
             </h2>
             <p className="mt-2 font-sans text-sm text-[#6b6b6b]">
-              Grid Panelinha 3 colunas, ritmo Estapar
+              Grid Queimando Panela 3 colunas, ritmo Queimando Panela
             </p>
           </div>
           <Link

@@ -18,7 +18,7 @@ export default function CardRecipe({
 
   return (
     <article className="group flex h-full flex-col border border-[#e5e5e5] bg-white hover:border-[#0a0a0a]">
-      {/* Imagem 4:3 quadrada Estapar */}
+      {/* Imagem 4:3 quadrada Queimando Panela */}
       <Link
         href={`/receitas/${recipe.slug}`}
         aria-label={`Ver receita: ${recipe.title}`}
@@ -47,7 +47,7 @@ export default function CardRecipe({
             {recipe.types[0]}
           </span>
         )}
-        {/* Faixa amarela Estapar no card */}
+        {/* Faixa amarela Queimando Panela no card */}
         <span
           className="absolute inset-x-0 top-0 h-1 bg-[#ffb900]"
           aria-hidden="true"

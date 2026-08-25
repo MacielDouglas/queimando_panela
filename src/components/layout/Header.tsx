@@ -43,7 +43,7 @@ export default function Header() {
           </div>
         </div>
       </div>
-      {/* faixa preta fina Estapar */}
+      {/* faixa preta fina Queimando Panela */}
       <div className="h-[3px] bg-[#0a0a0a]" aria-hidden="true" />
     </header>
   );

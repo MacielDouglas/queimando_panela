@@ -8,7 +8,7 @@ export default function SignUpSection() {
       <div className="editorial-container grid gap-8 py-12 lg:grid-cols-[1.2fr_0.8fr] lg:py-16 items-center">
         <div>
           <p className="inline-block border border-[#0a0a0a] bg-white px-3 py-1 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#0a0a0a]">
-            Panelinha do dia
+            Queimando Panela do dia
           </p>
           <h2 className="mt-4 font-display text-3xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-4xl">
             Sua receita

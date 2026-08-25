@@ -20,7 +20,8 @@ export function ClassicRecipesSection({ rows }: ClassicRecipesSectionProps) {
               Clássicos que nunca saem de moda
             </h2>
             <p className="mt-2 max-w-xl font-sans text-sm text-[#6b6b6b]">
-              Quatro categorias Estapar, uma receita Panelinha por faixa.
+              Quatro categorias Queimando Panela, uma receita Queimando Panela
+              por faixa.
             </p>
           </div>
           <div className="mt-8 grid place-items-center border-2 border-dashed border-[#e5e5e5] bg-white py-16">
@@ -38,13 +39,14 @@ export function ClassicRecipesSection({ rows }: ClassicRecipesSectionProps) {
       <div className="editorial-container py-12 lg:py-16">
         <div className="border-l-[6px] border-[#ffb900] pl-4">
           <p className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#6b6b6b]">
-            Estapar Panelinha
+            Queimando Panela
           </p>
           <h2 className="mt-1 font-display text-2xl font-extrabold uppercase leading-none text-[#0a0a0a] sm:text-3xl">
             Clássicos que nunca saem de moda
           </h2>
           <p className="mt-2 max-w-xl font-sans text-sm text-[#6b6b6b]">
-            Faixa Estapar, conteúdo Panelinha — bento 2x2 quadrado.
+            Faixa Queimando Panela, conteúdo Queimando Panela — bento 2x2
+            quadrado.
           </p>
         </div>
 

@@ -20,8 +20,8 @@ export default async function MinhaContaPage() {
             Perfil da conta
           </h1>
           <p className="mt-2 max-w-2xl border-l-[4px] border-[#ffb900] pl-3 font-sans text-sm leading-5 text-[#6b6b6b]">
-            Gerencie suas informações e acompanhe sua participação no Estapar
-            Panelinha.
+            Gerencie suas informações e acompanhe sua participação no Queimando
+            Panela.
           </p>
         </header>
 

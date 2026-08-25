@@ -116,7 +116,7 @@ export function RecipeGrid({
       <div className="flex flex-wrap items-end justify-between gap-3 border-b-2 border-[#0a0a0a] pb-3">
         <div>
           <p className="inline-block bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
-            Panelinha Estapar
+            Queimando Panela
           </p>
           <h2 className="mt-2 font-display text-xl font-extrabold uppercase leading-none tracking-[-0.01em] text-[#0a0a0a] sm:text-2xl">
             {q ? `Resultados para "${q}"` : 'Todas as receitas'}

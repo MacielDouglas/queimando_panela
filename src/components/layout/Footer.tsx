@@ -26,16 +26,16 @@ export default function Footer() {
           </Link>
 
           <p className="mt-6 max-w-sm font-sans text-sm leading-6 text-white/70">
-            A Estapar da cozinha brasileira — direta, quadrada e amarela.
-            Receitas reais de gente real, sem pop-up, sem enrolação.
+            A Queimando Panela da cozinha brasileira — direta, quadrada e
+            amarela. Receitas reais de gente real, sem pop-up, sem enrolação.
           </p>
 
           <div className="mt-6 flex gap-2">
             <span className="inline-block bg-[#ffb900] px-2 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
-              Estapar
+              Queimando Panela
             </span>
             <span className="inline-block border border-white/20 px-2 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-white">
-              Panelinha
+              Queimando Panela
             </span>
           </div>
         </div>
@@ -59,7 +59,7 @@ export default function Footer() {
             Desenvolvimento
           </p>
           <p className="mt-4 font-sans text-sm leading-6 text-white/70">
-            Site desenvolvido por Douglas Maciel — Estapar Panelinha, 0px,
+            Site desenvolvido por Douglas Maciel — Queimando Panela, 0px,
             #ffb900, Sora grotesk.
           </p>
 
@@ -85,7 +85,10 @@ export default function Footer() {
 
       <div className="border-t border-white/10">
         <div className="editorial-container flex flex-col gap-3 py-5 font-sans text-xs text-white/50 md:flex-row md:items-center md:justify-between">
-          <p>© 2026 Queimando Panela — Copia Estapar, alma Panelinha.</p>
+          <p>
+            © 2026 Queimando Panela — Copia Queimando Panela, alma Queimando
+            Panela.
+          </p>
           <p className="font-display text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">
             Feito com farinha na mão e #ffb900 no coração
           </p>
