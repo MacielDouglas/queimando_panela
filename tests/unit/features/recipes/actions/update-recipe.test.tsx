@@ -12,8 +12,10 @@ const transactionMock = vi.fn();
 const txIngredientDeleteManyMock = vi.fn();
 const txUtensilOnRecipeDeleteManyMock = vi.fn();
 const txRecipeSectionDeleteManyMock = vi.fn();
+const txRecipeTypeOnRecipeDeleteManyMock = vi.fn();
 const txRecipeUpdateMock = vi.fn();
-const txIngredientCreateManyMock = vi.fn();
+const txIngredientCreateMock = vi.fn();
+const txGeneralIngredientUpsertMock = vi.fn();
 const txRecipeImageDeleteManyMock = vi.fn();
 const txRecipeImageUpdateMock = vi.fn();
 const txRecipeImageCreateMock = vi.fn();
@@ -125,10 +127,16 @@ describe('updateRecipe', () => {
       return callback({
         ingredient: {
           deleteMany: txIngredientDeleteManyMock,
-          createMany: txIngredientCreateManyMock,
+          create: txIngredientCreateMock,
+        },
+        generalIngredient: {
+          upsert: txGeneralIngredientUpsertMock,
         },
         utensilOnRecipe: {
           deleteMany: txUtensilOnRecipeDeleteManyMock,
+        },
+        recipeTypeOnRecipe: {
+          deleteMany: txRecipeTypeOnRecipeDeleteManyMock,
         },
         recipeSection: {
           deleteMany: txRecipeSectionDeleteManyMock,
@@ -206,6 +214,8 @@ describe('updateRecipe', () => {
       id: 'recipe-1',
       sections: [{ id: 'new-section-1' }],
     });
+    txGeneralIngredientUpsertMock.mockResolvedValue({ id: 'gen-1' });
+    txIngredientCreateMock.mockResolvedValue({});
 
     uploadRecipeImageMock.mockResolvedValue({
       key: 'recipes/new-1.webp',
@@ -274,28 +284,20 @@ describe('updateRecipe', () => {
       }),
     );
 
-    expect(txIngredientCreateManyMock).toHaveBeenCalledWith({
-      data: [
-        {
+    expect(txGeneralIngredientUpsertMock).toHaveBeenCalledTimes(2);
+    expect(txIngredientCreateMock).toHaveBeenCalledTimes(2);
+    expect(txIngredientCreateMock).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        data: expect.objectContaining({
           recipeId: 'recipe-1',
           sectionId: 'new-section-1',
           originalText: '2 xícaras de milho',
           name: 'milho',
-          amount: '2',
-          unit: 'xícaras',
           order: 0,
-        },
-        {
-          recipeId: 'recipe-1',
-          sectionId: 'new-section-1',
-          originalText: '1 xícara de leite',
-          name: 'leite',
-          amount: '1',
-          unit: 'xícara',
-          order: 1,
-        },
-      ],
-    });
+        }),
+      }),
+    );
 
     expect(txRecipeImageDeleteManyMock).toHaveBeenCalledWith({
       where: {

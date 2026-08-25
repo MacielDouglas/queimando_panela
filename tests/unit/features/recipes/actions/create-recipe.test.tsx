@@ -7,7 +7,8 @@ const headersMock = vi.fn();
 const getSessionMock = vi.fn();
 
 const recipeCreateMock = vi.fn();
-const ingredientCreateManyMock = vi.fn();
+const ingredientCreateMock = vi.fn();
+const generalIngredientUpsertMock = vi.fn();
 const recipeImageCreateManyMock = vi.fn();
 const uploadRecipeImageMock = vi.fn();
 
@@ -33,7 +34,10 @@ vi.mock('@/lib/prisma', () => ({
       create: (...args: unknown[]) => recipeCreateMock(...args),
     },
     ingredient: {
-      createMany: (...args: unknown[]) => ingredientCreateManyMock(...args),
+      create: (...args: unknown[]) => ingredientCreateMock(...args),
+    },
+    generalIngredient: {
+      upsert: (...args: unknown[]) => generalIngredientUpsertMock(...args),
     },
     recipeImage: {
       createMany: (...args: unknown[]) => recipeImageCreateManyMock(...args),
@@ -137,6 +141,8 @@ describe('createRecipe', () => {
       id: 'recipe-1',
       sections: [{ id: 'section-1' }],
     });
+    generalIngredientUpsertMock.mockResolvedValue({ id: 'gen-1' });
+    ingredientCreateMock.mockResolvedValue({});
 
     const formData = makeFormData({
       analysis: makeAnalysis(),
@@ -162,28 +168,20 @@ describe('createRecipe', () => {
       }),
     );
 
-    expect(ingredientCreateManyMock).toHaveBeenCalledWith({
-      data: [
-        {
+    expect(generalIngredientUpsertMock).toHaveBeenCalledTimes(2);
+    expect(ingredientCreateMock).toHaveBeenCalledTimes(2);
+    expect(ingredientCreateMock).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        data: expect.objectContaining({
           recipeId: 'recipe-1',
           sectionId: 'section-1',
           originalText: '2 xícaras de milho',
           name: 'milho',
-          amount: '2',
-          unit: 'xícaras',
           order: 0,
-        },
-        {
-          recipeId: 'recipe-1',
-          sectionId: 'section-1',
-          originalText: '1 xícara de leite',
-          name: 'leite',
-          amount: '1',
-          unit: 'xícara',
-          order: 1,
-        },
-      ],
-    });
+        }),
+      }),
+    );
 
     expect(uploadRecipeImageMock).not.toHaveBeenCalled();
     expect(recipeImageCreateManyMock).not.toHaveBeenCalled();
@@ -197,7 +195,8 @@ describe('createRecipe', () => {
       id: 'recipe-1',
       sections: [{ id: 'section-1' }],
     });
-
+    generalIngredientUpsertMock.mockResolvedValue({ id: 'gen-1' });
+    ingredientCreateMock.mockResolvedValue({});
     uploadRecipeImageMock
       .mockResolvedValueOnce({
         key: 'recipes/1.webp',

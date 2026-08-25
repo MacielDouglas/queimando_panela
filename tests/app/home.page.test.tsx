@@ -63,6 +63,10 @@ vi.mock('@/features/recipes/actions/get-classic-recipes', () => ({
   getClassicRecipes: vi.fn().mockResolvedValue(mockClassicRows),
 }));
 
+vi.mock('@/features/recipes/actions/get-random-recipe', () => ({
+  getRandomRecipe: vi.fn().mockResolvedValue(null),
+}));
+
 describe('Home', () => {
   it('renderiza o título principal "Queimando Panela"', async () => {
     render(await Home());

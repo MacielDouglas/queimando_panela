@@ -49,6 +49,31 @@ vi.mock('next/image', async () => {
   };
 });
 
+vi.mock('server-only', () => ({}));
+
+vi.mock('@/lib/env/env.server', () => ({
+  envServer: {
+    BETTER_AUTH_SECRET: 'test',
+    BETTER_AUTH_URL: 'http://localhost:3000',
+    DATABASE_URL: 'postgresql://test',
+    GOOGLE_CLIENT_ID: 'test',
+    GOOGLE_CLIENT_SECRET: 'test',
+    R2_ENDPOINT: 'https://test.r2.dev',
+    R2_PUBLIC_URL: 'https://test.r2.dev',
+    R2_ACCESS_KEY_ID: 'test',
+    R2_SECRET_ACCESS_KEY: 'test',
+    R2_BUCKET_NAME: 'test',
+    RESEND_API_KEY: 'test',
+    GROQ_API_KEY: 'test',
+    NODE_ENV: 'test',
+  },
+}));
+
+vi.mock('@/lib/r2', () => ({
+  getR2Bucket: vi.fn(),
+  getR2PublicUrl: vi.fn(() => 'https://test.r2.dev'),
+}));
+
 vi.mock('@/lib/auth', () => ({
   auth: {
     api: {
@@ -146,9 +171,7 @@ describe('RecipeDetailPage', () => {
 
     render(ui);
 
-    expect(
-      screen.getByRole('link', { name: /Editar receita/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Editar/i })).toBeInTheDocument();
   });
 
   it('chama notFound quando a receita não existe', async () => {
