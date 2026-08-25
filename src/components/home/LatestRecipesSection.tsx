@@ -10,8 +10,8 @@ interface LatestRecipesSectionProps {
 export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
   if (recipes.length === 0) {
     return (
-      <section className="border-t-[6px] border-[#ffb900] bg-[#f5f5f5]">
-        <div className="editorial-container py-12 lg:py-16">
+      <section className="border-t border-[#e5e5e5] bg-[#f5f5f5]">
+        <div className="editorial-container py-16 lg:py-20">
           <div className="flex items-end justify-between gap-4 border-b-2 border-[#0a0a0a] pb-4">
             <div>
               <p className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#6b6b6b]">
@@ -35,8 +35,8 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
   const visible = recipes.slice(0, 8);
 
   return (
-    <section className="border-t-[6px] border-[#ffb900] bg-white">
-      <div className="editorial-container py-12 lg:py-16">
+    <section className="border-t border-[#e5e5e5] bg-white">
+      <div className="editorial-container py-16 lg:py-20">
         <div className="flex flex-wrap items-end justify-between gap-4 border-b-2 border-[#0a0a0a] pb-4">
           <div>
             <p className="inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-white">

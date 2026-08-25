@@ -65,7 +65,18 @@ describe('RecipeFormShell', () => {
           sections: [
             {
               name: 'Receita',
-              ingredients: ['2 xícaras de milho', '1 xícara de leite'],
+              ingredients: [
+                {
+                  originalText: '2 xícaras de milho',
+                  name: 'milho',
+                  generalName: 'milho',
+                },
+                {
+                  originalText: '1 xícara de leite',
+                  name: 'leite',
+                  generalName: 'leite',
+                },
+              ],
               modeOfPreparation: 'Misture tudo e asse.',
             },
           ],
@@ -235,7 +246,13 @@ describe('RecipeFormShell', () => {
           sections: [
             {
               name: 'Receita',
-              ingredients: ['2 xícaras de milho'],
+              ingredients: [
+                {
+                  originalText: '2 xícaras de milho',
+                  name: 'milho',
+                  generalName: 'milho',
+                },
+              ],
               modeOfPreparation: 'Misture tudo e asse.',
             },
           ],
@@ -296,7 +313,13 @@ describe('RecipeFormShell', () => {
       sections: [
         {
           name: 'Receita',
-          ingredients: ['2 xícaras de milho'],
+          ingredients: [
+            {
+              originalText: '2 xícaras de milho',
+              name: 'milho',
+              generalName: 'milho',
+            },
+          ],
           modeOfPreparation: 'Misture tudo e asse.',
         },
       ],
@@ -324,7 +347,13 @@ describe('RecipeFormShell', () => {
           sections: [
             {
               name: 'Receita',
-              ingredients: ['2 xícaras de milho'],
+              ingredients: [
+                {
+                  originalText: '2 xícaras de milho',
+                  name: 'milho',
+                  generalName: 'milho',
+                },
+              ],
               modeOfPreparation: 'Misture tudo e asse.',
             },
           ],
@@ -450,7 +479,13 @@ describe('RecipeFormShell', () => {
       sections: [
         {
           name: 'Receita',
-          ingredients: ['2 xícaras de milho'],
+          ingredients: [
+            {
+              originalText: '2 xícaras de milho',
+              name: 'milho',
+              generalName: 'milho',
+            },
+          ],
           modeOfPreparation: 'Misture tudo e asse.',
         },
       ],

@@ -35,25 +35,20 @@ describe('RecipeEditorLayout', () => {
       ),
     ).toBeInTheDocument();
 
-    expect(
-      screen.getByRole('link', { name: /Voltar para receitas/i }),
-    ).toHaveAttribute('href', '/receitas');
+    expect(screen.getByRole('link', { name: /Voltar/i })).toHaveAttribute(
+      'href',
+      '/receitas',
+    );
 
     expect(screen.getByTestId('layout-children')).toBeInTheDocument();
 
     expect(screen.getByText('Antes de salvar')).toBeInTheDocument();
     expect(
-      screen.getByText(/Revise título, ingredientes e modo de preparo\./i),
+      screen.getByText(/Revise título e ingredientes\./i),
     ).toBeInTheDocument();
+    expect(screen.getByText(/IA é rascunho editável\./i)).toBeInTheDocument();
     expect(
-      screen.getByText(
-        /Use a análise da IA como rascunho editável, não como resposta final\./i,
-      ),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        /Receitas salvas ficam como não publicadas até sua revisão final\./i,
-      ),
+      screen.getByText(/Salvo fica não publicado até revisão\./i),
     ).toBeInTheDocument();
   });
 });

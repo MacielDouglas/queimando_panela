@@ -1,7 +1,6 @@
 export default function Loading() {
   return (
     <main className="bg-white">
-      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
       <div className="editorial-container py-8">
         <div className="aspect-[3/1] border-2 border-[#0a0a0a] bg-[#f5f5f5] animate-pulse" />
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">

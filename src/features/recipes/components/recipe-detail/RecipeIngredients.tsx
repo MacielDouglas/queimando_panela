@@ -37,7 +37,7 @@ export function RecipeIngredients({ sections, utensils }: Props) {
         {sections.map((section) => (
           <section key={section.name} className="space-y-3">
             {sections.length > 1 && (
-              <h3 className="border-l-[4px] border-[#ffb900] pl-2 font-display text-sm font-extrabold uppercase text-[#0a0a0a]">
+              <h3 className="border-l border-[#e5e5e5] pl-2 font-display text-sm font-extrabold uppercase text-[#0a0a0a]">
                 {section.name}
               </h3>
             )}

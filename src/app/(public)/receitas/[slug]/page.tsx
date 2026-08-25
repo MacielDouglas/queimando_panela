@@ -116,8 +116,8 @@ export default async function RecipeDetailPage({ params }: Props) {
         editHref={`/receitas/${recipe.slug}/editar`}
         slug={recipe.slug}
       />
-      <section className="editorial-container py-8 lg:py-10">
-        <div className="grid gap-6 lg:grid-cols-[360px_1fr] lg:gap-8">
+      <section className="editorial-container py-12 lg:py-16">
+        <div className="grid gap-8 lg:grid-cols-[360px_1fr] lg:gap-10">
           <aside className="space-y-6 lg:sticky lg:top-[76px] lg:self-start">
             <RecipeIngredients sections={displaySections} utensils={utensils} />
           </aside>

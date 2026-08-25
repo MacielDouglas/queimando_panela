@@ -62,6 +62,7 @@ function makeAnalysis() {
     utensils: ['Forma'],
     sections: [
       {
+        id: 'section-1',
         name: 'Receita',
         ingredients: [
           {

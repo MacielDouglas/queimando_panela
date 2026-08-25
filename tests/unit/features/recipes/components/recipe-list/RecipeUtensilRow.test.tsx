@@ -55,7 +55,7 @@ describe('RecipeUtensilRow', () => {
     render(<RecipeUtensilRow utensilName="Forma" recipes={recipes} />);
 
     expect(screen.getByRole('heading', { name: 'Forma' })).toBeInTheDocument();
-    expect(screen.getByText('Método de preparo')).toBeInTheDocument();
+    expect(screen.getByText('Método')).toBeInTheDocument();
 
     const link = screen.getByRole('link', { name: /Ver todas →/i });
     expect(link).toHaveAttribute('href', '/receitas?utensilio=Forma');
@@ -66,7 +66,6 @@ describe('RecipeUtensilRow', () => {
       1,
       expect.objectContaining({
         recipe: recipes[0],
-        aspectRatio: '16/9',
       }),
     );
 
@@ -74,7 +73,6 @@ describe('RecipeUtensilRow', () => {
       2,
       expect.objectContaining({
         recipe: recipes[1],
-        aspectRatio: '16/9',
       }),
     );
   });

@@ -65,13 +65,9 @@ describe('NewRecipePage', () => {
       ),
     ).toBeInTheDocument();
 
-    expect(
-      screen.getByRole('link', { name: /Voltar para receitas/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Voltar/i })).toBeInTheDocument();
 
-    expect(
-      screen.getByText(/Use a análise da IA como rascunho editável/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/IA é rascunho editável/i)).toBeInTheDocument();
 
     expect(screen.getByTestId('recipe-form-shell')).toBeInTheDocument();
     expect(recipeFormShellMock).toHaveBeenCalledWith({ mode: 'create' });

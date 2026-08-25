@@ -24,7 +24,7 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
   if (!per100g?.length && !summary && suggestionItems.length === 0) return null;
 
   return (
-    <section className="grid gap-6 xl:grid-cols-[1fr_320px]">
+    <section className="grid gap-8 xl:grid-cols-[1fr_320px]">
       <div className="border-2 border-[#0a0a0a] bg-white">
         <div className="border-b-2 border-[#0a0a0a] bg-white px-4 py-3 flex items-center gap-2">
           <Apple className="size-4 text-[#0a0a0a]" />
@@ -38,7 +38,7 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
         </div>
         <div className="p-4">
           {summary && (
-            <p className="border-l-[4px] border-[#ffb900] pl-3 font-sans text-sm leading-6 text-[#6b6b6b]">
+            <p className="border-l border-[#e5e5e5] pl-3 font-sans text-sm leading-6 text-[#6b6b6b]">
               {summary}
             </p>
           )}

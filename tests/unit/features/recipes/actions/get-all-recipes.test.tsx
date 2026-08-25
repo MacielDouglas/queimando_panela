@@ -28,7 +28,6 @@ describe('getAllRecipes', () => {
         slug: 'bolo-de-milho',
         title: 'Bolo de milho',
         summary: 'Fofo e cremoso',
-        types: ['Bolo'],
         difficulty: 'EASY',
         prepTimeMinutes: 15,
         cookTimeMinutes: 45,
@@ -38,6 +37,7 @@ describe('getAllRecipes', () => {
           { url: '/outra.jpg', isCover: false, order: 1 },
         ],
         author: { name: 'Douglas' },
+        recipeTypes: [{ recipeType: { name: 'Bolo' } }],
       },
     ]);
 
@@ -53,6 +53,7 @@ describe('getAllRecipes', () => {
       include: {
         images: { orderBy: { order: 'asc' } },
         author: { select: { name: true } },
+        recipeTypes: { include: { recipeType: true } },
       },
     });
 
@@ -89,13 +90,13 @@ describe('getAllRecipes', () => {
         slug: 'bolo-de-milho',
         title: 'Bolo de milho',
         summary: null,
-        types: [],
         difficulty: 'MEDIUM',
         prepTimeMinutes: null,
         cookTimeMinutes: null,
         createdAt,
         images: [{ url: '/primeira.jpg', isCover: false, order: 0 }],
         author: { name: null },
+        recipeTypes: [],
       },
     ]);
 
@@ -116,13 +117,13 @@ describe('getAllRecipes', () => {
         slug: 'bolo-de-milho',
         title: 'Bolo de milho',
         summary: null,
-        types: [],
         difficulty: 'HARD',
         prepTimeMinutes: null,
         cookTimeMinutes: null,
         createdAt,
         images: [],
         author: null,
+        recipeTypes: [],
       },
     ]);
 
@@ -154,10 +155,19 @@ describe('getAllRecipes', () => {
           OR: [
             { title: { contains: 'milho', mode: 'insensitive' } },
             { summary: { contains: 'milho', mode: 'insensitive' } },
+            { story: { contains: 'milho', mode: 'insensitive' } },
           ],
         },
         {
-          types: { has: 'bolo' },
+          recipeTypes: {
+            some: {
+              recipeType: {
+                name: {
+                  in: ['bolo'],
+                },
+              },
+            },
+          },
         },
         {
           difficulty: 'EASY',
@@ -166,7 +176,9 @@ describe('getAllRecipes', () => {
           utensils: {
             some: {
               utensil: {
-                name: { contains: 'forma', mode: 'insensitive' },
+                name: {
+                  in: ['forma'],
+                },
               },
             },
           },
@@ -182,6 +194,7 @@ describe('getAllRecipes', () => {
       include: {
         images: { orderBy: { order: 'asc' } },
         author: { select: { name: true } },
+        recipeTypes: { include: { recipeType: true } },
       },
     });
 

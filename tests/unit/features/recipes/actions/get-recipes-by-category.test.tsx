@@ -110,22 +110,8 @@ describe('getRecipesByCategory', () => {
       .mockResolvedValueOnce([
         { recipeTypes: [{ recipeType: { name: 'Salgado' } }] },
       ])
-      // Second call: get recipes for 'Salgado' (but none have types)
-      .mockResolvedValueOnce([
-        {
-          id: '2',
-          slug: 'coxinha',
-          title: 'Coxinha',
-          summary: 'Crocante',
-          difficulty: 'MEDIUM',
-          prepTimeMinutes: 20,
-          cookTimeMinutes: 25,
-          createdAt,
-          images: [{ url: '/coxinha.jpg', isCover: true, order: 0 }],
-          author: { name: 'Douglas' },
-          recipeTypes: [],
-        },
-      ]);
+      // Second call: get recipes for 'Salgado' (nenhuma receita encontrada para esse tipo)
+      .mockResolvedValueOnce([]);
 
     const result = await getRecipesByCategory(4);
 

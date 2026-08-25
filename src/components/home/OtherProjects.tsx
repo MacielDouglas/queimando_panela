@@ -27,7 +27,7 @@ const categories = [
 export default function OtherProjects() {
   return (
     <section className="bg-white">
-      <div className="editorial-container py-12 lg:py-16">
+      <div className="editorial-container py-16 lg:py-20">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           <div>
             <p className="inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-white">

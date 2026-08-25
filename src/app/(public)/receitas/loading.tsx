@@ -3,7 +3,6 @@ import { RecipeCardSkeleton } from '@/features/recipes/components/recipe-list/Re
 export default function RecipesLoading() {
   return (
     <main className="bg-white">
-      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
       <section className="border-b-2 border-[#0a0a0a] bg-white">
         <div className="editorial-container py-8">
           <div className="h-6 w-40 bg-[#ffb900] border border-[#0a0a0a]" />
@@ -18,8 +17,8 @@ export default function RecipesLoading() {
         </div>
       </section>
 
-      <div className="editorial-container py-8 lg:py-10">
-        <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
+      <div className="editorial-container py-12 lg:py-16">
+        <div className="grid gap-10 lg:grid-cols-[1fr_300px]">
           <div className="space-y-10">
             <div className="grid border-2 border-[#0a0a0a] sm:grid-cols-[1.2fr_1fr]">
               <div className="aspect-[4/3] bg-[#f5f5f5] border-r-2 border-[#0a0a0a]" />

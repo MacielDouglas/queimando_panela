@@ -11,9 +11,9 @@ interface HeroSectionProps {
 export function HeroSection({ featuredRecipe }: HeroSectionProps) {
   if (!featuredRecipe) {
     return (
-      <section className="border-t-[6px] border-[#ffb900] bg-white">
-        <div className="editorial-container py-12 lg:py-16">
-          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-center">
+      <section className="border-t border-[#e5e5e5] bg-white">
+        <div className="editorial-container py-16 lg:py-20">
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
             <div>
               <p className="inline-block bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
                 Queimando Panela
@@ -63,9 +63,9 @@ export function HeroSection({ featuredRecipe }: HeroSectionProps) {
   }
 
   return (
-    <section className="border-t-[6px] border-[#ffb900] bg-white">
+    <section className="border-t border-[#e5e5e5] bg-white">
       <div className="editorial-container py-8 lg:py-12">
-        <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
           {/* Texto Queimando Panela */}
           <div>
             <p className="inline-flex items-center gap-2 bg-[#ffb900] px-3 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">

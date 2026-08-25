@@ -17,8 +17,8 @@ export default function CardRecipe({
     (recipe.prepTimeMinutes ?? 0) + (recipe.cookTimeMinutes ?? 0) || null;
 
   return (
-    <article className="group flex h-full flex-col border border-[#e5e5e5] bg-white hover:border-[#0a0a0a]">
-      {/* Imagem 4:3 quadrada Queimando Panela */}
+    <article className="group flex h-full flex-col overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white hover:border-[#0a0a0a]">
+      {/* Imagem 4:3 blog híbrido 12px */}
       <Link
         href={`/receitas/${recipe.slug}`}
         aria-label={`Ver receita: ${recipe.title}`}

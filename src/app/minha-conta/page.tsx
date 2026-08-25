@@ -10,7 +10,6 @@ export default async function MinhaContaPage() {
 
   return (
     <main className="bg-white pb-12">
-      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
         <header className="border-2 border-[#0a0a0a] bg-white p-6">
           <p className="inline-block bg-[#ffb900] border border-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
@@ -19,7 +18,7 @@ export default async function MinhaContaPage() {
           <h1 className="mt-3 font-display text-3xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#0a0a0a]">
             Perfil da conta
           </h1>
-          <p className="mt-2 max-w-2xl border-l-[4px] border-[#ffb900] pl-3 font-sans text-sm leading-5 text-[#6b6b6b]">
+          <p className="mt-2 max-w-2xl border-l border-[#e5e5e5] pl-3 font-sans text-sm leading-5 text-[#6b6b6b]">
             Gerencie suas informações e acompanhe sua participação no Queimando
             Panela.
           </p>

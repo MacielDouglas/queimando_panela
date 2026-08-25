@@ -51,7 +51,7 @@ export default function NewUserPage() {
         className="relative z-10 flex min-h-svh items-center justify-center px-5 pt-30 sm:px-10 md:min-h-0"
         aria-labelledby="signup-heading"
       >
-        <div className="flex w-full max-w-2xl flex-col items-center gap-8 text-center">
+        <div className="flex w-full max-w-2xl flex-col items-center gap-10 text-center">
           <div
             className="inline-flex items-center gap-2 border border-stone-600 px-4 py-2 text-sm font-medium text-stone-300"
             role="presentation"

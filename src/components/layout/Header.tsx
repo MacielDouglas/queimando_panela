@@ -8,14 +8,14 @@ import { navItems } from '@/components/layout/navigation-data';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[#0a0a0a] bg-[#ffb900]">
-      <div className="editorial-container flex h-16 items-center justify-between gap-6">
+    <header className="sticky top-0 z-40 border-b border-[#e5e5e5] bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+      <div className="editorial-container flex h-16 items-center justify-between gap-8">
         <Link
           href="/"
           className="inline-flex items-center gap-3 text-[#0a0a0a] transition-opacity hover:opacity-80"
         >
-          <span className="flex size-10 items-center justify-center bg-[#0a0a0a] text-[#ffb900]">
-            <QPMark className="size-7" />
+          <span className="flex size-9 items-center justify-center bg-[#ffb900] text-[#0a0a0a]">
+            <QPMark className="size-6" />
           </span>
           <span className="hidden flex-col font-display text-[13px] font-extrabold uppercase leading-none tracking-[0.1em] sm:flex">
             <span>Queimando</span>
@@ -37,14 +37,11 @@ export default function Header() {
           <div className="hidden md:block">
             <AuthNavButton />
           </div>
-
           <div className="md:hidden">
             <MobileMenu />
           </div>
         </div>
       </div>
-      {/* faixa preta fina Queimando Panela */}
-      <div className="h-[3px] bg-[#0a0a0a]" aria-hidden="true" />
     </header>
   );
 }

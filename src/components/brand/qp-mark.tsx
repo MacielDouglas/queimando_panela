@@ -12,37 +12,83 @@ export function QPMark({
 }: QPMarkProps) {
   return (
     <svg
-      viewBox="0 0 64 64"
+      viewBox="0 0 32 32"
       role="img"
       aria-label={label}
       className={cn('size-10', className)}
+      fill="none"
       {...props}
     >
+      {/* Panela moderna — corpo 12px radius, alças, tampa */}
       <rect
-        x="1.5"
-        y="1.5"
-        width="61"
-        height="61"
-        fill="none"
+        x="6"
+        y="10"
+        width="20"
+        height="13"
+        rx="2"
         stroke="currentColor"
-        strokeWidth="3"
+        strokeWidth="1.6"
+      />
+      {/* Alças */}
+      <path
+        d="M6 14 H4.5 C3.1 14 2 15.1 2 16.5 C2 17.9 3.1 19 4.5 19 H6"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
       />
       <path
-        d="M16 25.5C16 19.7 20.5 16 26.6 16C32.7 16 37.2 19.8 37.2 25.5C37.2 31.3 32.7 35.2 26.6 35.2C20.5 35.2 16 31.3 16 25.5ZM21 25.5C21 28.7 23.2 31 26.6 31C30 31 32.2 28.7 32.2 25.5C32.2 22.4 30 20.2 26.6 20.2C23.2 20.2 21 22.4 21 25.5ZM29.8 32.8L37.6 40.8"
-        fill="none"
+        d="M26 14 H27.5 C28.9 14 30 15.1 30 16.5 C30 17.9 28.9 19 27.5 19 H26"
         stroke="currentColor"
-        strokeWidth="3.2"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      {/* Tampa */}
+      <path
+        d="M8 10 L8 8.5 C8 7.1 9.1 6 10.5 6 H21.5 C22.9 6 24 7.1 24 8.5 L24 10"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
       />
       <path
-        d="M41 16V41M41 16H49.8C55.1 16 58 19.2 58 23.9C58 28.6 55.1 31.8 49.8 31.8H41"
-        fill="none"
+        d="M14 6 V4.5 C14 3.7 14.7 3 15.5 3 H16.5 C17.3 3 18 3.7 18 4.5 V6"
         stroke="currentColor"
-        strokeWidth="3.2"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+      {/* Chama/IA spark — #ffb900 */}
+      <path
+        d="M16 22 C16 19.5 17.8 17.8 16 14 C14.2 17.8 16 19.5 16 22 Z"
+        fill="#ffb900"
+        stroke="#ffb900"
+        strokeWidth="0.8"
+        strokeLinejoin="round"
+      />
+      <circle cx="16" cy="23.2" r="1.1" fill="#0a0a0a" />
+      {/* Detalhe inferior — sombra pot */}
+      <rect
+        x="9"
+        y="23"
+        width="14"
+        height="1.2"
+        rx="0.6"
+        fill="currentColor"
+        opacity="0.12"
       />
     </svg>
+  );
+}
+
+export function QPWordmark({ className, ...props }: ComponentProps<'div'>) {
+  return (
+    <div
+      className={cn(
+        'flex flex-col font-display font-extrabold uppercase leading-none tracking-[0.08em]',
+        className,
+      )}
+      {...props}
+    >
+      <span className="text-[11px] tracking-[0.14em]">Queimando</span>
+      <span className="text-[11px] tracking-[0.14em]">Panela</span>
+    </div>
   );
 }

@@ -20,7 +20,6 @@ export function AuthShell({
 }: AuthShellProps) {
   return (
     <main className="min-h-dvh bg-white">
-      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
       <div className="mx-auto flex min-h-[calc(100dvh-6px)] w-full max-w-6xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid w-full max-w-5xl border-2 border-[#0a0a0a] bg-white md:grid-cols-[1.05fr_0.95fr]">
           <section className="hidden border-r-2 border-[#0a0a0a] bg-[#0a0a0a] md:flex md:flex-col md:justify-between text-white">
@@ -64,7 +63,7 @@ export function AuthShell({
 
           <section className="flex items-center justify-center bg-white">
             <div className="w-full max-w-md px-6 py-8 sm:px-8">
-              <div className="border-l-[4px] border-[#ffb900] pl-3">
+              <div className="border-l border-[#e5e5e5] pl-3">
                 <h2 className="font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#0a0a0a]">
                   {title}
                 </h2>

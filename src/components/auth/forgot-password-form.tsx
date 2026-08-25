@@ -70,15 +70,15 @@ export function ForgotPasswordForm() {
           type="email"
           autoComplete="email"
           placeholder="voce@exemplo.com"
-          className="h-11 rounded-none border-stone-300 focus-visible:ring-amber-500"
+          className="h-11 rounded-none border-[#0a0a0a] focus-visible:ring-[#ffb900]"
           {...register('email')}
         />
         {errors.email && (
-          <p className="text-sm text-red-600">{errors.email.message}</p>
+          <p className="text-sm text-[#cc1f1f]">{errors.email.message}</p>
         )}
       </div>
 
-      {serverError && <p className="text-sm text-red-600">{serverError}</p>}
+      {serverError && <p className="text-sm text-[#cc1f1f]">{serverError}</p>}
 
       {isSuccess && (
         <p className="text-sm text-stone-600">
@@ -90,7 +90,7 @@ export function ForgotPasswordForm() {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="h-11 w-full rounded-none bg-amber-500 text-stone-950 hover:bg-amber-600"
+        className="h-11 w-full rounded-none bg-[#ffb900] text-[#0a0a0a] hover:bg-[#e6a700]"
       >
         {isSubmitting ? 'Enviando...' : 'Enviar instruções'}
       </Button>

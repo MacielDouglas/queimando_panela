@@ -14,7 +14,7 @@ export default function NotFound() {
         <h1 className="mt-3 font-display text-3xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#0a0a0a]">
           Essa receita queimou.
         </h1>
-        <p className="mx-auto mt-4 max-w-md border-l-[4px] border-[#ffb900] pl-3 text-left font-sans text-sm leading-6 text-[#6b6b6b]">
+        <p className="mx-auto mt-4 max-w-md border-l border-[#e5e5e5] pl-3 text-left font-sans text-sm leading-6 text-[#6b6b6b]">
           Procuramos em todas as panelas, mas essa página virou carvão. Sem
           drama — volte ao menu.
         </p>

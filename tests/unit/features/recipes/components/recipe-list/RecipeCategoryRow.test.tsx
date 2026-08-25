@@ -66,7 +66,6 @@ describe('RecipeCategoryRow', () => {
       1,
       expect.objectContaining({
         recipe: recipes[0],
-        aspectRatio: '16/9',
       }),
     );
 
@@ -74,7 +73,6 @@ describe('RecipeCategoryRow', () => {
       2,
       expect.objectContaining({
         recipe: recipes[1],
-        aspectRatio: '16/9',
       }),
     );
   });

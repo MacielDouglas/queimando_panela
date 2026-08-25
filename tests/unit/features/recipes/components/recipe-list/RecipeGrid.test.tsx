@@ -95,8 +95,8 @@ describe('RecipeGrid', () => {
       <RecipeGrid recipes={[]} total={0} currentPage={1} totalPages={0} />,
     );
 
-    expect(screen.getByText('Nenhuma receita')).toBeInTheDocument();
-    expect(screen.getByText('Nenhuma receita encontrada.')).toBeInTheDocument();
+    expect(screen.getByText('Nenhuma')).toBeInTheDocument();
+    expect(screen.getByText('Nenhuma receita encontrada')).toBeInTheDocument();
     expect(
       screen.getByText(/Tente outro termo ou remova algum filtro/i),
     ).toBeInTheDocument();

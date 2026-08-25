@@ -112,11 +112,9 @@ export default async function RecipesPage({ searchParams }: Props) {
   return (
     <main className="bg-white">
       {/* Faixa Queimando Panela */}
-      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
-
       {/* Header Queimando Panela */}
       <section className="border-b-2 border-[#0a0a0a] bg-white">
-        <div className="editorial-container py-8 lg:py-10">
+        <div className="editorial-container py-12 lg:py-16">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-center gap-3">
               <span className="inline-flex items-center gap-2 border-2 border-[#0a0a0a] bg-[#ffb900] px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
@@ -175,8 +173,8 @@ export default async function RecipesPage({ searchParams }: Props) {
         </div>
       </section>
 
-      <div className="editorial-container py-8 lg:py-10">
-        <div className="grid gap-8 lg:grid-cols-[1fr_300px] lg:items-start">
+      <div className="editorial-container py-12 lg:py-16">
+        <div className="grid gap-10 lg:grid-cols-[1fr_300px] lg:items-start">
           <div className="min-w-0 space-y-10">
             {!isFiltered && latest && (
               <section className="border-2 border-[#0a0a0a] bg-white p-2">

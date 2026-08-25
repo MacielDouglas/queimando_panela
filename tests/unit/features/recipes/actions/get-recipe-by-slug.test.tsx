@@ -49,6 +49,9 @@ describe('getRecipeBySlug', () => {
         utensils: {
           include: { utensil: true },
         },
+        recipeTypes: {
+          include: { recipeType: true },
+        },
       },
     });
 

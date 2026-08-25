@@ -36,7 +36,7 @@ export function MobileMenu() {
         side="right"
         className="flex w-full max-w-sm flex-col border-l border-[#e5e5e5] bg-white p-0"
       >
-        <SheetHeader className="border-b-[6px] border-[#ffb900] bg-[#ffb900] px-6 py-5 text-left">
+        <SheetHeader className="border-b border-[#e5e5e5] bg-[#ffb900] px-6 py-5 text-left">
           <SheetTitle asChild>
             <SheetClose asChild>
               <Link

@@ -38,7 +38,7 @@
 }
 
 :root {
-  /* Queimando Panela — Light quadrado, #ffb900 restrained 10% */
+  /* Queimando Panela — Blog limpo híbrido, #ffb900 restrained 10% */
   --background: oklch(1 0 0); /* #FFFFFF */
   --foreground: oklch(0.145 0 0); /* #0a0a0a */
 
@@ -61,11 +61,11 @@
   --accent-foreground: oklch(1 0 0);
 
   --border: oklch(0.92 0 0); /* #e5e5e5 */
-  --input: oklch(0.145 0 0); /* borda input preta Queimando Panela */
+  --input: oklch(0.145 0 0); /* borda input preta */
   --ring: oklch(0.87 0.17 84.5);
   --destructive: oklch(0.55 0.22 27);
 
-  --radius: 0px;
+  --radius: 12px;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;

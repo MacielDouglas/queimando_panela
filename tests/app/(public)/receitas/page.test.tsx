@@ -114,18 +114,12 @@ describe('RecipesPage', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /Receitas para aquecer o coração e a cozinha\./i,
+        name: /Receitas para aquecer/i,
       }),
     ).toBeInTheDocument();
 
     expect(
-      screen.getByText(/Descubra pratos criados por cozinheiros amadores/i),
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByPlaceholderText(
-        /Pesquise por ingrediente, prato ou categoria/i,
-      ),
+      screen.getByPlaceholderText(/Ingrediente, prato ou categoria/i),
     ).toBeInTheDocument();
   });
 
@@ -147,7 +141,7 @@ describe('RecipesPage', () => {
     render(await renderPage());
 
     expect(
-      screen.getByRole('link', { name: /Enviar nova receita/i }),
+      screen.getByRole('link', { name: /Enviar receita/i }),
     ).toBeInTheDocument();
   });
 

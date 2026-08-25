@@ -27,7 +27,7 @@ export function GoogleSignInButton() {
       variant="outline"
       onClick={handleGoogleSignIn}
       disabled={isPending}
-      className="h-11 w-full rounded-none border-stone-300 bg-white text-stone-900 hover:bg-stone-50"
+      className="h-11 w-full rounded-none border-[#0a0a0a] bg-white text-[#0a0a0a] hover:bg-stone-50"
     >
       <FcGoogle className="mr-2 size-5" />
       {isPending ? 'Conectando...' : 'Continuar com Google'}

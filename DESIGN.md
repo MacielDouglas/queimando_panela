@@ -1,6 +1,6 @@
 ---
 name: "Queimando Panela"
-description: "Comunidade para preservar e descobrir receitas caseiras, afetivas e autorais brasileiras. Light quadrado, #ffb900 restrained 10%, tipografia grotesk."
+description: "Blog moderno para cozinheiros 30-55 — IA que analisa receita, leitura limpa e hierarquia forte. Light, #ffb900 restrained, Sora grotesk + Inter."
 colors:
   background: "#FFFFFF"
   foreground: "#0a0a0a"
@@ -41,7 +41,7 @@ typography:
     fontFamily: "Inter, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.6
+    lineHeight: 1.7
   label:
     fontFamily: "Sora, sans-serif"
     fontSize: "0.7rem"
@@ -50,10 +50,10 @@ typography:
     letterSpacing: "0.14em"
 rounded:
   sm: "0px"
-  md: "0px"
-  lg: "0px"
-  xl: "0px"
-  full: "0px"
+  md: "8px"
+  lg: "12px"
+  xl: "12px"
+  full: "9999px"
 spacing:
   xs: "4px"
   sm: "8px"
@@ -64,120 +64,124 @@ components:
   button-default:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.primary-foreground}"
-    rounded: "0px"
+    rounded: "{rounded.sm}"
     padding: "14px 24px"
     height: "48px"
   button-outline:
     backgroundColor: "transparent"
     textColor: "{colors.foreground}"
-    rounded: "0px"
+    rounded: "{rounded.sm}"
     padding: "14px 24px"
     height: "48px"
   button-secondary:
     backgroundColor: "{colors.foreground}"
     textColor: "#FFFFFF"
-    rounded: "0px"
+    rounded: "{rounded.sm}"
     padding: "14px 24px"
     height: "48px"
   card-default:
     backgroundColor: "{colors.card}"
     textColor: "{colors.card-foreground}"
-    rounded: "0px"
+    rounded: "{rounded.lg}"
     padding: "0px"
   input-default:
     backgroundColor: "{colors.card}"
     textColor: "{colors.foreground}"
-    rounded: "0px"
+    rounded: "{rounded.sm}"
     padding: "12px 16px"
     height: "48px"
   badge-default:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.primary-foreground}"
-    rounded: "0px"
+    rounded: "{rounded.sm}"
     padding: "4px 8px"
     height: "24px"
 ---
 
-# Design System: Queimando Panela
+# Design System: Queimando Panela — Blog Moderno com IA
 
-## 1. Overview — North Star: "O Caderno Queimando Panela"
+## 1. Overview — North Star: "Blog que se lê como livro, com IA como co-piloto"
 
-Faixas amarelas, header quadrado #ffb900, grid denso, footer institucional preto, tipografia grotesk Sora em caixa alta, tudo 0px. Foto grande, categorias em chips, receita do dia, linguagem direta.
+Queimando Panela tem identidade própria: nem site antigo amarelo quadrado, nem blog genérico. É um **blog claro, limpo, com bom respiro**, feito para leitura prolongada de receita em tela grande e no celular com farinha na mão. O amarelo `#ffb900` é tempero restrained (≤10% da tela) — aparece em CTA, badge e faixa fina de 2px para guiar, nunca como fundo de seção. A tipografia faz o trabalho pesado: Sora grotesk 800 em caixa alta para títulos com peso e contraste, Inter para corpo com leading 1.7 e 65–72ch.
 
 **Contrato:**
-- Light sempre: fundo #FFFFFF, tinta #0a0a0a.
-- Amarelo #ffb900 só onde importa: CTA, badge, faixa fina, focus. Nunca mais que 10% da tela (restrained).
-- Tudo quadrado: radius 0px em buttons, cards, inputs, sheets, dialogs.
-- Estrutura = faixas, densidade, ritmo institucional. Conteúdo = foto, categoria, afeto.
+- Light #FFFFFF, tinta #0a0a0a, amarelo #ffb900 restrained.
+- Híbrido: botões/inputs/badges 0px quadrados (precisão tech), cards/sheets 12px suaves (acolhimento blog).
+- Espaço generoso: `py-16 lg:py-20` entre seções, `gap-10` em grids, `editorial-container` com respiro `min(100%-1.5rem,84rem)`.
+- IA como diferencial visível: ao criar receita, a análise retorna em cards claros com utensílios, nutrição, tempo e classificação — sempre editável.
 
 ## 2. Colors — Restrained Queimando Panela
 
-- **#ffb900** — Primary. CTA, badge, faixa, ring. Texto sobre amarelo é sempre #0a0a0a (7.2:1).
-- **#0a0a0a** — Ink. Títulos, header/footer preto, bordas de input, botões secundários.
-- **#FFFFFF** — Fundo. Cards e página.
-- **#f2f2f2 / #f5f5f5** — Muted/secondary para zebra e hover.
-- **#e5e5e5** — Border. Linhas finas Queimando Panela.
-- **#6b6b6b** — Muted-foreground. Único cinza permitido para descrição (4.5:1 sobre branco).
+Paleta light sem bege. Amarelo nunca como fill de seção.
+
+- **#ffb900** — Primary. Só CTA, badge, faixa 2–4px, ring. Sempre com texto #0a0a0a (7.2:1).
+- **#0a0a0a** — Foreground. Títulos, header text sobre amarelo, bordas, botão secundário.
+- **#FFFFFF** — Fundo página e cards.
+- **#f2f2f2 / #f5f5f5** — Muted/secondary para hover e zebra. Nunca fundo de página.
+- **#e5e5e5** — Border fina. Linhas de separação.
+- **#6b6b6b** — Muted-foreground. Único cinza para descrição (5.6:1 sobre branco).
 - **#cc1f1f** — Destructive.
 
-**Regra do Quadrado:** `border-radius: 0` global. Se tem curva, é bug.
+**Regra do Amarelo:** se a seção parece amarela ao dar zoom out, tem amarelo demais. O branco deve dominar.
 
-**Regra do Amarelo:** Amarelo nunca como fundo de seção inteira, só faixa de 4-8px, header, ou botão. O branco respira.
+**Regra do Híbrido:** `border-radius: 0` em botões/inputs/badges; `12px` em cards/sheets/dialogs. Se um card está quadrado 0px, é drift do Estapar antigo.
 
-## 3. Typography — Sora Grotesk + Inter
+## 3. Typography — Sora Grotesk + Inter para leitura
 
-**Display / Headings:** Sora 800, uppercase, tracking -0.02 a -0.03, leading 0.95-1.0. Queimando Panela fala gritando mas com precisão.
-**Body:** Inter 400, leading 1.6, max 72ch.
-**Label:** Sora 800, 0.7rem, tracking 0.14em, uppercase. Usado em eyebrow, kicker, navegação.
+**Escolha:** Grotesk + Inter (mantida por voto). Sora traz modernidade tech sem ser fria; Inter garante leitura longa sem fadiga. Duas famílias com contraste claro, não duas similares.
 
-Hierarquia bem marcada: H1 800 amarelo-preto, H2 800 preto, body Inter solto.
+- **Display** Sora 800 `clamp(2.4rem,1.6rem+3vw,4.5rem)` 0.95 -0.03em uppercase. Só hero e h1 de página.
+- **Headline** Sora 800 `clamp(1.8rem,1.3rem+1.8vw,2.8rem)` 1 -0.02em uppercase. Títulos de seção.
+- **Title** Sora 700 `clamp(1.25rem,1.1rem+0.6vw,1.6rem)` 1.15 -0.01em uppercase. Card titles.
+- **Body** Inter 400 `1rem` 1.7. Texto corrido, `max-width:72ch`, `text-wrap: pretty` para evitar viúvas.
+- **Label** Sora 800 `0.7rem` 1.2 0.14em uppercase. Navegação, eyebrow pontual, badge.
 
-## 4. Layout — Queimando Panela Grid
+**Hierarquia:** peso faz o trabalho, não tamanho exagerado. H1 sempre mais pesado que H2, nunca flat (ratio ≥1.25). `text-wrap: balance` em h1–h3.
 
-- **Container:** `w-[min(100%-1.5rem,84rem)]` centralizado. Respiro curto nas laterais (1.5rem) como Queimando Panela.
-- **Grid Queimando Panela:** `repeat(auto-fit, minmax(280px,1fr))` para cards. Lista de receitas 3 colunas no desktop, 2 no tablet, 1 no mobile.
-- **Faixas Queimando Panela:** cada seção começa com faixa amarela de 6px no topo (`border-t-[6px] border-[#ffb900]`) ou bloco amarelo lateral de 4px.
-- **Header:** 64px, #ffb900, borda inferior preta 1px, navegação Sora 800 uppercase, CTA preto.
-- **Footer:** preto #0a0a0a, texto #FFFFFF, faixas amarelas finas, grid 3 colunas Queimando Panela institucional.
+## 4. Layout — Blog com bom respiro
 
-## 5. Components — Quadrado Queimando Panela
+- **Container:** `w-[min(100%-1.5rem,84rem)]` centralizado. Respiro generoso, não colado na borda.
+- **Ritmo:** `py-16 lg:py-20` entre seções, `gap-10` em grids, `space-y-6` dentro de cards. Variação intencional: hero mais denso, leitura mais arejada.
+- **Grid:** `repeat(auto-fit, minmax(280px,1fr))` para cards. Lista 3 cols desktop, 2 tablet, 1 mobile. Nada de `grid-cols-4` fixo que quebra.
+- **Faixas:** faixa fina 2–4px `#ffb900` como divisor sutil, nunca bloco amarelo cheio. Header 64px branco com borda inferior `1px #e5e5e5`, CTA amarelo pontual.
+- **Leitura:** `reading-container` 72ch para steps/ingredientes. Imagem sempre `4/3` quadrada com `border-2 #0a0a0a` leve quando em destaque.
 
-### Buttons
-- 0px, 48px altura, Sora 800 uppercase tracking 0.08em.
+## 5. Components
+
+### Buttons — Híbrido
+- 0px, h-12, Sora 800 uppercase 0.12em.
 - Primary: #ffb900 + #0a0a0a, hover #e6a700.
-- Secondary: #0a0a0a + branco, hover #1a1a1a.
-- Outline: borda 1px #0a0a0a, hover fundo #0a0a0a texto branco.
+- Secondary: #0a0a0a + branco.
+- Outline: borda 1px #0a0a0a, hover preenche preto.
 
-### Cards — Queimando Panela quadrada
-- 0px, borda 1px #e5e5e5, sem sombra, imagem 4:3 quadrada, sem radius na imagem.
-- Faixa amarela 4px no topo do card (Queimando Panela).
-- Título Sora 700 uppercase, descrição Inter cinza #6b6b6b.
+### Cards — Blog 12px
+- 12px, borda 1px #e5e5e5, sem sombra, imagem 4:3, padding 0 (conteúdo p-4). Faixa 4px #ffb900 opcional no topo.
+- Título Sora 700 uppercase, descrição Inter #6b6b6b.
 
 ### Inputs
-- 0px, borda 1px #0a0a0a, fundo branco, placeholder #6b6b6b, focus ring #ffb900 2px.
+- 0px, borda 1px #0a0a0a, placeholder #6b6b6b, focus `ring 2px #ffb900`, erro borda #cc1f1f.
 
-### Badges/Chips — Queimando Panela quadrado
-- 0px, padding 4px 8px, Sora 800 uppercase 0.7rem.
-- Default: #ffb900 + preto. Active: preto + branco. Inactive: branco + borda #e5e5e5.
+### Badges/Chips
+- 0px, Sora 800 uppercase 0.7rem, padding 4px 8px. Default amarelo, active preto/branco, inactive branco/borda.
 
 ### Header
-- `bg-[#ffb900] border-b border-[#0a0a0a] h-16`, logo preto, nav Sora uppercase 13px, CTA preto quadrado 48px.
+- Branco `bg-white border-b border-[#e5e5e5] h-16`, logo preto, nav Sora 800 uppercase 13px #0a0a0a, CTA amarelo 0px.
 
 ### Footer
-- `bg-[#0a0a0a] text-white`, colunas com título Sora uppercase amarelo #ffb900, links branco 14px, hover #ffb900.
+- Branco com borda superior 1px #e5e5e5, texto #6b6b6b, títulos Sora amarelo #ffb900 pontual, nada de footer preto pesado antigo.
 
-## 6. Do's and Don'ts — Queimando Panela
+## 6. Do's and Don'ts — Blog Moderno
 
 Do:
-- Tudo 0px.
-- Amarelo só onde converte.
-- Foto grande quadrada (4:3) em todo card — sem placeholder colorido.
-- Faixa amarela de 4-6px para separar seções (DNA Queimando Panela).
-- Sora uppercase para títulos, Inter para leitura.
+- Branco dominante, amarelo pontual ≤10%.
+- Híbrido 0px botões / 12px cards.
+- Espaço generoso e hierarquia forte — leitura agradável é P0.
+- Foto grande 4:3 em todo card.
+- IA visível como cards editáveis claros, não modal escuro.
 
 Don't:
-- Nenhum rounded >0.
-- Nenhum fundo creme/bege — só #FFFFFF.
-- Nenhum gradient, glass, sombra suave >8px.
-- Nenhum eyebrow minúsculo em cada seção — só um kicker Sora amarelo quando faz sentido.
-- Nenhum card com sombra em repouso — só borda #e5e5e5.
+- Amarelo como fundo de seção.
+- Tudo 0px quadrado pesado (era Estapar).
+- Fundo cream/bege, gradient text, glass, sombra 16px+ com borda.
+- Eyebrow em cada seção, `01/02`, cards idênticos.
+- Texto cinza claro sobre branco (<4.5:1).

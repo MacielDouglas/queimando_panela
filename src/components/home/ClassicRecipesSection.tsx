@@ -14,8 +14,8 @@ export function ClassicRecipesSection({ rows }: ClassicRecipesSectionProps) {
   if (rows.length === 0) {
     return (
       <section className="border-t border-[#e5e5e5] bg-[#f5f5f5]">
-        <div className="editorial-container py-12 lg:py-16">
-          <div className="border-l-[6px] border-[#ffb900] pl-4">
+        <div className="editorial-container py-16 lg:py-20">
+          <div className="border-l border-[#e5e5e5] pl-4">
             <h2 className="font-display text-2xl font-extrabold uppercase leading-none text-[#0a0a0a] sm:text-3xl">
               Clássicos que nunca saem de moda
             </h2>
@@ -36,8 +36,8 @@ export function ClassicRecipesSection({ rows }: ClassicRecipesSectionProps) {
 
   return (
     <section className="border-t border-[#e5e5e5] bg-[#f5f5f5]">
-      <div className="editorial-container py-12 lg:py-16">
-        <div className="border-l-[6px] border-[#ffb900] pl-4">
+      <div className="editorial-container py-16 lg:py-20">
+        <div className="border-l border-[#e5e5e5] pl-4">
           <p className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#6b6b6b]">
             Queimando Panela
           </p>

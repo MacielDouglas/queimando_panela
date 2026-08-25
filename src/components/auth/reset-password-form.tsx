@@ -71,13 +71,13 @@ export function ResetPasswordForm() {
   if (!token || resetError) {
     return (
       <div className="space-y-4">
-        <p className="text-sm leading-6 text-red-600">
+        <p className="text-sm leading-6 text-[#cc1f1f]">
           O link de redefinição é inválido ou expirou.
         </p>
         <Button
           asChild
           variant="outline"
-          className="h-11 w-full rounded-none border-stone-300"
+          className="h-11 w-full rounded-none border-[#0a0a0a]"
         >
           <Link href="/forgot-password">Solicitar novo link</Link>
         </Button>
@@ -94,7 +94,7 @@ export function ResetPasswordForm() {
         </p>
         <Button
           asChild
-          className="h-11 w-full rounded-none bg-amber-500 text-stone-950 hover:bg-amber-600"
+          className="h-11 w-full rounded-none bg-[#ffb900] text-[#0a0a0a] hover:bg-[#e6a700]"
         >
           <Link href="/sign-in">Ir para login</Link>
         </Button>
@@ -113,11 +113,11 @@ export function ResetPasswordForm() {
           type="password"
           autoComplete="new-password"
           placeholder="Digite sua nova senha"
-          className="h-11 rounded-none border-stone-300 focus-visible:ring-amber-500"
+          className="h-11 rounded-none border-[#0a0a0a] focus-visible:ring-[#ffb900]"
           {...register('password')}
         />
         {errors.password && (
-          <p className="text-sm text-red-600">{errors.password.message}</p>
+          <p className="text-sm text-[#cc1f1f]">{errors.password.message}</p>
         )}
       </div>
 
@@ -128,22 +128,22 @@ export function ResetPasswordForm() {
           type="password"
           autoComplete="new-password"
           placeholder="Repita sua nova senha"
-          className="h-11 rounded-none border-stone-300 focus-visible:ring-amber-500"
+          className="h-11 rounded-none border-[#0a0a0a] focus-visible:ring-[#ffb900]"
           {...register('confirmPassword')}
         />
         {errors.confirmPassword && (
-          <p className="text-sm text-red-600">
+          <p className="text-sm text-[#cc1f1f]">
             {errors.confirmPassword.message}
           </p>
         )}
       </div>
 
-      {serverError && <p className="text-sm text-red-600">{serverError}</p>}
+      {serverError && <p className="text-sm text-[#cc1f1f]">{serverError}</p>}
 
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="h-11 w-full rounded-none bg-amber-500 text-stone-950 hover:bg-amber-600"
+        className="h-11 w-full rounded-none bg-[#ffb900] text-[#0a0a0a] hover:bg-[#e6a700]"
       >
         {isSubmitting ? 'Redefinindo...' : 'Redefinir senha'}
       </Button>

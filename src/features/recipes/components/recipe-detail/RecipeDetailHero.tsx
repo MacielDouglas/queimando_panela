@@ -42,9 +42,8 @@ export function RecipeDetailHero({
 
   return (
     <header className="border-b-2 border-[#0a0a0a] bg-white">
-      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
-      <div className="editorial-container py-8 lg:py-10">
-        <div className="grid gap-8 lg:grid-cols-[1.15fr_420px] lg:items-start">
+      <div className="editorial-container py-12 lg:py-16">
+        <div className="grid gap-10 lg:grid-cols-[1.15fr_420px] lg:items-start">
           <div className="space-y-5">
             <div className="flex flex-wrap gap-2">
               {types.map((t) => (
@@ -66,7 +65,7 @@ export function RecipeDetailHero({
             </h1>
 
             {summary && (
-              <p className="max-w-2xl border-l-[6px] border-[#ffb900] pl-4 font-sans text-base leading-6 text-[#6b6b6b]">
+              <p className="max-w-2xl border-l border-[#e5e5e5] pl-4 font-sans text-base leading-6 text-[#6b6b6b]">
                 {summary}
               </p>
             )}

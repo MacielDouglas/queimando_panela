@@ -17,7 +17,6 @@ export function RecipeEditorLayout({
 }: Props) {
   return (
     <main className="bg-white pb-12">
-      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
       <div className="border-b-2 border-[#0a0a0a] bg-white">
         <div className="editorial-container py-3">
           <Link
@@ -31,7 +30,7 @@ export function RecipeEditorLayout({
       </div>
 
       <section className="border-b-2 border-[#0a0a0a] bg-white">
-        <div className="editorial-container py-8 lg:py-10">
+        <div className="editorial-container py-12 lg:py-16">
           <div className="max-w-3xl">
             <p className="inline-block bg-[#ffb900] border-2 border-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
               {eyebrow}
@@ -39,15 +38,15 @@ export function RecipeEditorLayout({
             <h1 className="mt-3 font-display text-4xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-5xl">
               {title}
             </h1>
-            <p className="mt-3 max-w-2xl border-l-[6px] border-[#ffb900] pl-4 font-sans text-sm leading-6 text-[#6b6b6b]">
+            <p className="mt-3 max-w-2xl border-l border-[#e5e5e5] pl-4 font-sans text-sm leading-6 text-[#6b6b6b]">
               {description}
             </p>
           </div>
         </div>
       </section>
 
-      <section className="editorial-container py-8 lg:py-10">
-        <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+      <section className="editorial-container py-12 lg:py-16">
+        <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
           <div>{children}</div>
           <aside className="h-fit border-2 border-[#0a0a0a] bg-[#0a0a0a] p-4 text-white lg:sticky lg:top-[76px]">
             <h2 className="font-display text-sm font-extrabold uppercase tracking-[0.14em] text-[#ffb900]">

@@ -15,16 +15,14 @@ describe('NotFound', () => {
   it('mostra a mensagem divertida de 404', () => {
     render(<NotFound />);
 
-    expect(
-      screen.getByText(/esse cheirinho não tava no cardápio/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Essa receita queimou/i)).toBeInTheDocument();
   });
 
   it('tem link para voltar para a página inicial', () => {
     render(<NotFound />);
 
     const link = screen.getByRole('link', {
-      name: /Voltar para a página inicial/i,
+      name: /Voltar ao menu/i,
     });
 
     expect(link).toBeInTheDocument();
