@@ -1,12 +1,12 @@
-import Groq from "groq-sdk";
-import { envServer } from "@/lib/env/env.server";
+import Groq from 'groq-sdk';
+import { envServer } from '@/lib/env/env.server';
 
 const groq = new Groq({
   apiKey: envServer.GROQ_API_KEY,
 });
 
 type ChatParams = {
-  messages: { role: "system" | "user" | "assistant"; content: string }[];
+  messages: { role: 'system' | 'user' | 'assistant'; content: string }[];
   // permitir override se quiser
   model?: string;
   maxTokens?: number;
@@ -19,8 +19,8 @@ function sleep(ms: number) {
 
 export async function createChatCompletionWithRetry({
   messages,
-  model = "llama-3.3-70b-versatile",
-  maxTokens = 2560,
+  model = 'openai/gpt-oss-120b',
+  maxTokens = 2048,
   temperature = 0.2,
 }: ChatParams) {
   const maxRetries = 3;
@@ -33,7 +33,7 @@ export async function createChatCompletionWithRetry({
         messages,
         temperature,
         max_tokens: maxTokens,
-        response_format: { type: "json_object" },
+        response_format: { type: 'json_object' },
         // se quiser explicitar tier:
         // service_tier: 'on_demand',
       });
@@ -43,26 +43,26 @@ export async function createChatCompletionWithRetry({
       lastError = err;
 
       const status =
-        typeof err === "object" && err !== null
+        typeof err === 'object' && err !== null
           ? ((err as Record<string, unknown>).status ??
             (err as Record<string, unknown>).statusCode)
           : undefined;
 
       const headers =
-        typeof err === "object" && err !== null
+        typeof err === 'object' && err !== null
           ? ((err as Record<string, unknown>).headers as
               | { get?: (key: string) => string | null }
               | undefined)
           : undefined;
 
-      const shouldRetryHeader = headers?.get?.("x-should-retry");
-      const retryAfterHeader = headers?.get?.("retry-after");
+      const shouldRetryHeader = headers?.get?.('x-should-retry');
+      const retryAfterHeader = headers?.get?.('retry-after');
 
-      const statusCode = typeof status === "number" ? status : 0;
+      const statusCode = typeof status === 'number' ? status : 0;
 
       const shouldRetryByHeader =
-        shouldRetryHeader === "true" ||
-        (shouldRetryHeader !== "false" &&
+        shouldRetryHeader === 'true' ||
+        (shouldRetryHeader !== 'false' &&
           statusCode >= 500 &&
           statusCode !== 501 &&
           statusCode !== 505);

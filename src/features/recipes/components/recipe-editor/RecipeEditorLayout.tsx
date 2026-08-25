@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
-import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
+import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 type Props = {
   eyebrow: string;

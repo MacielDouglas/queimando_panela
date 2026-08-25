@@ -1,9 +1,9 @@
 'use server';
 
 import { cache } from 'react';
-import { prisma } from '@/lib/prisma';
-import type { Prisma } from '@/generated/prisma/client';
 import { normalizeString } from '@/features/recipes/lib/recipe-params';
+import type { Prisma } from '@/generated/prisma/client';
+import { prisma } from '@/lib/prisma';
 import type { RecipeDifficultyValue } from '../types/recipe.types';
 
 type MaybeArray<T> = T | T[] | undefined;

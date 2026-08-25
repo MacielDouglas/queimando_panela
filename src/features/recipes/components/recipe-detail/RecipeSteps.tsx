@@ -14,7 +14,7 @@ function splitSteps(text: string) {
     .split('\n')
     .map((step) => step.trim())
     .filter(Boolean)
-    .map((step) => step.replace(/^\s*\d+[\.\)\-]?\s*/, ''));
+    .map((step) => step.replace(/^\s*\d+[.)-]?\s*/, ''));
 }
 
 export function RecipeSteps({ sections }: Props) {
@@ -34,14 +34,11 @@ export function RecipeSteps({ sections }: Props) {
       </div>
 
       <div className="space-y-10">
-        {sections.map((section, sectionIndex) => {
+        {sections.map((section) => {
           const steps = splitSteps(section.modeOfPreparation);
 
           return (
-            <section
-              key={`${section.name}-${sectionIndex}`}
-              className="space-y-5"
-            >
+            <section key={section.name} className="space-y-5">
               {sections.length > 1 && (
                 <h3 className="text-2xl font-semibold tracking-tight text-neutral-950">
                   {section.name}
@@ -51,7 +48,7 @@ export function RecipeSteps({ sections }: Props) {
               <ol className="space-y-5">
                 {steps.map((step, stepIndex) => (
                   <li
-                    key={`${sectionIndex}-${stepIndex}`}
+                    key={step}
                     className="grid grid-cols-[36px_1fr] gap-4 sm:grid-cols-[44px_1fr]"
                   >
                     <span className="flex h-9 w-9 items-center justify-center bg-amber-500 text-sm font-bold text-neutral-950 sm:h-11 sm:w-11">

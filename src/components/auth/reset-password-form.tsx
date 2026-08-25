@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { authClient } from "@/lib/auth-client";
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { authClient } from '@/lib/auth-client';
 import {
   type ResetPasswordInput,
   resetPasswordSchema,
-} from "@/lib/validations/reset-password";
+} from '@/lib/validations/reset-password';
 
 export function ResetPasswordForm() {
   const searchParams = useSearchParams();
-  const token = searchParams.get("token") ?? "";
-  const resetError = searchParams.get("error");
+  const token = searchParams.get('token') ?? '';
+  const resetError = searchParams.get('error');
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -25,8 +25,8 @@ export function ResetPasswordForm() {
   const defaultValues = useMemo<ResetPasswordInput>(
     () => ({
       token,
-      password: "",
-      confirmPassword: "",
+      password: '',
+      confirmPassword: '',
     }),
     [token],
   );
@@ -57,7 +57,7 @@ export function ResetPasswordForm() {
         },
         onError: (context) => {
           setServerError(
-            context.error.message || "Não foi possível redefinir sua senha.",
+            context.error.message || 'Não foi possível redefinir sua senha.',
           );
         },
       },
@@ -104,7 +104,7 @@ export function ResetPasswordForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-      <input type="hidden" {...register("token")} />
+      <input type="hidden" {...register('token')} />
 
       <div className="space-y-2">
         <Label htmlFor="password">Nova senha</Label>
@@ -114,7 +114,7 @@ export function ResetPasswordForm() {
           autoComplete="new-password"
           placeholder="Digite sua nova senha"
           className="h-11 rounded-none border-stone-300 focus-visible:ring-amber-500"
-          {...register("password")}
+          {...register('password')}
         />
         {errors.password && (
           <p className="text-sm text-red-600">{errors.password.message}</p>
@@ -129,7 +129,7 @@ export function ResetPasswordForm() {
           autoComplete="new-password"
           placeholder="Repita sua nova senha"
           className="h-11 rounded-none border-stone-300 focus-visible:ring-amber-500"
-          {...register("confirmPassword")}
+          {...register('confirmPassword')}
         />
         {errors.confirmPassword && (
           <p className="text-sm text-red-600">
@@ -145,7 +145,7 @@ export function ResetPasswordForm() {
         disabled={isSubmitting}
         className="h-11 w-full rounded-none bg-amber-500 text-stone-950 hover:bg-amber-600"
       >
-        {isSubmitting ? "Redefinindo..." : "Redefinir senha"}
+        {isSubmitting ? 'Redefinindo...' : 'Redefinir senha'}
       </Button>
     </form>
   );

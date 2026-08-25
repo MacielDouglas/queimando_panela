@@ -1,5 +1,5 @@
-import Link from "next/link";
-import type { ReactNode } from "react";
+import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 type AuthShellProps = {
   title: string;
@@ -70,13 +70,15 @@ export function AuthShell({
                 <h2 className="text-3xl font-semibold tracking-tight text-stone-900">
                   {title}
                 </h2>
-                <p className="text-sm leading-6 text-stone-600">{description}</p>
+                <p className="text-sm leading-6 text-stone-600">
+                  {description}
+                </p>
               </div>
 
               <div className="mt-8">{children}</div>
 
               <p className="mt-8 text-sm text-stone-600">
-                {footerText}{" "}
+                {footerText}{' '}
                 <Link
                   href={footerLinkHref}
                   className="font-medium text-amber-500 underline underline-offset-4 hover:text-amber-600"

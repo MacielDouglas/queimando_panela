@@ -28,10 +28,7 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
 
   return (
     <section className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_320px]">
-      <div
-        aria-labelledby="recipe-nutrition-heading"
-        className="border border-neutral-200 bg-white p-5 sm:p-6 lg:p-8"
-      >
+      <div className="border border-neutral-200 bg-white p-5 sm:p-6 lg:p-8">
         <div className="mb-5 flex items-center gap-2 border-b border-neutral-200 pb-3">
           <Apple className="h-4 w-4 text-amber-500" />
           <h2
@@ -62,9 +59,9 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
                 </thead>
 
                 <tbody>
-                  {per100g.map((row, index) => (
+                  {per100g.map((row) => (
                     <tr
-                      key={`${row.nutrient}-${index}`}
+                      key={row.nutrient}
                       className="border-t border-neutral-200"
                     >
                       <td className="px-4 py-3 text-neutral-700">
@@ -96,9 +93,9 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
           </div>
 
           <ul className="space-y-3">
-            {suggestionItems.map((item, index) => (
+            {suggestionItems.map((item) => (
               <li
-                key={`${index}-${item.slice(0, 20)}`}
+                key={item}
                 className="flex items-start gap-3 text-sm leading-6 text-neutral-700"
               >
                 <span

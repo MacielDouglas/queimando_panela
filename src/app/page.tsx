@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { ClassicRecipesSection } from '@/components/home/ClassicRecipesSection';
 import { HeroSection } from '@/components/home/HeroSection';
 import { LatestRecipesSection } from '@/components/home/LatestRecipesSection';
@@ -6,7 +7,6 @@ import SignUpSection from '@/components/home/SignUpSection';
 import { getClassicRecipes } from '@/features/recipes/actions/get-classic-recipes';
 import { getLatestRecipes } from '@/features/recipes/actions/get-latest-recipes';
 import { getRandomRecipe } from '@/features/recipes/actions/get-random-recipe';
-import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Queimando Panela — Receitas caseiras, afetivas e autorais',
@@ -26,7 +26,6 @@ export default async function Home() {
     getClassicRecipes(4, 1),
     getRandomRecipe(),
   ]);
-
 
   return (
     <main className="bg-background min-h-screen pt-24">

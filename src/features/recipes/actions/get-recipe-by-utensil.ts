@@ -1,9 +1,9 @@
 'use server';
 
 import { cache } from 'react';
+import type { RecipeDifficulty } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { RecipeCardData } from './get-all-recipes';
-import type { RecipeDifficulty } from '@/generated/prisma/client';
 
 type UtensilRow = {
   utensilName: string;

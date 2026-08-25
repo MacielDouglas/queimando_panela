@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { notFound, redirect } from 'next/navigation';
 import { headers } from 'next/headers';
-
-import { auth } from '@/lib/auth';
+import { notFound, redirect } from 'next/navigation';
+import { getEditableRecipeBySlug } from '@/features/recipes/actions/get-editable-recipe-by-slug';
 import { RecipeEditorLayout } from '@/features/recipes/components/recipe-editor/RecipeEditorLayout';
 import { RecipeFormShell } from '@/features/recipes/components/recipe-form/RecipeFormShell';
-import { getEditableRecipeBySlug } from '@/features/recipes/actions/get-editable-recipe-by-slug';
+import { auth } from '@/lib/auth';
 
 type Props = {
   params: Promise<{ slug: string }>;

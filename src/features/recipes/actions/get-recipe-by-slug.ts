@@ -1,7 +1,7 @@
 'use server';
 
-import { prisma } from '@/lib/prisma';
 import { cache } from 'react';
+import { prisma } from '@/lib/prisma';
 
 export const getRecipeBySlug = cache(async (slug: string) => {
   return prisma.recipe.findUnique({

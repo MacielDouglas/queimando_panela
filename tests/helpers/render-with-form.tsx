@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import { useForm, type DefaultValues } from 'react-hook-form';
 import type { ReactElement } from 'react';
+import { type DefaultValues, useForm } from 'react-hook-form';
 
 export function renderWithForm<TFieldValues extends Record<string, any>>(
   ui: (form: ReturnType<typeof useForm<TFieldValues>>) => ReactElement,

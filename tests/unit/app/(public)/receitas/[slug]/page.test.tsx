@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-import RecipeDetailPage from '@/app/(public)/receitas/[slug]/page';
 import { makeRecipeMock } from '@/../tests/unit/factories/make-recipe-mock';
+import RecipeDetailPage from '@/app/(public)/receitas/[slug]/page';
 
 const notFoundMock = vi.fn(() => {
   throw new Error('NEXT_NOT_FOUND');

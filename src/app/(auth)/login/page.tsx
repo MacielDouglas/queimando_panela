@@ -1,7 +1,7 @@
-import { AuthForm } from '@/features/auth/components/AuthForm';
 import { ChefHat } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { AuthForm } from '@/features/auth/components/AuthForm';
 
 export const metadata: Metadata = {
   title: 'Entrar | Queimando Panela',

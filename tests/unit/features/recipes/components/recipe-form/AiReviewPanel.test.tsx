@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { render, screen } from '@testing-library/react';
+import type * as React from 'react';
+import { useForm } from 'react-hook-form';
+import { describe, expect, it, vi } from 'vitest';
 
 import { AiReviewPanel } from '@/features/recipes/components/recipe-form/AiReviewPanel';
 import {

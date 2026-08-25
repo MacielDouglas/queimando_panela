@@ -1,11 +1,10 @@
 'use server';
 
-import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
-
+import { redirect } from 'next/navigation';
+import { deleteRecipeImagesByKeys } from '@/features/recipes/server/recipe-image.service';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { deleteRecipeImagesByKeys } from '@/features/recipes/server/recipe-image.service';
 
 export async function deleteRecipe(slug: string): Promise<{ error?: string }> {
   const session = await auth.api.getSession({ headers: await headers() });

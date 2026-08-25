@@ -1,6 +1,6 @@
-import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
 import Groq from 'groq-sdk';
 import { NextResponse } from 'next/server';
+import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

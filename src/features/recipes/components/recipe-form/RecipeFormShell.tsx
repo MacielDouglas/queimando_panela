@@ -8,14 +8,13 @@ import { useForm, useWatch } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { createRecipe } from '../../actions/create-recipe';
 import { updateRecipe } from '../../actions/update-recipe';
-import {
-  aiReviewSchema,
-  type AiReviewFormData,
-} from '../../schemas/recipe-ai-review-schema';
 import { recipeFormSchema } from '../../schemas/recipe.schema';
-import type { AiRecipeAnalysis } from '../../types/recipe-ai.types';
-
+import {
+  type AiReviewFormData,
+  aiReviewSchema,
+} from '../../schemas/recipe-ai-review-schema';
 import type { RecipeDifficultyValue } from '../../types/recipe.types';
+import type { AiRecipeAnalysis } from '../../types/recipe-ai.types';
 import { AiReviewPanel } from './AiReviewPanel';
 import {
   ImageUploadField,
@@ -130,7 +129,14 @@ function editableRecipeToFormDefaults(
     return {
       title: '',
       story: '',
-      sections: [{ name: '', ingredientsText: '', modeOfPreparation: '' }],
+      sections: [
+        {
+          id: crypto.randomUUID(),
+          name: '',
+          ingredientsText: '',
+          modeOfPreparation: '',
+        },
+      ],
       images: [],
     };
   }
@@ -141,13 +147,21 @@ function editableRecipeToFormDefaults(
     sections:
       initialData.sections.length > 0
         ? initialData.sections.map((section) => ({
+            id: crypto.randomUUID(),
             name: section.name,
             ingredientsText: section.ingredients
-              .map((ing) => ing.originalText) // ← fix aqui
+              .map((ing) => ing.originalText)
               .join('\n'),
             modeOfPreparation: section.modeOfPreparation,
           }))
-        : [{ name: '', ingredientsText: '', modeOfPreparation: '' }],
+        : [
+            {
+              id: crypto.randomUUID(),
+              name: '',
+              ingredientsText: '',
+              modeOfPreparation: '',
+            },
+          ],
     images:
       initialData.images?.map((image, index) => ({
         kind: 'existing' as const,
@@ -234,7 +248,15 @@ export function RecipeFormShell({ mode, initialData }: Props) {
   const addSection = () => {
     form.setValue(
       'sections',
-      [...sections, { name: '', ingredientsText: '', modeOfPreparation: '' }],
+      [
+        ...sections,
+        {
+          id: crypto.randomUUID(),
+          name: '',
+          ingredientsText: '',
+          modeOfPreparation: '',
+        },
+      ],
       { shouldDirty: true },
     );
   };
@@ -366,9 +388,9 @@ export function RecipeFormShell({ mode, initialData }: Props) {
           </h2>
         </div>
 
-        {sections.map((_, index) => (
+        {sections.map((section, index) => (
           <SectionField
-            key={index}
+            key={section.id}
             form={form}
             index={index}
             isOnly={sections.length === 1}

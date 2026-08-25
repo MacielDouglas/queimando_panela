@@ -36,8 +36,15 @@ export default function RecipesLoading() {
 
             {/* Grid skeleton */}
             <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <RecipeCardSkeleton key={i} />
+              {[
+                'skeleton-1',
+                'skeleton-2',
+                'skeleton-3',
+                'skeleton-4',
+                'skeleton-5',
+                'skeleton-6',
+              ].map((key) => (
+                <RecipeCardSkeleton key={key} />
               ))}
             </div>
           </div>
@@ -46,12 +53,14 @@ export default function RecipesLoading() {
           <div className="space-y-4 border border-neutral-200 bg-white p-5">
             <div className="h-3 w-32 animate-pulse rounded bg-neutral-200" />
             <div className="flex flex-wrap gap-2">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="h-8 w-20 animate-pulse rounded bg-neutral-200"
-                />
-              ))}
+              {['chip-1', 'chip-2', 'chip-3', 'chip-4', 'chip-5', 'chip-6'].map(
+                (key) => (
+                  <div
+                    key={key}
+                    className="h-8 w-20 animate-pulse rounded bg-neutral-200"
+                  />
+                ),
+              )}
             </div>
           </div>
         </div>

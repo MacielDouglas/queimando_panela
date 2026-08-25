@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { authClient } from "@/lib/auth-client";
-import { type SignInInput, signInSchema } from "@/lib/validations/auth";
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { GoogleSignInButton } from '@/components/auth/google-sign-in-button';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { authClient } from '@/lib/auth-client';
+import { type SignInInput, signInSchema } from '@/lib/validations/auth';
 
 export function SignInForm() {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -17,8 +17,8 @@ export function SignInForm() {
   const form = useForm<SignInInput>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
@@ -35,11 +35,11 @@ export function SignInForm() {
       {
         email: values.email,
         password: values.password,
-        callbackURL: "/",
+        callbackURL: '/',
       },
       {
         onError(context) {
-          setServerError(context.error.message || "Não foi possível entrar.");
+          setServerError(context.error.message || 'Não foi possível entrar.');
         },
       },
     );
@@ -71,7 +71,7 @@ export function SignInForm() {
             autoComplete="email"
             placeholder="voce@exemplo.com"
             className="h-11 rounded-none border-stone-300 focus-visible:ring-amber-500"
-            {...register("email")}
+            {...register('email')}
           />
           {errors.email && (
             <p className="text-sm text-red-600">{errors.email.message}</p>
@@ -95,7 +95,7 @@ export function SignInForm() {
             autoComplete="current-password"
             placeholder="Digite sua senha"
             className="h-11 rounded-none border-stone-300 focus-visible:ring-amber-500"
-            {...register("password")}
+            {...register('password')}
           />
           {errors.password && (
             <p className="text-sm text-red-600">{errors.password.message}</p>
@@ -109,7 +109,7 @@ export function SignInForm() {
           disabled={isSubmitting}
           className="h-11 w-full rounded-none bg-amber-500 text-stone-950 hover:bg-amber-600"
         >
-          {isSubmitting ? "Entrando..." : "Entrar"}
+          {isSubmitting ? 'Entrando...' : 'Entrar'}
         </Button>
       </form>
     </div>

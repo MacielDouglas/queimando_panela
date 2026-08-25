@@ -56,10 +56,19 @@ const pillars = [
 ];
 
 const categories = [
-  { name: 'Prato principal', description: 'Arroz, feijão, carne, massa — o que sustenta a família' },
-  { name: 'Sobremesa', description: 'Doce que encerra a refeição com chave de ouro' },
+  {
+    name: 'Prato principal',
+    description: 'Arroz, feijão, carne, massa — o que sustenta a família',
+  },
+  {
+    name: 'Sobremesa',
+    description: 'Doce que encerra a refeição com chave de ouro',
+  },
   { name: 'Café da manhã', description: 'Começar o dia com gosto de caseiro' },
-  { name: 'Acompanhamento', description: 'Aquele extra que faz toda diferença no prato' },
+  {
+    name: 'Acompanhamento',
+    description: 'Aquele extra que faz toda diferença no prato',
+  },
 ];
 
 export default function OtherProjects() {
@@ -86,8 +95,7 @@ export default function OtherProjects() {
               variants={fadeUp}
               className="mt-3 max-w-2xl text-3xl leading-tight font-bold tracking-tight text-white sm:text-4xl lg:text-5xl"
             >
-              A cozinha é{' '}
-              <span className="text-amber-400">de todo mundo.</span>
+              A cozinha é <span className="text-amber-400">de todo mundo.</span>
             </motion.h2>
 
             <motion.p
@@ -173,7 +181,7 @@ export default function OtherProjects() {
               </div>
             </div>
 
-            <ul role="list" className="space-y-3">
+            <ul className="space-y-3">
               {categories.map((cat) => (
                 <li key={cat.name}>
                   <Link

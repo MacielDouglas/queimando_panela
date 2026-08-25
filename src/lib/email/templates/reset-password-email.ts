@@ -7,21 +7,21 @@ export function renderResetPasswordEmail({
   name,
   resetUrl,
 }: ResetPasswordEmailTemplateParams) {
-  const greeting = name?.trim() ? `Olá, ${name.trim()}` : "Olá";
+  const greeting = name?.trim() ? `Olá, ${name.trim()}` : 'Olá';
 
-  const subject = "Redefina sua senha do Queimando Panela";
+  const subject = 'Redefina sua senha do Queimando Panela';
 
   const text = [
     `${greeting},`,
-    "",
-    "Recebemos um pedido para redefinir sua senha.",
-    "Use o link abaixo para criar uma nova senha:",
+    '',
+    'Recebemos um pedido para redefinir sua senha.',
+    'Use o link abaixo para criar uma nova senha:',
     resetUrl,
-    "",
-    "Se você não solicitou essa alteração, ignore este email.",
-    "",
-    "Queimando Panela",
-  ].join("\n");
+    '',
+    'Se você não solicitou essa alteração, ignore este email.',
+    '',
+    'Queimando Panela',
+  ].join('\n');
 
   const html = `
 <!doctype html>

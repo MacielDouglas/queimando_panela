@@ -3,10 +3,10 @@
 import type { UseFormReturn } from 'react-hook-form';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import type { RecipeFormData } from '../../../schemas/recipe.schema';
+import type { RecipeFormWithImages } from './ImageUploadField';
 
 type Props = {
-  form: UseFormReturn<RecipeFormData>;
+  form: UseFormReturn<RecipeFormWithImages>;
 };
 
 export function TitleField({ form }: Props) {

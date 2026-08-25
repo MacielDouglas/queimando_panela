@@ -8,10 +8,10 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Textarea } from '@/components/ui/textarea';
-import type { RecipeFormData } from '../../../schemas/recipe.schema';
+import type { RecipeFormWithImages } from './ImageUploadField';
 
 type Props = {
-  form: UseFormReturn<RecipeFormData>;
+  form: UseFormReturn<RecipeFormWithImages>;
 };
 
 export function StoryField({ form }: Props) {

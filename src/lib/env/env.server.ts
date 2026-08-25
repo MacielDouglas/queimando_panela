@@ -1,5 +1,5 @@
-import "server-only";
-import { z } from "zod";
+import 'server-only';
+import { z } from 'zod';
 
 const envServerSchema = z.object({
   DATABASE_URL: z.string().min(1),
@@ -21,8 +21,8 @@ const envServerSchema = z.object({
   GROQ_API_KEY: z.string(),
 
   NODE_ENV: z
-    .enum(["development", "production", "test"])
-    .default("development"),
+    .enum(['development', 'production', 'test'])
+    .default('development'),
 });
 
 export const envServer = envServerSchema.parse(process.env);

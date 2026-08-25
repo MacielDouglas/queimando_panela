@@ -1,7 +1,7 @@
-import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
 import { Clock3, Flame } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
 import { difficultyLabel } from '../../types/recipe.types';
 
 type Props = {

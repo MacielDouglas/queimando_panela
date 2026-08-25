@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function Error({
   error,
@@ -44,13 +44,12 @@ export default function Error({
         </p>
 
         {error.digest && (
-          <p className="mt-2 text-xs text-amber-500/60">
-            Erro: {error.digest}
-          </p>
+          <p className="mt-2 text-xs text-amber-500/60">Erro: {error.digest}</p>
         )}
 
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <button
+            type="button"
             onClick={unstable_retry}
             className="inline-flex min-h-12 items-center justify-center gap-2 bg-amber-500 px-7 text-sm font-bold text-neutral-950 transition-colors hover:bg-amber-400 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none"
           >

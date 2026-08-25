@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
-
-import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 import { RecipeEditorLayout } from '@/features/recipes/components/recipe-editor/RecipeEditorLayout';
 import { RecipeFormShell } from '@/features/recipes/components/recipe-form/RecipeFormShell';
+import { auth } from '@/lib/auth';
 
 export const metadata: Metadata = {
   title: 'Nova receita',

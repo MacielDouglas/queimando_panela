@@ -88,7 +88,9 @@ function NeuralCanvas() {
     let isVisible = true;
 
     const observer = new IntersectionObserver(
-      ([entry]) => { isVisible = entry.isIntersecting; },
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
       { threshold: 0 },
     );
     observer.observe(canvas);
@@ -101,7 +103,7 @@ function NeuralCanvas() {
       if (!canvas) return;
       canvas.width = canvas.offsetWidth * window.devicePixelRatio;
       canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx!.scale(window.devicePixelRatio, window.devicePixelRatio);
+      ctx?.scale(window.devicePixelRatio, window.devicePixelRatio);
     }
 
     function init() {
@@ -143,7 +145,10 @@ function NeuralCanvas() {
 
     function draw() {
       if (!canvas || !ctx) return;
-      if (!isVisible) { animId = requestAnimationFrame(draw); return; }
+      if (!isVisible) {
+        animId = requestAnimationFrame(draw);
+        return;
+      }
       const w = canvas.offsetWidth;
       const h = canvas.offsetHeight;
 
@@ -263,7 +268,6 @@ function NeuralCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      aria-hidden="true"
       className="absolute inset-0 h-full w-full opacity-60"
     />
   );
@@ -321,10 +325,7 @@ export default function SignUpSection() {
           viewport={{ once: true, margin: '-40px' }}
           className="mb-12"
         >
-          <ul
-            role="list"
-            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
-          >
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {features.map((feature, i) => (
               <motion.li
                 key={feature.title}

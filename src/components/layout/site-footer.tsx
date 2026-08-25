@@ -1,11 +1,11 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { QPMark } from "@/components/brand/qp-mark";
-import { NavLinks } from "@/components/layout/nav-links";
+import { QPMark } from '@/components/brand/qp-mark';
+import { NavLinks } from '@/components/layout/nav-links';
 import {
   developerLinks,
   footerNavItems,
-} from "@/components/layout/navigation-data";
+} from '@/components/layout/navigation-data';
 
 export function SiteFooter() {
   return (

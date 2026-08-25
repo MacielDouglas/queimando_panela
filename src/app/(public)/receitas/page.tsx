@@ -7,16 +7,15 @@ import { getLatestRecipe } from '@/features/recipes/actions/get-latest-recipe';
 import { getRecipesByUtensil } from '@/features/recipes/actions/get-recipe-by-utensil';
 import { getRecipeFilterOptions } from '@/features/recipes/actions/get-recipe-filter-options';
 import { getRecipesByCategory } from '@/features/recipes/actions/get-recipes-by-category';
-import { normalizeString } from '@/features/recipes/lib/recipe-params';
-import { getServerSession } from '@/lib/get-server-session';
-
 import { RecipeCategoryRow } from '@/features/recipes/components/recipe-list/RecipeCategoryRow';
 import { RecipeFilters } from '@/features/recipes/components/recipe-list/RecipeFilters';
 import { RecipeGrid } from '@/features/recipes/components/recipe-list/RecipeGrid';
 import { RecipeHeroFeatured } from '@/features/recipes/components/recipe-list/RecipeHeroFeatured';
 import { RecipeSearch } from '@/features/recipes/components/recipe-list/RecipeSearch';
 import { RecipeUtensilRow } from '@/features/recipes/components/recipe-list/RecipeUtensilRow';
+import { normalizeString } from '@/features/recipes/lib/recipe-params';
 import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
+import { getServerSession } from '@/lib/get-server-session';
 
 type SearchValue = string | string[] | undefined;
 

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test('fluxo completo de receitas', async ({ page }) => {
   const recipe = {

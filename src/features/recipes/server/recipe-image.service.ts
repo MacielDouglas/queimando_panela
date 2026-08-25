@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 
-import { r2, R2_BUCKET_NAME, R2_PUBLIC_URL } from '@/lib/r2';
+import { R2_BUCKET_NAME, R2_PUBLIC_URL, r2 } from '@/lib/r2';
 import { processRecipeImage } from './process-recipe-image';
 
 export type UploadedRecipeImage = {

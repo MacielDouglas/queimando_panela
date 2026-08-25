@@ -1,8 +1,8 @@
 // import { requireSession } from "@/lib/auth-session";
 
-import { redirect } from "next/navigation";
-import { LogoutButton } from "@/components/auth/logout-button";
-import { getServerSession } from "@/lib/get-server-session";
+import { redirect } from 'next/navigation';
+import { LogoutButton } from '@/components/auth/logout-button';
+import { getServerSession } from '@/lib/get-server-session';
 // import { requireSession } from "@/lib/auth-session";
 
 export default async function MinhaContaPage() {
@@ -12,7 +12,7 @@ export default async function MinhaContaPage() {
   // console.log(session.)
 
   if (!session?.user.id) {
-    redirect("/unauthorized");
+    redirect('/unauthorized');
   }
 
   return (
@@ -54,7 +54,7 @@ export default async function MinhaContaPage() {
               <div>
                 <dt className="text-stone-500">Conta verificada</dt>
                 <dd className="mt-1 text-stone-900">
-                  {session.user.emailVerified ? "Sim" : "Não"}
+                  {session.user.emailVerified ? 'Sim' : 'Não'}
                 </dd>
               </div>
             </dl>

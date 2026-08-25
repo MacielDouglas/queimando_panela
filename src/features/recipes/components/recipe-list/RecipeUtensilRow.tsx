@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { RecipeCard } from './RecipeCard';
 import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
+import { RecipeCard } from './RecipeCard';
 
 type Props = {
   utensilName: string;

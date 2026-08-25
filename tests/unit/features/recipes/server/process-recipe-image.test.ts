@@ -6,13 +6,13 @@ const { sharpMock, metadataMock, resizeMock, cloneMock } = vi.hoisted(() => {
   const cloneMock = vi.fn();
 
   const sharpMock = vi.fn((input?: Buffer) => {
-    if (input && input.equals(Buffer.from('candidate-ok'))) {
+    if (input?.equals(Buffer.from('candidate-ok'))) {
       return {
         metadata: vi.fn().mockResolvedValue({ width: 1200, height: 900 }),
       };
     }
 
-    if (input && input.equals(Buffer.from('fallback-ok'))) {
+    if (input?.equals(Buffer.from('fallback-ok'))) {
       return {
         metadata: vi.fn().mockResolvedValue({ width: 1600, height: 1200 }),
       };

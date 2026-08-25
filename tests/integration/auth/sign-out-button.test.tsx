@@ -15,8 +15,8 @@ vi.mock('@/lib/auth-client', () => ({
   },
 }));
 
-import { authClient } from '@/lib/auth-client';
 import { SignOutButton } from '@/components/auth/sign-out-button';
+import { authClient } from '@/lib/auth-client';
 
 describe('SignOutButton', () => {
   beforeEach(() => {

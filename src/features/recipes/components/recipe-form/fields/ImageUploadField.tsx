@@ -1,10 +1,10 @@
 'use client';
 
+import { ImagePlus, RefreshCw, X } from 'lucide-react';
+import Image from 'next/image';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { ImagePlus, RefreshCw, X } from 'lucide-react';
 import type { UseFormReturn } from 'react-hook-form';
-import Image from 'next/image';
 
 import type { RecipeImageInput } from '../../../types/recipe-form-images.types';
 
@@ -12,6 +12,7 @@ export type RecipeFormWithImages = {
   title: string;
   story?: string;
   sections: {
+    id: string;
     name?: string;
     ingredientsText: string;
     modeOfPreparation: string;

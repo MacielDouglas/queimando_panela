@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useTransition } from 'react';
 import { Loader2, Trash2, X } from 'lucide-react';
+import { useState, useTransition } from 'react';
 
 import { deleteRecipe } from '@/features/recipes/actions/delete-recipe';
 

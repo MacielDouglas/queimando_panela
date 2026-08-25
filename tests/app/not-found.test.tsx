@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import NotFound from '@/app/not-found';
 import { vi } from 'vitest';
+import NotFound from '@/app/not-found';
 
 vi.mock('next/link', () => ({
   __esModule: true,

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const sectionSchema = z.object({
+  id: z.string(),
   name: z.string().max(80, 'Nome da etapa muito longo').optional(),
   ingredientsText: z.string().min(1, 'Ingredientes obrigatórios'),
   modeOfPreparation: z.string().min(1, 'Modo de preparo obrigatório'),

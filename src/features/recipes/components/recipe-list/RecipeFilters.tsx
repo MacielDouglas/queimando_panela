@@ -51,9 +51,15 @@ function buildBaseParams({
   if (currentCategory) params.set('categoria', currentCategory);
   if (currentDifficulty) params.set('dificuldade', currentDifficulty);
 
-  currentTypes.forEach((item) => params.append('tipo', item));
-  currentUtensils.forEach((item) => params.append('utensilio', item));
-  currentIngredients.forEach((item) => params.append('ingrediente', item));
+  currentTypes.forEach((item) => {
+    params.append('tipo', item);
+  });
+  currentUtensils.forEach((item) => {
+    params.append('utensilio', item);
+  });
+  currentIngredients.forEach((item) => {
+    params.append('ingrediente', item);
+  });
 
   return params;
 }
@@ -84,7 +90,9 @@ function toggleMultiParam(base: URLSearchParams, key: string, value: string) {
     ? current.filter((item) => item !== value)
     : [...current, value];
 
-  nextValues.forEach((item) => params.append(key, item));
+  nextValues.forEach((item) => {
+    params.append(key, item);
+  });
 
   return buildHref(params);
 }

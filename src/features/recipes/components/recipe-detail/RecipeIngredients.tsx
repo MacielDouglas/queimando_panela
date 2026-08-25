@@ -40,8 +40,8 @@ export function RecipeIngredients({ sections, utensils }: Props) {
       </div>
 
       <div className="space-y-8">
-        {sections.map((section, index) => (
-          <section key={`${section.name}-${index}`} className="space-y-3">
+        {sections.map((section) => (
+          <section key={section.name} className="space-y-3">
             {sections.length > 1 && (
               <h3 className="text-sm font-semibold text-neutral-900">
                 {section.name}
@@ -75,9 +75,9 @@ export function RecipeIngredients({ sections, utensils }: Props) {
             </div>
 
             <ul className="space-y-2">
-              {utensils.map((utensil, index) => (
+              {utensils.map((utensil) => (
                 <li
-                  key={`${utensil}-${index}`}
+                  key={utensil}
                   className="flex items-start gap-3 text-sm leading-6 text-neutral-700"
                 >
                   <span

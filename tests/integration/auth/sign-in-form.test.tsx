@@ -21,8 +21,8 @@ vi.mock('@/lib/auth-client', () => ({
   },
 }));
 
-import { authClient } from '@/lib/auth-client';
 import { SignInForm } from '@/features/auth/components/SignInForm';
+import { authClient } from '@/lib/auth-client';
 
 describe('SignInForm', () => {
   beforeEach(() => {

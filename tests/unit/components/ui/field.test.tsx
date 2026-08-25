@@ -20,7 +20,7 @@ describe('field ui components', () => {
 
     const field = screen.getByTestId('field');
     expect(field).toBeInTheDocument();
-    expect(field).toHaveAttribute('role', 'group');
+    expect(field.tagName).toBe('FIELDSET');
     expect(field).toHaveAttribute('data-slot', 'field');
     expect(field).toHaveAttribute('data-orientation', 'vertical');
   });

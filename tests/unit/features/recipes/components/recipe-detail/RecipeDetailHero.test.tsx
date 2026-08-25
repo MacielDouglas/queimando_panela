@@ -1,5 +1,5 @@
-import type { ImageProps } from 'next/image';
 import { render, screen } from '@testing-library/react';
+import type { ImageProps } from 'next/image';
 import { describe, expect, it, vi } from 'vitest';
 
 import { RecipeDetailHero } from '@/features/recipes/components/recipe-detail/RecipeDetailHero';

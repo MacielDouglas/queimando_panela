@@ -1,7 +1,7 @@
-import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
 import { Clock3, Flame } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
 import { difficultyLabel } from '../../types/recipe.types';
 
 type Props = {
@@ -54,7 +54,7 @@ export function RecipeCardSmall({ recipe, priority = false }: Props) {
 
         <div
           className="flex items-center gap-3 text-neutral-500"
-          aria-label="Informações da receita"
+          aria-hidden="true"
         >
           {totalTime && (
             <span className="flex items-center gap-1 text-xs">

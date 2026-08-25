@@ -1,14 +1,11 @@
 'use client';
 
-import { type SyntheticEvent, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
-import { authClient } from '@/lib/auth-client';
+import { type SyntheticEvent, useState } from 'react';
+import { GoogleAuthButton } from '@/components/auth/google-auth-button';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-
 import {
   Field,
   FieldContent,
@@ -17,7 +14,8 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field';
-import { GoogleAuthButton } from '@/components/auth/google-auth-button';
+import { Input } from '@/components/ui/input';
+import { authClient } from '@/lib/auth-client';
 
 export function SignUpForm() {
   const router = useRouter();

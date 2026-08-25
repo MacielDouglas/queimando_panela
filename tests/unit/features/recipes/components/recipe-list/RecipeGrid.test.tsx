@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-
-import { RecipeGrid } from '@/features/recipes/components/recipe-list/RecipeGrid';
 import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
+import { RecipeGrid } from '@/features/recipes/components/recipe-list/RecipeGrid';
 
 const recipeCardMock = vi.fn();
 

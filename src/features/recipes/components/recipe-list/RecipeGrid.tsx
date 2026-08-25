@@ -40,9 +40,15 @@ function buildPageHref({
   if (categoria) params.set('categoria', categoria);
   if (dificuldade) params.set('dificuldade', dificuldade);
 
-  tipo.forEach((item) => params.append('tipo', item));
-  utensilio.forEach((item) => params.append('utensilio', item));
-  ingrediente.forEach((item) => params.append('ingrediente', item));
+  tipo.forEach((item) => {
+    params.append('tipo', item);
+  });
+  utensilio.forEach((item) => {
+    params.append('utensilio', item);
+  });
+  ingrediente.forEach((item) => {
+    params.append('ingrediente', item);
+  });
 
   if (page > 1) params.set('page', String(page));
 

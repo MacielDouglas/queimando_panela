@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { authClient } from "@/lib/auth-client";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { authClient } from '@/lib/auth-client';
 import {
   type ForgotPasswordInput,
   forgotPasswordSchema,
-} from "@/lib/validations/reset-password";
+} from '@/lib/validations/reset-password';
 
 export function ForgotPasswordForm() {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -19,7 +19,7 @@ export function ForgotPasswordForm() {
   const form = useForm<ForgotPasswordInput>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
 
@@ -34,9 +34,9 @@ export function ForgotPasswordForm() {
     setIsSuccess(false);
 
     const redirectTo =
-      typeof window !== "undefined"
+      typeof window !== 'undefined'
         ? `${window.location.origin}/reset-password`
-        : "/reset-password";
+        : '/reset-password';
 
     const result = await authClient.requestPasswordReset(
       {
@@ -50,7 +50,7 @@ export function ForgotPasswordForm() {
         onError: (context) => {
           setServerError(
             context.error.message ||
-              "Não foi possível solicitar a redefinição de senha.",
+              'Não foi possível solicitar a redefinição de senha.',
           );
         },
       },
@@ -71,7 +71,7 @@ export function ForgotPasswordForm() {
           autoComplete="email"
           placeholder="voce@exemplo.com"
           className="h-11 rounded-none border-stone-300 focus-visible:ring-amber-500"
-          {...register("email")}
+          {...register('email')}
         />
         {errors.email && (
           <p className="text-sm text-red-600">{errors.email.message}</p>
@@ -92,7 +92,7 @@ export function ForgotPasswordForm() {
         disabled={isSubmitting}
         className="h-11 w-full rounded-none bg-amber-500 text-stone-950 hover:bg-amber-600"
       >
-        {isSubmitting ? "Enviando..." : "Enviar instruções"}
+        {isSubmitting ? 'Enviando...' : 'Enviar instruções'}
       </Button>
     </form>
   );

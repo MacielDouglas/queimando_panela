@@ -4,9 +4,6 @@ import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { type SyntheticEvent, useId, useState } from 'react';
-
-import { authClient } from '@/lib/auth-client';
-
 import { GoogleAuthButton } from '@/components/auth/google-auth-button';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,6 +15,7 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { authClient } from '@/lib/auth-client';
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.10/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,19 +7,96 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+    "includes": [
+      "**",
+      "!node_modules",
+      "!.next",
+      "!out",
+      "!dist",
+      "!build",
+      "!coverage",
+      "!playwright-report",
+      "!test-results",
+      "!src/generated",
+      "!.agents",
+      "!.impeccable",
+      "!playwright",
+      "!bun.lock",
+      "!next-env.d.ts",
+      "!skills-lock.json"
+    ]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
+    "formatter": {
+      "quoteStyle": "double"
+    },
+    "linter": {
+      "enabled": true
+    }
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
+      "correctness": {
+        "noUnusedVariables": "error",
+        "noUnusedImports": "error",
+        "useExhaustiveDependencies": "warn",
+        "useHookAtTopLevel": "error"
+      },
       "suspicious": {
-        "noUnknownAtRules": "off"
+        "noUnknownAtRules": "off",
+        "noExplicitAny": "warn",
+        "noArrayIndexKey": "warn",
+        "noShadowRestrictedNames": "off",
+        "useIterableCallbackReturn": "warn"
+      },
+      "style": {
+        "useImportType": "error",
+        "useConst": "error",
+        "noNonNullAssertion": "warn",
+        "useEnumInitializers": "off",
+        "useNodejsImportProtocol": "warn",
+        "useTemplate": "warn"
+      },
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "off",
+        "useOptionalChain": "warn"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "warn",
+        "noSvgWithoutTitle": "off",
+        "useButtonType": "warn",
+        "noLabelWithoutControl": "warn",
+        "useSemanticElements": "warn",
+        "useAriaPropsSupportedByRole": "warn",
+        "noNoninteractiveElementToInteractiveRole": "warn",
+        "useFocusableInteractive": "warn"
       }
     },
     "domains": {
@@ -28,10 +105,51 @@
     }
   },
   "assist": {
+    "enabled": true,
     "actions": {
       "source": {
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["tests/**/*", "**/*.test.*", "**/*.spec.*"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/generated/**", ".next/**", "coverage/**", "public/**"],
+      "linter": {
+        "enabled": false
+      },
+      "formatter": {
+        "enabled": false
+      },
+      "assist": {
+        "enabled": false
+      }
+    },
+    {
+      "includes": ["*.config.*", "*.setup.*"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    }
+  ]
 }

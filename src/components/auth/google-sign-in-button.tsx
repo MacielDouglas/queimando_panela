@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { Button } from "@/components/ui/button";
-import { authClient } from "@/lib/auth-client";
+import { useState } from 'react';
+import { FcGoogle } from 'react-icons/fc';
+import { Button } from '@/components/ui/button';
+import { authClient } from '@/lib/auth-client';
 
 export function GoogleSignInButton() {
   const [isPending, setIsPending] = useState(false);
@@ -13,8 +13,8 @@ export function GoogleSignInButton() {
       setIsPending(true);
 
       await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/",
+        provider: 'google',
+        callbackURL: '/',
       });
     } finally {
       setIsPending(false);
@@ -30,7 +30,7 @@ export function GoogleSignInButton() {
       className="h-11 w-full rounded-none border-stone-300 bg-white text-stone-900 hover:bg-stone-50"
     >
       <FcGoogle className="mr-2 size-5" />
-      {isPending ? "Conectando..." : "Continuar com Google"}
+      {isPending ? 'Conectando...' : 'Continuar com Google'}
     </Button>
   );
 }

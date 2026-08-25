@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import RecipesPage from '@/app/(public)/receitas/page';
 import { vi } from 'vitest';
+import RecipesPage from '@/app/(public)/receitas/page';
 
 import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
 
@@ -40,11 +40,11 @@ vi.mock('@/features/recipes/actions/get-recipe-by-utensil', () => ({
   getRecipesByUtensil: vi.fn(),
 }));
 
-import { getServerSession } from '@/lib/get-server-session';
 import { getAllRecipes } from '@/features/recipes/actions/get-all-recipes';
 import { getLatestRecipe } from '@/features/recipes/actions/get-latest-recipe';
-import { getRecipesByCategory } from '@/features/recipes/actions/get-recipes-by-category';
 import { getRecipesByUtensil } from '@/features/recipes/actions/get-recipe-by-utensil';
+import { getRecipesByCategory } from '@/features/recipes/actions/get-recipes-by-category';
+import { getServerSession } from '@/lib/get-server-session';
 
 const mockGetServerSession = vi.mocked(getServerSession);
 const mockGetAllRecipes = vi.mocked(getAllRecipes);
