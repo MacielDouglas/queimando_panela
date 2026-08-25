@@ -14,8 +14,8 @@ vi.mock('@/lib/r2', () => ({
   r2: {
     send: (...args: unknown[]) => sendMock(...args),
   },
-  R2_BUCKET_NAME: 'bucket-test',
-  R2_PUBLIC_URL: 'https://cdn.example.com',
+  getR2BucketName: () => 'bucket-test',
+  getR2PublicUrl: () => 'https://cdn.example.com',
 }));
 
 vi.mock('@/features/recipes/server/process-recipe-image', () => ({

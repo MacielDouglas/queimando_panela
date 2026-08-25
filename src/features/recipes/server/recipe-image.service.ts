@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 
-import { R2_BUCKET_NAME, R2_PUBLIC_URL, r2 } from '@/lib/r2';
+import { getR2BucketName, getR2PublicUrl, r2 } from '@/lib/r2';
 import { processRecipeImage } from './process-recipe-image';
 
 export type UploadedRecipeImage = {
@@ -30,7 +30,7 @@ export function buildRecipeImageKey(recipeId: string, fileName?: string) {
 }
 
 export function getRecipeImageUrl(key: string) {
-  return `${R2_PUBLIC_URL}/${key}`;
+  return `${getR2PublicUrl()}/${key}`;
 }
 
 export async function uploadRecipeImage(params: {
@@ -45,7 +45,7 @@ export async function uploadRecipeImage(params: {
 
   await r2.send(
     new PutObjectCommand({
-      Bucket: R2_BUCKET_NAME,
+      Bucket: getR2BucketName(),
       Key: key,
       Body: processed.buffer,
       ContentType: processed.contentType,
@@ -71,7 +71,7 @@ export async function uploadRecipeImage(params: {
 export async function deleteRecipeImageByKey(key: string) {
   await r2.send(
     new DeleteObjectCommand({
-      Bucket: R2_BUCKET_NAME,
+      Bucket: getR2BucketName(),
       Key: key,
     }),
   );

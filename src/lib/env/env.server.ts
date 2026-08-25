@@ -25,6 +25,23 @@ const envServerSchema = z.object({
     .default('development'),
 });
 
-export const envServer = envServerSchema.parse(process.env);
+export type Env = z.infer<typeof envServerSchema>;
 
-export type Env = typeof envServer;
+let cached: Env | null = null;
+
+function loadEnv(): Env {
+  if (!cached) {
+    cached = envServerSchema.parse(process.env);
+  }
+  return cached;
+}
+
+/**
+ * Validação lazy: o parse só roda no primeiro acesso em runtime,
+ * nunca durante o build (page data collection não exige secrets).
+ */
+export const envServer: Env = new Proxy({} as Env, {
+  get(_target, prop: string) {
+    return loadEnv()[prop as keyof Env];
+  },
+});
