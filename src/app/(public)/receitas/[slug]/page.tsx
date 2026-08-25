@@ -72,8 +72,6 @@ export default async function RecipeDetailPage({ params }: Props) {
 
   if (!recipe) notFound();
 
-  console.log(recipe);
-
   const session = await auth.api.getSession({ headers: await headers() });
   const isAuthor = session?.user?.id === recipe.authorId;
 
