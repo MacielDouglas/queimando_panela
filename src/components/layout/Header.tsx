@@ -8,38 +8,43 @@ import { navItems } from '@/components/layout/navigation-data';
 
 export default function Header() {
   return (
-    <header className="border-b border-stone-200 bg-white">
-      <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 border-b border-[#0a0a0a] bg-[#ffb900]">
+      <div className="editorial-container flex h-16 items-center justify-between gap-6">
         <Link
           href="/"
-          className="inline-flex items-center gap-3 text-stone-950 transition-colors hover:text-amber-500"
+          className="inline-flex items-center gap-3 text-[#0a0a0a] transition-opacity hover:opacity-80"
         >
-          <span className="text-amber-500">
-            <QPMark className="size-10" />
+          <span className="flex size-10 items-center justify-center bg-[#0a0a0a] text-[#ffb900]">
+            <QPMark className="size-7" />
           </span>
-
-          <span className="flex flex-col">
-            <span className="text-sm font-semibold tracking-[0.18em] uppercase">
-              Queimando
-            </span>
-            <span className="text-sm font-semibold tracking-[0.18em] uppercase">
-              Panela
-            </span>
+          <span className="hidden flex-col font-display text-[13px] font-extrabold uppercase leading-none tracking-[0.1em] sm:flex">
+            <span>Queimando</span>
+            <span>Panela</span>
+          </span>
+          <span className="font-display text-sm font-extrabold uppercase tracking-[0.08em] sm:hidden">
+            QP
           </span>
         </Link>
 
-        <nav aria-label="Navegação principal" className="hidden md:block">
+        <nav
+          aria-label="Navegação principal"
+          className="hidden items-center gap-1 md:flex"
+        >
           <NavLinks items={navItems} variant="header" />
         </nav>
 
-        <div className="hidden md:block">
-          <AuthNavButton />
-        </div>
+        <div className="flex items-center gap-3">
+          <div className="hidden md:block">
+            <AuthNavButton />
+          </div>
 
-        <div className="md:hidden">
-          <MobileMenu />
+          <div className="md:hidden">
+            <MobileMenu />
+          </div>
         </div>
       </div>
+      {/* faixa preta fina Estapar */}
+      <div className="h-[3px] bg-[#0a0a0a]" aria-hidden="true" />
     </header>
   );
 }

@@ -2,40 +2,36 @@ import { RecipeCardSkeleton } from '@/features/recipes/components/recipe-list/Re
 
 export default function RecipesLoading() {
   return (
-    <main className="min-h-dvh bg-neutral-50 pb-20">
-      {/* Header skeleton */}
-      <section className="border-b border-neutral-200 bg-white">
-        <div className="editorial-container py-6 sm:py-8">
-          <div className="h-5 w-64 animate-pulse rounded bg-neutral-200" />
-          <div className="mt-6 h-12 w-3/4 animate-pulse rounded bg-neutral-200" />
-          <div className="mt-4 h-5 w-1/2 animate-pulse rounded bg-neutral-200" />
+    <main className="bg-white">
+      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
+      <section className="border-b-2 border-[#0a0a0a] bg-white">
+        <div className="editorial-container py-8">
+          <div className="h-6 w-40 bg-[#ffb900] border border-[#0a0a0a]" />
+          <div className="mt-6 h-12 w-3/4 bg-[#0a0a0a]" />
+          <div className="mt-3 h-4 w-1/2 bg-[#f5f5f5] border border-[#e5e5e5]" />
         </div>
       </section>
 
-      {/* Busca skeleton */}
-      <section className="border-b border-neutral-200 bg-neutral-950">
-        <div className="editorial-container py-6 sm:py-8">
-          <div className="h-14 w-full animate-pulse rounded bg-neutral-800" />
+      <section className="border-b-2 border-[#0a0a0a] bg-[#0a0a0a]">
+        <div className="editorial-container py-6">
+          <div className="h-12 w-full bg-white border-2 border-[#0a0a0a]" />
         </div>
       </section>
 
-      <div className="editorial-container py-8 sm:py-10 lg:py-12">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-start lg:gap-10">
+      <div className="editorial-container py-8 lg:py-10">
+        <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
           <div className="space-y-10">
-            {/* Hero skeleton */}
-            <div className="grid border border-neutral-200 sm:grid-cols-[1.4fr_1fr]">
-              <div className="aspect-video animate-pulse bg-neutral-200 sm:aspect-auto sm:min-h-105" />
-              <div className="space-y-4 p-6">
-                <div className="h-3 w-24 animate-pulse rounded bg-neutral-200" />
-                <div className="h-8 w-full animate-pulse rounded bg-neutral-200" />
-                <div className="h-4 w-3/4 animate-pulse rounded bg-neutral-200" />
-                <div className="h-4 w-2/3 animate-pulse rounded bg-neutral-200" />
-                <div className="mt-8 h-12 w-full animate-pulse rounded bg-neutral-200" />
+            <div className="grid border-2 border-[#0a0a0a] sm:grid-cols-[1.2fr_1fr]">
+              <div className="aspect-[4/3] bg-[#f5f5f5] border-r-2 border-[#0a0a0a]" />
+              <div className="space-y-3 p-4">
+                <div className="h-3 w-20 bg-[#ffb900]" />
+                <div className="h-6 w-full bg-[#0a0a0a]" />
+                <div className="h-4 w-3/4 bg-[#e5e5e5]" />
+                <div className="mt-6 h-12 w-full bg-[#0a0a0a]" />
               </div>
             </div>
 
-            {/* Grid skeleton */}
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {[
                 'skeleton-1',
                 'skeleton-2',
@@ -49,15 +45,14 @@ export default function RecipesLoading() {
             </div>
           </div>
 
-          {/* Sidebar skeleton */}
-          <div className="space-y-4 border border-neutral-200 bg-white p-5">
-            <div className="h-3 w-32 animate-pulse rounded bg-neutral-200" />
-            <div className="flex flex-wrap gap-2">
+          <div className="border-2 border-[#0a0a0a] bg-white p-4">
+            <div className="h-4 w-32 bg-[#0a0a0a]" />
+            <div className="mt-4 flex flex-wrap gap-2">
               {['chip-1', 'chip-2', 'chip-3', 'chip-4', 'chip-5', 'chip-6'].map(
                 (key) => (
                   <div
                     key={key}
-                    className="h-8 w-20 animate-pulse rounded bg-neutral-200"
+                    className="h-8 w-20 bg-[#f5f5f5] border border-[#e5e5e5]"
                   />
                 ),
               )}

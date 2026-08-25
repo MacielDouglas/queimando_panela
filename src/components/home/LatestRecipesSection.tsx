@@ -10,46 +10,21 @@ interface LatestRecipesSectionProps {
 export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
   if (recipes.length === 0) {
     return (
-      <section
-        aria-labelledby="latest-recipes-title"
-        className="py-12 sm:py-16 lg:py-20"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <header className="mb-8 border-b border-neutral-200 pb-5">
-            <p className="text-xs font-semibold tracking-[0.18em] text-amber-700 uppercase">
-              Últimas receitas
-            </p>
-            <h2
-              id="latest-recipes-title"
-              className="mt-1 text-xl font-bold tracking-tight text-neutral-950 sm:text-2xl"
-            >
-              O que acabou de sair do forno
-            </h2>
-          </header>
-          <div className="flex flex-col items-center py-16 text-center">
-            <div
-              className="mb-4 flex size-14 items-center justify-center rounded-full bg-neutral-100"
-              aria-hidden="true"
-            >
-              <svg
-                className="size-6 text-neutral-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                />
-              </svg>
+      <section className="border-t-[6px] border-[#ffb900] bg-[#f5f5f5]">
+        <div className="editorial-container py-12 lg:py-16">
+          <div className="flex items-end justify-between gap-4 border-b-2 border-[#0a0a0a] pb-4">
+            <div>
+              <p className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#6b6b6b]">
+                Últimas receitas
+              </p>
+              <h2 className="mt-1 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.01em] text-[#0a0a0a] sm:text-3xl">
+                Saiu do forno
+              </h2>
             </div>
-            <p className="text-sm font-medium text-neutral-600">
-              Nenhuma receita publicada ainda.
-            </p>
-            <p className="mt-1 text-sm text-neutral-400">
-              As últimas receitas da comunidade aparecerão aqui.
+          </div>
+          <div className="mt-8 grid place-items-center border-2 border-dashed border-[#e5e5e5] bg-white py-16">
+            <p className="font-display text-sm font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+              Nenhuma receita ainda
             </p>
           </div>
         </div>
@@ -57,40 +32,32 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
     );
   }
 
-  // Mostra no máximo 8 receitas para manter o grid limpo
   const visible = recipes.slice(0, 8);
 
   return (
-    <section
-      aria-labelledby="latest-recipes-title"
-      className="py-12 sm:py-16 lg:py-20"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Cabeçalho da seção */}
-        <header className="mb-8 flex flex-wrap items-end justify-between gap-4 border-b border-neutral-200 pb-5">
+    <section className="border-t-[6px] border-[#ffb900] bg-white">
+      <div className="editorial-container py-12 lg:py-16">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b-2 border-[#0a0a0a] pb-4">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-amber-700 uppercase">
-              Últimas receitas
+            <p className="inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-white">
+              Panelinha
             </p>
-            <h2
-              id="latest-recipes-title"
-              className="mt-1 text-xl font-bold tracking-tight text-neutral-950 sm:text-2xl"
-            >
+            <h2 className="mt-3 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.01em] text-[#0a0a0a] sm:text-3xl">
               O que acabou de sair do forno
             </h2>
+            <p className="mt-2 font-sans text-sm text-[#6b6b6b]">
+              Grid Panelinha 3 colunas, ritmo Estapar
+            </p>
           </div>
-
           <Link
             href="/receitas"
-            className="flex shrink-0 items-center gap-1 text-sm font-semibold text-amber-700 transition-colors hover:text-amber-500 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="inline-flex h-10 items-center gap-2 border border-[#0a0a0a] bg-white px-4 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
           >
-            Ver todas
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            Ver todas <ArrowRight className="size-3.5" />
           </Link>
-        </header>
+        </div>
 
-        {/* Grade com destaque no primeiro card — 2 cols mobile → 3 tablet → 4 desktop */}
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
+        <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {visible.map((recipe, index) => (
             <li
               key={recipe.id}

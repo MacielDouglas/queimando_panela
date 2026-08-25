@@ -31,7 +31,7 @@ export function NavLinks({
     <ul
       className={cn(
         'flex',
-        orientation === 'horizontal' ? 'items-center gap-8' : 'flex-col gap-1',
+        orientation === 'horizontal' ? 'items-center gap-1' : 'flex-col gap-1',
         className,
       )}
     >
@@ -43,19 +43,15 @@ export function NavLinks({
             href={item.href}
             aria-current={active ? 'page' : undefined}
             className={cn(
-              'transition-colors',
+              'font-display text-xs font-extrabold uppercase tracking-[0.12em] transition-colors',
               variant === 'header' &&
-                'text-sm font-medium tracking-[0.16em] uppercase',
-              variant === 'footer' && 'text-sm',
+                'px-3 py-2 text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white',
+              variant === 'header' && active && 'bg-[#0a0a0a] text-white',
+              variant === 'footer' &&
+                'text-sm font-bold normal-case tracking-normal text-white/80 hover:text-[#ffb900]',
               variant === 'mobile' &&
-                'flex min-h-12 items-center border-b border-stone-200 py-3 text-base font-medium tracking-[0.14em] uppercase',
-              active
-                ? 'text-amber-500'
-                : variant === 'footer'
-                  ? 'text-stone-200 hover:text-amber-500'
-                  : variant === 'mobile'
-                    ? 'text-stone-900 hover:text-amber-500'
-                    : 'text-stone-700 hover:text-amber-500',
+                'flex min-h-12 items-center border-b border-[#e5e5e5] py-3 text-sm text-[#0a0a0a] hover:bg-[#ffb900]',
+              variant === 'mobile' && active && 'bg-[#ffb900] px-3',
               itemClassName,
             )}
           >

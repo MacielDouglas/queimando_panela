@@ -19,43 +19,34 @@ function splitSteps(text: string) {
 
 export function RecipeSteps({ sections }: Props) {
   return (
-    <section
-      aria-labelledby="recipe-steps-heading"
-      className="border border-neutral-200 bg-white p-5 sm:p-6 lg:p-8"
-    >
-      <div className="mb-6 flex items-center gap-2 border-b border-neutral-200 pb-3">
-        <ScrollText className="h-4 w-4 text-amber-500" />
-        <h2
-          id="recipe-steps-heading"
-          className="text-sm font-bold tracking-[0.16em] text-neutral-950 uppercase"
-        >
+    <section className="border-2 border-[#0a0a0a] bg-white">
+      <div className="border-b-2 border-[#0a0a0a] bg-[#0a0a0a] px-4 py-3 flex items-center gap-2">
+        <ScrollText className="size-4 text-[#ffb900]" />
+        <h2 className="font-display text-sm font-extrabold uppercase tracking-[0.14em] text-white">
           Modo de preparo
         </h2>
       </div>
 
-      <div className="space-y-10">
+      <div className="p-4 sm:p-6 space-y-8">
         {sections.map((section) => {
           const steps = splitSteps(section.modeOfPreparation);
-
           return (
-            <section key={section.name} className="space-y-5">
+            <section key={section.name} className="space-y-4">
               {sections.length > 1 && (
-                <h3 className="text-2xl font-semibold tracking-tight text-neutral-950">
+                <h3 className="inline-block bg-[#ffb900] border-2 border-[#0a0a0a] px-3 py-1 font-display text-sm font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
                   {section.name}
                 </h3>
               )}
-
-              <ol className="space-y-5">
+              <ol className="space-y-3">
                 {steps.map((step, stepIndex) => (
                   <li
                     key={step}
-                    className="grid grid-cols-[36px_1fr] gap-4 sm:grid-cols-[44px_1fr]"
+                    className="grid grid-cols-[44px_1fr] gap-3 border border-[#e5e5e5] bg-[#f5f5f5] p-3 hover:border-[#0a0a0a] hover:bg-white"
                   >
-                    <span className="flex h-9 w-9 items-center justify-center bg-amber-500 text-sm font-bold text-neutral-950 sm:h-11 sm:w-11">
+                    <span className="grid size-11 place-items-center border-2 border-[#0a0a0a] bg-[#ffb900] font-display text-sm font-extrabold text-[#0a0a0a]">
                       {stepIndex + 1}
                     </span>
-
-                    <p className="pt-1 text-sm leading-7 text-neutral-700 sm:text-base">
+                    <p className="pt-1 font-sans text-sm leading-6 text-[#0a0a0a]">
                       {step}
                     </p>
                   </li>

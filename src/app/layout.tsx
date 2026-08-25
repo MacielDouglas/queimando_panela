@@ -1,8 +1,15 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Sora } from 'next/font/google';
 import './globals.css';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+
+const sora = Sora({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+  weight: ['400', '600', '700', '800'],
+});
 
 const inter = Inter({
   subsets: ['latin'],
@@ -16,7 +23,7 @@ export const metadata: Metadata = {
     template: '%s | Queimando Panela',
   },
   description:
-    'Blog gastronômico comunitário para cozinheiros amadores apaixonados por receitas, histórias e experiências culinárias.',
+    'Receitas caseiras, afetivas e autorais. A Estapar da cozinha brasileira — direta, quadrada, amarela e sem frescura.',
 };
 
 export default async function RootLayout({
@@ -27,7 +34,7 @@ export default async function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${inter.variable} min-h-dvh bg-stone-50 text-stone-950 antialiased`}
+        className={`${sora.variable} ${inter.variable} min-h-dvh bg-white text-[#0a0a0a] antialiased`}
       >
         <div className="flex min-h-dvh flex-col">
           <Header />

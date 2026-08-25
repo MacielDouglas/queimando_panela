@@ -21,53 +21,50 @@ function splitSuggestions(text: string | null) {
 
 export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
   const suggestionItems = splitSuggestions(suggestions);
-
-  if (!per100g?.length && !summary && suggestionItems.length === 0) {
-    return null;
-  }
+  if (!per100g?.length && !summary && suggestionItems.length === 0) return null;
 
   return (
-    <section className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_320px]">
-      <div className="border border-neutral-200 bg-white p-5 sm:p-6 lg:p-8">
-        <div className="mb-5 flex items-center gap-2 border-b border-neutral-200 pb-3">
-          <Apple className="h-4 w-4 text-amber-500" />
-          <h2
-            id="recipe-nutrition-heading"
-            className="text-sm font-bold tracking-[0.16em] text-neutral-950 uppercase"
-          >
+    <section className="grid gap-6 xl:grid-cols-[1fr_320px]">
+      <div className="border-2 border-[#0a0a0a] bg-white">
+        <div className="border-b-2 border-[#0a0a0a] bg-white px-4 py-3 flex items-center gap-2">
+          <Apple className="size-4 text-[#0a0a0a]" />
+          <h2 className="font-display text-sm font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
             Informação nutricional
           </h2>
+          <span
+            className="ml-auto h-2 w-8 bg-[#ffb900] border border-[#0a0a0a]"
+            aria-hidden="true"
+          />
         </div>
-
-        {summary && (
-          <p className="mb-5 text-sm leading-7 text-neutral-700">{summary}</p>
-        )}
-
-        {per100g && per100g.length > 0 && (
-          <>
-            <div className="overflow-x-auto border border-neutral-200">
-              <table className="w-full min-w-70 text-sm">
-                <thead className="bg-neutral-100">
+        <div className="p-4">
+          {summary && (
+            <p className="border-l-[4px] border-[#ffb900] pl-3 font-sans text-sm leading-6 text-[#6b6b6b]">
+              {summary}
+            </p>
+          )}
+          {per100g && per100g.length > 0 && (
+            <div className="mt-4 overflow-hidden border-2 border-[#0a0a0a]">
+              <table className="w-full text-sm">
+                <thead className="bg-[#0a0a0a] text-white">
                   <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-neutral-700">
+                    <th className="px-4 py-2 text-left font-display text-xs font-extrabold uppercase tracking-[0.12em]">
                       Nutriente
                     </th>
-                    <th className="px-4 py-3 text-right font-semibold text-neutral-700">
+                    <th className="px-4 py-2 text-right font-display text-xs font-extrabold uppercase tracking-[0.12em]">
                       Por 100g
                     </th>
                   </tr>
                 </thead>
-
                 <tbody>
                   {per100g.map((row) => (
                     <tr
                       key={row.nutrient}
-                      className="border-t border-neutral-200"
+                      className="border-t-2 border-[#0a0a0a] even:bg-[#f5f5f5]"
                     >
-                      <td className="px-4 py-3 text-neutral-700">
+                      <td className="px-4 py-2 font-sans text-sm font-bold text-[#0a0a0a]">
                         {row.nutrient}
                       </td>
-                      <td className="px-4 py-3 text-right text-neutral-600">
+                      <td className="px-4 py-2 text-right font-sans text-sm text-[#6b6b6b]">
                         {row.quantity}
                       </td>
                     </tr>
@@ -75,34 +72,34 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
                 </tbody>
               </table>
             </div>
-
-            <p className="mt-3 text-xs text-neutral-500">
-              Valores estimados por 100 g.
+          )}
+          {per100g && per100g.length > 0 && (
+            <p className="mt-2 font-sans text-xs text-[#6b6b6b]">
+              Valores estimados por 100g.
             </p>
-          </>
-        )}
+          )}
+        </div>
       </div>
 
       {suggestionItems.length > 0 && (
-        <aside className="border border-amber-200 bg-amber-50 p-5 sm:p-6">
-          <div className="mb-4 flex items-center gap-2 border-b border-amber-200 pb-3">
-            <Lightbulb className="h-4 w-4 text-amber-600" />
-            <h2 className="text-sm font-bold tracking-[0.16em] text-amber-800 uppercase">
-              Sugestões
+        <aside className="border-2 border-[#0a0a0a] bg-[#ffb900] p-4">
+          <div className="flex items-center gap-2 border-b-2 border-[#0a0a0a] pb-2">
+            <Lightbulb className="size-4 text-[#0a0a0a]" />
+            <h2 className="font-display text-sm font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+              Sugestões Estapar
             </h2>
           </div>
-
-          <ul className="space-y-3">
+          <ul className="mt-3 space-y-2">
             {suggestionItems.map((item) => (
               <li
                 key={item}
-                className="flex items-start gap-3 text-sm leading-6 text-neutral-700"
+                className="border-2 border-[#0a0a0a] bg-white px-3 py-2 font-sans text-sm leading-5 text-[#0a0a0a]"
               >
                 <span
-                  aria-hidden
-                  className="mt-2 h-1.5 w-1.5 shrink-0 bg-amber-500"
+                  className="mr-2 inline-block size-1.5 bg-[#ffb900] border border-[#0a0a0a]"
+                  aria-hidden="true"
                 />
-                <span>{item}</span>
+                {item}
               </li>
             ))}
           </ul>

@@ -1,222 +1,118 @@
 'use client';
 
-import type { Transition, Variants } from 'framer-motion';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import {
-  RiArrowRightLine,
-  RiBookOpenLine,
-  RiGroupLine,
-  RiHeartLine,
-  RiRestaurantLine,
-} from 'react-icons/ri';
-
-const easeOut = [0.16, 1, 0.3, 1] as const satisfies Transition['ease'];
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.55,
-      ease: easeOut,
-    },
-  },
-};
-
-const container: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
 
 const pillars = [
   {
-    icon: RiRestaurantLine,
     title: 'Panela no fogo',
-    description:
-      'Receitas feitas por gente como você, testadas na cozinha de casa. Ingredientes acessíveis, modo de preparo claro e nenhum frescura.',
+    desc: 'Receitas testadas na cozinha de casa. Ingredientes acessíveis.',
   },
   {
-    icon: RiHeartLine,
     title: 'História à mesa',
-    description:
-      'Cada receita carrega uma memória: a da sua avó, a do almoço de domingo, a daquela descoberta que virou tradição.',
+    desc: 'Cada receita carrega uma memória que merece ser lembrada.',
   },
   {
-    icon: RiGroupLine,
-    title: 'Comunidade que cozinha',
-    description:
-      'Descubra, inspire-se e compartilhe. Sua receita pode ser exatamente o que alguém está procurando hoje.',
+    title: 'Comunidade',
+    desc: 'Sua receita pode ser o que alguém procura hoje.',
   },
 ];
 
 const categories = [
-  {
-    name: 'Prato principal',
-    description: 'Arroz, feijão, carne, massa — o que sustenta a família',
-  },
-  {
-    name: 'Sobremesa',
-    description: 'Doce que encerra a refeição com chave de ouro',
-  },
-  { name: 'Café da manhã', description: 'Começar o dia com gosto de caseiro' },
-  {
-    name: 'Acompanhamento',
-    description: 'Aquele extra que faz toda diferença no prato',
-  },
+  { name: 'Prato principal', desc: 'O que sustenta a família' },
+  { name: 'Sobremesa', desc: 'Doce com chave de ouro' },
+  { name: 'Café da manhã', desc: 'Gosto de caseiro' },
+  { name: 'Acompanhamento', desc: 'O extra que faz diferença' },
 ];
 
 export default function OtherProjects() {
   return (
-    <section
-      aria-labelledby="community-title"
-      className="relative overflow-hidden bg-neutral-950 py-16 sm:py-20 lg:py-24"
-    >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.14),transparent_30%),radial-gradient(circle_at_top_right,rgba(250,204,21,0.08),transparent_28%),radial-gradient(circle_at_bottom_center,rgba(255,255,255,0.05),transparent_40%)]" />
-      </div>
-
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr]"
-        >
+    <section className="bg-white">
+      <div className="editorial-container py-12 lg:py-16">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           <div>
-            <motion.h2
-              id="community-title"
-              variants={fadeUp}
-              className="mt-3 max-w-2xl text-3xl leading-tight font-bold tracking-tight text-white sm:text-4xl lg:text-5xl"
-            >
-              A cozinha é <span className="text-amber-400">de todo mundo.</span>
-            </motion.h2>
+            <p className="inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-white">
+              Estapar Panelinha
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-4xl">
+              A cozinha é
+              <br />
+              <span className="bg-[#ffb900] px-1">de todo mundo.</span>
+            </h2>
+            <p className="mt-4 max-w-xl font-sans text-sm leading-6 text-[#6b6b6b]">
+              Caderno de receitas vivo — gente real compartilhando pratos que
+              merecem ser lembrados.
+            </p>
 
-            <motion.p
-              variants={fadeUp}
-              className="mt-5 max-w-2xl text-base leading-relaxed text-neutral-300 sm:text-lg"
-            >
-              Queimando Panela é um caderno de receitas vivo — um lugar onde
-              cozinheiros de verdade compartilham pratos, histórias e sabores
-              que merecem ser lembrados.
-            </motion.p>
-
-            <motion.div
-              variants={fadeUp}
-              className="mt-8 flex flex-col gap-3 sm:flex-row"
-            >
+            <div className="mt-6 flex gap-3">
               <Link
                 href="/sign-up"
-                className="inline-flex min-h-12 items-center justify-center gap-2 bg-amber-500 px-7 text-sm font-bold text-neutral-950 transition-colors hover:bg-amber-400 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 focus-visible:outline-none"
+                className="inline-flex h-12 items-center border-2 border-[#0a0a0a] bg-[#ffb900] px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
               >
-                Quero compartilhar minhas receitas
-                <RiArrowRightLine className="h-4 w-4" aria-hidden="true" />
+                Compartilhar receita
               </Link>
-
               <Link
                 href="/receitas"
-                className="inline-flex min-h-12 items-center justify-center gap-2 border border-neutral-700 bg-transparent px-7 text-sm font-semibold text-neutral-200 transition-colors hover:border-neutral-500 hover:text-white focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 focus-visible:outline-none"
+                className="inline-flex h-12 items-center border border-[#e5e5e5] bg-white px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:border-[#0a0a0a]"
               >
-                Explorar receitas
+                Explorar
               </Link>
-            </motion.div>
-
-            <motion.ul
-              variants={container}
-              className="mt-10 grid gap-4 sm:grid-cols-3"
-              role="list"
-            >
-              {pillars.map((item) => {
-                const Icon = item.icon;
-
-                return (
-                  <motion.li
-                    key={item.title}
-                    variants={fadeUp}
-                    className="rounded-lg border border-white/10 bg-white/[0.04] p-5"
-                  >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/12 text-amber-400">
-                      <Icon className="h-5 w-5" aria-hidden="true" />
-                    </div>
-                    <h3 className="mt-4 text-sm font-semibold text-white">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-neutral-400">
-                      {item.description}
-                    </p>
-                  </motion.li>
-                );
-              })}
-            </motion.ul>
-          </div>
-
-          <motion.aside
-            variants={fadeUp}
-            className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] p-5 sm:p-6"
-            aria-label="Categorias de receitas"
-          >
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent"
-            />
-
-            <div className="mb-5 flex items-center justify-between gap-3 border-b border-white/10 pb-4">
-              <div>
-                <p className="text-xs font-semibold tracking-[0.18em] text-amber-400 uppercase">
-                  Categorias
-                </p>
-                <p className="mt-1 text-sm text-neutral-400">
-                  Navegue pelo tipo de receita que mais combina com seu momento
-                </p>
-              </div>
-
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-400">
-                <RiBookOpenLine className="h-5 w-5" aria-hidden="true" />
-              </div>
             </div>
 
-            <ul className="space-y-3">
+            <ul className="mt-8 grid gap-3 sm:grid-cols-3">
+              {pillars.map((p) => (
+                <li
+                  key={p.title}
+                  className="border border-[#e5e5e5] bg-white p-4 hover:border-[#0a0a0a]"
+                >
+                  <h3 className="font-display text-sm font-extrabold uppercase leading-tight text-[#0a0a0a]">
+                    {p.title}
+                  </h3>
+                  <p className="mt-2 font-sans text-xs leading-5 text-[#6b6b6b]">
+                    {p.desc}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <aside className="border-2 border-[#0a0a0a] bg-white p-0">
+            <div className="border-b-2 border-[#0a0a0a] bg-[#0a0a0a] px-4 py-3">
+              <p className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#ffb900]">
+                Categorias
+              </p>
+            </div>
+            <ul>
               {categories.map((cat) => (
-                <li key={cat.name}>
+                <li
+                  key={cat.name}
+                  className="border-b border-[#e5e5e5] last:border-0"
+                >
                   <Link
                     href={`/receitas?categoria=${encodeURIComponent(cat.name)}`}
-                    className="group flex items-center gap-3 rounded-lg border border-white/8 bg-neutral-900/80 p-4 transition-colors hover:border-amber-400/30 hover:bg-neutral-900"
+                    className="flex items-center justify-between gap-3 px-4 py-4 hover:bg-[#ffb900]"
                   >
-                    <div className="shrink-0">
-                      <p className="text-sm font-semibold text-white group-hover:text-amber-400 transition-colors">
+                    <div>
+                      <p className="font-display text-sm font-extrabold uppercase text-[#0a0a0a]">
                         {cat.name}
                       </p>
-                      <p className="mt-0.5 text-sm leading-relaxed text-neutral-400">
-                        {cat.description}
+                      <p className="font-sans text-xs text-[#6b6b6b]">
+                        {cat.desc}
                       </p>
                     </div>
-                    <RiArrowRightLine
-                      className="ml-auto h-4 w-4 shrink-0 text-neutral-500 transition-colors group-hover:text-amber-400"
-                      aria-hidden="true"
-                    />
+                    <span className="size-8 border border-[#0a0a0a] bg-white grid place-items-center font-display text-xs font-extrabold">
+                      →
+                    </span>
                   </Link>
                 </li>
               ))}
             </ul>
-
-            <div className="mt-5 rounded-lg border border-amber-400/20 bg-amber-400/[0.03] p-4">
-              <p className="text-sm font-medium text-amber-300">
-                Toda receita publicada passa por análise da comunidade.
-              </p>
-              <p className="mt-1 text-sm leading-relaxed text-neutral-400">
-                Nosso caderno de receitas cresce com a contribuição de
-                cozinheiros de verdade — sem frescura, sem ego, só o sabor de
-                compartilhar.
+            <div className="bg-[#ffb900] px-4 py-3">
+              <p className="font-display text-xs font-extrabold uppercase text-[#0a0a0a]">
+                Toda receita passa por análise
               </p>
             </div>
-          </motion.aside>
-        </motion.div>
+          </aside>
+        </div>
       </div>
     </section>
   );

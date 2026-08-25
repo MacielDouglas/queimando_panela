@@ -32,9 +32,9 @@ type Props = {
 };
 
 export const metadata: Metadata = {
-  title: 'Receitas da comunidade — Queimando Panela',
+  title: 'Receitas — Queimando Panela',
   description:
-    'Receitas caseiras, afetivas e compartilhadas pela comunidade do Queimando Panela.',
+    'Todas as receitas Estapar Panelinha — quadradas, amarelas e sem frescura.',
 };
 
 function getSingle(value: SearchValue) {
@@ -43,7 +43,6 @@ function getSingle(value: SearchValue) {
 
 function getMany(value: SearchValue) {
   if (!value) return [];
-
   return Array.isArray(value)
     ? value.map((item) => item.trim()).filter(Boolean)
     : [value.trim()].filter(Boolean);
@@ -53,7 +52,6 @@ function parseDifficulty(
   value: SearchValue,
 ): RecipeDifficultyValue | undefined {
   const raw = getSingle(value);
-
   if (
     raw === 'EASY' ||
     raw === 'EASY_MEDIUM' ||
@@ -63,7 +61,6 @@ function parseDifficulty(
   ) {
     return raw;
   }
-
   return undefined;
 }
 
@@ -113,51 +110,76 @@ export default async function RecipesPage({ searchParams }: Props) {
   const totalPages = Math.max(Math.ceil(total / take), 1);
 
   return (
-    <main className="min-h-dvh bg-neutral-50 pt-24 pb-20 text-neutral-900">
-      <section className="border-b border-neutral-200 bg-white">
-        <div className="editorial-container py-6 sm:py-8">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex min-h-9 items-center gap-2 border border-amber-500 bg-amber-50 px-4 text-xs font-semibold tracking-[0.16em] text-amber-700 uppercase">
-                <ChefHat className="h-4 w-4" />
-                Receitas feitas por cozinheiros amadores
+    <main className="bg-white">
+      {/* Faixa Estapar */}
+      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
+
+      {/* Header Estapar Panelinha */}
+      <section className="border-b-2 border-[#0a0a0a] bg-white">
+        <div className="editorial-container py-8 lg:py-10">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-2 border-2 border-[#0a0a0a] bg-[#ffb900] px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+                <ChefHat className="size-4" />
+                Panelinha Estapar
+              </span>
+              <span
+                className="hidden h-6 w-px bg-[#e5e5e5] sm:block"
+                aria-hidden="true"
+              />
+              <span className="hidden font-sans text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b] sm:inline">
+                {total} receitas
               </span>
             </div>
 
             {session?.user && (
               <Link
                 href="/receitas/new"
-                className="inline-flex min-h-10 items-center gap-2 border border-amber-500 bg-amber-500 px-4 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400"
+                className="inline-flex h-11 items-center gap-2 border-2 border-[#0a0a0a] bg-[#0a0a0a] px-5 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-[#ffb900] hover:text-[#0a0a0a]"
               >
-                <Plus className="h-4 w-4" />
-                Enviar nova receita
+                <Plus className="size-4" />
+                Enviar receita
               </Link>
             )}
           </div>
 
-          <h1 className="mt-6 max-w-3xl text-4xl leading-tight font-bold tracking-tight text-neutral-950 sm:text-5xl lg:text-6xl">
-            Receitas para aquecer o coração e a cozinha.
+          <h1 className="mt-6 max-w-3xl font-display text-4xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-5xl">
+            Receitas para
+            <br />
+            <span className="bg-[#ffb900] px-1">aquecer</span> a cozinha.
           </h1>
-
-          <p className="mt-4 max-w-2xl text-base leading-7 text-neutral-700">
-            Descubra pratos criados por cozinheiros amadores, receitas afetivas,
-            sabores regionais e experiências gastronômicas compartilhadas pela
-            comunidade.
+          <p className="mt-4 max-w-2xl font-sans text-sm leading-6 text-[#6b6b6b]">
+            Grid Panelinha 3 colunas, filtro Estapar quadrado. Clique no chip, a
+            página recarrega quadrada.
           </p>
         </div>
       </section>
 
-      <section className="border-b border-neutral-200 bg-neutral-950">
-        <div className="editorial-container py-6 sm:py-8">
-          <RecipeSearch defaultQuery={query} />
+      {/* Busca — faixa preta Estapar */}
+      <section className="border-b-2 border-[#0a0a0a] bg-[#0a0a0a]">
+        <div className="editorial-container py-6">
+          <div className="flex items-center gap-3">
+            <span className="hidden bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] sm:inline-block">
+              Busca
+            </span>
+            <div className="flex-1">
+              <RecipeSearch defaultQuery={query} />
+            </div>
+            <Link
+              href="/receitas"
+              className="hidden h-12 items-center border border-white/20 px-4 font-display text-xs font-bold uppercase tracking-[0.12em] text-white hover:border-[#ffb900] hover:text-[#ffb900] sm:inline-flex"
+            >
+              Limpar
+            </Link>
+          </div>
         </div>
       </section>
 
-      <div className="editorial-container py-8 sm:py-10 lg:py-12">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-start lg:gap-10">
-          <div className="min-w-0 space-y-14">
+      <div className="editorial-container py-8 lg:py-10">
+        <div className="grid gap-8 lg:grid-cols-[1fr_300px] lg:items-start">
+          <div className="min-w-0 space-y-10">
             {!isFiltered && latest && (
-              <section>
+              <section className="border-2 border-[#0a0a0a] bg-white p-2">
                 <RecipeHeroFeatured recipe={latest} />
               </section>
             )}
@@ -194,19 +216,38 @@ export default async function RecipesPage({ searchParams }: Props) {
             />
           </div>
 
-          <aside className="lg:sticky lg:top-24">
-            <RecipeFilters
-              currentQuery={query}
-              currentCategory={category}
-              currentDifficulty={difficulty ?? ''}
-              currentTypes={types}
-              currentUtensils={utensils}
-              currentIngredients={ingredients}
-              categories={filterOptions.categories}
-              types={filterOptions.types}
-              utensils={filterOptions.utensils}
-              ingredients={filterOptions.ingredients}
-            />
+          <aside className="lg:sticky lg:top-[76px]">
+            <div className="border-2 border-[#0a0a0a] bg-white">
+              <div className="border-b-2 border-[#0a0a0a] bg-[#0a0a0a] px-4 py-3">
+                <p className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#ffb900]">
+                  Filtros Panelinha
+                </p>
+              </div>
+              <div className="p-4">
+                <RecipeFilters
+                  currentQuery={query}
+                  currentCategory={category}
+                  currentDifficulty={difficulty ?? ''}
+                  currentTypes={types}
+                  currentUtensils={utensils}
+                  currentIngredients={ingredients}
+                  categories={filterOptions.categories}
+                  types={filterOptions.types}
+                  utensils={filterOptions.utensils}
+                  ingredients={filterOptions.ingredients}
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 border-2 border-[#ffb900] bg-[#ffb900] p-4">
+              <p className="font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
+                Dica Estapar
+              </p>
+              <p className="mt-2 font-sans text-sm leading-5 text-[#0a0a0a]">
+                Use o chip amarelo para filtrar. Quadrado, preto e amarelo — sem
+                arredondado.
+              </p>
+            </div>
           </aside>
         </div>
       </div>

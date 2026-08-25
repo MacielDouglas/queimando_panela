@@ -1,7 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { RecipeCardData } from '@/features/recipes/actions/get-all-recipes';
@@ -13,35 +11,50 @@ interface HeroSectionProps {
 export function HeroSection({ featuredRecipe }: HeroSectionProps) {
   if (!featuredRecipe) {
     return (
-      <section aria-labelledby="hero-recipe-title">
-        <div className="relative mx-auto flex aspect-4/3 max-w-7xl items-center justify-center bg-linear-to-br from-amber-100 to-amber-50 sm:aspect-video lg:aspect-21/9">
-          <div className="text-center">
-            <div
-              className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-amber-200/60"
-              aria-hidden="true"
-            >
-              <svg
-                viewBox="0 0 64 64"
-                className="size-8 text-amber-600"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <rect x="1.5" y="1.5" width="61" height="61" rx="4" />
-                <path d="M16 25.5C16 19.7 20.5 16 26.6 16C32.7 16 37.2 19.8 37.2 25.5C37.2 31.3 32.7 35.2 26.6 35.2C20.5 35.2 16 31.3 16 25.5ZM21 25.5C21 28.7 23.2 31 26.6 31C30 31 32.2 28.7 32.2 25.5C32.2 22.4 30 20.2 26.6 20.2C23.2 20.2 21 22.4 21 25.5ZM29.8 32.8L37.6 40.8" />
-                <path d="M41 16V41M41 16H49.8C55.1 16 58 19.2 58 23.9C58 28.6 55.1 31.8 49.8 31.8H41" />
-              </svg>
+      <section className="border-t-[6px] border-[#ffb900] bg-white">
+        <div className="editorial-container py-12 lg:py-16">
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-center">
+            <div>
+              <p className="inline-block bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+                Queimando Panela
+              </p>
+              <h1 className="mt-4 font-display text-4xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-5xl lg:text-6xl">
+                A Estapar
+                <br />
+                <span className="bg-[#ffb900] px-1">da cozinha</span>
+                <br />
+                brasileira
+              </h1>
+              <p className="mt-4 max-w-lg font-sans text-base leading-6 text-[#6b6b6b]">
+                Receitas reais, quadradas e amarelas. Sem pop-up, sem enrolação.
+                A Panelinha que a Estapar faria se vendesse panela.
+              </p>
+              <div className="mt-6 flex gap-3">
+                <Link
+                  href="/receitas"
+                  className="inline-flex h-12 items-center border border-[#0a0a0a] bg-[#0a0a0a] px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-white hover:text-[#0a0a0a]"
+                >
+                  Ver receitas
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className="inline-flex h-12 items-center border border-[#0a0a0a] bg-white px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#ffb900]"
+                >
+                  Enviar receita
+                </Link>
+              </div>
             </div>
-            <h2
-              id="hero-recipe-title"
-              className="text-xl font-bold tracking-tight text-amber-900 sm:text-2xl lg:text-3xl"
-            >
-              Queimando Panela
-            </h2>
-            <p className="mt-2 max-w-md px-4 text-sm leading-relaxed text-amber-700">
-              Nenhuma receita em destaque no momento. Volte em breve para
-              descobrir novos pratos.
-            </p>
+            <div className="relative aspect-[4/3] border-2 border-[#0a0a0a] bg-[#f5f5f5] p-2">
+              <div className="flex h-full w-full items-center justify-center border border-dashed border-[#e5e5e5] bg-white">
+                <span className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+                  Nenhuma receita em destaque
+                </span>
+              </div>
+              <div
+                className="absolute -right-2 -top-2 size-4 bg-[#ffb900] border border-[#0a0a0a]"
+                aria-hidden="true"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -49,94 +62,97 @@ export function HeroSection({ featuredRecipe }: HeroSectionProps) {
   }
 
   return (
-    <section aria-labelledby="hero-recipe-title">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
-      >
-        <Link
-          href={`/receitas/${featuredRecipe.slug}`}
-          aria-label={`Ver receita em destaque: ${featuredRecipe.title}`}
-          className="group relative mx-auto block aspect-4/3 max-w-7xl overflow-hidden bg-neutral-900 sm:aspect-video lg:aspect-21/9"
-        >
-          {/* Imagem de capa */}
-          {featuredRecipe.coverUrl ? (
-            <Image
-              src={featuredRecipe.coverUrl}
-              alt={featuredRecipe.title}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-            />
-          ) : (
-            <div
-              className="flex h-full w-full items-center justify-center bg-linear-to-br from-amber-100 to-amber-50"
-              aria-hidden="true"
-            >
-              <svg
-                viewBox="0 0 64 64"
-                className="size-12 text-amber-400"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
+    <section className="border-t-[6px] border-[#ffb900] bg-white">
+      <div className="editorial-container py-8 lg:py-12">
+        <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
+          {/* Texto Estapar */}
+          <div>
+            <p className="inline-flex items-center gap-2 bg-[#ffb900] px-3 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+              <span className="size-1.5 bg-[#0a0a0a]" aria-hidden="true" />
+              Receita em destaque
+            </p>
+
+            {featuredRecipe.types[0] && (
+              <p className="mt-3 font-display text-xs font-bold uppercase tracking-[0.16em] text-[#6b6b6b]">
+                {featuredRecipe.types[0]} • Panelinha do dia
+              </p>
+            )}
+
+            <h1 className="mt-3 font-display text-3xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-4xl lg:text-5xl">
+              {featuredRecipe.title}
+            </h1>
+
+            {featuredRecipe.summary && (
+              <p className="mt-4 max-w-xl font-sans text-base leading-6 text-[#6b6b6b]">
+                {featuredRecipe.summary}
+              </p>
+            )}
+
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Link
+                href={`/receitas/${featuredRecipe.slug}`}
+                className="inline-flex h-12 items-center border border-[#0a0a0a] bg-[#0a0a0a] px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-[#ffb900] hover:text-[#0a0a0a] hover:border-[#ffb900]"
               >
-                <rect x="1.5" y="1.5" width="61" height="61" rx="4" />
-                <path d="M16 25.5C16 19.7 20.5 16 26.6 16C32.7 16 37.2 19.8 37.2 25.5C37.2 31.3 32.7 35.2 26.6 35.2C20.5 35.2 16 31.3 16 25.5ZM21 25.5C21 28.7 23.2 31 26.6 31C30 31 32.2 28.7 32.2 25.5C32.2 22.4 30 20.2 26.6 20.2C23.2 20.2 21 22.4 21 25.5ZM29.8 32.8L37.6 40.8" />
-                <path d="M41 16V41M41 16H49.8C55.1 16 58 19.2 58 23.9C58 28.6 55.1 31.8 49.8 31.8H41" />
-              </svg>
+                Ver receita completa
+              </Link>
+              <Link
+                href="/receitas"
+                className="inline-flex h-12 items-center border border-[#e5e5e5] bg-white px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:border-[#0a0a0a]"
+              >
+                Todas as receitas
+              </Link>
             </div>
-          )}
 
-          {/* Overlay gradiente — separado da imagem para não bloquear o alt */}
-          <div
-            className="absolute inset-0 bg-linear-to-t from-neutral-950/80 via-neutral-950/30 to-transparent"
-            aria-hidden="true"
-          />
-
-          {/* Conteúdo textual sobre o overlay */}
-          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8 lg:p-12">
-            <div className="mx-auto max-w-4xl">
-              {/* Badge de categoria */}
-              {featuredRecipe.types[0] && (
-                <p className="mb-3">
-                  <span className="inline-block border border-amber-300 bg-amber-50/90 px-3 py-1 text-xs font-semibold tracking-[0.16em] text-amber-800 uppercase backdrop-blur-sm">
-                    {featuredRecipe.types[0]}
-                  </span>
-                </p>
-              )}
-
-              {/* Título — h2 com id para o aria-labelledby da section */}
-              <h2
-                id="hero-recipe-title"
-                className="text-2xl leading-tight font-bold tracking-tight text-white sm:text-3xl lg:text-5xl"
-              >
-                {featuredRecipe.title}
-              </h2>
-
-              {/* Resumo */}
-              {featuredRecipe.summary && (
-                <p className="mt-3 line-clamp-2 max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base lg:text-lg">
-                  {featuredRecipe.summary}
-                </p>
-              )}
-
-              {/* CTA */}
-              <span
-                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition-colors duration-200 group-hover:text-amber-300 sm:text-base"
-                aria-hidden="true" // aria-label no <Link> já descreve a ação
-              >
-                Ver receita
-                <ArrowRight
-                  className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
-                  aria-hidden="true"
-                />
+            <div className="mt-6 flex items-center gap-4 border-t border-[#e5e5e5] pt-4">
+              <span className="h-10 w-10 bg-[#0a0a0a] text-white grid place-items-center font-display text-xs font-extrabold">
+                QP
               </span>
+              <div>
+                <p className="font-display text-xs font-extrabold uppercase tracking-[0.1em] text-[#0a0a0a]">
+                  Queimando Panela
+                </p>
+                <p className="font-sans text-xs text-[#6b6b6b]">
+                  Cozinha real, sem filtro
+                </p>
+              </div>
             </div>
           </div>
-        </Link>
-      </motion.div>
+
+          {/* Imagem quadrada Estapar */}
+          <Link
+            href={`/receitas/${featuredRecipe.slug}`}
+            className="group relative block border-2 border-[#0a0a0a] bg-white p-2 hover:border-[#ffb900]"
+          >
+            <div className="relative aspect-[4/3] overflow-hidden bg-[#f5f5f5]">
+              {featuredRecipe.coverUrl ? (
+                <Image
+                  src={featuredRecipe.coverUrl}
+                  alt={featuredRecipe.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-cover transition duration-500 group-hover:scale-[1.02]"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-[#f5f5f5] font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+                  Sem foto
+                </div>
+              )}
+              <div className="absolute left-2 top-2 bg-[#ffb900] px-2 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] border border-[#0a0a0a]">
+                Destaque
+              </div>
+            </div>
+            <div
+              className="absolute -right-2 -top-2 size-3 bg-[#ffb900] border border-[#0a0a0a]"
+              aria-hidden="true"
+            />
+            <div
+              className="absolute -left-2 -bottom-2 size-3 bg-[#0a0a0a]"
+              aria-hidden="true"
+            />
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }

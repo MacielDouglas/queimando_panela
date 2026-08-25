@@ -11,24 +11,24 @@ import { getRandomRecipe } from '@/features/recipes/actions/get-random-recipe';
 export const metadata: Metadata = {
   title: 'Queimando Panela — Receitas caseiras, afetivas e autorais',
   description:
-    'Descubra receitas criadas por cozinheiros amadores. Pratos afetivos, sabores regionais e experiências gastronômicas compartilhadas pela comunidade.',
+    'A Estapar da cozinha — direta, quadrada, amarela e sem frescura. Receitas que parecem da sua mãe.',
   openGraph: {
-    title: 'Queimando Panela — Receitas caseiras, afetivas e autorais',
+    title: 'Queimando Panela — Estapar Panelinha',
     description:
-      'Descubra receitas criadas por cozinheiros amadores. Pratos afetivos, sabores regionais e experiências gastronômicas compartilhadas pela comunidade.',
+      'A Estapar da cozinha — direta, quadrada, amarela e sem frescura.',
     type: 'website',
   },
 };
 
 export default async function Home() {
   const [latestRecipes, classicRecipes, featuredRecipe] = await Promise.all([
-    getLatestRecipes(3),
+    getLatestRecipes(8),
     getClassicRecipes(4, 1),
     getRandomRecipe(),
   ]);
 
   return (
-    <main className="bg-background min-h-screen pt-24">
+    <main className="bg-white">
       <HeroSection featuredRecipe={featuredRecipe} />
       <LatestRecipesSection recipes={latestRecipes} />
       <ClassicRecipesSection rows={classicRecipes} />

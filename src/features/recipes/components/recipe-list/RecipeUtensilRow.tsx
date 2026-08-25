@@ -9,30 +9,27 @@ type Props = {
 
 export function RecipeUtensilRow({ utensilName, recipes }: Props) {
   if (recipes.length === 0) return null;
-
   return (
-    <section>
-      <div className="mb-5 flex items-end justify-between gap-4 border-b border-neutral-200 pb-3">
+    <section className="border-2 border-[#0a0a0a] bg-[#f5f5f5] p-4">
+      <div className="mb-4 flex items-end justify-between gap-4 border-b-2 border-[#0a0a0a] pb-3">
         <div>
-          <p className="text-xs font-semibold tracking-[0.18em] text-neutral-500 uppercase">
-            Método de preparo
+          <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[#6b6b6b]">
+            Método
           </p>
-          <h2 className="mt-1 text-xl font-bold tracking-tight text-neutral-950 sm:text-2xl">
+          <h2 className="mt-1 font-display text-xl font-extrabold uppercase leading-none text-[#0a0a0a]">
             {utensilName}
           </h2>
         </div>
-
         <Link
           href={`/receitas?utensilio=${encodeURIComponent(utensilName)}`}
-          className="shrink-0 text-xs font-semibold text-neutral-700 hover:text-neutral-500"
+          className="border border-[#e5e5e5] bg-white px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:border-[#0a0a0a]"
         >
           Ver todas →
         </Link>
       </div>
-
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {recipes.map((recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} aspectRatio="16/9" />
+          <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
       </div>
     </section>

@@ -16,8 +16,8 @@ export function RecipeSearch({ defaultQuery }: Props) {
   ];
 
   return (
-    <div className="border border-neutral-200 bg-white p-5 sm:p-6 lg:p-8">
-      <p className="mb-4 text-xs font-semibold tracking-[0.18em] text-neutral-600 uppercase">
+    <div className="border-2 border-white bg-white p-4">
+      <p className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#0a0a0a]">
         Faça sua busca
       </p>
 
@@ -25,36 +25,37 @@ export function RecipeSearch({ defaultQuery }: Props) {
         action="/receitas"
         method="get"
         aria-label="Buscar receitas"
-        className="space-y-4"
+        className="mt-3"
       >
-        <div className="flex items-center gap-3 border border-neutral-900 bg-neutral-950 px-4 py-3">
-          <Search className="h-5 w-5 text-amber-500" aria-hidden="true" />
-
-          <input
-            type="search"
-            name="q"
-            defaultValue={defaultQuery ?? ''}
-            placeholder="Pesquise por ingrediente, prato ou categoria..."
-            className="w-full bg-transparent text-sm text-white outline-none placeholder:text-neutral-400"
-            aria-label="Pesquisar receitas"
-          />
-
+        <div className="flex gap-0 border-2 border-[#0a0a0a] bg-white">
+          <div className="flex flex-1 items-center gap-3 px-4">
+            <Search className="size-4 text-[#0a0a0a]" aria-hidden="true" />
+            <input
+              type="search"
+              name="q"
+              defaultValue={defaultQuery ?? ''}
+              placeholder="Ingrediente, prato ou categoria..."
+              className="h-12 w-full bg-transparent font-sans text-sm text-[#0a0a0a] outline-none placeholder:text-[#6b6b6b]"
+              aria-label="Pesquisar receitas"
+            />
+          </div>
           <button
             type="submit"
-            className="shrink-0 border border-amber-500 bg-amber-500 px-4 py-1.5 text-xs font-bold text-neutral-950 hover:bg-amber-400"
+            className="border-l-2 border-[#0a0a0a] bg-[#ffb900] px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
           >
             Buscar
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-neutral-500">Populares:</span>
-
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="font-display text-xs font-bold uppercase tracking-[0.12em] text-white/60">
+            Populares:
+          </span>
           {suggestions.map((suggestion) => (
             <Link
               key={suggestion}
               href={`/receitas?q=${encodeURIComponent(suggestion)}`}
-              className="border border-neutral-300 bg-white px-3 py-1 text-xs font-medium text-neutral-700 transition hover:border-amber-400 hover:bg-amber-50 hover:text-amber-700"
+              className="border border-white/20 bg-white/10 px-3 py-1 font-display text-xs font-bold uppercase tracking-[0.08em] text-white hover:border-[#ffb900] hover:bg-[#ffb900] hover:text-[#0a0a0a]"
             >
               {suggestion}
             </Link>

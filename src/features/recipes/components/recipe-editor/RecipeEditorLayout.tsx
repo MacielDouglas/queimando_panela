@@ -16,70 +16,67 @@ export function RecipeEditorLayout({
   children,
 }: Props) {
   return (
-    <main className="min-h-dvh bg-neutral-50 pb-20 text-neutral-900">
-      <div className="border-b border-neutral-200 bg-white">
-        <div className="editorial-container py-4 sm:py-5">
+    <main className="bg-white pb-12">
+      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
+      <div className="border-b-2 border-[#0a0a0a] bg-white">
+        <div className="editorial-container py-3">
           <Link
             href="/receitas"
-            className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-neutral-600 transition hover:text-amber-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
+            className="inline-flex h-10 items-center gap-2 border-2 border-[#e5e5e5] bg-white px-3 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:border-[#0a0a0a] hover:bg-[#ffb900]"
           >
-            <ChevronLeft className="h-4 w-4" />
-            Voltar para receitas
+            <ChevronLeft className="size-4" />
+            Voltar
           </Link>
         </div>
       </div>
 
-      <section className="border-b border-neutral-200 bg-white">
-        <div className="editorial-container py-8 sm:py-10 lg:py-12">
-          <div className="max-w-3xl space-y-4">
-            <p className="text-xs font-semibold tracking-[0.16em] text-amber-700 uppercase">
+      <section className="border-b-2 border-[#0a0a0a] bg-white">
+        <div className="editorial-container py-8 lg:py-10">
+          <div className="max-w-3xl">
+            <p className="inline-block bg-[#ffb900] border-2 border-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
               {eyebrow}
             </p>
-
-            <h1 className="text-4xl leading-tight font-bold tracking-tight text-neutral-950 sm:text-5xl lg:text-6xl">
+            <h1 className="mt-3 font-display text-4xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-5xl">
               {title}
             </h1>
-
-            <p className="max-w-2xl text-base leading-7 text-neutral-700 sm:text-lg">
+            <p className="mt-3 max-w-2xl border-l-[6px] border-[#ffb900] pl-4 font-sans text-sm leading-6 text-[#6b6b6b]">
               {description}
             </p>
           </div>
         </div>
       </section>
 
-      <section className="editorial-container py-8 sm:py-10 lg:py-12">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12">
+      <section className="editorial-container py-8 lg:py-10">
+        <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
           <div>{children}</div>
-
-          <aside className="h-fit border border-neutral-200 bg-white p-5 sm:p-6 lg:sticky lg:top-24">
-            <h2 className="mb-3 text-sm font-bold tracking-[0.16em] text-neutral-900 uppercase">
+          <aside className="h-fit border-2 border-[#0a0a0a] bg-[#0a0a0a] p-4 text-white lg:sticky lg:top-[76px]">
+            <h2 className="font-display text-sm font-extrabold uppercase tracking-[0.14em] text-[#ffb900]">
               Antes de salvar
             </h2>
-
-            <ul className="space-y-3 text-sm leading-6 text-neutral-700">
-              <li className="flex items-start gap-3">
+            <ul className="mt-3 space-y-2 font-sans text-sm leading-5 text-white/70">
+              <li className="flex gap-2">
                 <span
-                  aria-hidden
-                  className="mt-2 h-1.5 w-1.5 shrink-0 bg-amber-500"
+                  className="mt-2 size-1.5 bg-[#ffb900] shrink-0"
+                  aria-hidden="true"
                 />
-                Revise título, ingredientes e modo de preparo.
+                Revise título e ingredientes.
               </li>
-              <li className="flex items-start gap-3">
+              <li className="flex gap-2">
                 <span
-                  aria-hidden
-                  className="mt-2 h-1.5 w-1.5 shrink-0 bg-amber-500"
+                  className="mt-2 size-1.5 bg-[#ffb900] shrink-0"
+                  aria-hidden="true"
                 />
-                Use a análise da IA como rascunho editável, não como resposta
-                final.
+                IA é rascunho editável.
               </li>
-              <li className="flex items-start gap-3">
+              <li className="flex gap-2">
                 <span
-                  aria-hidden
-                  className="mt-2 h-1.5 w-1.5 shrink-0 bg-amber-500"
+                  className="mt-2 size-1.5 bg-[#ffb900] shrink-0"
+                  aria-hidden="true"
                 />
-                Receitas salvas ficam como não publicadas até sua revisão final.
+                Salvo fica não publicado até revisão.
               </li>
             </ul>
+            <div className="mt-4 h-1 bg-[#ffb900]" aria-hidden="true" />
           </aside>
         </div>
       </section>

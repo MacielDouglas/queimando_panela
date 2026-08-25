@@ -102,7 +102,7 @@ export default async function RecipeDetailPage({ params }: Props) {
       ];
 
   return (
-    <main className="bg-neutral-50 pt-24 pb-20 text-neutral-900">
+    <main className="bg-white pb-12">
       <RecipeDetailHero
         title={recipe.title}
         summary={recipe.summary}
@@ -118,13 +118,13 @@ export default async function RecipeDetailPage({ params }: Props) {
         editHref={`/receitas/${recipe.slug}/editar`}
         slug={recipe.slug}
       />
-      <section className="editorial-container py-8 sm:py-10 lg:py-14">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-12">
-          <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+      <section className="editorial-container py-8 lg:py-10">
+        <div className="grid gap-6 lg:grid-cols-[360px_1fr] lg:gap-8">
+          <aside className="space-y-6 lg:sticky lg:top-[76px] lg:self-start">
             <RecipeIngredients sections={displaySections} utensils={utensils} />
           </aside>
 
-          <div className="space-y-8">
+          <div className="space-y-6">
             <RecipeSteps sections={displaySections} />
             <RecipeNutrition
               summary={recipe.nutritionSummary}

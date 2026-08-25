@@ -1,4 +1,4 @@
-import { Clock3, Flame, Pencil, ScrollText, Soup, Users } from 'lucide-react';
+import { Clock3, Flame, Pencil, Soup, Users } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -41,88 +41,93 @@ export function RecipeDetailHero({
   const totalTime = (prepTimeMinutes ?? 0) + (cookTimeMinutes ?? 0);
 
   return (
-    <header className="border-b border-neutral-200 bg-white">
-      <div className="editorial-container py-6 sm:py-8 lg:py-10">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,420px)] lg:items-start">
-          <div className="order-2 space-y-6 lg:order-1">
+    <header className="border-b-2 border-[#0a0a0a] bg-white">
+      <div className="h-[6px] bg-[#ffb900]" aria-hidden="true" />
+      <div className="editorial-container py-8 lg:py-10">
+        <div className="grid gap-8 lg:grid-cols-[1.15fr_420px] lg:items-start">
+          <div className="space-y-5">
             <div className="flex flex-wrap gap-2">
               {types.map((t) => (
                 <span
                   key={t}
-                  className="inline-flex min-h-9 items-center border border-amber-500 px-3 text-xs font-semibold tracking-[0.16em] text-amber-700 uppercase"
+                  className="border-2 border-[#0a0a0a] bg-[#ffb900] px-3 py-1 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]"
                 >
                   {t}
                 </span>
               ))}
-
-              <span className="inline-flex min-h-9 items-center gap-2 border border-neutral-300 px-3 text-xs font-semibold tracking-[0.16em] text-neutral-700 uppercase">
-                <Flame className="h-3.5 w-3.5 text-amber-500" />
+              <span className="inline-flex items-center gap-1.5 border-2 border-[#0a0a0a] bg-white px-3 py-1 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
+                <Flame className="size-3.5 text-[#ffb900]" />
                 {difficultyLabel[difficulty]}
               </span>
             </div>
 
-            <div className="space-y-4">
-              <h1 className="max-w-4xl text-4xl leading-tight font-bold tracking-tight text-neutral-950 sm:text-5xl lg:text-6xl">
-                {title}
-              </h1>
+            <h1 className="font-display text-4xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-5xl">
+              {title}
+            </h1>
 
-              {summary && (
-                <p className="max-w-2xl text-base leading-7 text-neutral-700 sm:text-lg">
-                  {summary}
-                </p>
-              )}
-            </div>
+            {summary && (
+              <p className="max-w-2xl border-l-[6px] border-[#ffb900] pl-4 font-sans text-base leading-6 text-[#6b6b6b]">
+                {summary}
+              </p>
+            )}
 
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-y border-neutral-200 py-4 text-sm text-neutral-800">
+            <div className="grid grid-cols-2 gap-0 border-2 border-[#0a0a0a] bg-white sm:grid-cols-4">
               {totalTime > 0 && (
-                <div className="flex items-center gap-2">
-                  <Clock3 className="h-4 w-4 text-amber-500" />
-                  <span className="font-medium">Tempo total:</span>
-                  <span>{totalTime} min</span>
+                <div className="border-r-2 border-[#0a0a0a] p-3 last:border-0">
+                  <p className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+                    Total
+                  </p>
+                  <p className="mt-1 flex items-center gap-1.5 font-display text-sm font-extrabold text-[#0a0a0a]">
+                    <Clock3 className="size-4 text-[#ffb900]" /> {totalTime} min
+                  </p>
                 </div>
               )}
-
               {prepTimeMinutes ? (
-                <div className="flex items-center gap-2">
-                  <ScrollText className="h-4 w-4 text-amber-500" />
-                  <span className="font-medium">Preparo:</span>
-                  <span>{prepTimeMinutes} min</span>
+                <div className="border-r-2 border-[#0a0a0a] p-3 last:border-0">
+                  <p className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+                    Preparo
+                  </p>
+                  <p className="mt-1 font-display text-sm font-extrabold text-[#0a0a0a]">
+                    {prepTimeMinutes} min
+                  </p>
                 </div>
               ) : null}
-
               {cookTimeMinutes ? (
-                <div className="flex items-center gap-2">
-                  <Soup className="h-4 w-4 text-amber-500" />
-                  <span className="font-medium">Cozimento:</span>
-                  <span>{cookTimeMinutes} min</span>
+                <div className="border-r-2 border-[#0a0a0a] p-3 last:border-0">
+                  <p className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b] flex items-center gap-1">
+                    <Soup className="size-3.5" /> Cozimento
+                  </p>
+                  <p className="mt-1 font-display text-sm font-extrabold text-[#0a0a0a]">
+                    {cookTimeMinutes} min
+                  </p>
                 </div>
               ) : null}
-
               {servings ? (
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-amber-500" />
-                  <span className="font-medium">Porções:</span>
-                  <span>{servings}</span>
+                <div className="p-3">
+                  <p className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b] flex items-center gap-1">
+                    <Users className="size-3.5" /> Porções
+                  </p>
+                  <p className="mt-1 font-display text-sm font-extrabold text-[#0a0a0a]">
+                    {servings}
+                  </p>
                 </div>
               ) : null}
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <p className="text-sm text-neutral-600">
-                Receita enviada por{' '}
-                <span className="font-semibold text-neutral-900">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-2 border-[#0a0a0a] bg-[#f5f5f5] p-3">
+              <p className="font-sans text-sm text-[#6b6b6b]">
+                Receita de{' '}
+                <span className="font-display font-extrabold uppercase tracking-[0.08em] text-[#0a0a0a]">
                   {authorName}
                 </span>
               </p>
-
               {isAuthor && editHref ? (
-                <div className="flex items-center gap-2">
+                <div className="flex gap-2">
                   <Link
                     href={editHref}
-                    className="inline-flex min-h-11 items-center gap-2 border border-neutral-900 bg-neutral-900 px-4 text-sm font-semibold text-white transition hover:border-amber-500 hover:bg-amber-500 hover:text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
+                    className="inline-flex h-10 items-center gap-2 border-2 border-[#0a0a0a] bg-[#0a0a0a] px-4 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-[#ffb900] hover:text-[#0a0a0a]"
                   >
-                    <Pencil className="h-4 w-4" />
-                    Editar receita
+                    <Pencil className="size-4" /> Editar
                   </Link>
                   <DeleteRecipeButton slug={slug} title={title} />
                 </div>
@@ -130,25 +135,19 @@ export function RecipeDetailHero({
             </div>
 
             {story && (
-              <section
-                aria-labelledby="recipe-story-heading"
-                className="border-l-4 border-amber-500 bg-amber-50 px-4 py-4 sm:px-5"
-              >
-                <h2
-                  id="recipe-story-heading"
-                  className="mb-2 text-xs font-semibold tracking-[0.16em] text-amber-700 uppercase"
-                >
+              <section className="border-2 border-[#0a0a0a] bg-[#ffb900] p-4">
+                <h2 className="font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
                   História da receita
                 </h2>
-                <p className="text-sm leading-7 text-neutral-700 sm:text-base">
+                <p className="mt-2 font-sans text-sm leading-6 text-[#0a0a0a]">
                   {story}
                 </p>
               </section>
             )}
           </div>
 
-          <div className="order-1 lg:order-2">
-            <div className="relative aspect-4/3 overflow-hidden border border-neutral-200 bg-neutral-100 sm:aspect-16/10 lg:aspect-square">
+          <div className="border-2 border-[#0a0a0a] bg-white p-2">
+            <div className="relative aspect-[4/3] bg-[#f5f5f5] border border-[#0a0a0a]">
               {coverUrl ? (
                 <Image
                   src={coverUrl}
@@ -156,13 +155,16 @@ export function RecipeDetailHero({
                   fill
                   priority
                   className="object-cover"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 420px"
+                  sizes="(max-width: 1024px) 100vw, 420px"
                 />
               ) : (
-                <div className="flex h-full items-center justify-center text-sm text-neutral-500">
+                <div className="grid h-full place-items-center font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
                   Sem imagem
                 </div>
               )}
+              <span className="absolute left-2 top-2 border-2 border-[#0a0a0a] bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase text-[#0a0a0a]">
+                Panelinha
+              </span>
             </div>
           </div>
         </div>

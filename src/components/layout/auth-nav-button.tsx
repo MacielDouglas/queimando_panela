@@ -21,7 +21,6 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
 
   async function handleSignOut() {
     setIsSigningOut(true);
-
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -38,12 +37,7 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
 
   if (isPending) {
     return (
-      <div
-        className={cn(
-          'h-10 w-24 animate-pulse rounded-none bg-stone-200',
-          className,
-        )}
-      />
+      <div className={cn('h-12 w-28 animate-pulse bg-[#e5e5e5]', className)} />
     );
   }
 
@@ -54,7 +48,7 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
         onClick={handleSignOut}
         disabled={isSigningOut}
         className={cn(
-          'h-10 rounded-none bg-stone-950 px-5 text-sm font-medium tracking-[0.16em] text-white uppercase hover:bg-stone-800',
+          'h-12 border border-[#0a0a0a] bg-[#0a0a0a] px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-white hover:text-[#0a0a0a]',
           className,
         )}
       >
@@ -68,7 +62,7 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
       asChild
       onClick={onNavigate}
       className={cn(
-        'h-10 rounded-none bg-amber-500 px-5 text-sm font-medium tracking-[0.16em] text-stone-950 uppercase hover:bg-amber-600',
+        'h-12 border border-[#0a0a0a] bg-[#0a0a0a] px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-white hover:text-[#0a0a0a]',
         className,
       )}
     >
