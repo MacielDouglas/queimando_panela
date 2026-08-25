@@ -328,10 +328,11 @@ export async function POST(request: Request) {
     const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
     const completion = await groq.chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: 'openai/gpt-oss-120b', // ← MODELO ATUALIZADO
       messages: [{ role: 'user', content: buildPrompt(title, sections) }],
       temperature: 0.2,
-      max_tokens: 2048,
+      max_tokens: 4096,
+      // response_format: { type: 'json_object' }, // ← ADICIONADO para garantir JSON
     });
 
     const raw = completion.choices[0]?.message?.content ?? '';

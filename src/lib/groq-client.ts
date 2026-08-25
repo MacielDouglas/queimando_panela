@@ -7,7 +7,6 @@ const groq = new Groq({
 
 type ChatParams = {
   messages: { role: 'system' | 'user' | 'assistant'; content: string }[];
-  // permitir override se quiser
   model?: string;
   maxTokens?: number;
   temperature?: number;
@@ -33,9 +32,7 @@ export async function createChatCompletionWithRetry({
         messages,
         temperature,
         max_tokens: maxTokens,
-        response_format: { type: 'json_object' },
-        // se quiser explicitar tier:
-        // service_tier: 'on_demand',
+        // response_format: { type: 'json_object' },
       });
 
       return completion;
@@ -71,7 +68,6 @@ export async function createChatCompletionWithRetry({
         break;
       }
 
-      // respeita Retry-After se vier numa janela razoável
       let delayMs = 0;
       if (retryAfterHeader) {
         const seconds = Number(retryAfterHeader);
@@ -81,7 +77,6 @@ export async function createChatCompletionWithRetry({
       }
 
       if (delayMs === 0) {
-        // backoff exponencial básico com jitter
         const base = 500 * 2 ** attempt;
         const jitter = 0.75 + Math.random() * 0.25;
         delayMs = Math.min(base, 8000) * jitter;
