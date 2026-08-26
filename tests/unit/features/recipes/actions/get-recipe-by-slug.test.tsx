@@ -17,6 +17,37 @@ describe('getRecipeBySlug', () => {
     vi.clearAllMocks();
   });
 
+  it('retorna null quando a receita não existe', async () => {
+    findUniqueMock.mockResolvedValue(null);
+
+    const result = await getRecipeBySlug('inexistente');
+
+    expect(result).toBeNull();
+    expect(findUniqueMock).toHaveBeenCalledWith({
+      where: { slug: 'inexistente' },
+      include: {
+        author: { select: { name: true } },
+        images: { orderBy: { order: 'asc' } },
+        sections: {
+          orderBy: { order: 'asc' },
+          include: {
+            ingredients: { orderBy: { order: 'asc' } },
+          },
+        },
+        ingredients: {
+          where: { sectionId: null },
+          orderBy: { order: 'asc' },
+        },
+        utensils: {
+          include: { utensil: true },
+        },
+        recipeTypes: {
+          include: { recipeType: true },
+        },
+      },
+    });
+  });
+
   it('retorna a receita com relações incluídas', async () => {
     findUniqueMock.mockResolvedValue({
       id: '1',

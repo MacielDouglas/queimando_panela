@@ -447,7 +447,7 @@ describe('RecipeFormShell', () => {
       screen.getByRole('button', { name: /Salvar alterações/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: /Reanalisar receita com IA/i }),
+      screen.getByRole('button', { name: /Reanalisar com IA/i }),
     ).toBeInTheDocument();
 
     await user.click(
