@@ -80,7 +80,7 @@ Regras de ouro:
 ## Pré-requisitos
 
 - **Bun** ≥ 1.3 (projeto usa `bun.lock` e scripts `bun run ...`)
-- **Node.js** ≥ 20 (para ferramentas do ecossistema)
+- **Node.js** 24.20.0 LTS Krypton (`lts/krypton` — última LTS em 26/08/2026; Current 26.8.0 disponível, use `.nvmrc`/`.node-version`)
 - **PostgreSQL** (local ou remoto)
 - Conta **Cloudflare R2** (ou S3 compatível) para imagens
 - Chave **Groq** (se usar análise por IA) e **Resend** (e-mails)
