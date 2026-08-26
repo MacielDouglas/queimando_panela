@@ -4,8 +4,8 @@ import { z } from 'zod';
 const envServerSchema = z.object({
   DATABASE_URL: z.string().min(1),
 
-  GOOGLE_CLIENT_ID: z.string().min(1),
-  GOOGLE_CLIENT_SECRET: z.string().min(1),
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
 
   BETTER_AUTH_SECRET: z.string().min(1),
 
@@ -16,9 +16,9 @@ const envServerSchema = z.object({
   R2_ACCESS_KEY_ID: z.string(),
   R2_SECRET_ACCESS_KEY: z.string(),
   R2_BUCKET_NAME: z.string(),
-  RESEND_API_KEY: z.string(),
+  RESEND_API_KEY: z.string().optional(),
 
-  GROQ_API_KEY: z.string(),
+  GROQ_API_KEY: z.string().optional(),
 
   NODE_ENV: z
     .enum(['development', 'production', 'test'])

@@ -11,10 +11,14 @@ export const auth = betterAuth({
     enabled: true,
   },
   socialProviders: {
-    google: {
-      clientId: envServer.GOOGLE_CLIENT_ID,
-      clientSecret: envServer.GOOGLE_CLIENT_SECRET,
-    },
+    ...(envServer.GOOGLE_CLIENT_ID && envServer.GOOGLE_CLIENT_SECRET
+      ? {
+          google: {
+            clientId: envServer.GOOGLE_CLIENT_ID,
+            clientSecret: envServer.GOOGLE_CLIENT_SECRET,
+          },
+        }
+      : {}),
   },
   secret: envServer.BETTER_AUTH_SECRET,
 });

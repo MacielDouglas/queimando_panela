@@ -1,9 +1,18 @@
 import Groq from 'groq-sdk';
 import { envServer } from '@/lib/env/env.server';
 
-const groq = new Groq({
-  apiKey: envServer.GROQ_API_KEY,
-});
+function getGroq(): Groq {
+  const apiKey = envServer.GROQ_API_KEY;
+  if (!apiKey) throw new Error('GROQ_API_KEY não configurada.');
+  return new Groq({ apiKey });
+}
+
+let _groq: Groq | null = null;
+
+function groq(): Groq {
+  if (!_groq) _groq = getGroq();
+  return _groq;
+}
 
 type ChatParams = {
   messages: { role: 'system' | 'user' | 'assistant'; content: string }[];
@@ -27,7 +36,7 @@ export async function createChatCompletionWithRetry({
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      const completion = await groq.chat.completions.create({
+      const completion = await groq().chat.completions.create({
         model,
         messages,
         temperature,
