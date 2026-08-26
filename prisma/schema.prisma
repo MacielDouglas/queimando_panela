@@ -1,0 +1,127 @@
+// Queimando Panela — Prisma schema (PostgreSQL / Neon)
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Better Auth ────────────────────────────────────────────
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions Session[]
+  accounts Account[]
+  recipes  Recipe[]
+  comments Comment[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
+}
+
+// ── Domínio: Queimando Panela ──────────────────────────────
+model Recipe {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  description     String   @db.Text
+  ingredients     String   @db.Text // JSON stringificado ou texto livre
+  instructions    String   @db.Text
+  imageUrl        String?
+  cookingTime     Int? // minutos
+  servings        Int?
+  difficulty      String? // Fácil | Médio | Difícil
+  category        String? // ex: Brasileira, Italiana, Vegana
+
+  // Análise de IA (preenchida após envio)
+  aiSummary       String?  @db.Text
+  aiUtensils      String?  @db.Text // JSON array
+  aiNutritionJson String?  @db.Text // tabela nutricional por 100g
+  aiPairings      String?  @db.Text
+  aiSubstitutions String?  @db.Text
+  aiCorrectedText String?  @db.Text
+  aiStatus        String   @default("pending") // pending | done | failed
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  comments Comment[]
+
+  isFeatured Boolean  @default(false)
+  isClassic  Boolean  @default(false)
+  views      Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([authorId])
+  @@map("recipe")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  recipeId  String
+  recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([recipeId])
+  @@map("comment")
+}
