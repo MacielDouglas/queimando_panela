@@ -37,27 +37,27 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
   return (
     <section className="border-t border-[#e5e5e5] bg-white">
       <div className="editorial-container py-16 lg:py-20">
-        <div className="flex flex-wrap items-end justify-between gap-4 border-b-2 border-[#0a0a0a] pb-4">
-          <div>
-            <p className="inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-white">
-              Queimando Panela
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#e5e5e5] pb-6">
+          <div className="max-w-[60ch]">
+            <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[#6b6b6b]">
+              Últimas receitas
             </p>
-            <h2 className="mt-3 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.01em] text-[#0a0a0a] sm:text-3xl">
+            <h2 className="mt-2 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.015em] text-[#0a0a0a] text-wrap-balance sm:text-3xl">
               O que acabou de sair do forno
             </h2>
-            <p className="mt-2 font-sans text-sm text-[#6b6b6b]">
-              Grid Queimando Panela 3 colunas, ritmo Queimando Panela
+            <p className="mt-2 max-w-[55ch] font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
+              Leitura leve, foto grande, foco no que importa — sem ruído.
             </p>
           </div>
           <Link
             href="/receitas"
-            className="inline-flex h-10 items-center gap-2 border border-[#0a0a0a] bg-white px-4 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
+            className="inline-flex min-h-11 items-center gap-2 rounded-none border border-[#e5e5e5] bg-white px-5 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:border-[#0a0a0a]"
           >
             Ver todas <ArrowRight className="size-3.5" />
           </Link>
         </div>
 
-        <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <ul className="mt-8 grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]">
           {visible.map((recipe, index) => (
             <li
               key={recipe.id}

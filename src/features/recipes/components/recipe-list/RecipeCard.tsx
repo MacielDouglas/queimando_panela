@@ -14,14 +14,14 @@ export function RecipeCard({ recipe }: Props) {
     (recipe.prepTimeMinutes ?? 0) + (recipe.cookTimeMinutes ?? 0) || null;
 
   return (
-    <article className="flex h-full flex-col border-2 border-[#0a0a0a] bg-white hover:border-[#ffb900] hover:bg-[#fffef5]">
+    <article className="flex h-full flex-col overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white transition-colors hover:border-[#0a0a0a]">
       <Link
         href={`/receitas/${recipe.slug}`}
         aria-label={`Ver receita: ${recipe.title}`}
         className="group relative flex h-full w-full flex-col bg-white"
         tabIndex={-1}
       >
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#f5f5f5] border-b-2 border-[#0a0a0a]">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#f5f5f5]">
           {recipe.coverUrl ? (
             <Image
               src={recipe.coverUrl}
@@ -32,7 +32,7 @@ export function RecipeCard({ recipe }: Props) {
             />
           ) : (
             <div className="flex h-full items-center justify-center bg-[#f5f5f5]">
-              <span className="border-2 border-[#0a0a0a] bg-white px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
+              <span className="border border-[#e5e5e5] bg-white px-2 py-1 font-display text-xs font-bold uppercase tracking-[0.12em] text-[#0a0a0a]">
                 Sem foto
               </span>
             </div>
@@ -42,22 +42,22 @@ export function RecipeCard({ recipe }: Props) {
             aria-hidden="true"
           />
           {recipe.types[0] && (
-            <span className="absolute left-2 top-3 border-2 border-[#0a0a0a] bg-[#ffb900] px-2 py-0.5 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
+            <span className="absolute left-3 top-3 bg-[#ffb900] px-2 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
               {recipe.types[0]}
             </span>
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-2 p-3">
-          <h3 className="line-clamp-2 font-display text-sm font-extrabold uppercase leading-tight tracking-[-0.01em] text-[#0a0a0a]">
+        <div className="flex flex-1 flex-col gap-3 p-4">
+          <h3 className="line-clamp-2 font-display text-sm font-bold uppercase leading-tight tracking-[-0.01em] text-[#0a0a0a] text-wrap-balance">
             {recipe.title}
           </h3>
           {recipe.summary && (
-            <p className="line-clamp-2 font-sans text-xs leading-5 text-[#6b6b6b]">
+            <p className="line-clamp-2 font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
               {recipe.summary}
             </p>
           )}
-          <div className="mt-auto flex items-center gap-3 border-t-2 border-[#0a0a0a] pt-2 font-sans text-xs text-[#6b6b6b]">
+          <div className="mt-auto flex items-center gap-3 border-t border-[#e5e5e5] pt-3 font-sans text-xs text-[#6b6b6b]">
             {totalTime && (
               <span className="inline-flex items-center gap-1">
                 <Clock3 className="size-3.5 text-[#0a0a0a]" />

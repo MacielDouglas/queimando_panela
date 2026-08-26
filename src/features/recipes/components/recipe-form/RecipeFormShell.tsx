@@ -1,11 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2, Plus, Save, Sparkles } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-
-import { Button } from '@/components/ui/button';
 import { createRecipe } from '../../actions/create-recipe';
 import { updateRecipe } from '../../actions/update-recipe';
 import { recipeFormSchema } from '../../schemas/recipe.schema';
@@ -13,196 +10,31 @@ import {
   type AiReviewFormData,
   aiReviewSchema,
 } from '../../schemas/recipe-ai-review-schema';
-import type { RecipeDifficultyValue } from '../../types/recipe.types';
 import type { AiRecipeAnalysis } from '../../types/recipe-ai.types';
 import { AiReviewPanel } from './AiReviewPanel';
 import {
   ImageUploadField,
   type RecipeFormWithImages,
 } from './fields/ImageUploadField';
-import { SectionField } from './fields/SectionField';
 import { StoryField } from './fields/StoryField';
 import { TitleField } from './fields/TitleField';
-
-type EditableRecipeImage = {
-  id: string;
-  key: string;
-  url: string;
-  alt: string;
-  isCover: boolean;
-  order: number;
-};
-
-type EditableIngredient = {
-  originalText: string;
-  name: string;
-  generalName: string;
-};
-
-type EditableRecipeData = {
-  id: string;
-  slug: string;
-  title: string;
-  story: string;
-  summary: string;
-  difficulty: RecipeDifficultyValue;
-  difficultyLabel: string;
-  types: string[];
-  prepTimeMinutes: number;
-  cookTimeMinutes: number;
-  suggestions: string;
-  nutritionSummary: string;
-  nutritionPer100g: { nutrient: string; quantity: string }[];
-  utensils: string[];
-  sections: {
-    name: string;
-    ingredients: EditableIngredient[];
-    modeOfPreparation: string;
-  }[];
-  images: EditableRecipeImage[];
-};
+import {
+  RecipeFormAnalyzeAction,
+  RecipeFormSaveAction,
+} from './RecipeFormActions';
+import { RecipeFormSections } from './RecipeFormSections';
+import {
+  aiAnalysisToFormData,
+  type EditableRecipeData,
+  editableRecipeToFormDefaults,
+  editableRecipeToReviewDefaults,
+  formDataToAnalysis,
+} from './recipe-form-mappers';
 
 type Props = {
   mode: 'create' | 'edit';
   initialData?: EditableRecipeData;
 };
-
-function normalizeDifficulty(
-  difficulty: AiRecipeAnalysis['difficulty'],
-): RecipeDifficultyValue {
-  if (
-    difficulty === 'EASY' ||
-    difficulty === 'MEDIUM' ||
-    difficulty === 'HARD'
-  ) {
-    return difficulty;
-  }
-
-  if (difficulty === 'EASY_MEDIUM') return 'MEDIUM';
-  if (difficulty === 'MEDIUM_HARD') return 'HARD';
-
-  return 'MEDIUM';
-}
-
-function aiAnalysisToFormData(data: AiRecipeAnalysis): AiReviewFormData {
-  return {
-    ...data,
-    difficulty: normalizeDifficulty(data.difficulty),
-    utensils: data.utensils.map((name) => ({ name })),
-    sections: data.sections.map((section) => ({
-      name: section.name,
-      modeOfPreparation: section.modeOfPreparation,
-      ingredients: section.ingredients.map((ingredient) => ({
-        originalText: ingredient.originalText,
-        name: ingredient.name,
-        generalName: ingredient.generalName,
-      })),
-    })),
-  };
-}
-
-function formDataToAnalysis(data: AiReviewFormData): AiRecipeAnalysis {
-  return {
-    ...data,
-    utensils: data.utensils.map((u) => u.name).filter(Boolean),
-    sections: data.sections.map((section) => ({
-      name: section.name,
-      modeOfPreparation: section.modeOfPreparation,
-      ingredients: section.ingredients
-        .filter((i) => i.originalText?.trim().length > 0)
-        .map((i) => {
-          const originalText = i.originalText.trim();
-          const name = i.name?.trim() || originalText;
-          const generalName =
-            i.generalName?.trim().toLowerCase() || name.toLowerCase();
-
-          return { originalText, name, generalName };
-        }),
-    })),
-  };
-}
-
-function editableRecipeToFormDefaults(
-  initialData?: EditableRecipeData,
-): RecipeFormWithImages {
-  if (!initialData) {
-    return {
-      title: '',
-      story: '',
-      sections: [
-        {
-          id: crypto.randomUUID(),
-          name: '',
-          ingredientsText: '',
-          modeOfPreparation: '',
-        },
-      ],
-      images: [],
-    };
-  }
-
-  return {
-    title: initialData.title,
-    story: initialData.story,
-    sections:
-      initialData.sections.length > 0
-        ? initialData.sections.map((section) => ({
-            id: crypto.randomUUID(),
-            name: section.name,
-            ingredientsText: section.ingredients
-              .map((ing) => ing.originalText)
-              .join('\n'),
-            modeOfPreparation: section.modeOfPreparation,
-          }))
-        : [
-            {
-              id: crypto.randomUUID(),
-              name: '',
-              ingredientsText: '',
-              modeOfPreparation: '',
-            },
-          ],
-    images:
-      initialData.images?.map((image, index) => ({
-        kind: 'existing' as const,
-        id: image.id,
-        key: image.key,
-        url: image.url,
-        alt: image.alt,
-        isCover: image.isCover,
-        order: image.order ?? index,
-      })) ?? [],
-  };
-}
-
-function editableRecipeToReviewDefaults(
-  initialData?: EditableRecipeData,
-): AiReviewFormData | undefined {
-  if (!initialData) return undefined;
-
-  return {
-    title: initialData.title,
-    summary: initialData.summary,
-    difficulty: initialData.difficulty,
-    difficultyLabel: initialData.difficultyLabel,
-    types: initialData.types,
-    prepTimeMinutes: initialData.prepTimeMinutes,
-    cookTimeMinutes: initialData.cookTimeMinutes,
-    suggestions: initialData.suggestions,
-    nutritionSummary: initialData.nutritionSummary,
-    nutritionPer100g: initialData.nutritionPer100g,
-    utensils: initialData.utensils.map((name) => ({ name })),
-    sections: initialData.sections.map((section) => ({
-      name: section.name,
-      modeOfPreparation: section.modeOfPreparation,
-      ingredients: section.ingredients.map((ingredient) => ({
-        originalText: ingredient.originalText,
-        name: ingredient.name,
-        generalName: ingredient.generalName,
-      })),
-    })),
-  };
-}
 
 export function RecipeFormShell({ mode, initialData }: Props) {
   const [aiError, setAiError] = useState<string | null>(null);
@@ -213,7 +45,6 @@ export function RecipeFormShell({ mode, initialData }: Props) {
     () => editableRecipeToFormDefaults(initialData),
     [initialData],
   );
-
   const reviewDefaults = useMemo(
     () => editableRecipeToReviewDefaults(initialData),
     [initialData],
@@ -237,9 +68,7 @@ export function RecipeFormShell({ mode, initialData }: Props) {
   }, [form, formDefaults]);
 
   useEffect(() => {
-    if (reviewDefaults) {
-      reviewForm.reset(reviewDefaults);
-    }
+    if (reviewDefaults) reviewForm.reset(reviewDefaults);
   }, [reviewDefaults, reviewForm]);
 
   const isReviewVisible = showReview || hasReviewDefaults;
@@ -265,16 +94,17 @@ export function RecipeFormShell({ mode, initialData }: Props) {
     form.setValue(
       'sections',
       sections.filter((_, i) => i !== index),
-      { shouldValidate: true, shouldDirty: true },
+      {
+        shouldValidate: true,
+        shouldDirty: true,
+      },
     );
   };
 
   const handleAnalyze = async () => {
     const valid = await form.trigger(['title', 'sections']);
     if (!valid) return;
-
     const { title, sections: currentSections } = form.getValues();
-
     const normalizedSections = currentSections.map((section, index) => ({
       name:
         section.name?.trim() ||
@@ -293,26 +123,24 @@ export function RecipeFormShell({ mode, initialData }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, sections: normalizedSections }),
       });
-
       const result = (await response.json()) as {
         data?: AiRecipeAnalysis;
         error?: string;
       };
-
       if (!response.ok || result.error) {
         setAiError(result.error ?? 'Falha ao analisar receita com IA.');
         return;
       }
-
       if (result.data) {
         reviewForm.reset(aiAnalysisToFormData(result.data));
         setShowReview(true);
-
-        setTimeout(() => {
-          document
-            .getElementById('ai-review')
-            ?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        setTimeout(
+          () =>
+            document
+              .getElementById('ai-review')
+              ?.scrollIntoView({ behavior: 'smooth' }),
+          100,
+        );
       }
     } catch (error) {
       console.error('[RecipeFormShell] fetch error:', error);
@@ -325,19 +153,15 @@ export function RecipeFormShell({ mode, initialData }: Props) {
   const handleSave = async () => {
     const valid = await reviewForm.trigger();
     if (!valid) return;
-
     setIsSaving(true);
     setAiError(null);
-
     try {
       const analysis = formDataToAnalysis(reviewForm.getValues());
       const story = form.getValues('story')?.trim() || '';
       const images = form.getValues('images') ?? [];
-
       const formData = new FormData();
       formData.set('analysis', JSON.stringify(analysis));
       formData.set('story', story);
-
       const existingImages = images
         .filter(
           (image): image is Extract<typeof image, { kind: 'existing' }> =>
@@ -349,23 +173,15 @@ export function RecipeFormShell({ mode, initialData }: Props) {
           url: image.url,
           alt: image.alt,
         }));
-
       formData.set('existingImages', JSON.stringify(existingImages));
-
       images.forEach((image) => {
-        if (image.kind === 'new') {
-          formData.append('images', image.file);
-        }
+        if (image.kind === 'new') formData.append('images', image.file);
       });
-
       const result =
         mode === 'edit' && initialData
           ? await updateRecipe(initialData.slug, formData)
           : await createRecipe(formData);
-
-      if (result?.error) {
-        setAiError(result.error);
-      }
+      if (result?.error) setAiError(result.error);
     } catch (error) {
       console.error('[RecipeFormShell] save error:', error);
       setAiError('Não foi possível salvar a receita agora.');
@@ -376,102 +192,54 @@ export function RecipeFormShell({ mode, initialData }: Props) {
 
   return (
     <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-      <div className="space-y-6 border border-neutral-200 bg-white p-5 sm:p-6 lg:p-8">
+      <div className="space-y-6 rounded-[12px] border border-[#e5e5e5] bg-white p-5 sm:p-7 lg:p-8">
         <TitleField form={form} />
         <StoryField form={form} />
       </div>
 
-      <section className="space-y-4 border border-neutral-200 bg-white p-5 sm:p-6 lg:p-8">
-        <div className="flex items-center justify-between gap-4 border-b border-neutral-200 pb-3">
-          <h2 className="text-sm font-bold tracking-[0.16em] text-neutral-950 uppercase">
-            {sections.length > 1 ? 'Etapas da receita' : 'Receita'}
-          </h2>
-        </div>
+      <RecipeFormSections
+        form={form}
+        onAdd={addSection}
+        onRemove={removeSection}
+      />
 
-        {sections.map((section, index) => (
-          <SectionField
-            key={section.id}
-            form={form}
-            index={index}
-            isOnly={sections.length === 1}
-            onRemove={() => removeSection(index)}
-          />
-        ))}
-
-        <Button
-          type="button"
-          variant="outline"
-          onClick={addSection}
-          className="min-h-12 w-full border border-dashed border-amber-400 bg-white text-sm font-semibold text-amber-700 hover:bg-amber-50"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Adicionar etapa
-        </Button>
-      </section>
-
-      <section className="border border-neutral-200 bg-white p-5 sm:p-6 lg:p-8">
+      <section className="rounded-[12px] border border-[#e5e5e5] bg-white p-5 sm:p-7 lg:p-8">
+        <h2 className="mb-4 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#0a0a0a]">
+          Fotos
+        </h2>
         <ImageUploadField form={form} />
+        <p className="mt-3 font-sans text-xs leading-5 text-[#6b6b6b]">
+          Arraste ou clique para enviar. A primeira foto vira capa. Até 5
+          imagens, 10MB cada.
+        </p>
       </section>
 
-      <div className="flex flex-col gap-4">
-        <Button
-          type="button"
-          onClick={handleAnalyze}
-          disabled={isAnalyzing}
-          className="min-h-12 border border-amber-500 bg-amber-500 px-5 text-sm font-semibold text-neutral-950 hover:bg-amber-400"
-        >
-          {isAnalyzing ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Analisando com IA...
-            </>
-          ) : (
-            <>
-              <Sparkles className="mr-2 h-4 w-4" />
-              {mode === 'edit'
-                ? 'Reanalisar receita com IA'
-                : 'Analisar receita com IA'}
-            </>
-          )}
-        </Button>
-
-        {aiError && (
-          <p className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {aiError}
-          </p>
-        )}
-      </div>
+      <RecipeFormAnalyzeAction
+        isAnalyzing={isAnalyzing}
+        mode={mode}
+        onAnalyze={handleAnalyze}
+        aiError={aiError}
+      />
 
       {isReviewVisible && (
         <section id="ai-review" className="space-y-5">
-          <div className="border-b border-neutral-200 pb-3">
-            <h2 className="text-sm font-bold tracking-[0.16em] text-neutral-950 uppercase">
+          <div className="border-b border-[#e5e5e5] pb-4">
+            <h2 className="font-display text-sm font-extrabold uppercase tracking-[0.16em] text-[#0a0a0a]">
               Revisão final
             </h2>
+            <p className="mt-2 max-w-[65ch] font-sans text-sm leading-6 text-[#6b6b6b]">
+              Revise a análise da IA. Tudo aqui é editável — publique só quando
+              estiver do seu jeito.
+            </p>
           </div>
 
           <AiReviewPanel form={reviewForm} />
 
-          <Button
-            type="button"
-            onClick={handleSave}
-            disabled={isSaving}
-            className="min-h-12 w-full border border-neutral-900 bg-neutral-900 px-5 text-sm font-semibold text-white hover:border-amber-500 hover:bg-amber-500 hover:text-neutral-950"
-          >
-            {isSaving ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {mode === 'edit'
-                  ? 'Salvando alterações...'
-                  : 'Salvando receita...'}
-              </>
-            ) : (
-              <>
-                <Save className="mr-2 h-4 w-4" />
-                {mode === 'edit' ? 'Salvar alterações' : 'Salvar receita'}
-              </>
-            )}
-          </Button>
+          <RecipeFormSaveAction
+            isSaving={isSaving}
+            mode={mode}
+            onSave={handleSave}
+          />
         </section>
       )}
     </form>
