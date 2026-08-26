@@ -8,17 +8,39 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ''
+      BETTER_AUTH_SECRET: ''
+      BETTER_AUTH_URL: ''
+      R2_ENDPOINT: ''
+      R2_PUBLIC_URL: ''
+      R2_ACCESS_KEY_ID: ''
+      R2_SECRET_ACCESS_KEY: ''
+      R2_BUCKET_NAME: ''
+      CI: true
+      PORT: 3000
+      E2E_USER_EMAIL: ''
+      E2E_USER_PASSWORD: ''
+      E2E_USER_NAME: ''
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '24.20.0'
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: bunx playwright install --with-deps chromium
+      - name: Start application
+        run: bun run start &
+      - name: Wait for application
+        run: bunx wait-on http://127.0.0.1:3000
       - name: Run Playwright tests
-        run: npx playwright test
+        run: bun run test:e2e -- --project chromium-auth
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

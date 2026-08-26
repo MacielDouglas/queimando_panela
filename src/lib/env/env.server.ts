@@ -7,15 +7,15 @@ const envServerSchema = z.object({
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
 
-  BETTER_AUTH_SECRET: z.string().min(1),
+  BETTER_AUTH_SECRET: z.string().optional(),
 
-  BETTER_AUTH_URL: z.string().min(1),
+  BETTER_AUTH_URL: z.string().optional(),
 
-  R2_ENDPOINT: z.url(),
-  R2_PUBLIC_URL: z.url(),
-  R2_ACCESS_KEY_ID: z.string(),
-  R2_SECRET_ACCESS_KEY: z.string(),
-  R2_BUCKET_NAME: z.string(),
+  R2_ENDPOINT: z.url().optional(),
+  R2_PUBLIC_URL: z.url().optional(),
+  R2_ACCESS_KEY_ID: z.string().optional(),
+  R2_SECRET_ACCESS_KEY: z.string().optional(),
+  R2_BUCKET_NAME: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),
 
   GROQ_API_KEY: z.string().optional(),

@@ -33,6 +33,7 @@ export default defineConfig({
         'src/lib/auth.ts',
         'src/lib/auth-client.ts',
         'src/lib/get-server-session.ts',
+        'src/lib/env/env.server.ts',
         'src/app/layout.tsx',
         'src/features/recipes/actions/update-recipe-copy.ts',
       ],
