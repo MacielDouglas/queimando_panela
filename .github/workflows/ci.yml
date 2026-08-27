@@ -107,6 +107,12 @@ jobs:
       - name: Generate Prisma Client
         run: bun run db:generate
 
+      - name: Resolve failed migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL_DIRECT: ""
+        run: bunx prisma migrate resolve --rolled-back 20260528164443_init
+
       - name: Run Prisma migrations
         run: bun run db:migrate
 
