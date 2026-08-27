@@ -16,7 +16,7 @@ const authFile = path.join(__dirname, 'playwright/.auth/user.json');
 setup('authenticate', async ({ page, request }) => {
   const email = process.env.E2E_USER_EMAIL;
   const password = process.env.E2E_USER_PASSWORD;
-  const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000';
+  const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3000';
 
   // Sem credenciais → storage vazio (testes autenticados serão skip ou rodam como guest)
   if (!email || !password) {
