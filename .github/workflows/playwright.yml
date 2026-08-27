@@ -37,11 +37,8 @@ jobs:
         run: bun install --frozen-lockfile
       - name: Generate Prisma Client
         run: bun run db:generate
-      - name: Resolve failed migrations
-        continue-on-error: true
-        run: bunx prisma migrate resolve --applied 20260528164443_init
-      - name: Run Prisma migrations
-        run: bun run db:migrate
+      - name: Reset database and run migrations
+        run: bunx prisma migrate reset --force
       - name: Seed database (create e2e user)
         run: bun run db:seed
       - name: Install Playwright Browsers
