@@ -113,29 +113,29 @@ export default async function RecipesPage({ searchParams }: Props) {
 
   return (
     <main className="bg-white">
-      {/* Faixa Queimando Panela */}
-      {/* Header Queimando Panela */}
-      <section className="border-b-2 border-[#0a0a0a] bg-white">
+      <section className="border-b border-[#e5e5e5] bg-white">
         <div className="editorial-container py-12 lg:py-16">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-2 border-2 border-[#0a0a0a] bg-[#ffb900] px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
-                <ChefHat className="size-4" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#e5e5e5] bg-white px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a] shadow-sm">
+                <span className="grid size-6 place-items-center rounded-full bg-[#ffb900]">
+                  <ChefHat className="size-3.5" />
+                </span>
                 Queimando Panela
               </span>
               <span
                 className="hidden h-6 w-px bg-[#e5e5e5] sm:block"
                 aria-hidden="true"
               />
-              <span className="hidden font-sans text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b] sm:inline">
-                {total} receitas
+              <span className="hidden font-sans text-xs font-medium tracking-wide text-[#6b6b6b] sm:inline">
+                {total} {total === 1 ? 'receita' : 'receitas'} • curadoria lenta
               </span>
             </div>
 
             {session?.user && (
               <Link
                 href="/receitas/new"
-                className="inline-flex h-11 items-center gap-2 border-2 border-[#0a0a0a] bg-[#0a0a0a] px-5 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-[#ffb900] hover:text-[#0a0a0a]"
+                className="inline-flex min-h-11 items-center gap-2 rounded-none border-2 border-[#0a0a0a] bg-[#0a0a0a] px-5 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white transition-colors hover:bg-white hover:text-[#0a0a0a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb900] focus-visible:ring-offset-2"
               >
                 <Plus className="size-4" />
                 Enviar receita
@@ -143,23 +143,31 @@ export default async function RecipesPage({ searchParams }: Props) {
             )}
           </div>
 
-          <h1 className="mt-6 max-w-3xl font-display text-4xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-5xl">
+          <h1 className="mt-8 max-w-3xl font-display text-4xl font-extrabold uppercase leading-[0.9] tracking-[-0.03em] text-[#0a0a0a] sm:text-5xl text-wrap-balance">
             Receitas para
             <br />
-            <span className="bg-[#ffb900] px-1">aquecer</span> a cozinha.
+            <span className="relative inline-block">
+              <span className="relative z-10">aquecer</span>
+              <span
+                className="absolute inset-x-0 bottom-1 h-[0.45em] bg-[#ffb900]/60"
+                aria-hidden
+              />
+            </span>{' '}
+            a cozinha.
           </h1>
-          <p className="mt-4 max-w-2xl font-sans text-sm leading-6 text-[#6b6b6b]">
-            Grid Queimando Panela 3 colunas, filtro Queimando Panela quadrado.
-            Clique no chip, a página recarrega quadrada.
+          <p className="mt-4 max-w-2xl font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
+            Leitura leve, foto grande e filtros que respeitam sua escolha.
+            Escolha categoria, dificuldade ou ingrediente — a página responde
+            com calma.
           </p>
         </div>
       </section>
 
-      {/* Busca — faixa preta Queimando Panela */}
-      <section className="border-b-2 border-[#0a0a0a] bg-[#0a0a0a]">
+      <section className="border-y border-[#e5e5e5] bg-[#f5f5f5]">
         <div className="editorial-container py-6">
-          <div className="flex items-center gap-3">
-            <span className="hidden bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] sm:inline-block">
+          <div className="flex items-center gap-4">
+            <span className="hidden shrink-0 items-center gap-2 bg-white px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a] ring-1 ring-[#e5e5e5] sm:inline-flex">
+              <span className="size-1.5 bg-[#ffb900]" aria-hidden />
               Busca
             </span>
             <div className="flex-1">
@@ -167,7 +175,7 @@ export default async function RecipesPage({ searchParams }: Props) {
             </div>
             <Link
               href="/receitas"
-              className="hidden h-12 items-center border border-white/20 px-4 font-display text-xs font-bold uppercase tracking-[0.12em] text-white hover:border-[#ffb900] hover:text-[#ffb900] sm:inline-flex"
+              className="hidden min-h-11 shrink-0 items-center justify-center rounded-none border border-[#e5e5e5] bg-white px-5 font-display text-xs font-bold uppercase tracking-[0.12em] text-[#0a0a0a] transition-colors hover:border-[#0a0a0a] hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0a0a0a] sm:inline-flex"
             >
               Limpar
             </Link>
@@ -176,10 +184,10 @@ export default async function RecipesPage({ searchParams }: Props) {
       </section>
 
       <div className="editorial-container py-12 lg:py-16">
-        <div className="grid gap-10 lg:grid-cols-[1fr_300px] lg:items-start">
+        <div className="grid gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
           <div className="min-w-0 space-y-10">
             {!isFiltered && latest && (
-              <section className="border-2 border-[#0a0a0a] bg-white p-2">
+              <section className="overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white p-2 shadow-sm">
                 <RecipeHeroFeatured recipe={latest} />
               </section>
             )}
@@ -216,11 +224,17 @@ export default async function RecipesPage({ searchParams }: Props) {
             />
           </div>
 
-          <aside className="lg:sticky lg:top-[76px]">
-            <div className="border-2 border-[#0a0a0a] bg-white">
-              <div className="border-b-2 border-[#0a0a0a] bg-[#0a0a0a] px-4 py-3">
-                <p className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#ffb900]">
-                  Filtros Queimando Panela
+          <aside className="lg:sticky lg:top-[76px] space-y-4">
+            <div className="overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white">
+              <div className="border-b border-[#e5e5e5] bg-white px-5 py-4">
+                <div className="flex items-center gap-2">
+                  <span className="h-1 w-8 bg-[#ffb900]" aria-hidden />
+                  <p className="font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+                    Filtros
+                  </p>
+                </div>
+                <p className="mt-2 font-sans text-xs leading-5 text-[#6b6b6b]">
+                  Combine categoria, dificuldade e ingredientes com calma.
                 </p>
               </div>
               <div className="p-4">
@@ -239,13 +253,13 @@ export default async function RecipesPage({ searchParams }: Props) {
               </div>
             </div>
 
-            <div className="mt-4 border-2 border-[#ffb900] bg-[#ffb900] p-4">
+            <div className="rounded-[12px] border border-[#e5e5e5] bg-[#f5f5f5] p-5">
               <p className="font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
-                Dica Queimando Panela
+                Dica
               </p>
-              <p className="mt-2 font-sans text-sm leading-5 text-[#0a0a0a]">
-                Use o chip amarelo para filtrar. Quadrado, preto e amarelo — sem
-                arredondado.
+              <p className="mt-2 font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
+                O chip amarelo indica filtro ativo. Clique novamente para
+                remover — a página recarrega leve, sem pular.
               </p>
             </div>
           </aside>

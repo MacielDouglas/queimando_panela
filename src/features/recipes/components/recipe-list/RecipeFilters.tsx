@@ -96,9 +96,12 @@ function clearFilters(base: URLSearchParams) {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <p className="border-l-2 border-[#ffb900] pl-2 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
-      {children}
-    </p>
+    <div className="flex items-center gap-2">
+      <span className="h-1 w-6 bg-[#ffb900]" aria-hidden />
+      <p className="font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+        {children}
+      </p>
+    </div>
   );
 }
 
@@ -106,8 +109,8 @@ function ChipLink({
   href,
   active,
   children,
-  activeClassName = 'border-[#0a0a0a] bg-[#ffb900] text-[#0a0a0a]',
-  inactiveClassName = 'border-[#e5e5e5] bg-white text-[#0a0a0a] hover:border-[#0a0a0a]',
+  activeClassName = 'border-[#0a0a0a] bg-[#0a0a0a] text-white',
+  inactiveClassName = 'border-[#e5e5e5] bg-white text-[#0a0a0a] hover:border-[#0a0a0a] hover:bg-[#f5f5f5]',
 }: {
   href: string;
   active: boolean;
@@ -119,7 +122,7 @@ function ChipLink({
     <Link
       href={href}
       className={[
-        'border-2 px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.08em] transition',
+        'rounded-full border px-3 py-1.5 font-display text-xs font-bold uppercase tracking-[0.08em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb900]',
         active ? activeClassName : inactiveClassName,
       ].join(' ')}
     >
@@ -141,7 +144,7 @@ function FilterGroup({
 }) {
   if (options.length === 0) return null;
   return (
-    <div className="space-y-2 border-t-2 border-[#0a0a0a] pt-4">
+    <div className="space-y-3 border-t border-[#e5e5e5] pt-5">
       <SectionTitle>{title}</SectionTitle>
       <div className="flex flex-wrap gap-2">
         {options.map((option) => (
@@ -218,7 +221,7 @@ export function RecipeFilters({
         getHref={(value) => toggleMultiParam(baseParams, 'ingrediente', value)}
       />
 
-      <div className="space-y-2 border-t-2 border-[#0a0a0a] pt-4">
+      <div className="space-y-3 border-t border-[#e5e5e5] pt-5">
         <SectionTitle>Dificuldade</SectionTitle>
         <div className="flex flex-wrap gap-2">
           {difficultyOptions.map((item) => {
@@ -236,7 +239,7 @@ export function RecipeFilters({
                 )}
                 active={active}
                 activeClassName="border-[#0a0a0a] bg-[#0a0a0a] text-white"
-                inactiveClassName="border-[#e5e5e5] bg-white text-[#0a0a0a] hover:border-[#0a0a0a]"
+                inactiveClassName="border-[#e5e5e5] bg-white text-[#0a0a0a] hover:border-[#0a0a0a] hover:bg-[#f5f5f5]"
               >
                 {item.label}
               </ChipLink>
@@ -260,10 +263,10 @@ export function RecipeFilters({
       />
 
       {hasActiveFilters && (
-        <div className="border-t-2 border-[#0a0a0a] pt-4">
+        <div className="border-t border-[#e5e5e5] pt-5">
           <Link
             href={clearFilters(baseParams)}
-            className="inline-flex border-2 border-[#0a0a0a] bg-white px-4 py-2 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
+            className="inline-flex rounded-full border border-[#e5e5e5] bg-white px-4 py-2 font-display text-xs font-bold uppercase tracking-[0.12em] text-[#0a0a0a] transition-colors hover:border-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0a0a0a]"
           >
             Limpar filtros
           </Link>

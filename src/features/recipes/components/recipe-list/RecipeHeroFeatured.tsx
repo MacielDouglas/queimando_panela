@@ -13,71 +13,83 @@ export function RecipeHeroFeatured({ recipe }: Props) {
     (recipe.prepTimeMinutes ?? 0) + (recipe.cookTimeMinutes ?? 0) || null;
 
   return (
-    <div className="grid sm:grid-cols-[1.3fr_1fr] border-2 border-[#0a0a0a] bg-white">
-      <div className="relative min-h-64 sm:min-h-[360px] border-b-2 border-[#0a0a0a] sm:border-b-0 sm:border-r-2">
+    <div className="grid overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white sm:grid-cols-[1.35fr_1fr]">
+      <div className="relative min-h-64 overflow-hidden bg-[#f5f5f5] sm:min-h-[380px]">
         {recipe.coverUrl ? (
           <Image
             src={recipe.coverUrl}
             alt={recipe.title}
             fill
             priority
-            className="object-cover"
+            className="object-cover transition duration-500 hover:scale-[1.02]"
             sizes="(max-width: 640px) 100vw, 60vw"
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-[#f5f5f5]">
-            <span className="border-2 border-[#0a0a0a] bg-white px-3 py-1 font-display text-xs font-extrabold uppercase">
+            <span className="rounded-full border border-[#e5e5e5] bg-white px-3 py-1.5 font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
               Sem imagem
             </span>
           </div>
         )}
         <span
-          className="absolute left-0 top-0 h-1 w-full bg-[#ffb900]"
+          className="absolute inset-x-0 top-0 h-1 bg-[#ffb900]"
           aria-hidden="true"
         />
+        <span className="absolute left-3 top-3 rounded-full border border-white/20 bg-[#0a0a0a] px-2.5 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-white shadow-sm">
+          Em destaque
+        </span>
       </div>
 
-      <div className="flex flex-col p-5">
-        <p className="inline-block self-start bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a] border border-[#0a0a0a]">
+      <div className="flex flex-col p-6">
+        <p className="inline-flex items-center gap-2 self-start rounded-full bg-[#ffb900] px-2.5 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+          <span className="size-1.5 rounded-full bg-[#0a0a0a]" aria-hidden />
           Última receita
         </p>
-        <h2 className="mt-3 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#0a0a0a] sm:text-3xl">
+        <h2 className="mt-4 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#0a0a0a] sm:text-3xl text-wrap-balance">
           {recipe.title}
         </h2>
         {recipe.summary && (
-          <p className="mt-3 font-sans text-sm leading-6 text-[#6b6b6b]">
+          <p className="mt-3 line-clamp-3 font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
             {recipe.summary}
           </p>
         )}
         <div className="mt-4 flex flex-wrap gap-2">
           {recipe.types[0] && (
-            <span className="border-2 border-[#0a0a0a] bg-white px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
+            <span className="rounded-full border border-[#e5e5e5] bg-[#f5f5f5] px-2.5 py-1 font-display text-xs font-bold uppercase tracking-[0.08em] text-[#0a0a0a]">
               {recipe.types[0]}
             </span>
           )}
           {totalTime && (
-            <span className="inline-flex items-center gap-1 border border-[#e5e5e5] bg-[#f5f5f5] px-2 py-1 font-sans text-xs text-[#0a0a0a]">
-              <Clock3 className="size-3.5" /> {totalTime} min
+            <span className="inline-flex items-center gap-1 rounded-full border border-[#e5e5e5] bg-white px-2.5 py-1 font-sans text-xs text-[#0a0a0a]">
+              <Clock3
+                className="size-3.5 shrink-0 text-[#6b6b6b]"
+                aria-hidden
+              />{' '}
+              {totalTime} min
             </span>
           )}
-          <span className="inline-flex items-center gap-1 border border-[#e5e5e5] bg-[#f5f5f5] px-2 py-1 font-sans text-xs">
-            <Flame className="size-3.5 text-[#ffb900]" />{' '}
+          <span className="inline-flex items-center gap-1 rounded-full border border-[#e5e5e5] bg-white px-2.5 py-1 font-sans text-xs text-[#0a0a0a]">
+            <Flame className="size-3.5 shrink-0 text-[#ffb900]" aria-hidden />{' '}
             {difficultyLabel[recipe.difficulty]}
           </span>
         </div>
         {recipe.authorName && (
-          <p className="mt-3 font-sans text-xs text-[#6b6b6b]">
+          <p className="mt-4 flex items-center gap-2 border-t border-[#f2f2f2] pt-4 font-sans text-xs text-[#6b6b6b]">
+            <span className="grid size-6 place-items-center rounded-full bg-[#0a0a0a] font-display text-[10px] font-extrabold text-white">
+              {recipe.authorName.charAt(0).toUpperCase()}
+            </span>
             por{' '}
-            <span className="font-bold text-[#0a0a0a]">
+            <span className="font-semibold text-[#0a0a0a]">
               {recipe.authorName}
             </span>
           </p>
         )}
         <Link
           href={`/receitas/${recipe.slug}`}
-          className="mt-auto inline-flex h-12 items-center justify-center gap-2 border-2 border-[#0a0a0a] bg-[#0a0a0a] px-4 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-[#ffb900] hover:text-[#0a0a0a]"
+          className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-none bg-[#0a0a0a] px-5 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#ffb900] hover:text-[#0a0a0a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb900] focus-visible:ring-offset-2"
         >
-          Ver receita <ArrowRight className="size-4" />
+          Ver receita{' '}
+          <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </div>
     </div>
