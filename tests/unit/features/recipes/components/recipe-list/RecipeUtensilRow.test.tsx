@@ -55,7 +55,7 @@ describe('RecipeUtensilRow', () => {
     render(<RecipeUtensilRow utensilName="Forma" recipes={recipes} />);
 
     expect(screen.getByRole('heading', { name: 'Forma' })).toBeInTheDocument();
-    expect(screen.getByText('Método')).toBeInTheDocument();
+    expect(screen.getByText('Utensílio')).toBeInTheDocument();
 
     const link = screen.getByRole('link', { name: /Ver todas →/i });
     expect(link).toHaveAttribute('href', '/receitas?utensilio=Forma');

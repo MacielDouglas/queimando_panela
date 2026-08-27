@@ -23,7 +23,7 @@ describe('POST /api/recipes/analyze', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    process.env.GROQ_API_KEY = 'test-key';
+    process.env.GROQ_API_KEY = 'gsk_test-valid-key-for-unit-tests-1234567890';
   });
 
   afterAll(() => {
@@ -85,8 +85,11 @@ describe('POST /api/recipes/analyze', () => {
     const response = await POST(request);
     const json = await response.json();
 
-    expect(response.status).toBe(500);
-    expect(json).toEqual({ error: 'GROQ_API_KEY não configurada.' });
+    expect(response.status).toBe(503);
+    expect(json).toEqual({
+      error:
+        'Serviço de IA indisponível. Configure GROQ_API_KEY em .env e na Vercel (https://console.groq.com/keys).',
+    });
   });
 
   it('retorna dados parseados quando Groq responde com JSON válido', async () => {
@@ -252,7 +255,7 @@ Parágrafo 2","nutritionSummary":"Resumo nutri","nutritionPer100g":[{"nutrient":
 
     expect(response.status).toBe(500);
     expect(json).toEqual({
-      error: 'Erro ao processar com a IA.',
+      error: 'Erro ao processar com a IA. Tente novamente em instantes.',
     });
   });
 });
