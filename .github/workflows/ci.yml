@@ -108,7 +108,7 @@ jobs:
         run: bunx wait-on http://127.0.0.1:3000
 
       - name: Run Playwright tests
-        run: bun run test:e2e -- --project chromium-auth
+        run: bun run test:e2e -- --project chromium
 
       - name: Upload Playwright report
         if: always()
