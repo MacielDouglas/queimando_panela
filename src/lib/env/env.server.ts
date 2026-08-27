@@ -10,7 +10,6 @@ const envServerSchema = z.object({
   BETTER_AUTH_SECRET: z.string().optional(),
   BETTER_AUTH_URL: z.string().optional(),
 
-  // Aceita string vazia ou URL válida (evita erro no build quando não definido)
   R2_ENDPOINT: z.string().url().or(z.literal('')).optional(),
   R2_PUBLIC_URL: z.string().url().or(z.literal('')).optional(),
   R2_ACCESS_KEY_ID: z.string().optional(),
@@ -36,10 +35,6 @@ function loadEnv(): Env {
   return cached;
 }
 
-/**
- * Validação lazy: o parse só roda no primeiro acesso em runtime,
- * nunca durante o build (page data collection não exige secrets).
- */
 export const envServer: Env = new Proxy({} as Env, {
   get(_target, prop: string) {
     return loadEnv()[prop as keyof Env];

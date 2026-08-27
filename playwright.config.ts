@@ -36,11 +36,4 @@ export default defineConfig({
       dependencies: ['setup'],
     },
   ],
-
-  webServer: {
-    command: 'bun run start',
-    url: process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000',
-    timeout: 120_000,
-    reuseExistingServer: true,
-  },
 });
