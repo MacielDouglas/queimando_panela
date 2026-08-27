@@ -106,6 +106,10 @@ jobs:
       - name: Generate Prisma Client
         run: bun run db:generate
 
+      - name: Resolve stale failed migration (defensive)
+        run: bunx prisma migrate resolve --rolled-back "20260704191902_init" || true
+        continue-on-error: true
+
       - name: Reset database and run migrations
         run: bunx prisma migrate reset --force
 
