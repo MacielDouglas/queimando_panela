@@ -200,7 +200,6 @@ test.describe('rota protegida /receitas/new — autenticado', () => {
     page,
   }) => {
     await page.goto('/receitas/new');
-    await page.waitForLoadState('networkidle');
 
     if (page.url().includes('/login')) {
       test.skip(
@@ -280,7 +279,6 @@ test.describe('rota protegida /receitas/new — autenticado', () => {
     page,
   }) => {
     await page.goto('/receitas/new');
-    await page.waitForLoadState('networkidle');
 
     if (page.url().includes('/login')) {
       test.skip(true, 'Sem sessão — pule validação autenticada');
