@@ -107,7 +107,8 @@ jobs:
         run: bun run db:generate
 
       - name: Resolve failed migrations
-        run: bunx prisma migrate resolve --rolled-back 20260528164443_init
+        continue-on-error: true
+        run: bunx prisma migrate resolve --applied 20260528164443_init
 
       - name: Run Prisma migrations
         run: bun run db:migrate
