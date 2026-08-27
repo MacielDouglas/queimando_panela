@@ -91,9 +91,14 @@ test.describe('Queimando Panela — E2E', () => {
       page.getByText(/todas as receitas|resultados para/i).first(),
     ).toBeVisible();
 
-    const grid = page.locator('a[href^="/receitas/"]');
+    // Evita violação strict mode: quando vazia, "Enviar receita" (a[href="/receitas/new"]) e "Nenhuma receita" coexistem
     const empty = page.getByText(/nenhuma receita encontrada/i);
-    await expect(grid.first().or(empty)).toBeVisible({ timeout: 15_000 });
+    if (await empty.isVisible().catch(() => false)) {
+      await expect(empty).toBeVisible();
+    } else {
+      const cardLink = page.locator('article a[href^="/receitas/"]');
+      await expect(cardLink.first()).toBeVisible({ timeout: 15_000 });
+    }
   });
 
   test('busca por termo via ?q funciona', async ({ page }) => {
@@ -263,9 +268,10 @@ test.describe('rota protegida /receitas/new — autenticado', () => {
       page.getByText(/análise da ia.*edite antes de salvar/i),
     ).toBeVisible();
 
-    await expect(
-      page.getByLabel(/bolo de milho da minha avó/i).first(),
-    ).toBeVisible();
+    // Título revisado fica no painel #ai-review com label "Título" — verifica valor
+    await expect(page.locator('#ai-review').getByLabel(/título/i)).toHaveValue(
+      /bolo de milho da minha avó/i,
+    );
     await expect(page.getByText(/sugestões de substituição/i)).toBeVisible();
     await expect(page.getByText(/tabela nutricional/i)).toBeVisible();
 
@@ -273,7 +279,8 @@ test.describe('rota protegida /receitas/new — autenticado', () => {
       page.getByRole('button', { name: /salvar receita/i }),
     ).toBeEnabled();
 
-    await expect(page.getByLabel(/forma/i).first()).toBeVisible();
+    // Utensílio renderiza como input com value="Forma" dentro de #ai-review
+    await expect(page.locator('#ai-review input[value="Forma"]')).toBeVisible();
 
     await page.unroute('**/api/recipes/analyze');
   });
