@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL_DIRECT }}
       BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
       BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
 
@@ -70,8 +70,7 @@ jobs:
     timeout-minutes: 20
     needs: quality
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      DATABASE_URL_DIRECT: ${{ secrets.DATABASE_URL_DIRECT }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL_DIRECT }}
       BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
       BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
 
@@ -108,9 +107,6 @@ jobs:
         run: bun run db:generate
 
       - name: Resolve failed migrations
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DATABASE_URL_DIRECT: ""
         run: bunx prisma migrate resolve --rolled-back 20260528164443_init
 
       - name: Run Prisma migrations
