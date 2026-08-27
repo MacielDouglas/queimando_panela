@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { hash } from 'bcryptjs';
+import { hashPassword } from 'better-auth/crypto';
 import { prisma } from '@/lib/prisma';
 
 const E2E_USER_EMAIL = process.env.E2E_USER_EMAIL ?? 'e2e@queimandopanela.com';
@@ -7,15 +7,16 @@ const E2E_USER_PASSWORD = process.env.E2E_USER_PASSWORD ?? 'e2e-password-123';
 const E2E_USER_NAME = process.env.E2E_USER_NAME ?? 'Usuário E2E';
 
 async function main() {
-  const hashedPassword = await hash(E2E_USER_PASSWORD, 12);
-
-  const userId = randomUUID();
+  const hashedPassword = await hashPassword(E2E_USER_PASSWORD);
 
   const user = await prisma.user.upsert({
     where: { email: E2E_USER_EMAIL },
-    update: {},
+    update: {
+      name: E2E_USER_NAME,
+      emailVerified: true,
+    },
     create: {
-      id: userId,
+      id: randomUUID(),
       email: E2E_USER_EMAIL,
       name: E2E_USER_NAME,
       emailVerified: true,
@@ -43,7 +44,7 @@ async function main() {
     });
   }
 
-  console.log(`✅ Usuário E2E criado/atualizado: ${E2E_USER_EMAIL}`);
+  console.log(`Usuário E2E criado/atualizado: ${E2E_USER_EMAIL}`);
 }
 
 main()
