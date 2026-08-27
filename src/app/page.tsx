@@ -34,7 +34,7 @@ export default async function Home() {
       <HeroSection />
       <IntroSection />
       <LatestRecipesSection recipes={latestRecipes} />
-      <GastronomySection />
+      <GastronomySection recipes={latestRecipes} />
       <ClassicRecipesSection rows={classicRecipes} />
       <SignUpSection />
     </main>

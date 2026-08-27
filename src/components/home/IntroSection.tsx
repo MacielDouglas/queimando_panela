@@ -40,11 +40,11 @@ export function IntroSection() {
             <div className="mt-8 flex items-center gap-6">
               <Link
                 href="/receitas"
-                className="group inline-flex items-center gap-3 font-display text-sm font-extrabold uppercase tracking-[0.1em] text-[#0a0a0a] transition-colors hover:text-[#ffb900]"
+                className="group inline-flex items-center gap-3 font-display text-sm font-extrabold uppercase tracking-[0.1em] text-[#0a0a0a]"
               >
                 Ver receitas
-                <span className="inline-flex size-10 items-center justify-center rounded-full border border-[#0a0a0a] transition-colors group-hover:border-[#ffb900] group-hover:bg-[#ffb900]">
-                  →
+                <span className="inline-flex size-10 items-center justify-center rounded-full border border-[#0a0a0a] transition-colors group-hover:bg-[#ffb900]">
+                  <span className="text-[#0a0a0a]">→</span>
                 </span>
               </Link>
               <span className="h-px w-16 bg-[#e5e5e5]" aria-hidden />

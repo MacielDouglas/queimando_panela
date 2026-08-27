@@ -96,7 +96,7 @@ describe('Home', () => {
     render(await Home());
     expect(
       screen.getByRole('heading', {
-        name: /Clássicos que nunca saem de moda/i,
+        name: /Sabores da nossa terra/i,
       }),
     ).toBeInTheDocument();
   });
