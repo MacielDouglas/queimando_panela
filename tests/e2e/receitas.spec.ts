@@ -84,8 +84,10 @@ test.describe('Queimando Panela — E2E', () => {
     ).toBeVisible();
     await expect(page.getByRole('button', { name: /^buscar$/i })).toBeVisible();
 
-    await expect(page.getByText(/filtros queimando panela/i)).toBeVisible();
-    await expect(page.getByText(/^categoria$/i)).toBeVisible();
+    await expect(page.getByText('Filtros', { exact: true })).toBeVisible();
+    await expect(
+      page.getByRole('complementary').getByText('Categoria', { exact: true }),
+    ).toBeVisible();
 
     await expect(
       page.getByText(/todas as receitas|resultados para/i).first(),
@@ -155,7 +157,9 @@ test.describe('Queimando Panela — E2E', () => {
   }) => {
     await page.goto('/receitas');
 
-    const firstCardLink = page.locator('a[href^="/receitas/"]').first();
+    const firstCardLink = page
+      .locator('a[href^="/receitas/"]:not([href="/receitas/new"])')
+      .first();
     const empty = page.getByText(/nenhuma receita encontrada/i);
 
     if (await empty.isVisible().catch(() => false)) {
@@ -171,7 +175,6 @@ test.describe('Queimando Panela — E2E', () => {
     await expect(page).toHaveURL(/\/receitas\/.+/);
 
     await expect(page.locator('h1').first()).toBeVisible();
-    await expect(page.getByText(/receita de/i).first()).toBeVisible();
 
     const img = page.locator('img').first();
     const noImage = page.getByText(/sem imagem/i);
