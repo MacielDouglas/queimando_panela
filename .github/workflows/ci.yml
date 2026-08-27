@@ -107,6 +107,8 @@ jobs:
         run: bun run db:generate
 
       - name: Run Prisma migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_DIRECT }}
         run: bun run db:migrate
 
       - name: Seed database (create e2e user)
