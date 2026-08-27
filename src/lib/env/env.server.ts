@@ -8,11 +8,11 @@ const envServerSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().optional(),
 
   BETTER_AUTH_SECRET: z.string().optional(),
-
   BETTER_AUTH_URL: z.string().optional(),
 
-  R2_ENDPOINT: z.url().optional(),
-  R2_PUBLIC_URL: z.url().optional(),
+  // Aceita string vazia ou URL válida (evita erro no build quando não definido)
+  R2_ENDPOINT: z.string().url().or(z.literal('')).optional(),
+  R2_PUBLIC_URL: z.string().url().or(z.literal('')).optional(),
   R2_ACCESS_KEY_ID: z.string().optional(),
   R2_SECRET_ACCESS_KEY: z.string().optional(),
   R2_BUCKET_NAME: z.string().optional(),
