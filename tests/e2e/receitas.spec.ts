@@ -279,8 +279,17 @@ test.describe('rota protegida /receitas/new — autenticado', () => {
       page.getByRole('button', { name: /salvar receita/i }),
     ).toBeEnabled();
 
-    // Utensílio renderiza como input com value="Forma" dentro de #ai-review
-    await expect(page.locator('#ai-review input[value="Forma"]')).toBeVisible();
+    // Utensílio é input controlado (value é propriedade, não atributo) — verifica via evaluate
+    await expect
+      .poll(
+        async () =>
+          await page
+            .locator('#ai-review input')
+            .evaluateAll((els) => els.map((e) => (e as HTMLInputElement).value))
+            .then((vals) => vals.includes('Forma')),
+        { timeout: 5_000 },
+      )
+      .toBeTruthy();
 
     await page.unroute('**/api/recipes/analyze');
   });
