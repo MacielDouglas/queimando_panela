@@ -2,6 +2,8 @@ import { ChefHat, Plus } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 import { getAllRecipes } from '@/features/recipes/actions/get-all-recipes';
 import { getLatestRecipe } from '@/features/recipes/actions/get-latest-recipe';
 import { getRecipesByUtensil } from '@/features/recipes/actions/get-recipe-by-utensil';

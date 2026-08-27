@@ -8,6 +8,9 @@ import { getClassicRecipes } from '@/features/recipes/actions/get-classic-recipe
 import { getLatestRecipes } from '@/features/recipes/actions/get-latest-recipes';
 import { getRandomRecipe } from '@/features/recipes/actions/get-random-recipe';
 
+// Evita P2021 no `next build` quando o banco ainda não foi migrado (CI / Vercel)
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Queimando Panela — Receitas caseiras, afetivas e autorais',
   description:

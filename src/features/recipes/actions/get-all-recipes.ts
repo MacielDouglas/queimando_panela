@@ -223,26 +223,32 @@ export const getAllRecipes = cache(
       ...(andFilters.length > 0 ? { AND: andFilters } : {}),
     };
 
-    const [items, total] = await Promise.all([
-      prisma.recipe.findMany({
-        where,
-        orderBy: { createdAt: 'desc' },
-        take,
-        skip,
-        include: {
-          images: { orderBy: { order: 'asc' } },
-          author: { select: { name: true } },
-          recipeTypes: {
-            include: { recipeType: true },
+    try {
+      const [items, total] = await Promise.all([
+        prisma.recipe.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          take,
+          skip,
+          include: {
+            images: { orderBy: { order: 'asc' } },
+            author: { select: { name: true } },
+            recipeTypes: {
+              include: { recipeType: true },
+            },
           },
-        },
-      }),
-      prisma.recipe.count({ where }),
-    ]);
+        }),
+        prisma.recipe.count({ where }),
+      ]);
 
-    return {
-      recipes: items.map(buildRecipeCard),
-      total,
-    };
+      return {
+        recipes: items.map(buildRecipeCard),
+        total,
+      };
+    } catch (error) {
+      if (process.env.NODE_ENV === 'production')
+        console.error('[getAllRecipes] fallback:', error);
+      return { recipes: [], total: 0 };
+    }
   },
 );

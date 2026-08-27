@@ -22,65 +22,71 @@ function mapDifficulty(
 
 export const getRecipesByUtensil = cache(
   async (take = 4): Promise<UtensilRow[]> => {
-    const utensils = await prisma.utensil.findMany({
-      where: {
-        recipes: {
-          some: {
-            recipe: { isPublished: true },
+    try {
+      const utensils = await prisma.utensil.findMany({
+        where: {
+          recipes: {
+            some: {
+              recipe: { isPublished: true },
+            },
           },
         },
-      },
-      orderBy: { name: 'asc' },
-      take: 4,
-      select: { id: true, name: true },
-    });
+        orderBy: { name: 'asc' },
+        take: 4,
+        select: { id: true, name: true },
+      });
 
-    const rows = await Promise.all(
-      utensils.map(async (utensil) => {
-        const items = await prisma.recipe.findMany({
-          where: {
-            isPublished: true,
-            utensils: {
-              some: { utensilId: utensil.id },
+      const rows = await Promise.all(
+        utensils.map(async (utensil) => {
+          const items = await prisma.recipe.findMany({
+            where: {
+              isPublished: true,
+              utensils: {
+                some: { utensilId: utensil.id },
+              },
             },
-          },
-          orderBy: { createdAt: 'desc' },
-          take,
-          include: {
-            images: { orderBy: { order: 'asc' } },
-            author: { select: { name: true } },
-            recipeTypes: {
-              include: { recipeType: true },
+            orderBy: { createdAt: 'desc' },
+            take,
+            include: {
+              images: { orderBy: { order: 'asc' } },
+              author: { select: { name: true } },
+              recipeTypes: {
+                include: { recipeType: true },
+              },
             },
-          },
-        });
+          });
 
-        return {
-          utensilName: utensil.name,
-          recipes: items.map((recipe) => {
-            const cover =
-              recipe.images.find((img) => img.isCover) ??
-              recipe.images[0] ??
-              null;
+          return {
+            utensilName: utensil.name,
+            recipes: items.map((recipe) => {
+              const cover =
+                recipe.images.find((img) => img.isCover) ??
+                recipe.images[0] ??
+                null;
 
-            return {
-              id: recipe.id,
-              slug: recipe.slug,
-              title: recipe.title,
-              summary: recipe.summary,
-              types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
-              difficulty: mapDifficulty(recipe.difficulty),
-              prepTimeMinutes: recipe.prepTimeMinutes,
-              cookTimeMinutes: recipe.cookTimeMinutes,
-              createdAt: recipe.createdAt,
-              coverUrl: cover?.url ?? null,
-              authorName: recipe.author?.name ?? null,
-            } satisfies RecipeCardData;
-          }),
-        };
-      }),
-    );
+              return {
+                id: recipe.id,
+                slug: recipe.slug,
+                title: recipe.title,
+                summary: recipe.summary,
+                types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
+                difficulty: mapDifficulty(recipe.difficulty),
+                prepTimeMinutes: recipe.prepTimeMinutes,
+                cookTimeMinutes: recipe.cookTimeMinutes,
+                createdAt: recipe.createdAt,
+                coverUrl: cover?.url ?? null,
+                authorName: recipe.author?.name ?? null,
+              } satisfies RecipeCardData;
+            }),
+          };
+        }),
+      );
 
-    return rows.filter((row) => row.recipes.length > 0);
+      return rows.filter((row) => row.recipes.length > 0);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'production')
+        console.error('[getRecipesByUtensil] fallback:', error);
+      return [];
+    }
   },
 );

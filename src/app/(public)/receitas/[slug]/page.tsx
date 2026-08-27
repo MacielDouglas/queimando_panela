@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 import { getRecipeBySlug } from '@/features/recipes/actions/get-recipe-by-slug';
 import { RecipeDetailHero } from '@/features/recipes/components/recipe-detail/RecipeDetailHero';
 import { RecipeIngredients } from '@/features/recipes/components/recipe-detail/RecipeIngredients';
