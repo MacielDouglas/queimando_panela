@@ -308,10 +308,23 @@ export async function POST(request: Request) {
   console.log('[api/recipes/analyze] POST reached');
 
   try {
-    if (!process.env.GROQ_API_KEY) {
+    const rawKey = process.env.GROQ_API_KEY?.trim();
+    if (!rawKey) {
       return NextResponse.json(
-        { error: 'GROQ_API_KEY não configurada.' },
-        { status: 500 },
+        {
+          error:
+            'Serviço de IA indisponível. Configure GROQ_API_KEY em .env e na Vercel (https://console.groq.com/keys).',
+        },
+        { status: 503 },
+      );
+    }
+    if (!rawKey.startsWith('gsk_')) {
+      return NextResponse.json(
+        {
+          error:
+            'GROQ_API_KEY inválida (deve começar com gsk_). Gere uma nova em https://console.groq.com/keys e atualize .env e Vercel.',
+        },
+        { status: 503 },
       );
     }
 
@@ -325,7 +338,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+    const groq = new Groq({ apiKey: rawKey });
 
     const completion = await groq.chat.completions.create({
       model: 'openai/gpt-oss-120b', // ← MODELO ATUALIZADO
@@ -349,9 +362,39 @@ export async function POST(request: Request) {
       );
     }
   } catch (error) {
+    const status =
+      typeof error === 'object' && error !== null
+        ? ((error as Record<string, unknown>).status ??
+          (error as Record<string, unknown>).statusCode)
+        : undefined;
+    const statusCode = typeof status === 'number' ? status : 0;
+    const message =
+      typeof error === 'object' && error !== null
+        ? String((error as Record<string, unknown>).message ?? '')
+        : '';
+
+    if (
+      statusCode === 401 ||
+      statusCode === 403 ||
+      message.includes('Invalid API Key') ||
+      message.includes('invalid_api_key')
+    ) {
+      console.error('[api/recipes/analyze] GROQ_API_KEY inválida:', {
+        status: statusCode,
+        message,
+      });
+      return NextResponse.json(
+        {
+          error:
+            'Chave da IA inválida ou expirada. Gere uma nova em https://console.groq.com/keys, atualize GROQ_API_KEY no .env (local) e em Vercel → Settings → Environment Variables, depois faça redeploy.',
+        },
+        { status: 503 },
+      );
+    }
+
     console.error('[api/recipes/analyze] request error:', error);
     return NextResponse.json(
-      { error: 'Erro ao processar com a IA.' },
+      { error: 'Erro ao processar com a IA. Tente novamente em instantes.' },
       { status: 500 },
     );
   }

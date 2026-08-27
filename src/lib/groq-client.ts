@@ -28,7 +28,7 @@ function sleep(ms: number) {
 export async function createChatCompletionWithRetry({
   messages,
   model = 'openai/gpt-oss-120b',
-  maxTokens = 2048,
+  maxTokens = 4082,
   temperature = 0.2,
 }: ChatParams) {
   const maxRetries = 3;
@@ -54,6 +54,13 @@ export async function createChatCompletionWithRetry({
             (err as Record<string, unknown>).statusCode)
           : undefined;
 
+      const statusCode = typeof status === 'number' ? status : 0;
+
+      // 401/403 = chave inválida — nunca faz retry, falha rápido com mensagem clara
+      if (statusCode === 401 || statusCode === 403) {
+        break;
+      }
+
       const headers =
         typeof err === 'object' && err !== null
           ? ((err as Record<string, unknown>).headers as
@@ -63,8 +70,6 @@ export async function createChatCompletionWithRetry({
 
       const shouldRetryHeader = headers?.get?.('x-should-retry');
       const retryAfterHeader = headers?.get?.('retry-after');
-
-      const statusCode = typeof status === 'number' ? status : 0;
 
       const shouldRetryByHeader =
         shouldRetryHeader === 'true' ||
