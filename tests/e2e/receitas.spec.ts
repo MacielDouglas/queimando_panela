@@ -268,8 +268,8 @@ test.describe('rota protegida /receitas/new — autenticado', () => {
       page.getByText(/análise da ia.*edite antes de salvar/i),
     ).toBeVisible();
 
-    // Título revisado fica no painel #ai-review com label "Título" — verifica valor
-    await expect(page.locator('#ai-review').getByLabel(/título/i)).toHaveValue(
+    // Título revisado fica no primeiro input de #ai-review — getByLabel falha pois label não tem htmlFor
+    await expect(page.locator('#ai-review input').first()).toHaveValue(
       /bolo de milho da minha avó/i,
     );
     await expect(page.getByText(/sugestões de substituição/i)).toBeVisible();
