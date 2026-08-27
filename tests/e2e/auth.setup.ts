@@ -13,7 +13,7 @@ const authFile = path.join(__dirname, 'playwright/.auth/user.json');
  * - Salva cookies + localStorage em `tests/e2e/playwright/.auth/user.json`
  *   consumido pelo projeto `chromium` em `playwright.config.ts:34`
  */
-setup('authenticate', async ({ page, request }) => {
+setup('authenticate', async ({ page }) => {
   const email = process.env.E2E_USER_EMAIL;
   const password = process.env.E2E_USER_PASSWORD;
   const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3000';
@@ -31,32 +31,31 @@ setup('authenticate', async ({ page, request }) => {
   }
 
   // ── Tentativa 1: API better-auth ──────────────────────────────────────
-  // Endpoint exposto por `src/app/api/auth/[...all]/route.ts` → better-auth
-  // POST /api/auth/sign-in/email { email, password }
+  // Usa page.request para que cookies httpOnly caiam direto no page context (evita bug request vs page)
   console.log(
     `[auth.setup] Tentando login via API para ${email} em ${baseURL}`,
   );
-  const apiResponse = await request.post(`${baseURL}/api/auth/sign-in/email`, {
-    data: { email, password },
-    headers: { 'Content-Type': 'application/json' },
-  });
+  const apiResponse = await page.request.post(
+    `${baseURL}/api/auth/sign-in/email`,
+    {
+      data: { email, password },
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
 
   if (apiResponse.ok()) {
-    // A API define cookies httpOnly; o `request` context já os guarda.
-    // Precisamos transferir para o `page` context navegando uma vez.
-    await page.goto('/');
-    // Garante que o storage reflita a sessão autenticada
-    await page.context().storageState({ path: authFile });
-
-    // Validação leve: verifica que não fomos redirecionados para /login
+    // Cookies já estão no page context; valida sessão indo a rota protegida
     await page.goto('/receitas/new');
-    // Se autenticado, /receitas/new renderiza editor; se não, redireciona /login
+    await expect(page).toHaveURL(/\/receitas\/new|\/login/, {
+      timeout: 15_000,
+    });
     const url = page.url();
     if (url.includes('/login')) {
       console.warn(
         '[auth.setup] API retornou 200 mas sessão não persistiu — tentando fallback UI',
       );
     } else {
+      await page.context().storageState({ path: authFile });
       console.log('[auth.setup] Login via API bem-sucedido');
       return;
     }

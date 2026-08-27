@@ -200,6 +200,9 @@ test.describe('rota protegida /receitas/new — autenticado', () => {
     page,
   }) => {
     await page.goto('/receitas/new');
+    await expect(page).toHaveURL(/\/receitas\/new|\/login/, {
+      timeout: 15_000,
+    });
 
     if (page.url().includes('/login')) {
       test.skip(
@@ -279,6 +282,9 @@ test.describe('rota protegida /receitas/new — autenticado', () => {
     page,
   }) => {
     await page.goto('/receitas/new');
+    await expect(page).toHaveURL(/\/receitas\/new|\/login/, {
+      timeout: 15_000,
+    });
 
     if (page.url().includes('/login')) {
       test.skip(true, 'Sem sessão — pule validação autenticada');
