@@ -96,7 +96,7 @@ describe('Home', () => {
     render(await Home());
     expect(
       screen.getByRole('heading', {
-        name: /Sabores da nossa terra/i,
+        name: /Receitas para compartilhar sem pressa/i,
       }),
     ).toBeInTheDocument();
   });

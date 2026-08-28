@@ -31,7 +31,7 @@ export function NavLinks({
     <ul
       className={cn(
         'flex',
-        orientation === 'horizontal' ? 'items-center gap-1' : 'flex-col gap-1',
+        orientation === 'horizontal' ? 'items-center gap-7' : 'flex-col gap-1',
         className,
       )}
     >
@@ -43,17 +43,19 @@ export function NavLinks({
             href={item.href}
             aria-current={active ? 'page' : undefined}
             className={cn(
-              'font-display text-xs font-extrabold uppercase tracking-[0.12em] transition-colors',
-              variant === 'header' &&
-                'px-3 py-2 text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white',
-              variant === 'header' && active && 'bg-[#0a0a0a] text-white',
+              'text-[0.92rem] font-semibold transition-colors',
+              variant === 'header' && 'text-[#52606d] hover:text-[#183a37]',
+              variant === 'header' && active && 'text-[#183a37]',
               variant === 'footer' &&
-                'text-sm font-bold normal-case tracking-normal text-white/80 hover:text-[#ffb900]',
+                'text-sm normal-case tracking-normal text-white/80 hover:text-[var(--accent-e)]',
               variant === 'mobile' &&
-                'flex min-h-12 items-center border-b border-[#e5e5e5] py-3 text-sm text-[#0a0a0a] hover:bg-[#ffb900]',
-              variant === 'mobile' && active && 'bg-[#ffb900] px-3',
+                'flex min-h-12 items-center border-b py-3 text-sm text-[#1f2933] hover:bg-[var(--accent-e)]',
+              variant === 'mobile' && active && 'bg-[var(--accent-e)] px-3',
               itemClassName,
             )}
+            style={{
+              fontFamily: 'var(--font-body), "DM Sans", Arial, sans-serif',
+            }}
           >
             {item.label}
           </Link>

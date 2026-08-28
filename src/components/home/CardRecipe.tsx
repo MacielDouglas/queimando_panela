@@ -17,12 +17,15 @@ export default function CardRecipe({
     (recipe.prepTimeMinutes ?? 0) + (recipe.cookTimeMinutes ?? 0) || null;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white transition-[border-color,box-shadow] hover:border-[#0a0a0a] hover:shadow-sm focus-within:border-[#0a0a0a] focus-within:ring-2 focus-within:ring-[#ffb900] focus-within:ring-offset-2">
-      {/* Imagem 4:3 blog híbrido 12px */}
+    <article
+      className="group flex h-full flex-col overflow-hidden border bg-white transition-[border-color,box-shadow]"
+      style={{ borderRadius: 'var(--radius-md)', borderColor: 'var(--line)' }}
+    >
       <Link
         href={`/receitas/${recipe.slug}`}
         aria-label={`Ver receita: ${recipe.title}`}
-        className="relative block aspect-[4/3] w-full overflow-hidden bg-[#f5f5f5] focus:outline-none"
+        className="relative block w-full overflow-hidden focus:outline-none"
+        style={{ aspectRatio: '4 / 3', background: 'var(--muted)' }}
         tabIndex={-1}
       >
         {recipe.coverUrl ? (
@@ -35,21 +38,36 @@ export default function CardRecipe({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-[#f5f5f5]">
-            <span className="rounded-full border border-[#e5e5e5] bg-white px-2.5 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#6b6b6b]">
+          <div className="flex h-full w-full items-center justify-center">
+            <span
+              className="rounded-full border bg-white px-2.5 py-1 text-[10px] font-extrabold uppercase"
+              style={{
+                borderColor: 'var(--line)',
+                color: 'var(--ink-muted)',
+                letterSpacing: '0.12em',
+              }}
+            >
               Sem foto
             </span>
           </div>
         )}
 
         {recipe.types[0] && (
-          <span className="absolute left-2.5 top-2.5 rounded-full border border-[#0a0a0a]/10 bg-[#ffb900] px-2.5 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] shadow-sm">
+          <span
+            className="absolute left-2.5 top-2.5 rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase shadow-sm"
+            style={{
+              borderColor: 'rgba(24, 58, 55, 0.1)',
+              background: 'var(--accent-e)',
+              color: 'var(--ink)',
+              letterSpacing: '0.12em',
+            }}
+          >
             {recipe.types[0]}
           </span>
         )}
-        {/* Faixa amarela Queimando Panela no card */}
         <span
-          className="absolute inset-x-0 top-0 h-1 bg-[#ffb900]"
+          className="absolute inset-x-0 top-0 h-1"
+          style={{ background: 'var(--accent-e)' }}
           aria-hidden="true"
         />
       </Link>
@@ -57,33 +75,45 @@ export default function CardRecipe({
       <div className="flex flex-1 flex-col gap-3 p-4">
         <Link
           href={`/receitas/${recipe.slug}`}
-          className="rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb900] focus-visible:ring-offset-2"
+          className="rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-e)] focus-visible:ring-offset-2"
         >
-          <h3 className="line-clamp-2 font-display text-[15px] font-extrabold uppercase leading-tight tracking-[-0.01em] text-[#0a0a0a] decoration-[#ffb900] decoration-2 underline-offset-4 group-hover:underline text-wrap-balance">
+          <h3
+            className="line-clamp-2 font-display text-[15px] font-bold uppercase leading-tight tracking-[-0.01em]"
+            style={{ color: 'var(--forest)' }}
+          >
             {recipe.title}
           </h3>
         </Link>
         {recipe.summary && (
-          <p className="line-clamp-2 font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
+          <p
+            className="line-clamp-2 text-sm leading-6"
+            style={{ color: 'var(--ink-muted)' }}
+          >
             {recipe.summary}
           </p>
         )}
 
         <div
-          className="mt-auto flex items-center gap-3 border-t border-[#f2f2f2] pt-3 font-sans text-xs text-[#6b6b6b]"
+          className="mt-auto flex items-center gap-3 border-t pt-3 text-xs"
+          style={{ borderColor: 'var(--muted)', color: 'var(--ink-muted)' }}
           aria-hidden="true"
         >
           {totalTime && (
             <span className="inline-flex items-center gap-1.5">
               <Clock3
-                className="size-3.5 shrink-0 text-[#0a0a0a]"
+                className="size-3.5 shrink-0"
+                style={{ color: 'var(--forest)' }}
                 aria-hidden
               />
               {totalTime} min
             </span>
           )}
           <span className="inline-flex items-center gap-1.5">
-            <Flame className="size-3.5 shrink-0 text-[#ffb900]" aria-hidden />
+            <Flame
+              className="size-3.5 shrink-0"
+              style={{ color: 'var(--accent-e)' }}
+              aria-hidden
+            />
             {difficultyLabel[recipe.difficulty]}
           </span>
         </div>

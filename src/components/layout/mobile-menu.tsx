@@ -25,7 +25,7 @@ export function MobileMenu() {
           type="button"
           variant="ghost"
           size="icon"
-          className="size-11 border border-[#0a0a0a] bg-transparent text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-[#ffb900]"
+          className="size-11 border border-[#183a37] bg-transparent text-[#183a37] hover:bg-[#183a37] hover:text-white"
           aria-label="Abrir menu"
         >
           <HiOutlineMenuAlt3 className="size-5" />
@@ -34,21 +34,22 @@ export function MobileMenu() {
 
       <SheetContent
         side="right"
-        className="flex w-full max-w-sm flex-col border-l border-[#e5e5e5] bg-white p-0"
+        className="flex w-full max-w-sm flex-col border-l p-0"
+        style={{ borderColor: 'var(--line)', background: 'var(--cream)' }}
       >
-        <SheetHeader className="border-b border-[#e5e5e5] bg-[#ffb900] px-6 py-5 text-left">
+        <SheetHeader
+          className="border-b px-6 py-5 text-left"
+          style={{ borderColor: 'var(--line)', background: 'var(--accent-e)' }}
+        >
           <SheetTitle asChild>
             <SheetClose asChild>
               <Link
                 href="/"
-                className="inline-flex items-center gap-3 text-[#0a0a0a]"
+                className="inline-flex items-center gap-3 text-[#183a37]"
               >
-                <span className="flex size-10 items-center justify-center bg-[#0a0a0a] text-[#ffb900]">
-                  <QPMark className="size-7" />
-                </span>
-                <span className="flex flex-col font-display text-sm font-extrabold uppercase leading-none tracking-[0.1em]">
-                  <span>Queimando</span>
-                  <span>Panela</span>
+                <QPMark />
+                <span className="font-display text-sm font-bold uppercase tracking-[0.1em]">
+                  Queimando Panela
                 </span>
               </Link>
             </SheetClose>
@@ -64,14 +65,23 @@ export function MobileMenu() {
           />
         </nav>
 
-        <div className="border-t border-[#e5e5e5] px-6 py-5">
+        <div
+          className="border-t px-6 py-5"
+          style={{ borderColor: 'var(--line)' }}
+        >
           <SheetClose asChild>
             <AuthNavButton className="w-full" />
           </SheetClose>
         </div>
 
-        <div className="border-t border-[#e5e5e5] bg-[#0a0a0a] px-6 py-5 text-white">
-          <p className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#ffb900]">
+        <div
+          className="border-t px-6 py-5"
+          style={{ borderColor: 'var(--line)', background: '#102c2a' }}
+        >
+          <p
+            className="text-xs font-bold uppercase"
+            style={{ color: 'var(--accent-e)', letterSpacing: '0.16em' }}
+          >
             Desenvolvido por Douglas Maciel
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -83,7 +93,11 @@ export function MobileMenu() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 border border-white/10 px-3 py-2 font-display text-xs font-bold uppercase tracking-[0.08em] text-white hover:border-[#ffb900] hover:bg-[#ffb900] hover:text-[#0a0a0a]"
+                    className="inline-flex items-center gap-2 border px-3 py-2 text-xs font-bold uppercase text-white transition-colors hover:bg-[var(--accent-e)] hover:text-[#183a37]"
+                    style={{
+                      borderColor: 'rgba(255,255,255,0.1)',
+                      letterSpacing: '0.08em',
+                    }}
                   >
                     <Icon className="size-3.5" />
                     <span>{item.label}</span>

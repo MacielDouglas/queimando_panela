@@ -8,27 +8,28 @@ import { navItems } from '@/components/layout/navigation-data';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[#e5e5e5] bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
-      <div className="editorial-container flex h-16 items-center justify-between gap-8">
+    <header
+      className="sticky top-0 z-20 border-b backdrop-blur"
+      style={{
+        borderColor: 'rgba(232, 225, 213, 0.72)',
+        background: 'rgba(255, 253, 247, 0.9)',
+      }}
+    >
+      <div className="editorial-container flex min-h-[78px] items-center justify-between gap-6">
         <Link
           href="/"
-          className="inline-flex items-center gap-3 text-[#0a0a0a] transition-opacity hover:opacity-80"
+          className="inline-flex items-center gap-3 text-[#183a37]"
+          aria-label="Queimando Panela - Página inicial"
         >
-          <span className="flex size-9 items-center justify-center bg-[#ffb900] text-[#0a0a0a]">
-            <QPMark className="size-6" />
-          </span>
-          <span className="hidden flex-col font-display text-[13px] font-extrabold uppercase leading-none tracking-[0.1em] sm:flex">
-            <span>Queimando</span>
-            <span>Panela</span>
-          </span>
-          <span className="font-display text-sm font-extrabold uppercase tracking-[0.08em] sm:hidden">
-            QP
+          <QPMark />
+          <span className="hidden font-display text-[1.35rem] font-bold sm:inline">
+            Queimando Panela
           </span>
         </Link>
 
         <nav
           aria-label="Navegação principal"
-          className="hidden items-center gap-1 md:flex"
+          className="hidden items-center gap-7 md:flex"
         >
           <NavLinks items={navItems} variant="header" />
         </nav>

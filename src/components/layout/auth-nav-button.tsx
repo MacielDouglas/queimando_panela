@@ -37,7 +37,10 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
 
   if (isPending) {
     return (
-      <div className={cn('h-12 w-28 animate-pulse bg-[#e5e5e5]', className)} />
+      <div
+        className={cn('h-[42px] w-28 animate-pulse', className)}
+        style={{ background: 'var(--line)' }}
+      />
     );
   }
 
@@ -48,9 +51,14 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
         onClick={handleSignOut}
         disabled={isSigningOut}
         className={cn(
-          'h-12 border border-[#0a0a0a] bg-[#0a0a0a] px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-white hover:text-[#0a0a0a]',
+          'h-[42px] rounded-full border px-[17px] text-[0.88rem] font-bold transition-colors',
           className,
         )}
+        style={{
+          borderColor: 'var(--forest)',
+          color: 'var(--forest)',
+          background: 'transparent',
+        }}
       >
         {isSigningOut ? 'Saindo...' : 'Sair'}
       </Button>
@@ -62,7 +70,7 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
       asChild
       onClick={onNavigate}
       className={cn(
-        'h-12 border border-[#0a0a0a] bg-[#0a0a0a] px-6 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-white hover:text-[#0a0a0a]',
+        'button-epirus button-primary-epirus h-[42px] px-[17px] text-[0.88rem]',
         className,
       )}
     >

@@ -1,6 +1,5 @@
 'use client';
 
-import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -15,16 +14,12 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
 
   if (recipes.length === 0) {
     return (
-      <section className="bg-white py-16 lg:py-24">
+      <section className="py-[112px]" style={{ background: 'var(--white)' }}>
         <div className="editorial-container">
           <div className="text-center">
-            <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[#6b6b6b]">
-              Últimas receitas
-            </p>
-            <h2 className="mt-3 font-display text-[clamp(1.8rem,1.2rem+2vw,2.8rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0a0a] text-wrap-balance">
-              Saiu do forno
-            </h2>
-            <p className="mt-4 mx-auto max-w-[48ch] font-sans text-[15px] leading-7 text-[#6b6b6b]">
+            <p className="eyebrow-queimando-panela">Últimas receitas</p>
+            <h2 className="section-title-epirus mx-auto">Saiu do forno</h2>
+            <p className="section-copy mx-auto">
               Quando a primeira receita for publicada, ela aparece aqui com foto
               grande e leitura leve.
             </p>
@@ -38,28 +33,23 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
   const recipe = visible[currentRecipe] ?? visible[0];
 
   return (
-    <section className="bg-white py-16 lg:py-24">
+    <section className="py-[112px]" style={{ background: 'var(--white)' }}>
       <div className="editorial-container">
         <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="max-w-[520px]">
-            <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[#6b6b6b]">
-              Últimas receitas
-            </p>
-            <h2 className="mt-3 font-display text-[clamp(1.8rem,1.2rem+2vw,2.8rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.02em] text-[#0a0a0a] text-wrap-balance">
+            <p className="eyebrow-queimando-panela">Últimas receitas</p>
+            <h2 className="section-title-epirus">
               O que acabou de sair do forno
             </h2>
-            <p className="mt-4 max-w-[48ch] font-sans text-[15px] leading-7 text-[#6b6b6b] text-wrap-pretty">
+            <p
+              className="mt-4 max-w-[48ch] text-[15px] leading-7"
+              style={{ color: 'var(--ink-muted)' }}
+            >
               Leitura leve, foto grande, foco no que importa — sem ruído.
             </p>
             <div className="mt-8 flex items-center gap-6">
-              <Link
-                href="/receitas"
-                className="group inline-flex items-center gap-3 font-display text-sm font-extrabold uppercase tracking-[0.1em] text-[#0a0a0a]"
-              >
+              <Link href="/receitas" className="text-link-epirus">
                 Ver todas
-                <span className="inline-flex size-10 items-center justify-center rounded-full border border-[#0a0a0a] transition-colors group-hover:bg-[#ffb900]">
-                  <ArrowRight className="size-4 text-[#0a0a0a]" />
-                </span>
               </Link>
             </div>
           </div>
@@ -67,10 +57,17 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
           <div>
             <Link
               href={`/receitas/${recipe.slug}`}
-              className="group block overflow-hidden rounded-[12px] border border-[#e5e5e5] transition-[border-color,box-shadow] hover:border-[#0a0a0a] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb900] focus-visible:ring-offset-2"
+              className="group block overflow-hidden border transition-[border-color,box-shadow]"
+              style={{
+                borderRadius: 'var(--radius-md)',
+                borderColor: 'var(--line)',
+              }}
               aria-label={`Ver receita: ${recipe.title}`}
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-[#f5f5f5]">
+              <div
+                className="relative overflow-hidden"
+                style={{ aspectRatio: '1.15 / 1', background: 'var(--muted)' }}
+              >
                 {recipe.coverUrl ? (
                   <Image
                     src={recipe.coverUrl}
@@ -81,30 +78,51 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-[#f5f5f5]">
-                    <span className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+                  <div className="flex h-full w-full items-center justify-center">
+                    <span
+                      className="text-[0.78rem] font-bold uppercase"
+                      style={{ color: 'var(--ink-muted)' }}
+                    >
                       Sem foto
                     </span>
                   </div>
                 )}
                 {recipe.types[0] && (
-                  <span className="absolute left-4 top-4 bg-[#ffb900] px-3 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
+                  <span
+                    className="absolute left-4 top-4 px-3 py-[7px] text-[0.73rem] font-extrabold uppercase"
+                    style={{
+                      background: 'var(--accent-e)',
+                      color: 'var(--ink)',
+                      letterSpacing: '0.04em',
+                    }}
+                  >
                     {recipe.types[0]}
                   </span>
                 )}
               </div>
-              <div className="border-t border-[#e5e5e5] bg-white p-5">
-                <h3 className="font-display text-lg font-extrabold uppercase leading-tight tracking-[-0.01em] text-[#0a0a0a] text-wrap-balance">
+              <div
+                className="border-t bg-white p-5"
+                style={{ borderColor: 'var(--line)' }}
+              >
+                <h3
+                  className="font-display text-lg font-bold leading-tight tracking-[-0.01em]"
+                  style={{ color: 'var(--forest)' }}
+                >
                   {recipe.title}
                 </h3>
                 {recipe.summary && (
-                  <p className="mt-2 line-clamp-2 font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
+                  <p
+                    className="mt-2 line-clamp-2 text-sm leading-6"
+                    style={{ color: 'var(--ink-muted)' }}
+                  >
                     {recipe.summary}
                   </p>
                 )}
-                <div className="mt-4 inline-flex items-center gap-2 font-display text-xs font-extrabold uppercase tracking-[0.1em] text-[#0a0a0a]">
-                  Veja
-                  <ArrowRight className="size-3.5" />
+                <div
+                  className="mt-4 inline-flex items-center gap-2 text-[0.78rem] font-bold uppercase"
+                  style={{ color: 'var(--forest)', letterSpacing: '0.1em' }}
+                >
+                  Veja →
                 </div>
               </div>
             </Link>
@@ -116,16 +134,22 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
                     key={visible[index].id}
                     type="button"
                     onClick={() => setCurrentRecipe(index)}
-                    className={`h-1 transition-all ${
-                      index === currentRecipe
-                        ? 'w-8 bg-[#ffb900]'
-                        : 'w-4 bg-[#e5e5e5] hover:bg-[#0a0a0a]'
-                    }`}
+                    className="h-1 transition-all"
+                    style={{
+                      width: index === currentRecipe ? '32px' : '16px',
+                      background:
+                        index === currentRecipe
+                          ? 'var(--accent-e)'
+                          : 'var(--line)',
+                    }}
                     aria-label={`Receita ${index + 1}`}
                   />
                 ))}
               </div>
-              <p className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+              <p
+                className="text-[0.78rem] font-bold uppercase"
+                style={{ color: 'var(--ink-muted)', letterSpacing: '0.12em' }}
+              >
                 {String(currentRecipe + 1).padStart(2, '0')} /{' '}
                 {String(visible.length).padStart(2, '0')}
               </p>

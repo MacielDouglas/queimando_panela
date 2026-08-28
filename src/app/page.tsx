@@ -1,24 +1,24 @@
 import type { Metadata } from 'next';
-import { ClassicRecipesSection } from '@/components/home/ClassicRecipesSection';
-import { GastronomySection } from '@/components/home/GastronomySection';
+import { CategoriesSection } from '@/components/home/CategoriesSection';
+import { CtaSection } from '@/components/home/CtaSection';
 import { HeroSection } from '@/components/home/HeroSection';
 import { IntroSection } from '@/components/home/IntroSection';
 import { LatestRecipesSection } from '@/components/home/LatestRecipesSection';
-import SignUpSection from '@/components/home/SignUpSection';
+import { RecipesSection } from '@/components/home/RecipesSection';
+import { ValuesSection } from '@/components/home/ValuesSection';
 import { getClassicRecipes } from '@/features/recipes/actions/get-classic-recipes';
 import { getLatestRecipes } from '@/features/recipes/actions/get-latest-recipes';
 
-// Evita P2021 no `next build` quando o banco ainda não foi migrado (CI / Vercel)
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Queimando Panela — Receitas caseiras, afetivas e autorais',
   description:
-    'Descubra, guarde e compartilhe receitas de família. Histórias que merecem ser lembradas, direto da cozinha de quem faz com carinho.',
+    'Sabores autênticos, ingredientes selecionados e receitas que aproximam pessoas.',
   openGraph: {
     title: 'Queimando Panela — Receitas caseiras, afetivas e autorais',
     description:
-      'Descubra, guarde e compartilhe receitas de família. Histórias que merecem ser lembradas.',
+      'Sabores autênticos, ingredientes selecionados e receitas que aproximam pessoas.',
     type: 'website',
   },
 };
@@ -26,17 +26,18 @@ export const metadata: Metadata = {
 export default async function Home() {
   const [latestRecipes, classicRecipes] = await Promise.all([
     getLatestRecipes(6),
-    getClassicRecipes(4, 1),
+    getClassicRecipes(3, 1),
   ]);
 
   return (
-    <main className="bg-white">
+    <main>
       <HeroSection />
       <IntroSection />
+      <CategoriesSection />
+      <ValuesSection />
+      <RecipesSection rows={classicRecipes} />
       <LatestRecipesSection recipes={latestRecipes} />
-      <GastronomySection recipes={latestRecipes} />
-      <ClassicRecipesSection rows={classicRecipes} />
-      <SignUpSection />
+      <CtaSection />
     </main>
   );
 }

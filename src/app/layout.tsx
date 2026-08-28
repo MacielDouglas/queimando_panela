@@ -1,20 +1,21 @@
 import type { Metadata } from 'next';
-import { Inter, Sora } from 'next/font/google';
+import { DM_Sans, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 
-const sora = Sora({
+const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
   weight: ['400', '600', '700', '800'],
 });
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ['latin'],
   variable: '--font-body',
   display: 'swap',
+  weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     template: '%s | Queimando Panela',
   },
   description:
-    'Receitas caseiras, afetivas e autorais. Queimando Panela — direta, quadrada, amarela e sem frescura.',
+    'Sabores autênticos, ingredientes selecionados e receitas que aproximam pessoas.',
 };
 
 export default async function RootLayout({
@@ -34,7 +35,11 @@ export default async function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${sora.variable} ${inter.variable} min-h-dvh bg-white text-[#0a0a0a] antialiased`}
+        className={`${playfair.variable} ${dmSans.variable} min-h-dvh antialiased`}
+        style={{
+          color: 'var(--ink)',
+          background: 'var(--cream)',
+        }}
       >
         <div className="flex min-h-dvh flex-col">
           <Header />
