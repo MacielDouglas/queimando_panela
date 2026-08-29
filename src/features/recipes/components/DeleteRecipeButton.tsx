@@ -35,7 +35,8 @@ export function DeleteRecipeButton({ slug, title }: Props) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex min-h-11 items-center justify-center gap-2 border border-red-200 px-4 text-sm font-semibold text-red-700 transition hover:bg-red-50"
+        className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border bg-white px-4 text-sm font-bold transition hover:bg-red-50"
+        style={{ borderColor: 'var(--line)', color: 'var(--destructive)' }}
       >
         <Trash2 className="h-4 w-4" />
         Excluir receita
@@ -43,15 +44,29 @@ export function DeleteRecipeButton({ slug, title }: Props) {
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md border border-neutral-200 bg-white p-6 shadow-xl">
+          <div
+            className="w-full max-w-md bg-white p-6"
+            style={{
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--line)',
+              boxShadow: 'var(--shadow)',
+            }}
+          >
             <div className="mb-4 flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-lg font-bold text-neutral-950">
+                <h2
+                  className="font-display text-lg font-bold"
+                  style={{ color: 'var(--forest)' }}
+                >
                   Excluir receita
                 </h2>
-                <p className="mt-2 text-sm text-neutral-600">
-                  Tem certeza que deseja excluir <strong>{title}</strong>? Essa
-                  ação não pode ser desfeita.
+                <p
+                  className="mt-2 text-sm"
+                  style={{ color: 'var(--ink-muted)' }}
+                >
+                  Tem certeza que deseja excluir{' '}
+                  <strong style={{ color: 'var(--forest)' }}>{title}</strong>?
+                  Essa ação não pode ser desfeita.
                 </p>
               </div>
 
@@ -59,7 +74,8 @@ export function DeleteRecipeButton({ slug, title }: Props) {
                 type="button"
                 onClick={() => setOpen(false)}
                 disabled={isPending}
-                className="text-neutral-500 transition hover:text-neutral-900"
+                className="transition hover:opacity-70"
+                style={{ color: 'var(--ink-muted)' }}
                 aria-label="Fechar modal"
               >
                 <X className="h-4 w-4" />
@@ -67,7 +83,16 @@ export function DeleteRecipeButton({ slug, title }: Props) {
             </div>
 
             {error && (
-              <p className="mb-4 border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              <p
+                className="mb-4 rounded-[10px] px-3 py-2 text-sm"
+                style={{
+                  border:
+                    '1px solid color-mix(in srgb, var(--destructive) 20%, transparent)',
+                  background:
+                    'color-mix(in srgb, var(--destructive) 6%, white)',
+                  color: 'var(--destructive)',
+                }}
+              >
                 {error}
               </p>
             )}
@@ -77,7 +102,8 @@ export function DeleteRecipeButton({ slug, title }: Props) {
                 type="button"
                 onClick={() => setOpen(false)}
                 disabled={isPending}
-                className="inline-flex min-h-11 items-center justify-center border border-neutral-300 px-4 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50"
+                className="inline-flex min-h-11 items-center justify-center rounded-full border bg-white px-4 text-sm font-bold transition hover:bg-[var(--muted)]"
+                style={{ borderColor: 'var(--line)', color: 'var(--forest)' }}
               >
                 Cancelar
               </button>
@@ -86,7 +112,8 @@ export function DeleteRecipeButton({ slug, title }: Props) {
                 type="button"
                 onClick={handleDelete}
                 disabled={isPending}
-                className="inline-flex min-h-11 items-center justify-center gap-2 bg-red-600 px-4 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-60"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-4 text-sm font-bold text-white transition disabled:opacity-60"
+                style={{ background: 'var(--destructive)' }}
               >
                 {isPending ? (
                   <>

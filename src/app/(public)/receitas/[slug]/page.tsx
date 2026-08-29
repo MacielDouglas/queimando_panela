@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
@@ -102,7 +103,35 @@ export default async function RecipeDetailPage({ params }: Props) {
       ];
 
   return (
-    <main className="bg-white pb-12">
+    <main style={{ background: 'var(--cream)' }} className="pb-0">
+      {/* Breadcrumb editorial */}
+      <div className="editorial-container pt-6">
+        <nav
+          aria-label="Breadcrumb"
+          className="flex items-center gap-2 text-xs"
+        >
+          <Link
+            href="/"
+            className="transition-colors hover:opacity-80"
+            style={{ color: 'var(--ink-muted)' }}
+          >
+            Home
+          </Link>
+          <span style={{ color: 'var(--line)' }}>/</span>
+          <Link
+            href="/receitas"
+            className="transition-colors hover:opacity-80"
+            style={{ color: 'var(--ink-muted)' }}
+          >
+            Receitas
+          </Link>
+          <span style={{ color: 'var(--line)' }}>/</span>
+          <span className="font-bold" style={{ color: 'var(--forest)' }}>
+            {recipe.title}
+          </span>
+        </nav>
+      </div>
+
       <RecipeDetailHero
         title={recipe.title}
         summary={recipe.summary}
@@ -118,19 +147,121 @@ export default async function RecipeDetailPage({ params }: Props) {
         editHref={`/receitas/${recipe.slug}/editar`}
         slug={recipe.slug}
       />
+
       <section className="editorial-container py-12 lg:py-16">
-        <div className="grid gap-8 lg:grid-cols-[360px_1fr] lg:gap-10">
-          <aside className="space-y-6 lg:sticky lg:top-[76px] lg:self-start">
-            <RecipeIngredients sections={displaySections} utensils={utensils} />
+        <div className="grid gap-8 lg:grid-cols-[380px_1fr] lg:gap-10">
+          <aside className="space-y-6 lg:sticky lg:top-[96px] lg:self-start">
+            <div className="qp-reveal">
+              <RecipeIngredients
+                sections={displaySections}
+                utensils={utensils}
+              />
+            </div>
+
+            {/* Card de confiança — só aparece no desktop sticky */}
+            <div
+              className="hidden rounded-[var(--radius-md)] p-5 lg:block"
+              style={{ background: 'var(--forest)', color: 'white' }}
+            >
+              <p
+                className="text-[0.78rem] font-bold uppercase"
+                style={{ color: 'var(--accent-e)', letterSpacing: '0.08em' }}
+              >
+                Cozinhou?
+              </p>
+              <p
+                className="mt-2 text-sm leading-6"
+                style={{ color: 'rgba(255,255,255,0.82)' }}
+              >
+                Publique sua versão, conte a história e deixe a IA conferir. Sua
+                panela também merece memória.
+              </p>
+              <Link
+                href="/receitas/new"
+                className="button-queimando-panela button-primary-queimando-panela mt-4 w-full"
+              >
+                Publicar minha versão
+              </Link>
+            </div>
           </aside>
 
           <div className="space-y-6">
-            <RecipeSteps sections={displaySections} />
+            <div className="qp-reveal">
+              <RecipeSteps sections={displaySections} />
+            </div>
             <RecipeNutrition
               summary={recipe.nutritionSummary}
               per100g={nutritionPer100g}
               suggestions={recipe.suggestions}
             />
+          </div>
+        </div>
+      </section>
+
+      {/* CTA final — editorial, mesma linguagem da Home */}
+      <section
+        className="border-t"
+        style={{ borderColor: 'var(--line)', background: 'white' }}
+      >
+        <div className="editorial-container py-12 lg:py-16">
+          <div
+            className="grid items-center overflow-hidden lg:grid-cols-[1.15fr_0.85fr]"
+            style={{
+              borderRadius: 'var(--radius-lg)',
+              background: 'var(--accent-e)',
+            }}
+          >
+            <div className="p-8 lg:p-10">
+              <p
+                className="mb-3 inline-flex items-center gap-2 text-[0.78rem] font-bold uppercase"
+                style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+              >
+                <span
+                  className="h-[2px] w-7"
+                  style={{ background: 'var(--forest)' }}
+                  aria-hidden="true"
+                />
+                Sua vez
+              </p>
+              <h2
+                className="max-w-[20ch] font-display text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[0.9] tracking-[-0.04em] text-balance"
+                style={{ color: 'var(--forest)' }}
+              >
+                Queimou a panela? Ótimo.
+              </h2>
+              <p
+                className="mt-3 max-w-[52ch] text-[1.05rem] leading-6"
+                style={{ color: 'rgba(31,41,51,0.82)' }}
+              >
+                Toda receita boa tem uma história. Compartilhe a sua e deixe a
+                IA conferir antes de ir ao ar.
+              </p>
+              <Link
+                href="/receitas/new"
+                className="button-queimando-panela mt-6 inline-flex"
+                style={{ background: 'var(--forest)', color: 'white' }}
+              >
+                Publicar receita
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+            <div
+              className="hidden min-h-[280px] bg-white/40 lg:block"
+              style={{ background: 'var(--muted)' }}
+            >
+              <div className="grid h-full place-items-center p-8 text-center">
+                <p
+                  className="max-w-[20ch] font-display text-lg font-bold leading-tight"
+                  style={{ color: 'var(--forest)' }}
+                >
+                  Olhômetro vale
+                  <br />
+                  tanto quanto
+                  <br />
+                  gramas.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

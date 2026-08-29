@@ -1,4 +1,4 @@
-import { Clock3, Flame, Pencil, Soup, Users } from 'lucide-react';
+import { Clock3, Pencil, Soup, Users } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -41,82 +41,169 @@ export function RecipeDetailHero({
   const totalTime = (prepTimeMinutes ?? 0) + (cookTimeMinutes ?? 0);
 
   return (
-    <header className="border-b-2 border-[#0a0a0a] bg-white">
+    <header
+      className="qp-reveal border-b bg-white"
+      style={{ borderColor: 'var(--line)' }}
+    >
       <div className="editorial-container py-12 lg:py-16">
         <div className="grid gap-10 lg:grid-cols-[1.15fr_420px] lg:items-start">
-          <div className="space-y-5">
+          <div className="space-y-6">
             <div className="flex flex-wrap gap-2">
               {types.map((t) => (
                 <span
                   key={t}
-                  className="border-2 border-[#0a0a0a] bg-[#ffb900] px-3 py-1 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]"
+                  className="rounded-full px-3 py-1.5 text-[0.78rem] font-bold uppercase"
+                  style={{
+                    background: 'var(--accent-e)',
+                    color: 'var(--forest)',
+                    letterSpacing: '0.06em',
+                  }}
                 >
                   {t}
                 </span>
               ))}
-              <span className="inline-flex items-center gap-1.5 border-2 border-[#0a0a0a] bg-white px-3 py-1 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
-                <Flame className="size-3.5 text-[#ffb900]" />
+              <span
+                className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[0.78rem] font-bold uppercase"
+                style={{
+                  border: '1px solid var(--line)',
+                  color: 'var(--forest)',
+                  letterSpacing: '0.06em',
+                }}
+              >
+                <span
+                  className="size-1.5 rounded-full"
+                  style={{ background: 'var(--accent-e)' }}
+                  aria-hidden
+                />
                 {difficultyLabel[difficulty]}
               </span>
             </div>
 
-            <h1 className="font-display text-4xl font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-[#0a0a0a] sm:text-5xl">
+            <h1
+              className="font-display text-[clamp(2.6rem,5vw,3.8rem)] font-extrabold leading-[0.9] tracking-[-0.04em] text-balance"
+              style={{ color: 'var(--forest)' }}
+            >
               {title}
             </h1>
 
             {summary && (
-              <p className="max-w-2xl border-l border-[#e5e5e5] pl-4 font-sans text-base leading-6 text-[#6b6b6b]">
+              <p
+                className="max-w-[60ch] border-l-2 pl-4 text-[1.05rem] leading-7"
+                style={{
+                  borderColor: 'var(--accent-e)',
+                  color: 'var(--ink-muted)',
+                  textWrap: 'pretty',
+                }}
+              >
                 {summary}
               </p>
             )}
 
-            <div className="grid grid-cols-2 gap-0 border-2 border-[#0a0a0a] bg-white sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {totalTime > 0 && (
-                <div className="border-r-2 border-[#0a0a0a] p-3 last:border-0">
-                  <p className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+                <div
+                  className="rounded-[14px] bg-white p-4"
+                  style={{ border: '1px solid var(--line)' }}
+                >
+                  <p
+                    className="text-[0.7rem] font-bold uppercase"
+                    style={{
+                      color: 'var(--ink-muted)',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
                     Total
                   </p>
-                  <p className="mt-1 flex items-center gap-1.5 font-display text-sm font-extrabold text-[#0a0a0a]">
-                    <Clock3 className="size-4 text-[#ffb900]" /> {totalTime} min
+                  <p
+                    className="mt-1 flex items-center gap-1.5 text-sm font-extrabold"
+                    style={{ color: 'var(--forest)' }}
+                  >
+                    <Clock3
+                      className="size-4"
+                      style={{ color: 'var(--accent-e)' }}
+                    />{' '}
+                    {totalTime} min
                   </p>
                 </div>
               )}
               {prepTimeMinutes ? (
-                <div className="border-r-2 border-[#0a0a0a] p-3 last:border-0">
-                  <p className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+                <div
+                  className="rounded-[14px] bg-white p-4"
+                  style={{ border: '1px solid var(--line)' }}
+                >
+                  <p
+                    className="text-[0.7rem] font-bold uppercase"
+                    style={{
+                      color: 'var(--ink-muted)',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
                     Preparo
                   </p>
-                  <p className="mt-1 font-display text-sm font-extrabold text-[#0a0a0a]">
+                  <p
+                    className="mt-1 text-sm font-extrabold"
+                    style={{ color: 'var(--forest)' }}
+                  >
                     {prepTimeMinutes} min
                   </p>
                 </div>
               ) : null}
               {cookTimeMinutes ? (
-                <div className="border-r-2 border-[#0a0a0a] p-3 last:border-0">
-                  <p className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b] flex items-center gap-1">
+                <div
+                  className="rounded-[14px] bg-white p-4"
+                  style={{ border: '1px solid var(--line)' }}
+                >
+                  <p
+                    className="flex items-center gap-1 text-[0.7rem] font-bold uppercase"
+                    style={{
+                      color: 'var(--ink-muted)',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
                     <Soup className="size-3.5" /> Cozimento
                   </p>
-                  <p className="mt-1 font-display text-sm font-extrabold text-[#0a0a0a]">
+                  <p
+                    className="mt-1 text-sm font-extrabold"
+                    style={{ color: 'var(--forest)' }}
+                  >
                     {cookTimeMinutes} min
                   </p>
                 </div>
               ) : null}
               {servings ? (
-                <div className="p-3">
-                  <p className="font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b] flex items-center gap-1">
+                <div
+                  className="rounded-[14px] bg-white p-4"
+                  style={{ border: '1px solid var(--line)' }}
+                >
+                  <p
+                    className="flex items-center gap-1 text-[0.7rem] font-bold uppercase"
+                    style={{
+                      color: 'var(--ink-muted)',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
                     <Users className="size-3.5" /> Porções
                   </p>
-                  <p className="mt-1 font-display text-sm font-extrabold text-[#0a0a0a]">
+                  <p
+                    className="mt-1 text-sm font-extrabold"
+                    style={{ color: 'var(--forest)' }}
+                  >
                     {servings}
                   </p>
                 </div>
               ) : null}
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 border-2 border-[#0a0a0a] bg-[#f5f5f5] p-3">
-              <p className="font-sans text-sm text-[#6b6b6b]">
+            <div
+              className="flex flex-wrap items-center justify-between gap-4 rounded-[14px] bg-white p-4"
+              style={{ border: '1px solid var(--line)' }}
+            >
+              <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>
                 Receita de{' '}
-                <span className="font-display font-extrabold uppercase tracking-[0.08em] text-[#0a0a0a]">
+                <span
+                  className="font-bold"
+                  style={{ color: 'var(--forest)', letterSpacing: '0.02em' }}
+                >
                   {authorName}
                 </span>
               </p>
@@ -124,7 +211,7 @@ export function RecipeDetailHero({
                 <div className="flex gap-2">
                   <Link
                     href={editHref}
-                    className="inline-flex h-10 items-center gap-2 border-2 border-[#0a0a0a] bg-[#0a0a0a] px-4 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white hover:bg-[#ffb900] hover:text-[#0a0a0a]"
+                    className="button-queimando-panela button-outline-queimando-panela h-10 px-4 text-xs"
                   >
                     <Pencil className="size-4" /> Editar
                   </Link>
@@ -134,35 +221,92 @@ export function RecipeDetailHero({
             </div>
 
             {story && (
-              <section className="border-2 border-[#0a0a0a] bg-[#ffb900] p-4">
-                <h2 className="font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+              <section
+                className="rounded-[14px] p-5"
+                style={{ background: 'var(--forest)', color: 'white' }}
+              >
+                <h2
+                  className="text-[0.78rem] font-bold uppercase"
+                  style={{ color: 'var(--accent-e)', letterSpacing: '0.08em' }}
+                >
                   História da receita
                 </h2>
-                <p className="mt-2 font-sans text-sm leading-6 text-[#0a0a0a]">
+                <p
+                  className="mt-2 text-sm leading-6"
+                  style={{
+                    color: 'rgba(255,255,255,0.82)',
+                    textWrap: 'pretty',
+                  }}
+                >
                   {story}
                 </p>
               </section>
             )}
           </div>
 
-          <div className="border-2 border-[#0a0a0a] bg-white p-2">
-            <div className="relative aspect-[4/3] bg-[#f5f5f5] border border-[#0a0a0a]">
-              {coverUrl ? (
-                <Image
-                  src={coverUrl}
-                  alt={title}
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 420px"
-                />
-              ) : (
-                <div className="grid h-full place-items-center font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
-                  Sem imagem
-                </div>
-              )}
-              <span className="absolute left-2 top-2 border-2 border-[#0a0a0a] bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase text-[#0a0a0a]">
-                Queimando Panela
+          <div className="relative">
+            <div
+              className="relative overflow-hidden bg-white p-2"
+              style={{
+                borderRadius: 'var(--radius-lg)',
+                border: '1px solid var(--line)',
+              }}
+            >
+              <div
+                className="relative aspect-[4/3] overflow-hidden"
+                style={{
+                  borderRadius: 'var(--radius-md)',
+                  background: 'var(--muted)',
+                }}
+              >
+                {coverUrl ? (
+                  <Image
+                    src={coverUrl}
+                    alt={title}
+                    fill
+                    priority
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 420px"
+                  />
+                ) : (
+                  <div
+                    className="grid h-full place-items-center text-[0.78rem] font-bold uppercase"
+                    style={{
+                      color: 'var(--ink-muted)',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
+                    Sem imagem
+                  </div>
+                )}
+                <span
+                  className="absolute left-3 top-3 rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase"
+                  style={{
+                    background: 'var(--accent-e)',
+                    color: 'var(--forest)',
+                    letterSpacing: '0.06em',
+                  }}
+                >
+                  Queimando Panela
+                </span>
+              </div>
+            </div>
+            <div
+              className="qp-badge-float absolute -bottom-3 -right-2 hidden size-[132px] place-items-center rounded-full border-[8px] text-center lg:grid"
+              style={{
+                borderColor: 'var(--cream)',
+                background: 'var(--accent-e)',
+                color: 'var(--forest)',
+                boxShadow: 'var(--shadow)',
+                transform: 'rotate(10deg)',
+              }}
+              aria-hidden="true"
+            >
+              <span
+                className="max-w-[84px] text-[0.7rem] font-bold uppercase leading-4"
+                style={{ letterSpacing: '0.06em' }}
+              >
+                feito com cuidado
               </span>
             </div>
           </div>

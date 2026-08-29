@@ -25,19 +25,46 @@ function formatIngredient(ingredient: Ingredient) {
 
 export function RecipeIngredients({ sections, utensils }: Props) {
   return (
-    <section className="border-2 border-[#0a0a0a] bg-white">
-      <div className="border-b-2 border-[#0a0a0a] bg-[#ffb900] px-4 py-3 flex items-center gap-2">
-        <Wheat className="size-4 text-[#0a0a0a]" />
-        <h2 className="font-display text-sm font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+    <section
+      className="qp-card-delight overflow-hidden bg-white"
+      style={{
+        borderRadius: 'var(--radius-md)',
+        border: '1px solid var(--line)',
+      }}
+    >
+      <div
+        className="flex items-center gap-2 px-5 py-4"
+        style={{ borderBottom: '1px solid var(--line)', background: 'white' }}
+      >
+        <span
+          className="grid size-8 place-items-center rounded-full"
+          style={{ background: 'var(--accent-e)', color: 'var(--forest)' }}
+        >
+          <Wheat className="size-4" />
+        </span>
+        <h2
+          className="text-[0.78rem] font-bold uppercase"
+          style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+        >
           Ingredientes
         </h2>
+        <span className="ml-auto text-xs" style={{ color: 'var(--ink-muted)' }}>
+          {sections.reduce((acc, s) => acc + s.ingredients.length, 0)} itens
+        </span>
       </div>
 
-      <div className="p-4 space-y-6">
+      <div className="space-y-6 p-5">
         {sections.map((section) => (
           <section key={section.name} className="space-y-3">
             {sections.length > 1 && (
-              <h3 className="border-l border-[#e5e5e5] pl-2 font-display text-sm font-extrabold uppercase text-[#0a0a0a]">
+              <h3
+                className="border-l-2 pl-3 text-sm font-bold"
+                style={{
+                  borderColor: 'var(--accent-e)',
+                  color: 'var(--forest)',
+                  letterSpacing: '-0.01em',
+                }}
+              >
                 {section.name}
               </h3>
             )}
@@ -45,13 +72,17 @@ export function RecipeIngredients({ sections, utensils }: Props) {
               {section.ingredients.map((ingredient) => (
                 <li
                   key={ingredient.id}
-                  className="flex gap-3 border border-[#e5e5e5] bg-[#f5f5f5] px-3 py-2 font-sans text-sm leading-6 text-[#0a0a0a]"
+                  className="flex gap-3 rounded-[10px] bg-white px-3 py-2.5 text-sm leading-6 transition-colors hover:bg-[var(--muted)]"
+                  style={{ border: '1px solid var(--line)' }}
                 >
                   <span
-                    className="mt-2 size-1.5 shrink-0 bg-[#ffb900] border border-[#0a0a0a]"
+                    className="mt-2.5 size-1.5 shrink-0 rounded-full"
+                    style={{ background: 'var(--accent-e)' }}
                     aria-hidden="true"
                   />
-                  <span>{formatIngredient(ingredient)}</span>
+                  <span style={{ color: 'var(--forest)' }}>
+                    {formatIngredient(ingredient)}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -59,10 +90,16 @@ export function RecipeIngredients({ sections, utensils }: Props) {
         ))}
 
         {utensils.length > 0 && (
-          <section className="border-t-2 border-[#0a0a0a] pt-4">
+          <section
+            className="pt-5"
+            style={{ borderTop: '1px solid var(--line)' }}
+          >
             <div className="mb-3 flex items-center gap-2">
-              <Wrench className="size-4 text-[#0a0a0a]" />
-              <h3 className="font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+              <Wrench className="size-4" style={{ color: 'var(--forest)' }} />
+              <h3
+                className="text-[0.78rem] font-bold uppercase"
+                style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+              >
                 Utensílios
               </h3>
             </div>
@@ -70,7 +107,12 @@ export function RecipeIngredients({ sections, utensils }: Props) {
               {utensils.map((utensil) => (
                 <li
                   key={utensil}
-                  className="border-2 border-[#0a0a0a] bg-white px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.08em] text-[#0a0a0a]"
+                  className="rounded-full bg-white px-3 py-1.5 text-[0.78rem] font-bold"
+                  style={{
+                    border: '1px solid var(--line)',
+                    color: 'var(--forest)',
+                    letterSpacing: '0.02em',
+                  }}
                 >
                   {utensil}
                 </li>

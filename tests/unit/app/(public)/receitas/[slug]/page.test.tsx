@@ -132,7 +132,9 @@ describe('RecipeDetailPage', () => {
       }),
     );
 
-    expect(screen.getByText('Bolo de milho')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Bolo de milho' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('Fofo e cremoso')).toBeInTheDocument();
     expect(screen.getByText('Receita de família')).toBeInTheDocument();
 

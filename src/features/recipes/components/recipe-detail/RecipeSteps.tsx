@@ -19,21 +19,54 @@ function splitSteps(text: string) {
 
 export function RecipeSteps({ sections }: Props) {
   return (
-    <section className="border-2 border-[#0a0a0a] bg-white">
-      <div className="border-b-2 border-[#0a0a0a] bg-[#0a0a0a] px-4 py-3 flex items-center gap-2">
-        <ScrollText className="size-4 text-[#ffb900]" />
-        <h2 className="font-display text-sm font-extrabold uppercase tracking-[0.14em] text-white">
+    <section
+      className="qp-card-delight overflow-hidden bg-white"
+      style={{
+        borderRadius: 'var(--radius-md)',
+        border: '1px solid var(--line)',
+      }}
+    >
+      <div
+        className="flex items-center gap-2 px-5 py-4"
+        style={{
+          borderBottom: '1px solid var(--line)',
+          background: 'var(--forest)',
+          color: 'white',
+        }}
+      >
+        <ScrollText className="size-4" style={{ color: 'var(--accent-e)' }} />
+        <h2
+          className="text-[0.78rem] font-bold uppercase"
+          style={{ color: 'white', letterSpacing: '0.08em' }}
+        >
           Modo de preparo
         </h2>
+        <span
+          className="ml-auto text-xs"
+          style={{ color: 'rgba(255,255,255,0.72)' }}
+        >
+          {sections.reduce(
+            (acc, s) => acc + splitSteps(s.modeOfPreparation).length,
+            0,
+          )}{' '}
+          passos
+        </span>
       </div>
 
-      <div className="p-4 sm:p-6 space-y-8">
+      <div className="space-y-8 p-5 sm:p-6">
         {sections.map((section) => {
           const steps = splitSteps(section.modeOfPreparation);
           return (
             <section key={section.name} className="space-y-4">
               {sections.length > 1 && (
-                <h3 className="inline-block bg-[#ffb900] border-2 border-[#0a0a0a] px-3 py-1 font-display text-sm font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
+                <h3
+                  className="inline-flex rounded-full px-3 py-1 text-[0.78rem] font-bold uppercase"
+                  style={{
+                    background: 'var(--accent-e)',
+                    color: 'var(--forest)',
+                    letterSpacing: '0.06em',
+                  }}
+                >
                   {section.name}
                 </h3>
               )}
@@ -41,12 +74,22 @@ export function RecipeSteps({ sections }: Props) {
                 {steps.map((step, stepIndex) => (
                   <li
                     key={step}
-                    className="grid grid-cols-[44px_1fr] gap-3 border border-[#e5e5e5] bg-[#f5f5f5] p-3 hover:border-[#0a0a0a] hover:bg-white"
+                    className="grid grid-cols-[44px_1fr] gap-3 rounded-[14px] bg-white p-3 transition-colors hover:bg-[var(--muted)]"
+                    style={{ border: '1px solid var(--line)' }}
                   >
-                    <span className="grid size-11 place-items-center border-2 border-[#0a0a0a] bg-[#ffb900] font-display text-sm font-extrabold text-[#0a0a0a]">
+                    <span
+                      className="grid size-11 place-items-center rounded-full text-sm font-extrabold"
+                      style={{
+                        background: 'var(--accent-e)',
+                        color: 'var(--forest)',
+                      }}
+                    >
                       {stepIndex + 1}
                     </span>
-                    <p className="pt-1 font-sans text-sm leading-6 text-[#0a0a0a]">
+                    <p
+                      className="pt-1 text-sm leading-6"
+                      style={{ color: 'var(--forest)', textWrap: 'pretty' }}
+                    >
                       {step}
                     </p>
                   </li>
