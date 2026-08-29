@@ -44,15 +44,15 @@ export function NavLinks({
             aria-current={active ? 'page' : undefined}
             className={cn(
               'text-[0.92rem] font-semibold transition-colors',
-              variant === 'header' && 'text-[#52606d] hover:text-[#183a37]',
+              variant === 'header' && 'text-[#74665d] hover:text-[#3a2418]',
               variant === 'header' &&
                 active &&
-                'font-bold text-[#183a37] underline decoration-[var(--accent-e)] decoration-2 underline-offset-8',
+                'font-bold text-[#3a2418] underline decoration-[var(--food-accent)] decoration-2 underline-offset-8',
               variant === 'footer' &&
-                'text-sm normal-case tracking-normal text-white/80 hover:text-[var(--accent-e)]',
+                'text-sm normal-case tracking-normal text-white/80 hover:text-[var(--food-accent)]',
               variant === 'mobile' &&
-                'flex min-h-12 items-center border-b py-3 text-sm text-[#1f2933] hover:bg-[var(--accent-e)]',
-              variant === 'mobile' && active && 'bg-[var(--accent-e)] px-3',
+                'flex min-h-12 items-center border-b py-3 text-sm text-[#2a211d] hover:bg-[var(--food-accent)]',
+              variant === 'mobile' && active && 'bg-[var(--food-accent)] px-3',
               itemClassName,
             )}
             style={{

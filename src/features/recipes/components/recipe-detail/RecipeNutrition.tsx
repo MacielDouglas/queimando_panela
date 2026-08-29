@@ -36,16 +36,16 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
           className="flex items-center gap-2 px-5 py-4"
           style={{ borderBottom: '1px solid var(--line)', background: 'white' }}
         >
-          <Apple className="size-4" style={{ color: 'var(--forest)' }} />
+          <Apple className="size-4" style={{ color: 'var(--cocoa)' }} />
           <h2
             className="text-[0.78rem] font-bold uppercase"
-            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+            style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
           >
             Informação nutricional
           </h2>
           <span
             className="ml-auto h-2 w-8 rounded-full"
-            style={{ background: 'var(--accent-e)' }}
+            style={{ background: 'var(--food-accent)' }}
             aria-hidden="true"
           />
         </div>
@@ -54,7 +54,7 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
             <p
               className="border-l-2 pl-3 text-sm leading-6"
               style={{
-                borderColor: 'var(--accent-e)',
+                borderColor: 'var(--food-accent)',
                 color: 'var(--ink-muted)',
                 textWrap: 'pretty',
               }}
@@ -68,7 +68,7 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
               style={{ borderRadius: '14px', border: '1px solid var(--line)' }}
             >
               <table className="w-full text-sm">
-                <thead style={{ background: 'var(--forest)', color: 'white' }}>
+                <thead style={{ background: 'var(--cocoa)', color: 'white' }}>
                   <tr>
                     <th
                       className="px-4 py-2.5 text-left text-[0.78rem] font-bold uppercase"
@@ -93,7 +93,7 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
                     >
                       <td
                         className="px-4 py-2.5 text-sm font-bold"
-                        style={{ color: 'var(--forest)' }}
+                        style={{ color: 'var(--cocoa)' }}
                       >
                         {row.nutrient}
                       </td>
@@ -122,7 +122,7 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
           className="p-5"
           style={{
             borderRadius: 'var(--radius-md)',
-            background: 'var(--accent-e)',
+            background: 'var(--food-accent)',
             border: '1px solid var(--line)',
           }}
         >
@@ -130,10 +130,10 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
             className="flex items-center gap-2 pb-3"
             style={{ borderBottom: '1px solid rgba(24,58,55,0.12)' }}
           >
-            <Lightbulb className="size-4" style={{ color: 'var(--forest)' }} />
+            <Lightbulb className="size-4" style={{ color: 'var(--cocoa)' }} />
             <h2
               className="text-[0.78rem] font-bold uppercase"
-              style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+              style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
             >
               Sugestões Queimando Panela
             </h2>
@@ -145,13 +145,13 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
                 className="rounded-[10px] bg-white px-3 py-2.5 text-sm leading-5"
                 style={{
                   border: '1px solid var(--line)',
-                  color: 'var(--forest)',
+                  color: 'var(--cocoa)',
                   textWrap: 'pretty',
                 }}
               >
                 <span
                   className="mr-2 inline-block size-1.5 rounded-full"
-                  style={{ background: 'var(--accent-e)' }}
+                  style={{ background: 'var(--food-accent)' }}
                   aria-hidden="true"
                 />
                 {item}

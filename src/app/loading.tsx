@@ -13,19 +13,19 @@ export default function Loading() {
           <div className="max-w-[650px] animate-pulse">
             <div className="h-3 w-32 rounded-full bg-[var(--line)]" />
             <div className="mt-4 space-y-3">
-              <div className="h-[52px] w-full rounded-[var(--radius-md)] bg-[var(--forest)]/10" />
-              <div className="h-[52px] w-[68%] rounded-[var(--radius-md)] bg-[var(--forest)]/10" />
+              <div className="h-[52px] w-full rounded-[var(--radius-md)] bg-[var(--cocoa)]/10" />
+              <div className="h-[52px] w-[68%] rounded-[var(--radius-md)] bg-[var(--cocoa)]/10" />
             </div>
             <div className="mt-7 h-5 w-[92%] max-w-[530px] rounded bg-[var(--muted)]" />
             <div className="mt-2 h-5 w-[78%] max-w-[480px] rounded bg-[var(--muted)]" />
             <div className="mt-8 flex flex-wrap gap-3">
-              <div className="h-[50px] w-[172px] rounded-full bg-[var(--accent-e)]" />
-              <div className="h-[50px] w-[172px] rounded-full border border-[var(--forest)] bg-transparent" />
+              <div className="h-[50px] w-[172px] rounded-full bg-[var(--food-accent)]" />
+              <div className="h-[50px] w-[172px] rounded-full border border-[var(--cocoa)] bg-transparent" />
             </div>
             <div className="mt-14 flex flex-wrap gap-7">
               {['s1', 's2', 's3'].map((k) => (
                 <div key={k} className="flex min-w-[132px] flex-col gap-2">
-                  <div className="h-6 w-16 rounded bg-[var(--forest)]/10" />
+                  <div className="h-6 w-16 rounded bg-[var(--cocoa)]/10" />
                   <div className="h-3 w-24 rounded bg-[var(--muted)]" />
                 </div>
               ))}
@@ -53,11 +53,11 @@ export default function Loading() {
         <div className="editorial-container grid items-center gap-[clamp(38px,9vw,120px)] lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative animate-pulse">
             <div className="aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] bg-[var(--muted)] lg:aspect-[1/1.06]" />
-            <div className="relative mt-4 h-24 max-w-[230px] rounded-[14px] bg-[var(--forest)]/10 p-5 lg:absolute lg:bottom-[34px] lg:right-[-28px] lg:mt-0" />
+            <div className="relative mt-4 h-24 max-w-[230px] rounded-[14px] bg-[var(--cocoa)]/10 p-5 lg:absolute lg:bottom-[34px] lg:right-[-28px] lg:mt-0" />
           </div>
           <div className="max-w-[520px] animate-pulse space-y-4">
-            <div className="h-8 w-[78%] rounded bg-[var(--forest)]/10" />
-            <div className="h-8 w-[64%] rounded bg-[var(--forest)]/10" />
+            <div className="h-8 w-[78%] rounded bg-[var(--cocoa)]/10" />
+            <div className="h-8 w-[64%] rounded bg-[var(--cocoa)]/10" />
             <div className="h-4 w-full rounded bg-[var(--muted)]" />
             <div className="h-4 w-[88%] rounded bg-[var(--muted)]" />
           </div>
@@ -67,7 +67,7 @@ export default function Loading() {
       {/* Categories — 3 cards com borda line */}
       <section className="py-24 lg:py-28">
         <div className="editorial-container">
-          <div className="h-9 w-[42%] max-w-[520px] rounded bg-[var(--forest)]/10 animate-pulse" />
+          <div className="h-9 w-[42%] max-w-[520px] rounded bg-[var(--cocoa)]/10 animate-pulse" />
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {['c1', 'c2', 'c3'].map((k) => (
               <div
@@ -83,7 +83,7 @@ export default function Loading() {
                   style={{ aspectRatio: '1.2 / 1' }}
                 />
                 <div className="space-y-3 p-6">
-                  <div className="h-6 w-3/4 rounded bg-[var(--forest)]/10" />
+                  <div className="h-6 w-3/4 rounded bg-[var(--cocoa)]/10" />
                   <div className="h-3 w-full rounded bg-[var(--muted)]" />
                   <div className="h-3 w-5/6 rounded bg-[var(--muted)]" />
                   <div className="h-4 w-28 rounded-full bg-[var(--line)]" />
@@ -97,14 +97,14 @@ export default function Loading() {
       {/* Values — forest 120px + 3 itens */}
       <section
         className="py-[120px]"
-        style={{ background: 'var(--forest)', color: 'white' }}
+        style={{ background: 'var(--cocoa)', color: 'white' }}
       >
         <div className="editorial-container grid items-start gap-[clamp(38px,8vw,110px)] lg:grid-cols-[1fr_1.1fr]">
           <div className="animate-pulse space-y-4">
             <div className="h-3 w-28 rounded-full bg-white/20" />
             <div className="h-10 w-full rounded bg-white/10" />
             <div className="h-10 w-[78%] rounded bg-white/10" />
-            <div className="h-[3px] w-12 rounded bg-[var(--accent-e)]/60" />
+            <div className="h-[3px] w-12 rounded bg-[var(--food-accent)]/60" />
             <div className="h-4 w-full rounded bg-white/10" />
           </div>
           <div className="grid gap-0 border-t border-white/20">
@@ -124,7 +124,7 @@ export default function Loading() {
       {/* Recipes — heading + grid 3 cards com shadow */}
       <section className="py-24 lg:py-28">
         <div className="editorial-container">
-          <div className="h-9 w-[44%] max-w-[520px] rounded bg-[var(--forest)]/10 animate-pulse" />
+          <div className="h-9 w-[44%] max-w-[520px] rounded bg-[var(--cocoa)]/10 animate-pulse" />
           <div className="mt-3 h-4 w-[56%] max-w-[520px] rounded bg-[var(--muted)] animate-pulse" />
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {['r1', 'r2', 'r3'].map((k) => (
@@ -141,7 +141,7 @@ export default function Loading() {
                   style={{ aspectRatio: '1.15 / 1' }}
                 />
                 <div className="space-y-3 p-[22px]">
-                  <div className="h-5 w-3/4 rounded bg-[var(--forest)]/10" />
+                  <div className="h-5 w-3/4 rounded bg-[var(--cocoa)]/10" />
                   <div className="h-3 w-full rounded bg-[var(--muted)]" />
                 </div>
               </div>
@@ -157,7 +157,7 @@ export default function Loading() {
       >
         <div className="editorial-container grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
           <div className="max-w-[520px] animate-pulse space-y-4">
-            <div className="h-9 w-[72%] rounded bg-[var(--forest)]/10" />
+            <div className="h-9 w-[72%] rounded bg-[var(--cocoa)]/10" />
             <div className="h-3 w-[68%] rounded bg-[var(--muted)]" />
             <div className="h-4 w-28 rounded-full bg-[var(--line)]" />
           </div>
@@ -176,7 +176,7 @@ export default function Loading() {
               className="space-y-3 border-t bg-white p-5"
               style={{ borderColor: 'var(--line)' }}
             >
-              <div className="h-5 w-3/4 rounded bg-[var(--forest)]/10" />
+              <div className="h-5 w-3/4 rounded bg-[var(--cocoa)]/10" />
               <div className="h-3 w-full rounded bg-[var(--muted)]" />
             </div>
           </div>
@@ -190,17 +190,17 @@ export default function Loading() {
             className="grid items-center overflow-hidden lg:grid-cols-[1.15fr_0.85fr] animate-pulse"
             style={{
               borderRadius: 'var(--radius-lg)',
-              background: 'var(--accent-e)',
+              background: 'var(--food-accent)',
             }}
           >
             <div className="space-y-4 p-[clamp(42px,6vw,84px)]">
-              <div className="h-3 w-24 rounded-full bg-[var(--forest)]/20" />
-              <div className="h-10 w-full rounded bg-[var(--forest)]/10" />
-              <div className="h-10 w-[68%] rounded bg-[var(--forest)]/10" />
-              <div className="h-4 w-[78%] rounded bg-[var(--forest)]/10" />
-              <div className="h-[50px] w-[212px] rounded-full bg-[var(--forest)]" />
+              <div className="h-3 w-24 rounded-full bg-[var(--cocoa)]/20" />
+              <div className="h-10 w-full rounded bg-[var(--cocoa)]/10" />
+              <div className="h-10 w-[68%] rounded bg-[var(--cocoa)]/10" />
+              <div className="h-4 w-[78%] rounded bg-[var(--cocoa)]/10" />
+              <div className="h-[50px] w-[212px] rounded-full bg-[var(--cocoa)]" />
             </div>
-            <div className="hidden min-h-[340px] bg-[var(--forest)]/10 lg:block" />
+            <div className="hidden min-h-[340px] bg-[var(--cocoa)]/10 lg:block" />
           </div>
         </div>
       </section>

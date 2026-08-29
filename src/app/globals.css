@@ -32,40 +32,148 @@
   --color-accent-foreground: var(--accent-foreground);
 
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  --color-ai-primary: var(--ai-primary);
+  --color-ai-primary-foreground: var(--ai-primary-foreground);
+  --color-ai-hover: var(--ai-hover);
+  --color-ai-soft: var(--ai-soft);
+  --color-ai-muted: var(--ai-muted);
+  --color-ai-border: var(--ai-border);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
+
+  --color-cocoa: var(--cocoa);
+  --color-cocoa-hover: var(--cocoa-hover);
+  --color-cocoa-dark: var(--cocoa-dark);
+
+  --color-food-accent: var(--food-accent);
+  --color-food-accent-hover: var(--food-accent-hover);
+  --color-food-accent-soft: var(--food-accent-soft);
+
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-cream: var(--cream);
+  --color-line: var(--line);
+
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 10px);
 }
 
 :root {
-  /* Queimando Panela — floresta + amarelo + creme */
-  --background: #fffdf7;
-  --foreground: #1f2933;
+  /*
+   * ─────────────────────────────────────────────────────
+   * Fundação: acolhedora, gastronômica e tecnológica.
+   * Cacau substitui completamente o verde da marca.
+   * ─────────────────────────────────────────────────────
+   */
+  --background: #fffdf8;
+  --foreground: #2a211d;
 
   --card: #ffffff;
-  --card-foreground: #1f2933;
+  --card-foreground: #2a211d;
 
   --popover: #ffffff;
-  --popover-foreground: #1f2933;
+  --popover-foreground: #2a211d;
 
+  /*
+   * Amarelo = ação culinária geral.
+   * Ex.: salvar, favoritar, começar a cozinhar.
+   */
   --primary: #ffc733;
-  --primary-foreground: #1f2933;
+  --primary-foreground: #2a211d;
 
-  --secondary: #fffdf7;
-  --secondary-foreground: #1f2933;
+  --secondary: #f7f1e9;
+  --secondary-foreground: #3a2418;
 
-  --muted: #f5f0e8;
-  --muted-foreground: #52606d;
+  --muted: #f7f1e9;
+  --muted-foreground: #74665d;
 
-  --accent: #183a37;
+  /*
+   * Accent = marca, navegação e contexto editorial.
+   */
+  --accent: #3a2418;
   --accent-foreground: #ffffff;
 
-  --border: #e8e1d5;
-  --input: #1f2933;
-  --ring: #ffc733;
-  --destructive: #cc1f1f;
+  --border: #eae2d8;
+  --input: #eae2d8;
+  --ring: #5b5ce2;
 
+  --destructive: #c93d3d;
+  --destructive-foreground: #ffffff;
+
+  /*
+   * ─────────────────────────────────────────────────────
+   * Marca culinária: cacau + dourado
+   * ─────────────────────────────────────────────────────
+   */
+  --cocoa: #3a2418;
+  --cocoa-hover: #593b2a;
+  --cocoa-dark: #24150e;
+
+  --food-accent: #ffc733;
+  --food-accent-hover: #e5ac18;
+  --food-accent-soft: #fff1be;
+
+  --cream: #fffdf8;
+  --cream-strong: #f7f1e9;
+
+  --ink: #2a211d;
+  --ink-muted: #74665d;
+  --line: #eae2d8;
+
+  /*
+   * ─────────────────────────────────────────────────────
+   * IA: reservado exclusivamente para recursos inteligentes.
+   * ─────────────────────────────────────────────────────
+   */
+  --ai-primary: #5b5ce2;
+  --ai-primary-foreground: #ffffff;
+  --ai-hover: #4647c7;
+
+  --ai-soft: #e9e7ff;
+  --ai-muted: #f5f4ff;
+  --ai-border: #c9c7ff;
+
+  --ai-violet: #8b5cf6;
+  --ai-violet-soft: #f0e7ff;
+
+  /*
+   * Estado funcional de sucesso.
+   * Não faz parte da identidade visual predominante.
+   */
+  --success: #258a5d;
+  --success-foreground: #ffffff;
+  --success-soft: #ddf7e9;
+  --success-border: #a8e2c2;
+
+  --warning: #9a6000;
+  --warning-soft: #fff1be;
+  --warning-border: #f5d879;
+
+  --info: #316fbd;
+  --info-soft: #e8f1ff;
+  --info-border: #bbd7ff;
+
+  /*
+   * ─────────────────────────────────────────────────────
+   * Estrutura
+   * ─────────────────────────────────────────────────────
+   */
   --radius: 18px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+  --radius-full: 999px;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -79,36 +187,34 @@
   --leading-heading: 1.15;
   --leading-body: 1.6;
 
-  /* Tokens Queimando Panela */
-  --accent-e: #ffc733;
-  --accent-hover: #eeb214;
-  --ink: #1f2933;
-  --ink-muted: #52606d;
-  --forest: #183a37;
-  --forest-hover: #2f5d50;
-  --forest-dark: #102c2a;
-  --cream: #fffdf7;
-  --line: #e8e1d5;
-  --shadow: 0 20px 50px rgba(24, 58, 55, 0.1);
-  --radius-lg: 28px;
-  --radius-md: 18px;
+  --shadow-sm: 0 4px 12px rgba(58, 36, 24, 0.06);
+  --shadow-md: 0 12px 28px rgba(58, 36, 24, 0.08);
+  --shadow-lg: 0 20px 50px rgba(58, 36, 24, 0.1);
+
+  --shadow-ai: 0 14px 34px rgba(91, 92, 226, 0.16);
+  --shadow-ai-hover: 0 18px 40px rgba(91, 92, 226, 0.24);
+
   --container: 1180px;
 }
 
 :root {
   --sidebar: var(--background);
   --sidebar-foreground: var(--foreground);
-  --sidebar-primary: var(--primary);
-  --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-accent: var(--muted);
-  --sidebar-accent-foreground: var(--foreground);
+
+  --sidebar-primary: var(--cocoa);
+  --sidebar-primary-foreground: #ffffff;
+
+  --sidebar-accent: var(--ai-soft);
+  --sidebar-accent-foreground: var(--ai-primary);
+
   --sidebar-border: var(--border);
-  --sidebar-ring: var(--ring);
-  --chart-1: var(--primary);
-  --chart-2: oklch(0.6 0.12 180);
-  --chart-3: oklch(0.45 0 0);
-  --chart-4: oklch(0.82 0.1 70);
-  --chart-5: oklch(0.7 0.15 40);
+  --sidebar-ring: var(--ai-primary);
+
+  --chart-1: var(--ai-primary);
+  --chart-2: #d97706;
+  --chart-3: var(--food-accent);
+  --chart-4: var(--cocoa);
+  --chart-5: var(--ai-violet);
 }
 
 @layer base {
@@ -131,6 +237,7 @@
     font-kerning: normal;
     font-variant-ligatures: common-ligatures;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
@@ -139,42 +246,38 @@
   h4,
   h5,
   h6 {
+    color: var(--cocoa);
     font-family: var(--font-display), "Playfair Display", Georgia, serif;
-    color: var(--forest);
-    text-wrap: balance;
     letter-spacing: -0.02em;
+    text-wrap: balance;
   }
 
   h1 {
-    font-family: var(--font-display), "Playfair Display", Georgia, serif;
     font-size: var(--text-3xl);
-    line-height: var(--leading-tight);
-    letter-spacing: -0.04em;
     font-weight: 700;
-    text-transform: none;
+    letter-spacing: -0.04em;
+    line-height: var(--leading-tight);
   }
 
   h2 {
     font-size: var(--text-2xl);
-    line-height: var(--leading-heading);
     font-weight: 700;
-    text-transform: none;
     letter-spacing: -0.03em;
+    line-height: var(--leading-heading);
   }
 
   h3 {
     font-size: var(--text-xl);
-    line-height: 1.2;
     font-weight: 600;
-    text-transform: none;
     letter-spacing: -0.01em;
+    line-height: 1.2;
   }
 
   p {
     max-width: 65ch;
+    color: var(--ink-muted);
     font-size: var(--text-base);
     line-height: var(--leading-body);
-    color: var(--ink-muted);
     text-wrap: pretty;
     hyphens: auto;
   }
@@ -183,18 +286,26 @@
     text-underline-offset: 0.15em;
   }
 
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   ::selection {
-    background: var(--primary);
-    color: var(--foreground);
+    background: var(--food-accent);
+    color: var(--ink);
   }
 
   :focus-visible {
-    outline: 2px solid var(--forest);
-    outline-offset: 2px;
+    outline: 3px solid var(--ai-primary);
+    outline-offset: 3px;
   }
 
   footer :focus-visible {
-    outline-color: var(--accent-e);
+    outline-color: var(--food-accent);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -202,8 +313,9 @@
     *::before,
     *::after {
       animation-duration: 0.01ms;
-      transition-duration: 0.01ms;
+      animation-iteration-count: 1;
       scroll-behavior: auto;
+      transition-duration: 0.01ms;
     }
   }
 }
@@ -224,7 +336,7 @@
     align-items: center;
     gap: 10px;
     margin: 0 0 16px;
-    color: var(--forest);
+    color: var(--cocoa);
     font-family: var(--font-body), "DM Sans", Arial, sans-serif;
     font-size: 0.78rem;
     font-weight: 700;
@@ -235,14 +347,40 @@
   .eyebrow-queimando-panela::before {
     width: 30px;
     height: 2px;
-    background: var(--accent-e);
+    background: var(--food-accent);
     content: "";
+  }
+
+  .eyebrow-ai {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px;
+    color: var(--ai-primary);
+    font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow-ai::before {
+    display: grid;
+    width: 22px;
+    height: 22px;
+    place-items: center;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--ai-primary), var(--ai-violet));
+    box-shadow: 0 6px 14px rgba(91, 92, 226, 0.22);
+    color: #ffffff;
+    content: "✦";
+    font-size: 0.8rem;
   }
 
   .section-title-queimando-panela {
     max-width: 22ch;
     margin: 0;
-    color: var(--forest);
+    color: var(--cocoa);
     font-family: var(--font-display), "Playfair Display", Georgia, serif;
     font-size: clamp(2.2rem, 5vw, 4.2rem);
     letter-spacing: -0.04em;
@@ -267,13 +405,15 @@
     min-height: 50px;
     padding: 0 22px;
     border: 1px solid transparent;
-    border-radius: 999px;
+    border-radius: var(--radius-full);
     cursor: pointer;
     font-weight: 700;
     transition:
       transform 180ms ease,
       background 180ms ease,
-      border-color 180ms ease;
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      color 180ms ease;
   }
 
   .button-queimando-panela:hover {
@@ -285,31 +425,161 @@
   }
 
   .button-primary-queimando-panela {
-    background: var(--accent-e);
+    background: var(--food-accent);
     color: var(--ink);
+    box-shadow: 0 8px 20px rgba(255, 199, 51, 0.25);
   }
 
   .button-primary-queimando-panela:hover {
-    background: var(--accent-hover);
+    background: var(--food-accent-hover);
+    box-shadow: 0 12px 28px rgba(255, 199, 51, 0.32);
   }
 
   .button-outline-queimando-panela {
-    border-color: var(--forest);
-    color: var(--forest);
+    border-color: var(--cocoa);
     background: transparent;
+    color: var(--cocoa);
   }
 
   .button-outline-queimando-panela:hover {
-    border-color: var(--accent-e);
-    background: var(--accent-e);
+    border-color: var(--food-accent);
+    background: var(--food-accent);
     color: var(--ink);
+  }
+
+  .button-ai {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 0 22px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-full);
+    background: var(--ai-primary);
+    color: var(--ai-primary-foreground);
+    cursor: pointer;
+    font-weight: 800;
+    box-shadow: var(--shadow-ai);
+    transition:
+      transform 180ms ease,
+      background 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .button-ai:hover {
+    background: var(--ai-hover);
+    box-shadow: var(--shadow-ai-hover);
+    transform: translateY(-2px);
+  }
+
+  .button-ai:active {
+    transform: translateY(1px);
+  }
+
+  .button-ai-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 0 22px;
+    border: 1px solid var(--ai-border);
+    border-radius: var(--radius-full);
+    background: var(--ai-soft);
+    color: var(--ai-primary);
+    cursor: pointer;
+    font-weight: 800;
+    transition:
+      transform 180ms ease,
+      background 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease;
+  }
+
+  .button-ai-outline:hover {
+    border-color: var(--ai-primary);
+    background: var(--ai-primary);
+    color: var(--ai-primary-foreground);
+    transform: translateY(-2px);
+  }
+
+  .ai-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--ai-border);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(135deg, var(--ai-muted), var(--ai-soft));
+    box-shadow: 0 12px 28px rgba(91, 92, 226, 0.08);
+  }
+
+  .ai-card::before {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--ai-primary), var(--ai-violet));
+    content: "";
+  }
+
+  .ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 30px;
+    padding: 0 10px;
+    border: 1px solid var(--ai-border);
+    border-radius: var(--radius-full);
+    background: var(--ai-soft);
+    color: var(--ai-primary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+
+  .ai-badge::before {
+    content: "✦";
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+
+  .ai-gradient-text {
+    background: linear-gradient(115deg, var(--ai-primary), var(--ai-violet));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .recipe-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 30px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-full);
+    background: var(--cream-strong);
+    color: var(--cocoa);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .recipe-meta-success {
+    border-color: var(--success-border);
+    background: var(--success-soft);
+    color: var(--success);
+  }
+
+  .recipe-meta-food {
+    border-color: #f5d879;
+    background: var(--food-accent-soft);
+    color: #805500;
   }
 
   .text-link-queimando-panela {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: var(--forest);
+    color: var(--cocoa);
     font-size: 0.9rem;
     font-weight: 700;
     transition: color 180ms ease;
@@ -320,15 +590,37 @@
     transition: transform 180ms ease;
   }
 
+  .text-link-queimando-panela:hover {
+    color: var(--cocoa-hover);
+  }
+
   .text-link-queimando-panela:hover::after {
     transform: translateX(4px);
   }
 
-  .text-link-queimando-panela:hover {
-    color: var(--forest-hover);
+  .text-link-ai {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ai-primary);
+    font-size: 0.9rem;
+    font-weight: 800;
+    transition: color 180ms ease;
   }
 
-  /* Delight: QP mark hover — subtle tilt, stays warm, not wacky */
+  .text-link-ai::after {
+    content: "\2192";
+    transition: transform 180ms ease;
+  }
+
+  .text-link-ai:hover {
+    color: var(--ai-hover);
+  }
+
+  .text-link-ai:hover::after {
+    transform: translateX(4px);
+  }
+
   .qp-mark-delight {
     transition:
       transform 260ms cubic-bezier(0.25, 1, 0.5, 1),
@@ -339,12 +631,12 @@
     transform: rotate(-8deg) scale(1.06);
   }
 
-  /* Delight: hero badge gentle float — respects reduced motion */
   @keyframes qp-float {
     0%,
     100% {
       transform: rotate(12deg) translateY(0);
     }
+
     50% {
       transform: rotate(12deg) translateY(-6px);
     }
@@ -354,7 +646,6 @@
     animation: qp-float 5s ease-in-out infinite;
   }
 
-  /* Delight: card lift is satisfying, not decorative shadow */
   .qp-card-delight {
     transition:
       transform 220ms cubic-bezier(0.25, 1, 0.5, 1),
@@ -364,20 +655,25 @@
 
   .qp-card-delight:hover {
     transform: translateY(-3px);
-    box-shadow: 0 16px 36px rgba(24, 58, 55, 0.1);
+    border-color: var(--ai-border);
+    box-shadow: var(--shadow-md);
   }
 
-  /* ──────────── OVERDRIVE: Scroll cinemático ──────────── */
   .qp-scroll-progress {
     position: fixed;
     top: 0;
     left: 0;
     z-index: 50;
-    height: 2px;
     width: 100%;
-    background: var(--accent-e);
-    transform-origin: left;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--food-accent),
+      var(--ai-primary),
+      var(--ai-violet)
+    );
     transform: scaleX(0);
+    transform-origin: left;
     pointer-events: none;
   }
 
@@ -388,16 +684,16 @@
     }
 
     .qp-parallax {
-      will-change: transform;
       animation: qp-parallax linear both;
-      animation-timeline: scroll(root);
       animation-range: 0 800px;
+      animation-timeline: scroll(root);
+      will-change: transform;
     }
 
     .qp-reveal {
       animation: qp-reveal 0.7s cubic-bezier(0.25, 1, 0.5, 1) both;
-      animation-timeline: view();
       animation-range: entry 12% cover 28%;
+      animation-timeline: view();
     }
 
     .qp-reveal-delay-1 {
@@ -419,6 +715,7 @@
     from {
       transform: translateY(0);
     }
+
     to {
       transform: translateY(-28px);
     }
@@ -429,6 +726,7 @@
       opacity: 0;
       transform: translateY(18px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);

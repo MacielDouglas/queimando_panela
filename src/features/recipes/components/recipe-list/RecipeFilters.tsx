@@ -99,12 +99,12 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
     <div className="flex items-center gap-2">
       <span
         className="h-1 w-6"
-        style={{ background: 'var(--accent-e)' }}
+        style={{ background: 'var(--food-accent)' }}
         aria-hidden
       />
       <p
         className="text-[0.78rem] font-bold uppercase"
-        style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+        style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
       >
         {children}
       </p>
@@ -122,13 +122,13 @@ function ChipLink({
   children: React.ReactNode;
 }) {
   const activeStyle = {
-    background: 'var(--forest)',
+    background: 'var(--cocoa)',
     color: 'white',
-    borderColor: 'var(--forest)',
+    borderColor: 'var(--cocoa)',
   } as const;
   const inactiveStyle = {
     background: 'white',
-    color: 'var(--forest)',
+    color: 'var(--cocoa)',
     borderColor: 'var(--line)',
   } as const;
 
@@ -283,7 +283,7 @@ export function RecipeFilters({
             className="inline-flex rounded-full bg-white px-4 py-2 text-[0.78rem] font-bold uppercase transition-colors hover:text-white"
             style={{
               border: '1px solid var(--line)',
-              color: 'var(--forest)',
+              color: 'var(--cocoa)',
               letterSpacing: '0.04em',
             }}
           >

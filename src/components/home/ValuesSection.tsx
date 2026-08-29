@@ -20,14 +20,14 @@ export function ValuesSection() {
   return (
     <section
       className="qp-reveal py-[120px]"
-      style={{ background: 'var(--forest)', color: 'white' }}
+      style={{ background: 'var(--cocoa)', color: 'white' }}
     >
       <div className="editorial-container">
         <div className="grid items-start gap-[clamp(38px,8vw,110px)] lg:grid-cols-[1fr_1.1fr]">
           <div>
             <p
               className="eyebrow-queimando-panela"
-              style={{ color: 'var(--accent-e)' }}
+              style={{ color: 'var(--food-accent)' }}
             >
               Nosso compromisso
             </p>
@@ -39,7 +39,7 @@ export function ValuesSection() {
             </h2>
             <div
               className="mt-5 h-[3px] w-12"
-              style={{ background: 'var(--accent-e)' }}
+              style={{ background: 'var(--food-accent)' }}
               aria-hidden="true"
             />
             <p

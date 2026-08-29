@@ -21,7 +21,7 @@ export default function Header() {
         <div className="editorial-container flex min-h-[84px] items-center justify-between gap-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-3 text-[#183a37]"
+            className="inline-flex items-center gap-3 text-[#3a2418]"
             aria-label="Queimando Panela - Página inicial"
           >
             <QPMark className="size-[38px] text-[0.95rem]" />

@@ -41,10 +41,10 @@ export function AiReviewPanel({ form }: Props) {
 
   return (
     <div className="space-y-8 overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white">
-      <div className="h-1 w-full bg-[#ffb900]" aria-hidden />
+      <div className="h-1 w-full bg-[#ffc733]" aria-hidden />
       <div className="space-y-6 p-6 sm:p-7">
         <div className="flex items-start gap-3">
-          <span className="flex size-9 shrink-0 items-center justify-center bg-[#ffb900] text-[#0a0a0a]">
+          <span className="flex size-9 shrink-0 items-center justify-center bg-[#ffc733] text-[#0a0a0a]">
             <ChefHat className="size-4" />
           </span>
           <div className="space-y-1">
@@ -64,7 +64,7 @@ export function AiReviewPanel({ form }: Props) {
               Título
             </FieldLabel>
             <Input
-              className="rounded-none border-[#0a0a0a] bg-white focus-visible:ring-[#ffb900]"
+              className="rounded-none border-[#0a0a0a] bg-white focus-visible:ring-[#ffc733]"
               {...form.register('title')}
             />
           </Field>
@@ -74,7 +74,7 @@ export function AiReviewPanel({ form }: Props) {
               Resumo
             </FieldLabel>
             <Textarea
-              className="resize-none rounded-none border-[#e5e5e5] bg-white text-sm leading-6 focus-visible:ring-[#ffb900]"
+              className="resize-none rounded-none border-[#e5e5e5] bg-white text-sm leading-6 focus-visible:ring-[#ffc733]"
               rows={3}
               {...form.register('summary')}
             />
@@ -87,7 +87,7 @@ export function AiReviewPanel({ form }: Props) {
               Dificuldade
             </FieldLabel>
             <select
-              className="h-12 w-full rounded-none border border-[#e5e5e5] bg-white px-3 text-sm font-medium text-[#0a0a0a] focus:border-[#0a0a0a] focus:outline-none focus:ring-2 focus:ring-[#ffb900]"
+              className="h-12 w-full rounded-none border border-[#e5e5e5] bg-white px-3 text-sm font-medium text-[#0a0a0a] focus:border-[#0a0a0a] focus:outline-none focus:ring-2 focus:ring-[#ffc733]"
               {...form.register('difficulty')}
             >
               {difficultyOptions.map((option) => (
@@ -106,7 +106,7 @@ export function AiReviewPanel({ form }: Props) {
             <Input
               type="number"
               min={0}
-              className="rounded-none border-[#e5e5e5] bg-white text-sm focus-visible:ring-[#ffb900]"
+              className="rounded-none border-[#e5e5e5] bg-white text-sm focus-visible:ring-[#ffc733]"
               {...form.register('prepTimeMinutes', { valueAsNumber: true })}
             />
           </Field>
@@ -119,7 +119,7 @@ export function AiReviewPanel({ form }: Props) {
             <Input
               type="number"
               min={0}
-              className="rounded-none border-[#e5e5e5] bg-white text-sm focus-visible:ring-[#ffb900]"
+              className="rounded-none border-[#e5e5e5] bg-white text-sm focus-visible:ring-[#ffc733]"
               {...form.register('cookTimeMinutes', { valueAsNumber: true })}
             />
           </Field>
@@ -142,7 +142,7 @@ export function AiReviewPanel({ form }: Props) {
                       .slice(0, 3);
                     field.onChange(nextTypes);
                   }}
-                  className="rounded-none border-[#e5e5e5] bg-white text-sm focus-visible:ring-[#ffb900]"
+                  className="rounded-none border-[#e5e5e5] bg-white text-sm focus-visible:ring-[#ffc733]"
                   placeholder="Ex.: Prato principal, Sem carne"
                 />
               )}
@@ -164,7 +164,7 @@ export function AiReviewPanel({ form }: Props) {
               <div className="flex items-center justify-between gap-3">
                 <Input
                   placeholder="Nome da etapa (ex.: Massa)"
-                  className="max-w-[20rem] rounded-none border-[#e5e5e5] bg-white text-sm font-semibold text-[#0a0a0a] focus-visible:ring-[#ffb900]"
+                  className="max-w-[20rem] rounded-none border-[#e5e5e5] bg-white text-sm font-semibold text-[#0a0a0a] focus-visible:ring-[#ffc733]"
                   {...form.register(`sections.${si}.name`)}
                 />
                 {sections.length > 1 && (
@@ -188,7 +188,7 @@ export function AiReviewPanel({ form }: Props) {
                   Modo de preparo
                 </FieldLabel>
                 <Textarea
-                  className="min-h-[10rem] resize-none rounded-none border-[#e5e5e5] bg-white text-sm leading-6 focus-visible:ring-[#ffb900]"
+                  className="min-h-[10rem] resize-none rounded-none border-[#e5e5e5] bg-white text-sm leading-6 focus-visible:ring-[#ffc733]"
                   {...form.register(`sections.${si}.modeOfPreparation`)}
                 />
               </Field>
@@ -224,7 +224,7 @@ export function AiReviewPanel({ form }: Props) {
             </p>
           </div>
           <Textarea
-            className="resize-none rounded-none border-[#e5e5e5] bg-white text-sm leading-6 focus-visible:ring-[#ffb900]"
+            className="resize-none rounded-none border-[#e5e5e5] bg-white text-sm leading-6 focus-visible:ring-[#ffc733]"
             rows={3}
             {...form.register('suggestions')}
           />
@@ -239,7 +239,7 @@ export function AiReviewPanel({ form }: Props) {
           </div>
           <Textarea
             placeholder="Resumo nutricional"
-            className="resize-none rounded-none border-[#e5e5e5] bg-white text-sm italic leading-6 focus-visible:ring-[#ffb900]"
+            className="resize-none rounded-none border-[#e5e5e5] bg-white text-sm italic leading-6 focus-visible:ring-[#ffc733]"
             rows={2}
             {...form.register('nutritionSummary')}
           />
@@ -274,11 +274,11 @@ function IngredientList({
         {fields.map((field, ii) => (
           <div key={field.id} className="flex items-center gap-2">
             <span
-              className="mt-1 size-1.5 shrink-0 rounded-full bg-[#ffb900]"
+              className="mt-1 size-1.5 shrink-0 rounded-full bg-[#ffc733]"
               aria-hidden
             />
             <Input
-              className="rounded-none border-[#e5e5e5] bg-white text-sm focus-visible:ring-[#ffb900]"
+              className="rounded-none border-[#e5e5e5] bg-white text-sm focus-visible:ring-[#ffc733]"
               {...form.register(
                 `sections.${sectionIndex}.ingredients.${ii}.originalText` as const,
               )}
@@ -304,7 +304,7 @@ function IngredientList({
           onClick={() =>
             append({ originalText: '', name: '', generalName: '' })
           }
-          className="rounded-none px-0 text-xs font-semibold text-[#0a0a0a] hover:bg-transparent hover:text-[#ffb900] hover:underline"
+          className="rounded-none px-0 text-xs font-semibold text-[#0a0a0a] hover:bg-transparent hover:text-[#ffc733] hover:underline"
         >
           <Plus className="mr-1 size-3" />
           Ingrediente

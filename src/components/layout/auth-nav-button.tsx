@@ -60,8 +60,8 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
           className,
         )}
         style={{
-          borderColor: 'var(--forest)',
-          color: 'var(--forest)',
+          borderColor: 'var(--cocoa)',
+          color: 'var(--cocoa)',
           background: 'transparent',
         }}
       >

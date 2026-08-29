@@ -57,7 +57,7 @@ export default function CardRecipe({
             className="absolute left-2.5 top-2.5 rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase shadow-sm"
             style={{
               borderColor: 'rgba(24, 58, 55, 0.1)',
-              background: 'var(--accent-e)',
+              background: 'var(--food-accent)',
               color: 'var(--ink)',
               letterSpacing: '0.12em',
             }}
@@ -67,7 +67,7 @@ export default function CardRecipe({
         )}
         <span
           className="absolute inset-x-0 top-0 h-1"
-          style={{ background: 'var(--accent-e)' }}
+          style={{ background: 'var(--food-accent)' }}
           aria-hidden="true"
         />
       </Link>
@@ -75,11 +75,11 @@ export default function CardRecipe({
       <div className="flex flex-1 flex-col gap-3 p-4">
         <Link
           href={`/receitas/${recipe.slug}`}
-          className="rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-e)] focus-visible:ring-offset-2"
+          className="rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--food-accent)] focus-visible:ring-offset-2"
         >
           <h3
             className="line-clamp-2 font-display text-[15px] font-bold uppercase leading-tight tracking-[-0.01em]"
-            style={{ color: 'var(--forest)' }}
+            style={{ color: 'var(--cocoa)' }}
           >
             {recipe.title}
           </h3>
@@ -102,7 +102,7 @@ export default function CardRecipe({
             <span className="inline-flex items-center gap-1.5">
               <Clock3
                 className="size-3.5 shrink-0"
-                style={{ color: 'var(--forest)' }}
+                style={{ color: 'var(--cocoa)' }}
                 aria-hidden
               />
               {totalTime} min
@@ -111,7 +111,7 @@ export default function CardRecipe({
           <span className="inline-flex items-center gap-1.5">
             <Flame
               className="size-3.5 shrink-0"
-              style={{ color: 'var(--accent-e)' }}
+              style={{ color: 'var(--food-accent)' }}
               aria-hidden
             />
             {difficultyLabel[recipe.difficulty]}

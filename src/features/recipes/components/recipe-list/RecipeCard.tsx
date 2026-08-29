@@ -47,7 +47,7 @@ export function RecipeCard({ recipe }: Props) {
               <span
                 className="bg-white px-2 py-1 text-[0.78rem] font-bold uppercase"
                 style={{
-                  color: 'var(--forest)',
+                  color: 'var(--cocoa)',
                   letterSpacing: '0.08em',
                   border: '1px solid var(--line)',
                   borderRadius: '999px',
@@ -59,15 +59,15 @@ export function RecipeCard({ recipe }: Props) {
           )}
           <span
             className="absolute left-0 top-0 h-1 w-full"
-            style={{ background: 'var(--accent-e)' }}
+            style={{ background: 'var(--food-accent)' }}
             aria-hidden="true"
           />
           {recipe.types[0] && (
             <span
               className="absolute left-3 top-3 rounded-full px-2 py-1 text-[10px] font-extrabold uppercase"
               style={{
-                background: 'var(--accent-e)',
-                color: 'var(--forest)',
+                background: 'var(--food-accent)',
+                color: 'var(--cocoa)',
                 letterSpacing: '0.08em',
               }}
             >
@@ -79,7 +79,7 @@ export function RecipeCard({ recipe }: Props) {
         <div className="flex flex-1 flex-col gap-3 p-4">
           <h3
             className="line-clamp-2 font-display text-sm font-bold leading-tight tracking-[-0.01em] text-balance"
-            style={{ color: 'var(--forest)' }}
+            style={{ color: 'var(--cocoa)' }}
           >
             {recipe.title}
           </h3>
@@ -99,7 +99,7 @@ export function RecipeCard({ recipe }: Props) {
               <span className="inline-flex items-center gap-1">
                 <Clock3
                   className="size-3.5"
-                  style={{ color: 'var(--forest)' }}
+                  style={{ color: 'var(--cocoa)' }}
                 />
                 {totalTime} min
               </span>
@@ -107,7 +107,7 @@ export function RecipeCard({ recipe }: Props) {
             <span className="inline-flex items-center gap-1">
               <Flame
                 className="size-3.5"
-                style={{ color: 'var(--accent-e)' }}
+                style={{ color: 'var(--food-accent)' }}
               />
               {difficultyLabel[recipe.difficulty]}
             </span>

@@ -9,24 +9,24 @@ export function CtaSection() {
           className="grid items-center overflow-hidden lg:grid-cols-[1.15fr_0.85fr]"
           style={{
             borderRadius: 'var(--radius-lg)',
-            background: 'var(--accent-e)',
+            background: 'var(--food-accent)',
           }}
         >
           <div className="p-[clamp(42px,6vw,84px)]">
             <p
               className="mb-4 inline-flex items-center gap-2 text-[0.78rem] font-bold uppercase"
-              style={{ color: 'var(--forest)', letterSpacing: '0.14em' }}
+              style={{ color: 'var(--cocoa)', letterSpacing: '0.14em' }}
             >
               <span
                 className="h-[2px] w-7"
-                style={{ background: 'var(--forest)' }}
+                style={{ background: 'var(--cocoa)' }}
                 aria-hidden="true"
               />
               Comece hoje
             </p>
             <h2
               className="max-w-[20ch] font-display text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold leading-[0.9] tracking-[-0.04em] text-balance"
-              style={{ color: 'var(--forest)' }}
+              style={{ color: 'var(--cocoa)' }}
             >
               Sua receita merece ir ao ar com confiança.
             </h2>
@@ -41,7 +41,7 @@ export function CtaSection() {
               href="/receitas/new"
               className="button-queimando-panela mt-8 inline-flex"
               style={{
-                background: 'var(--forest)',
+                background: 'var(--cocoa)',
                 color: 'white',
               }}
             >

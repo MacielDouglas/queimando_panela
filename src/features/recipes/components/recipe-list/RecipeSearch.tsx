@@ -26,12 +26,12 @@ export function RecipeSearch({ defaultQuery }: Props) {
       <div className="flex items-center gap-2">
         <span
           className="h-1 w-8"
-          style={{ background: 'var(--accent-e)' }}
+          style={{ background: 'var(--food-accent)' }}
           aria-hidden
         />
         <p
           className="text-[0.78rem] font-bold uppercase"
-          style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+          style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
         >
           Faça sua busca
         </p>
@@ -62,7 +62,7 @@ export function RecipeSearch({ defaultQuery }: Props) {
               defaultValue={defaultQuery ?? ''}
               placeholder="Ingrediente, prato ou categoria..."
               className="h-12 w-full bg-transparent text-sm outline-none"
-              style={{ color: 'var(--forest)' }}
+              style={{ color: 'var(--cocoa)' }}
               aria-label="Pesquisar receitas"
             />
           </div>
@@ -70,7 +70,7 @@ export function RecipeSearch({ defaultQuery }: Props) {
             type="submit"
             className="px-6 text-[0.78rem] font-extrabold uppercase transition-colors"
             style={{
-              background: 'var(--forest)',
+              background: 'var(--cocoa)',
               color: 'white',
               letterSpacing: '0.08em',
               borderLeft: '1px solid var(--line)',
@@ -94,7 +94,7 @@ export function RecipeSearch({ defaultQuery }: Props) {
               className="rounded-full bg-white px-3 py-1 text-[0.78rem] font-bold uppercase transition-colors hover:text-white"
               style={{
                 border: '1px solid var(--line)',
-                color: 'var(--forest)',
+                color: 'var(--cocoa)',
                 letterSpacing: '0.04em',
               }}
             >

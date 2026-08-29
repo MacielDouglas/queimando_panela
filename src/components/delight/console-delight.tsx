@@ -6,8 +6,8 @@ export function ConsoleDelight() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const styleTitle =
-      'color: #183a37; background: #ffc733; padding: 6px 10px; border-radius: 999px; font-weight: 800;';
-    const styleBody = 'color: #52606d; font-style: italic;';
+      'color: #3a2418; background: #ffc733; padding: 6px 10px; border-radius: 999px; font-weight: 800;';
+    const styleBody = 'color: #74665d; font-style: italic;';
     // eslint-disable-next-line no-console
     console.log(
       '%cQueimando Panela',

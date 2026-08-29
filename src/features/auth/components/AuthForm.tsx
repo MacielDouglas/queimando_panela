@@ -171,7 +171,7 @@ export function AuthForm({ mode }: AuthFormProps) {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Seu nome"
-                        className="rounded-none border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-[#ffb900]/20"
+                        className="rounded-none border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-[#ffc733]/20"
                       />
                     </FieldContent>
                     <FieldDescription>
@@ -197,7 +197,7 @@ export function AuthForm({ mode }: AuthFormProps) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="voce@email.com"
-                    className="rounded-none border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-[#ffb900]/20"
+                    className="rounded-none border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-[#ffc733]/20"
                   />
                 </FieldContent>
                 {isLogin && (
@@ -235,7 +235,7 @@ export function AuthForm({ mode }: AuthFormProps) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="rounded-none border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-[#ffb900]/20"
+                    className="rounded-none border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-[#ffc733]/20"
                   />
                 </FieldContent>
                 {!isLogin && (
@@ -270,7 +270,7 @@ export function AuthForm({ mode }: AuthFormProps) {
               type="submit"
               disabled={isSubmitting}
               aria-busy={isSubmitting}
-              className="h-11 w-full rounded-none bg-[#ffb900] font-semibold text-neutral-950 transition-all duration-200 hover:bg-amber-400 active:bg-[#e6a700] disabled:opacity-60"
+              className="h-11 w-full rounded-none bg-[#ffc733] font-semibold text-neutral-950 transition-all duration-200 hover:bg-amber-400 active:bg-[#e6a700] disabled:opacity-60"
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span

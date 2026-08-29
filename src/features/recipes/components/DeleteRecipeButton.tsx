@@ -56,7 +56,7 @@ export function DeleteRecipeButton({ slug, title }: Props) {
               <div>
                 <h2
                   className="font-display text-lg font-bold"
-                  style={{ color: 'var(--forest)' }}
+                  style={{ color: 'var(--cocoa)' }}
                 >
                   Excluir receita
                 </h2>
@@ -65,7 +65,7 @@ export function DeleteRecipeButton({ slug, title }: Props) {
                   style={{ color: 'var(--ink-muted)' }}
                 >
                   Tem certeza que deseja excluir{' '}
-                  <strong style={{ color: 'var(--forest)' }}>{title}</strong>?
+                  <strong style={{ color: 'var(--cocoa)' }}>{title}</strong>?
                   Essa ação não pode ser desfeita.
                 </p>
               </div>
@@ -103,7 +103,7 @@ export function DeleteRecipeButton({ slug, title }: Props) {
                 onClick={() => setOpen(false)}
                 disabled={isPending}
                 className="inline-flex min-h-11 items-center justify-center rounded-full border bg-white px-4 text-sm font-bold transition hover:bg-[var(--muted)]"
-                style={{ borderColor: 'var(--line)', color: 'var(--forest)' }}
+                style={{ borderColor: 'var(--line)', color: 'var(--cocoa)' }}
               >
                 Cancelar
               </button>

@@ -89,7 +89,7 @@ export function RecipesSection({ rows }: RecipesSectionProps) {
                     className="absolute left-4 top-4 px-[11px] py-[7px] text-[0.73rem] font-extrabold uppercase"
                     style={{
                       borderRadius: '999px',
-                      background: 'var(--accent-e)',
+                      background: 'var(--food-accent)',
                       color: 'var(--ink)',
                       letterSpacing: '0.04em',
                     }}
@@ -101,7 +101,7 @@ export function RecipesSection({ rows }: RecipesSectionProps) {
                   <Link href={`/receitas/${recipe.slug}`}>
                     <h3
                       className="font-display text-[1.55rem] font-bold leading-[1.1] tracking-[-0.025em]"
-                      style={{ color: 'var(--forest)' }}
+                      style={{ color: 'var(--cocoa)' }}
                     >
                       {recipe.title}
                     </h3>

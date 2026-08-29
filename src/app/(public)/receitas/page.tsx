@@ -125,15 +125,15 @@ export default async function RecipesPage({ searchParams }: Props) {
                 style={{
                   borderColor: 'var(--line)',
                   background: 'white',
-                  color: 'var(--forest)',
+                  color: 'var(--cocoa)',
                   letterSpacing: '0.08em',
                 }}
               >
                 <span
                   className="grid size-6 place-items-center rounded-full text-[0.7rem] font-extrabold"
                   style={{
-                    background: 'var(--accent-e)',
-                    color: 'var(--forest)',
+                    background: 'var(--food-accent)',
+                    color: 'var(--cocoa)',
                   }}
                   aria-hidden="true"
                 >
@@ -168,7 +168,7 @@ export default async function RecipesPage({ searchParams }: Props) {
           <p className="eyebrow-queimando-panela mt-8">Receitas com história</p>
           <h1 className="section-title-queimando-panela max-w-[20ch] text-balance">
             Receitas para{' '}
-            <em className="not-italic" style={{ color: 'var(--forest-hover)' }}>
+            <em className="not-italic" style={{ color: 'var(--cocoa-hover)' }}>
               aquecer
             </em>{' '}
             a cozinha.
@@ -191,7 +191,7 @@ export default async function RecipesPage({ searchParams }: Props) {
             <span
               className="hidden shrink-0 items-center gap-2 bg-white px-3 py-1.5 text-[0.78rem] font-bold uppercase sm:inline-flex"
               style={{
-                color: 'var(--forest)',
+                color: 'var(--cocoa)',
                 letterSpacing: '0.08em',
                 border: '1px solid var(--line)',
                 borderRadius: '999px',
@@ -199,7 +199,7 @@ export default async function RecipesPage({ searchParams }: Props) {
             >
               <span
                 className="size-1.5 rounded-full"
-                style={{ background: 'var(--accent-e)' }}
+                style={{ background: 'var(--food-accent)' }}
                 aria-hidden
               />
               Busca
@@ -211,7 +211,7 @@ export default async function RecipesPage({ searchParams }: Props) {
               href="/receitas"
               className="hidden min-h-11 shrink-0 items-center justify-center px-5 text-[0.78rem] font-bold uppercase sm:inline-flex"
               style={{
-                color: 'var(--forest)',
+                color: 'var(--cocoa)',
                 letterSpacing: '0.08em',
                 border: '1px solid var(--line)',
                 background: 'white',
@@ -288,12 +288,12 @@ export default async function RecipesPage({ searchParams }: Props) {
                 <div className="flex items-center gap-2">
                   <span
                     className="h-1 w-8"
-                    style={{ background: 'var(--accent-e)' }}
+                    style={{ background: 'var(--food-accent)' }}
                     aria-hidden
                   />
                   <p
                     className="text-[0.78rem] font-bold uppercase"
-                    style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+                    style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
                   >
                     Filtros
                   </p>
@@ -331,7 +331,7 @@ export default async function RecipesPage({ searchParams }: Props) {
             >
               <p
                 className="text-[0.78rem] font-bold uppercase"
-                style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+                style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
               >
                 Dica
               </p>

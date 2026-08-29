@@ -73,7 +73,7 @@ export function SignInForm() {
           <Label
             htmlFor="email"
             className="text-[0.78rem] font-bold uppercase"
-            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+            style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
           >
             E-mail
           </Label>
@@ -98,7 +98,7 @@ export function SignInForm() {
             <Label
               htmlFor="password"
               className="text-[0.78rem] font-bold uppercase"
-              style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+              style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
             >
               Senha
             </Label>
@@ -107,7 +107,7 @@ export function SignInForm() {
               className="text-xs underline decoration-2 underline-offset-4 transition-colors hover:opacity-80"
               style={{
                 color: 'var(--ink-muted)',
-                textDecorationColor: 'var(--accent-e)',
+                textDecorationColor: 'var(--food-accent)',
               }}
             >
               Esqueci minha senha

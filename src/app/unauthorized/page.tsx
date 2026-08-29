@@ -5,7 +5,7 @@ export default function UnauthorizedPage() {
     <main className="min-h-dvh bg-white grid place-items-center p-6">
       <div className="w-full max-w-xl border-2 border-[#0a0a0a] bg-white">
         <div className="p-8">
-          <p className="inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#ffb900]">
+          <p className="inline-block bg-[#0a0a0a] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#ffc733]">
             Acesso restrito
           </p>
           <h1 className="mt-3 font-display text-3xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#0a0a0a]">
@@ -18,7 +18,7 @@ export default function UnauthorizedPage() {
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <Link
               href="/sign-in"
-              className="grid h-12 place-items-center border-2 border-[#0a0a0a] bg-[#ffb900] font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
+              className="grid h-12 place-items-center border-2 border-[#0a0a0a] bg-[#ffc733] font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white"
             >
               Entrar
             </Link>

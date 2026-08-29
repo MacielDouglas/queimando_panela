@@ -33,22 +33,22 @@ export function AuthShell({
             {/* Lado editorial — mesmo idioma de ValuesSection */}
             <section
               className="hidden flex-col justify-between p-8 lg:p-10 md:flex"
-              style={{ background: 'var(--forest)', color: 'white' }}
+              style={{ background: 'var(--cocoa)', color: 'white' }}
             >
               <div>
                 <Link
                   href="/"
                   className="inline-flex items-center gap-2 rounded-full px-3 py-1.5"
                   style={{
-                    background: 'var(--accent-e)',
-                    color: 'var(--forest)',
+                    background: 'var(--food-accent)',
+                    color: 'var(--cocoa)',
                   }}
                 >
                   <span
                     className="grid size-7 place-items-center rounded-full text-xs font-extrabold"
                     style={{
-                      background: 'var(--forest)',
-                      color: 'var(--accent-e)',
+                      background: 'var(--cocoa)',
+                      color: 'var(--food-accent)',
                     }}
                     aria-hidden="true"
                   >
@@ -66,8 +66,8 @@ export function AuthShell({
                   <p
                     className="inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-[0.78rem] font-bold uppercase"
                     style={{
-                      background: 'var(--accent-e)',
-                      color: 'var(--forest)',
+                      background: 'var(--food-accent)',
+                      color: 'var(--cocoa)',
                       letterSpacing: '0.08em',
                     }}
                   >
@@ -98,7 +98,10 @@ export function AuthShell({
               >
                 <p
                   className="text-[0.78rem] font-bold uppercase"
-                  style={{ color: 'var(--accent-e)', letterSpacing: '0.08em' }}
+                  style={{
+                    color: 'var(--food-accent)',
+                    letterSpacing: '0.08em',
+                  }}
                 >
                   Feito por quem cozinha
                 </p>
@@ -118,7 +121,7 @@ export function AuthShell({
                 <p className="eyebrow-queimando-panela">Queimando Panela</p>
                 <h2
                   className="font-display text-2xl font-extrabold leading-none tracking-[-0.04em] text-balance"
-                  style={{ color: 'var(--forest)' }}
+                  style={{ color: 'var(--cocoa)' }}
                 >
                   {title}
                 </h2>
@@ -138,8 +141,8 @@ export function AuthShell({
                     href={footerLinkHref}
                     className="font-bold underline decoration-2 underline-offset-4 transition-colors hover:opacity-80"
                     style={{
-                      color: 'var(--forest)',
-                      textDecorationColor: 'var(--accent-e)',
+                      color: 'var(--cocoa)',
+                      textDecorationColor: 'var(--food-accent)',
                     }}
                   >
                     {footerLinkLabel}

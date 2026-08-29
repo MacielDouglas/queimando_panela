@@ -7,14 +7,14 @@
       "background": {
         "role": "neutral",
         "displayName": "Creme Queimando Panela",
-        "canonical": "#fffdf7",
-        "tonalRamp": ["#1a1a0a", "#3a3520", "#5a5235", "#7a6e4a", "#9a8a60", "#bba87a", "#dcc89a", "#fffdf7"]
+        "canonical": "#fffdf8",
+        "tonalRamp": ["#1a1a0a", "#3a3520", "#5a5235", "#7a6e4a", "#9a8a60", "#bba87a", "#dcc89a", "#fffdf8"]
       },
       "foreground": {
         "role": "neutral",
         "displayName": "Tinta",
-        "canonical": "#1f2933",
-        "tonalRamp": ["#0a0f14", "#1f2933", "#2f3d4a", "#4a5a68", "#6a7a88", "#8a9aa8", "#b8c4ce", "#e8eef2"]
+        "canonical": "#2a211d",
+        "tonalRamp": ["#0a0f14", "#2a211d", "#2f3d4a", "#4a5a68", "#6a7a88", "#8a9aa8", "#b8c4ce", "#e8eef2"]
       },
       "primary": {
         "role": "primary",
@@ -24,39 +24,39 @@
       },
       "accent": {
         "role": "accent",
-        "displayName": "Forest Profundo",
-        "canonical": "#183a37",
-        "tonalRamp": ["#071211", "#0f2624", "#183a37", "#2f5d50", "#4a7a6e", "#6a9a8e", "#8abaae", "#c2ddd6"]
+        "displayName": "Cocoa Profundo",
+        "canonical": "#3a2418",
+        "tonalRamp": ["#071211", "#0f2624", "#3a2418", "#593b2a", "#4a7a6e", "#6a9a8e", "#8abaae", "#c2ddd6"]
       },
       "muted": {
         "role": "neutral",
         "displayName": "Areia Clara",
-        "canonical": "#f5f0e8",
-        "tonalRamp": ["#1a1814", "#3a3730", "#5a564e", "#7a756e", "#9a958e", "#b8b4ae", "#d6d3ce", "#f5f0e8"]
+        "canonical": "#f7f1e9",
+        "tonalRamp": ["#1a1814", "#3a3730", "#5a564e", "#7a756e", "#9a958e", "#b8b4ae", "#d6d3ce", "#f7f1e9"]
       },
       "muted-foreground": {
         "role": "neutral",
         "displayName": "Tinta Suave",
-        "canonical": "#52606d",
-        "tonalRamp": ["#1f2933", "#2f3d4a", "#52606d", "#6a7a88", "#8a9aa8", "#aab8c4", "#c8d4de", "#e8eef2"]
+        "canonical": "#74665d",
+        "tonalRamp": ["#2a211d", "#2f3d4a", "#74665d", "#6a7a88", "#8a9aa8", "#aab8c4", "#c8d4de", "#e8eef2"]
       },
       "border": {
         "role": "neutral",
         "displayName": "Linha",
-        "canonical": "#e8e1d5",
-        "tonalRamp": ["#3a3520", "#5a5235", "#7a6e4a", "#9a8a60", "#bba87a", "#c9b896", "#ddd0b5", "#e8e1d5"]
+        "canonical": "#eae2d8",
+        "tonalRamp": ["#3a3520", "#5a5235", "#7a6e4a", "#9a8a60", "#bba87a", "#c9b896", "#ddd0b5", "#eae2d8"]
       },
-      "forest-dark": {
+      "cocoa-dark": {
         "role": "accent",
-        "displayName": "Forest Escuro",
-        "canonical": "#102c2a",
-        "tonalRamp": ["#050e0d", "#102c2a", "#183a37", "#2f5d50", "#4a7a6e", "#6a9a8e", "#8abaae", "#c2ddd6"]
+        "displayName": "Cocoa Escuro",
+        "canonical": "#24150e",
+        "tonalRamp": ["#050e0d", "#24150e", "#3a2418", "#593b2a", "#4a7a6e", "#6a9a8e", "#8abaae", "#c2ddd6"]
       },
       "sage": {
         "role": "neutral",
         "displayName": "Verde Sálvia",
-        "canonical": "#d9dfc9",
-        "tonalRamp": ["#2a2e24", "#4a4e3a", "#6a6e5a", "#8a8e7a", "#aaae9a", "#c9ceb8", "#d9dfc9", "#eef1e6"]
+        "canonical": "#f7f1e9",
+        "tonalRamp": ["#2a2e24", "#4a4e3a", "#6a6e5a", "#8a8e7a", "#aaae9a", "#c9ceb8", "#f7f1e9", "#eef1e6"]
       }
     },
     "typographyMeta": {
@@ -124,15 +124,15 @@
       "refersTo": "button-primary-queimando-panela",
       "description": "CTA primário pill 999px amarelo manteiga — Explorar receitas, Entrar.",
       "html": "<button class=\"ds-btn-primary-qp\">Explorar receitas →</button>",
-      "css": ".ds-btn-primary-qp { background: #ffc733; color: #1f2933; padding: 0 22px; height: 50px; border-radius: 999px; border: 1px solid transparent; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: transform 180ms ease, background 180ms ease; } .ds-btn-primary-qp:hover { background: #eeb214; transform: translateY(-2px); } .ds-btn-primary-qp:focus-visible { outline: 2px solid #183a37; outline-offset: 2px; }"
+      "css": ".ds-btn-primary-qp { background: #ffc733; color: #2a211d; padding: 0 22px; height: 50px; border-radius: 999px; border: 1px solid transparent; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: transform 180ms ease, background 180ms ease; } .ds-btn-primary-qp:hover { background: #eeb214; transform: translateY(-2px); } .ds-btn-primary-qp:focus-visible { outline: 2px solid #3a2418; outline-offset: 2px; }"
     },
     {
       "name": "Outline Queimando Panela Button",
       "kind": "button",
       "refersTo": "button-outline-queimando-panela",
-      "description": "Botão outline forest — Enviar receita.",
+      "description": "Botão outline cocoa — Enviar receita.",
       "html": "<button class=\"ds-btn-outline-qp\">Enviar receita</button>",
-      "css": ".ds-btn-outline-qp { background: transparent; color: #183a37; padding: 0 22px; height: 50px; border-radius: 999px; border: 1px solid #183a37; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: background 180ms ease, border-color 180ms ease, color 180ms ease; } .ds-btn-outline-qp:hover { background: #ffc733; border-color: #ffc733; color: #1f2933; } .ds-btn-outline-qp:focus-visible { outline: 2px solid #ffc733; outline-offset: 2px; }"
+      "css": ".ds-btn-outline-qp { background: transparent; color: #3a2418; padding: 0 22px; height: 50px; border-radius: 999px; border: 1px solid #3a2418; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: background 180ms ease, border-color 180ms ease, color 180ms ease; } .ds-btn-outline-qp:hover { background: #ffc733; border-color: #ffc733; color: #2a211d; } .ds-btn-outline-qp:focus-visible { outline: 2px solid #ffc733; outline-offset: 2px; }"
     },
     {
       "name": "Text Link Queimando Panela",
@@ -140,7 +140,7 @@
       "refersTo": null,
       "description": "Link com seta — Descobrir sabores, Ver todas.",
       "html": "<a class=\"ds-link-qp\" href=\"/receitas\">Descobrir sabores</a>",
-      "css": ".ds-link-qp { display: inline-flex; align-items: center; gap: 8px; color: #183a37; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: color 180ms ease; } .ds-link-qp::after { content: '→'; transition: transform 180ms ease; } .ds-link-qp:hover { color: #2f5d50; } .ds-link-qp:hover::after { transform: translateX(4px); }"
+      "css": ".ds-link-qp { display: inline-flex; align-items: center; gap: 8px; color: #3a2418; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: color 180ms ease; } .ds-link-qp::after { content: '→'; transition: transform 180ms ease; } .ds-link-qp:hover { color: #593b2a; } .ds-link-qp:hover::after { transform: translateX(4px); }"
     },
     {
       "name": "Eyebrow Queimando Panela",
@@ -148,7 +148,7 @@
       "refersTo": null,
       "description": "Eyebrow pontual com traço amarelo — uso em Hero + 1 seção âncora.",
       "html": "<p class=\"ds-eyebrow-qp\">Para todos os momentos</p>",
-      "css": ".ds-eyebrow-qp { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 16px; color: #183a37; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; } .ds-eyebrow-qp::before { width: 30px; height: 2px; background: #ffc733; content: ''; display: block; }"
+      "css": ".ds-eyebrow-qp { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 16px; color: #3a2418; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; } .ds-eyebrow-qp::before { width: 30px; height: 2px; background: #ffc733; content: ''; display: block; }"
     },
     {
       "name": "Category Card",
@@ -156,7 +156,7 @@
       "refersTo": "card-default",
       "description": "Card de categoria 18px borda linha — imagem 1.2/1.",
       "html": "<div class=\"ds-card-cat\"><div class=\"ds-card-cat-img\"></div><div class=\"ds-card-cat-body\"><h3>Prato principal</h3><p>Texturas, aromas e intensidades.</p></div></div>",
-      "css": ".ds-card-cat { background: #ffffff; border-radius: 18px; border: 1px solid #e8e1d5; overflow: hidden; font-family: 'DM Sans', sans-serif; } .ds-card-cat-img { aspect-ratio: 1.2 / 1; background: #f5f0e8; } .ds-card-cat-body { padding: 24px; } .ds-card-cat-body h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.72rem; font-weight: 700; color: #183a37; letter-spacing: -0.03em; margin: 0; } .ds-card-cat-body p { color: #52606d; font-size: 0.94rem; margin-top: 12px; }"
+      "css": ".ds-card-cat { background: #ffffff; border-radius: 18px; border: 1px solid #eae2d8; overflow: hidden; font-family: 'DM Sans', sans-serif; } .ds-card-cat-img { aspect-ratio: 1.2 / 1; background: #f7f1e9; } .ds-card-cat-body { padding: 24px; } .ds-card-cat-body h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.72rem; font-weight: 700; color: #3a2418; letter-spacing: -0.03em; margin: 0; } .ds-card-cat-body p { color: #74665d; font-size: 0.94rem; margin-top: 12px; }"
     },
     {
       "name": "Recipe Card",
@@ -164,7 +164,7 @@
       "refersTo": "card-default",
       "description": "Card de receita 18px com sombra suave e badge amarelo.",
       "html": "<div class=\"ds-card-recipe\"><div class=\"ds-card-recipe-img\"><span class=\"ds-badge\">Prato principal</span></div><div class=\"ds-card-recipe-body\"><h3>Bolo de Cenoura</h3><p>Receita clássica com cobertura.</p></div></div>",
-      "css": ".ds-card-recipe { background: #ffffff; border-radius: 18px; box-shadow: 0 10px 30px rgba(24,58,55,0.06); overflow: hidden; font-family: 'DM Sans', sans-serif; } .ds-card-recipe-img { aspect-ratio: 1.15 / 1; background: #f5f0e8; position: relative; } .ds-badge { position: absolute; left: 16px; top: 16px; background: #ffc733; color: #1f2933; padding: 7px 11px; border-radius: 999px; font-size: 0.73rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }"
+      "css": ".ds-card-recipe { background: #ffffff; border-radius: 18px; box-shadow: 0 10px 30px rgba(24,58,55,0.06); overflow: hidden; font-family: 'DM Sans', sans-serif; } .ds-card-recipe-img { aspect-ratio: 1.15 / 1; background: #f7f1e9; position: relative; } .ds-badge { position: absolute; left: 16px; top: 16px; background: #ffc733; color: #2a211d; padding: 7px 11px; border-radius: 999px; font-size: 0.73rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }"
     },
     {
       "name": "Header",
@@ -172,15 +172,15 @@
       "refersTo": null,
       "description": "Header sticky 78px cream translúcido + blur.",
       "html": "<header class=\"ds-header\"><span>QP</span><nav><a href=\"/\">Home</a><a href=\"/receitas\">Receitas</a></nav></header>",
-      "css": ".ds-header { height: 78px; background: rgba(255,253,247,0.9); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(232,225,213,0.72); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font-family: 'DM Sans', sans-serif; } .ds-header a { color: #52606d; font-weight: 600; font-size: 0.92rem; text-decoration: none; } .ds-header a:hover { color: #183a37; }"
+      "css": ".ds-header { height: 78px; background: rgba(255,253,247,0.9); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(232,225,213,0.72); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font-family: 'DM Sans', sans-serif; } .ds-header a { color: #74665d; font-weight: 600; font-size: 0.92rem; text-decoration: none; } .ds-header a:hover { color: #3a2418; }"
     }
   ],
   "narrative": {
     "northStar": "A Cozinha como Sala de Estar",
-    "overview": "Cada tela é uma página de caderno — manuscrita, autoral, prática. Playfair Display dá peso editorial acolhedor, DM Sans garante leitura leve com farinha na mão. O creme #fffdf7 aquece o branco sem virar bege, o amarelo #ffc733 pontua em pílulas e faixas de 2px, o forest #183a37 ancora títulos. A IA aparece como rascunho editável com utensílios, nutrição e tempo explicados — nunca como veredito fechado.",
+    "overview": "Cada tela é uma página de caderno — manuscrita, autoral, prática. Playfair Display dá peso editorial acolhedor, DM Sans garante leitura leve com farinha na mão. O creme #fffdf8 aquece o branco sem virar bege, o amarelo #ffc733 pontua em pílulas e faixas de 2px, o cocoa #3a2418 ancora títulos. A IA aparece como rascunho editável com utensílios, nutrição e tempo explicados — nunca como veredito fechado.",
     "keyCharacteristics": [
       "Editorial quente: Playfair + DM Sans, text-wrap balance, 65–72ch, leading 1.6",
-      "Creme dominante, amarelo restrained (≤15%), forest como âncora",
+      "Creme dominante, amarelo restrained (≤15%), cocoa como âncora",
       "Cantos suaves: 18px cards, 28px hero/CTA, 999px botões",
       "Espaço generoso: editorial-container min(100%-40px,1180px), py-16 lg:py-20",
       "IA como co-piloto visível na Home e no fluxo de criação"
@@ -192,12 +192,12 @@
       { "name": "The Flat-By-Default Rule", "body": "Fundo creme + cards brancos já criam profundidade tonal. Sombra só quando precisa elevar.", "section": "elevation" }
     ],
     "dos": [
-      "Do usar creme #fffdf7 dominante, amarelo #ffc733 pontual e forest #183a37 como âncora.",
+      "Do usar creme #fffdf8 dominante, amarelo #ffc733 pontual e cocoa #3a2418 como âncora.",
       "Do usar Playfair Display para títulos com text-wrap balance e DM Sans para corpo 72ch.",
       "Do manter híbrido 999px botões e 18px/28px cards.",
       "Do mostrar IA como cards editáveis claros (utensílios, nutrição, tempo, classificação).",
       "Do garantir toque ≥44px, foco visível 2px e respeitar prefers-reduced-motion.",
-      "Do usar fotos grandes 4:3 com borda 1px #e8e1d5 ou sombra suave."
+      "Do usar fotos grandes 4:3 com borda 1px #eae2d8 ou sombra suave."
     ],
     "donts": [
       "Don't usar amarelo como fundo de seção inteira.",

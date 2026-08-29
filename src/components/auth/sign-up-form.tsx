@@ -76,7 +76,7 @@ export function SignUpForm() {
           <Label
             htmlFor="name"
             className="text-[0.78rem] font-bold uppercase"
-            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+            style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
           >
             Nome
           </Label>
@@ -99,7 +99,7 @@ export function SignUpForm() {
           <Label
             htmlFor="email"
             className="text-[0.78rem] font-bold uppercase"
-            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+            style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
           >
             E-mail
           </Label>
@@ -122,7 +122,7 @@ export function SignUpForm() {
           <Label
             htmlFor="password"
             className="text-[0.78rem] font-bold uppercase"
-            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+            style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
           >
             Senha
           </Label>
@@ -145,7 +145,7 @@ export function SignUpForm() {
           <Label
             htmlFor="confirmPassword"
             className="text-[0.78rem] font-bold uppercase"
-            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+            style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
           >
             Confirmar senha
           </Label>

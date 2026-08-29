@@ -17,13 +17,13 @@ export default function RecipesLoading() {
               <div className="hidden h-6 w-px bg-[var(--line)] sm:block" />
               <div className="hidden h-3 w-28 rounded bg-[var(--muted)] sm:block" />
             </div>
-            <div className="h-11 w-36 rounded-full bg-[var(--accent-e)]" />
+            <div className="h-11 w-36 rounded-full bg-[var(--food-accent)]" />
           </div>
 
           <div className="mt-8 h-3 w-28 rounded-full bg-[var(--line)] animate-pulse" />
           <div className="mt-4 space-y-3 animate-pulse">
-            <div className="h-10 w-[72%] max-w-2xl rounded bg-[var(--forest)]/10" />
-            <div className="h-10 w-[48%] max-w-xl rounded bg-[var(--forest)]/10" />
+            <div className="h-10 w-[72%] max-w-2xl rounded bg-[var(--cocoa)]/10" />
+            <div className="h-10 w-[48%] max-w-xl rounded bg-[var(--cocoa)]/10" />
           </div>
           <div className="mt-4 h-4 w-[62%] max-w-2xl rounded bg-[var(--muted)] animate-pulse" />
         </div>
@@ -65,10 +65,10 @@ export default function RecipesLoading() {
             >
               <div className="min-h-64 bg-[var(--muted)] sm:min-h-[380px]" />
               <div className="space-y-3 p-6">
-                <div className="h-3 w-20 rounded-full bg-[var(--accent-e)]/40" />
-                <div className="h-6 w-full rounded bg-[var(--forest)]/10" />
+                <div className="h-3 w-20 rounded-full bg-[var(--food-accent)]/40" />
+                <div className="h-6 w-full rounded bg-[var(--cocoa)]/10" />
                 <div className="h-4 w-3/4 rounded bg-[var(--muted)]" />
-                <div className="mt-6 h-11 w-full rounded-full bg-[var(--forest)]" />
+                <div className="mt-6 h-11 w-full rounded-full bg-[var(--cocoa)]" />
               </div>
             </div>
 
@@ -87,8 +87,8 @@ export default function RecipesLoading() {
                   style={{ borderBottom: '1px solid var(--line)' }}
                 >
                   <div className="space-y-2">
-                    <div className="h-1 w-8 bg-[var(--accent-e)]" />
-                    <div className="h-5 w-32 rounded bg-[var(--forest)]/10" />
+                    <div className="h-1 w-8 bg-[var(--food-accent)]" />
+                    <div className="h-5 w-32 rounded bg-[var(--cocoa)]/10" />
                   </div>
                   <div className="h-6 w-20 rounded-full bg-[var(--line)]" />
                 </div>
@@ -127,8 +127,8 @@ export default function RecipesLoading() {
                 className="bg-white px-5 py-4"
                 style={{ borderBottom: '1px solid var(--line)' }}
               >
-                <div className="h-1 w-8 bg-[var(--accent-e)]" />
-                <div className="mt-2 h-4 w-20 rounded bg-[var(--forest)]/10" />
+                <div className="h-1 w-8 bg-[var(--food-accent)]" />
+                <div className="mt-2 h-4 w-20 rounded bg-[var(--cocoa)]/10" />
               </div>
               <div className="p-4 space-y-3">
                 <div className="flex flex-wrap gap-2">
@@ -173,7 +173,7 @@ export default function RecipesLoading() {
                 background: 'var(--muted)',
               }}
             >
-              <div className="h-3 w-12 rounded bg-[var(--forest)]/10" />
+              <div className="h-3 w-12 rounded bg-[var(--cocoa)]/10" />
               <div className="mt-2 h-3 w-full rounded bg-[var(--ink-muted)]/20" />
               <div className="mt-1 h-3 w-5/6 rounded bg-[var(--ink-muted)]/20" />
             </div>

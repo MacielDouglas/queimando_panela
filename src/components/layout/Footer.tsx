@@ -28,7 +28,7 @@ export default function Footer() {
     <footer
       className="border-t"
       style={{
-        background: 'var(--forest-dark, #102c2a)',
+        background: 'var(--cocoa-dark, #24150e)',
         borderColor: 'rgba(255,255,255,0.1)',
       }}
     >
@@ -56,7 +56,7 @@ export default function Footer() {
           <div>
             <h3
               className="mb-4 text-[0.82rem] font-extrabold uppercase"
-              style={{ color: 'var(--accent-e)', letterSpacing: '0.1em' }}
+              style={{ color: 'var(--food-accent)', letterSpacing: '0.1em' }}
             >
               Institucional
             </h3>
@@ -66,7 +66,7 @@ export default function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[0.9rem] transition-colors hover:text-[var(--accent-e)]"
+                      className="text-[0.9rem] transition-colors hover:text-[var(--food-accent)]"
                       style={{ color: 'rgba(255,255,255,0.72)' }}
                     >
                       {link.label}
@@ -80,7 +80,7 @@ export default function Footer() {
           <div>
             <h3
               className="mb-4 text-[0.82rem] font-extrabold uppercase"
-              style={{ color: 'var(--accent-e)', letterSpacing: '0.1em' }}
+              style={{ color: 'var(--food-accent)', letterSpacing: '0.1em' }}
             >
               Atendimento
             </h3>
@@ -90,7 +90,7 @@ export default function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[0.9rem] transition-colors hover:text-[var(--accent-e)]"
+                      className="text-[0.9rem] transition-colors hover:text-[var(--food-accent)]"
                       style={{ color: 'rgba(255,255,255,0.72)' }}
                     >
                       {link.label}
@@ -104,7 +104,7 @@ export default function Footer() {
           <div>
             <h3
               className="mb-4 text-[0.82rem] font-extrabold uppercase"
-              style={{ color: 'var(--accent-e)', letterSpacing: '0.1em' }}
+              style={{ color: 'var(--food-accent)', letterSpacing: '0.1em' }}
             >
               Siga a gente
             </h3>
@@ -116,7 +116,7 @@ export default function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[0.9rem] transition-colors hover:text-[var(--accent-e)]"
+                      className="text-[0.9rem] transition-colors hover:text-[var(--food-accent)]"
                       style={{ color: 'rgba(255,255,255,0.72)' }}
                     >
                       {link.label}
@@ -139,14 +139,14 @@ export default function Footer() {
           <span className="flex items-center gap-2">
             <Link
               href="/termos"
-              className="transition-colors hover:text-[var(--accent-e)]"
+              className="transition-colors hover:text-[var(--food-accent)]"
             >
               Política de privacidade
             </Link>
             <span aria-hidden="true">·</span>
             <Link
               href="/termos"
-              className="transition-colors hover:text-[var(--accent-e)]"
+              className="transition-colors hover:text-[var(--food-accent)]"
             >
               Termos de uso
             </Link>

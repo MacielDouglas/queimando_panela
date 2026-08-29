@@ -25,7 +25,7 @@ export function MobileMenu() {
           type="button"
           variant="ghost"
           size="icon"
-          className="size-11 border border-[#183a37] bg-transparent text-[#183a37] hover:bg-[#183a37] hover:text-white"
+          className="size-11 border border-[#3a2418] bg-transparent text-[#3a2418] hover:bg-[#3a2418] hover:text-white"
           aria-label="Abrir menu"
         >
           <HiOutlineMenuAlt3 className="size-5" />
@@ -39,13 +39,16 @@ export function MobileMenu() {
       >
         <SheetHeader
           className="border-b px-6 py-5 text-left"
-          style={{ borderColor: 'var(--line)', background: 'var(--accent-e)' }}
+          style={{
+            borderColor: 'var(--line)',
+            background: 'var(--food-accent)',
+          }}
         >
           <SheetTitle asChild>
             <SheetClose asChild>
               <Link
                 href="/"
-                className="inline-flex items-center gap-3 text-[#183a37]"
+                className="inline-flex items-center gap-3 text-[#3a2418]"
               >
                 <QPMark />
                 <span className="font-display text-sm font-bold uppercase tracking-[0.1em]">
@@ -76,11 +79,11 @@ export function MobileMenu() {
 
         <div
           className="border-t px-6 py-5"
-          style={{ borderColor: 'var(--line)', background: '#102c2a' }}
+          style={{ borderColor: 'var(--line)', background: '#24150e' }}
         >
           <p
             className="text-xs font-bold uppercase"
-            style={{ color: 'var(--accent-e)', letterSpacing: '0.16em' }}
+            style={{ color: 'var(--food-accent)', letterSpacing: '0.16em' }}
           >
             Desenvolvido por Douglas Maciel
           </p>
@@ -93,7 +96,7 @@ export function MobileMenu() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 border px-3 py-2 text-xs font-bold uppercase text-white transition-colors hover:bg-[var(--accent-e)] hover:text-[#183a37]"
+                    className="inline-flex items-center gap-2 border px-3 py-2 text-xs font-bold uppercase text-white transition-colors hover:bg-[var(--food-accent)] hover:text-[#3a2418]"
                     style={{
                       borderColor: 'rgba(255,255,255,0.1)',
                       letterSpacing: '0.08em',

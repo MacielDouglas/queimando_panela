@@ -10,7 +10,7 @@ export function HeroSection() {
 
           <h1 className="font-display text-[clamp(3.2rem,7vw,6.4rem)] font-extrabold leading-[0.88] tracking-[-0.04em]">
             Receitas caseiras que são{' '}
-            <em className="not-italic" style={{ color: 'var(--forest-hover)' }}>
+            <em className="not-italic" style={{ color: 'var(--cocoa-hover)' }}>
               memória.
             </em>
           </h1>
@@ -43,7 +43,7 @@ export function HeroSection() {
             <li className="flex min-w-[132px] flex-col gap-1">
               <strong
                 className="text-[1.45rem] font-extrabold leading-none tracking-[-0.02em]"
-                style={{ color: 'var(--forest)' }}
+                style={{ color: 'var(--cocoa)' }}
               >
                 100%
               </strong>
@@ -57,7 +57,7 @@ export function HeroSection() {
             <li className="flex min-w-[132px] flex-col gap-1">
               <strong
                 className="text-[1.45rem] font-extrabold leading-none tracking-[-0.02em]"
-                style={{ color: 'var(--forest)' }}
+                style={{ color: 'var(--cocoa)' }}
               >
                 3 passos
               </strong>
@@ -71,7 +71,7 @@ export function HeroSection() {
             <li className="flex min-w-[132px] flex-col gap-1">
               <strong
                 className="text-[1.45rem] font-extrabold leading-none tracking-[-0.02em]"
-                style={{ color: 'var(--forest)' }}
+                style={{ color: 'var(--cocoa)' }}
               >
                 IA
               </strong>
@@ -90,7 +90,7 @@ export function HeroSection() {
             className="qp-parallax absolute inset-0 overflow-hidden"
             style={{
               borderRadius: '46% 46% 22px 22px',
-              background: '#d9dfc9',
+              background: '#f7f1e9',
               right: '12px',
             }}
           >
@@ -108,8 +108,8 @@ export function HeroSection() {
             style={{
               borderColor: 'var(--cream)',
               borderRadius: '50%',
-              background: 'var(--accent-e)',
-              color: 'var(--forest)',
+              background: 'var(--food-accent)',
+              color: 'var(--cocoa)',
               boxShadow: 'var(--shadow)',
               transform: 'rotate(12deg)',
             }}

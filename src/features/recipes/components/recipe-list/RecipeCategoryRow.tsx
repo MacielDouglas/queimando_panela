@@ -25,7 +25,7 @@ export function RecipeCategoryRow({ type, recipes }: Props) {
           <div className="flex items-center gap-2">
             <span
               className="h-1 w-8"
-              style={{ background: 'var(--accent-e)' }}
+              style={{ background: 'var(--food-accent)' }}
               aria-hidden
             />
             <p
@@ -37,7 +37,7 @@ export function RecipeCategoryRow({ type, recipes }: Props) {
           </div>
           <h2
             className="mt-2 font-display text-xl font-extrabold leading-none tracking-[-0.015em] text-balance"
-            style={{ color: 'var(--forest)' }}
+            style={{ color: 'var(--cocoa)' }}
           >
             {type}
           </h2>

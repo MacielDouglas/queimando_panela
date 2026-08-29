@@ -25,7 +25,7 @@ export function RecipeFormAnalyzeAction({
         type="button"
         onClick={onAnalyze}
         disabled={isAnalyzing}
-        className="min-h-12 w-full rounded-none bg-[#ffb900] px-5 text-sm font-bold uppercase tracking-[0.08em] text-[#0a0a0a] hover:bg-[#e6a700]"
+        className="min-h-12 w-full rounded-none bg-[#ffc733] px-5 text-sm font-bold uppercase tracking-[0.08em] text-[#0a0a0a] hover:bg-[#e6a700]"
       >
         {isAnalyzing ? (
           <>
@@ -65,7 +65,7 @@ export function RecipeFormSaveAction({
       type="button"
       onClick={onSave}
       disabled={isSaving}
-      className="min-h-12 w-full rounded-none bg-[#0a0a0a] px-5 text-sm font-bold uppercase tracking-[0.08em] text-white hover:bg-[#ffb900] hover:text-[#0a0a0a]"
+      className="min-h-12 w-full rounded-none bg-[#0a0a0a] px-5 text-sm font-bold uppercase tracking-[0.08em] text-white hover:bg-[#ffc733] hover:text-[#0a0a0a]"
     >
       {isSaving ? (
         <>

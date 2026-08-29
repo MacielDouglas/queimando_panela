@@ -107,7 +107,7 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
                   <span
                     className="absolute left-4 top-4 px-3 py-[7px] text-[0.73rem] font-extrabold uppercase"
                     style={{
-                      background: 'var(--accent-e)',
+                      background: 'var(--food-accent)',
                       color: 'var(--ink)',
                       letterSpacing: '0.04em',
                     }}
@@ -122,7 +122,7 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
               >
                 <h3
                   className="font-display text-lg font-bold leading-tight tracking-[-0.01em]"
-                  style={{ color: 'var(--forest)' }}
+                  style={{ color: 'var(--cocoa)' }}
                 >
                   {recipe.title}
                 </h3>
@@ -136,7 +136,7 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
                 )}
                 <div
                   className="mt-4 inline-flex items-center gap-2 text-[0.78rem] font-bold uppercase"
-                  style={{ color: 'var(--forest)', letterSpacing: '0.1em' }}
+                  style={{ color: 'var(--cocoa)', letterSpacing: '0.1em' }}
                 >
                   Veja →
                 </div>
@@ -157,7 +157,7 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
                     aria-selected={index === currentRecipe}
                     aria-label={`Receita ${index + 1} de ${visible.length}: ${r.title}`}
                     onClick={() => setCurrentRecipe(index)}
-                    className="flex items-center justify-center transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent-e)] focus-visible:outline-offset-2"
+                    className="flex items-center justify-center transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--food-accent)] focus-visible:outline-offset-2"
                     style={{
                       minWidth: '44px',
                       minHeight: '44px',
@@ -170,7 +170,7 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
                         width: index === currentRecipe ? '32px' : '16px',
                         background:
                           index === currentRecipe
-                            ? 'var(--accent-e)'
+                            ? 'var(--food-accent)'
                             : 'var(--line)',
                       }}
                     />

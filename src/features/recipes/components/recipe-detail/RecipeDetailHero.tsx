@@ -54,8 +54,8 @@ export function RecipeDetailHero({
                   key={t}
                   className="rounded-full px-3 py-1.5 text-[0.78rem] font-bold uppercase"
                   style={{
-                    background: 'var(--accent-e)',
-                    color: 'var(--forest)',
+                    background: 'var(--food-accent)',
+                    color: 'var(--cocoa)',
                     letterSpacing: '0.06em',
                   }}
                 >
@@ -66,13 +66,13 @@ export function RecipeDetailHero({
                 className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[0.78rem] font-bold uppercase"
                 style={{
                   border: '1px solid var(--line)',
-                  color: 'var(--forest)',
+                  color: 'var(--cocoa)',
                   letterSpacing: '0.06em',
                 }}
               >
                 <span
                   className="size-1.5 rounded-full"
-                  style={{ background: 'var(--accent-e)' }}
+                  style={{ background: 'var(--food-accent)' }}
                   aria-hidden
                 />
                 {difficultyLabel[difficulty]}
@@ -81,7 +81,7 @@ export function RecipeDetailHero({
 
             <h1
               className="font-display text-[clamp(2.6rem,5vw,3.8rem)] font-extrabold leading-[0.9] tracking-[-0.04em] text-balance"
-              style={{ color: 'var(--forest)' }}
+              style={{ color: 'var(--cocoa)' }}
             >
               {title}
             </h1>
@@ -90,7 +90,7 @@ export function RecipeDetailHero({
               <p
                 className="max-w-[60ch] border-l-2 pl-4 text-[1.05rem] leading-7"
                 style={{
-                  borderColor: 'var(--accent-e)',
+                  borderColor: 'var(--food-accent)',
                   color: 'var(--ink-muted)',
                   textWrap: 'pretty',
                 }}
@@ -116,11 +116,11 @@ export function RecipeDetailHero({
                   </p>
                   <p
                     className="mt-1 flex items-center gap-1.5 text-sm font-extrabold"
-                    style={{ color: 'var(--forest)' }}
+                    style={{ color: 'var(--cocoa)' }}
                   >
                     <Clock3
                       className="size-4"
-                      style={{ color: 'var(--accent-e)' }}
+                      style={{ color: 'var(--food-accent)' }}
                     />{' '}
                     {totalTime} min
                   </p>
@@ -142,7 +142,7 @@ export function RecipeDetailHero({
                   </p>
                   <p
                     className="mt-1 text-sm font-extrabold"
-                    style={{ color: 'var(--forest)' }}
+                    style={{ color: 'var(--cocoa)' }}
                   >
                     {prepTimeMinutes} min
                   </p>
@@ -164,7 +164,7 @@ export function RecipeDetailHero({
                   </p>
                   <p
                     className="mt-1 text-sm font-extrabold"
-                    style={{ color: 'var(--forest)' }}
+                    style={{ color: 'var(--cocoa)' }}
                   >
                     {cookTimeMinutes} min
                   </p>
@@ -186,7 +186,7 @@ export function RecipeDetailHero({
                   </p>
                   <p
                     className="mt-1 text-sm font-extrabold"
-                    style={{ color: 'var(--forest)' }}
+                    style={{ color: 'var(--cocoa)' }}
                   >
                     {servings}
                   </p>
@@ -202,7 +202,7 @@ export function RecipeDetailHero({
                 Receita de{' '}
                 <span
                   className="font-bold"
-                  style={{ color: 'var(--forest)', letterSpacing: '0.02em' }}
+                  style={{ color: 'var(--cocoa)', letterSpacing: '0.02em' }}
                 >
                   {authorName}
                 </span>
@@ -223,11 +223,14 @@ export function RecipeDetailHero({
             {story && (
               <section
                 className="rounded-[14px] p-5"
-                style={{ background: 'var(--forest)', color: 'white' }}
+                style={{ background: 'var(--cocoa)', color: 'white' }}
               >
                 <h2
                   className="text-[0.78rem] font-bold uppercase"
-                  style={{ color: 'var(--accent-e)', letterSpacing: '0.08em' }}
+                  style={{
+                    color: 'var(--food-accent)',
+                    letterSpacing: '0.08em',
+                  }}
                 >
                   História da receita
                 </h2>
@@ -282,8 +285,8 @@ export function RecipeDetailHero({
                 <span
                   className="absolute left-3 top-3 rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase"
                   style={{
-                    background: 'var(--accent-e)',
-                    color: 'var(--forest)',
+                    background: 'var(--food-accent)',
+                    color: 'var(--cocoa)',
                     letterSpacing: '0.06em',
                   }}
                 >
@@ -295,8 +298,8 @@ export function RecipeDetailHero({
               className="qp-badge-float absolute -bottom-3 -right-2 hidden size-[132px] place-items-center rounded-full border-[8px] text-center lg:grid"
               style={{
                 borderColor: 'var(--cream)',
-                background: 'var(--accent-e)',
-                color: 'var(--forest)',
+                background: 'var(--food-accent)',
+                color: 'var(--cocoa)',
                 boxShadow: 'var(--shadow)',
                 transform: 'rotate(10deg)',
               }}

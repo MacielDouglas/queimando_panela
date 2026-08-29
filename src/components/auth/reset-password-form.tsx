@@ -94,7 +94,7 @@ export function ResetPasswordForm() {
         </p>
         <Button
           asChild
-          className="h-11 w-full rounded-none bg-[#ffb900] text-[#0a0a0a] hover:bg-[#e6a700]"
+          className="h-11 w-full rounded-none bg-[#ffc733] text-[#0a0a0a] hover:bg-[#e6a700]"
         >
           <Link href="/sign-in">Ir para login</Link>
         </Button>
@@ -113,7 +113,7 @@ export function ResetPasswordForm() {
           type="password"
           autoComplete="new-password"
           placeholder="Digite sua nova senha"
-          className="h-11 rounded-none border-[#0a0a0a] focus-visible:ring-[#ffb900]"
+          className="h-11 rounded-none border-[#0a0a0a] focus-visible:ring-[#ffc733]"
           {...register('password')}
         />
         {errors.password && (
@@ -128,7 +128,7 @@ export function ResetPasswordForm() {
           type="password"
           autoComplete="new-password"
           placeholder="Repita sua nova senha"
-          className="h-11 rounded-none border-[#0a0a0a] focus-visible:ring-[#ffb900]"
+          className="h-11 rounded-none border-[#0a0a0a] focus-visible:ring-[#ffc733]"
           {...register('confirmPassword')}
         />
         {errors.confirmPassword && (
@@ -143,7 +143,7 @@ export function ResetPasswordForm() {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="h-11 w-full rounded-none bg-[#ffb900] text-[#0a0a0a] hover:bg-[#e6a700]"
+        className="h-11 w-full rounded-none bg-[#ffc733] text-[#0a0a0a] hover:bg-[#e6a700]"
       >
         {isSubmitting ? 'Redefinindo...' : 'Redefinir senha'}
       </Button>

@@ -66,7 +66,7 @@ export function CategoriesSection() {
               <div className="p-6">
                 <h3
                   className="font-display text-[1.72rem] font-bold tracking-[-0.03em]"
-                  style={{ color: 'var(--forest)' }}
+                  style={{ color: 'var(--cocoa)' }}
                 >
                   {category.name}
                 </h3>

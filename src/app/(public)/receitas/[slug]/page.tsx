@@ -126,7 +126,7 @@ export default async function RecipeDetailPage({ params }: Props) {
             Receitas
           </Link>
           <span style={{ color: 'var(--line)' }}>/</span>
-          <span className="font-bold" style={{ color: 'var(--forest)' }}>
+          <span className="font-bold" style={{ color: 'var(--cocoa)' }}>
             {recipe.title}
           </span>
         </nav>
@@ -161,11 +161,11 @@ export default async function RecipeDetailPage({ params }: Props) {
             {/* Card de confiança — só aparece no desktop sticky */}
             <div
               className="hidden rounded-[var(--radius-md)] p-5 lg:block"
-              style={{ background: 'var(--forest)', color: 'white' }}
+              style={{ background: 'var(--cocoa)', color: 'white' }}
             >
               <p
                 className="text-[0.78rem] font-bold uppercase"
-                style={{ color: 'var(--accent-e)', letterSpacing: '0.08em' }}
+                style={{ color: 'var(--food-accent)', letterSpacing: '0.08em' }}
               >
                 Cozinhou?
               </p>
@@ -208,24 +208,24 @@ export default async function RecipeDetailPage({ params }: Props) {
             className="grid items-center overflow-hidden lg:grid-cols-[1.15fr_0.85fr]"
             style={{
               borderRadius: 'var(--radius-lg)',
-              background: 'var(--accent-e)',
+              background: 'var(--food-accent)',
             }}
           >
             <div className="p-8 lg:p-10">
               <p
                 className="mb-3 inline-flex items-center gap-2 text-[0.78rem] font-bold uppercase"
-                style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+                style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
               >
                 <span
                   className="h-[2px] w-7"
-                  style={{ background: 'var(--forest)' }}
+                  style={{ background: 'var(--cocoa)' }}
                   aria-hidden="true"
                 />
                 Sua vez
               </p>
               <h2
                 className="max-w-[20ch] font-display text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[0.9] tracking-[-0.04em] text-balance"
-                style={{ color: 'var(--forest)' }}
+                style={{ color: 'var(--cocoa)' }}
               >
                 Queimou a panela? Ótimo.
               </h2>
@@ -239,7 +239,7 @@ export default async function RecipeDetailPage({ params }: Props) {
               <Link
                 href="/receitas/new"
                 className="button-queimando-panela mt-6 inline-flex"
-                style={{ background: 'var(--forest)', color: 'white' }}
+                style={{ background: 'var(--cocoa)', color: 'white' }}
               >
                 Publicar receita
                 <span aria-hidden="true">→</span>
@@ -252,7 +252,7 @@ export default async function RecipeDetailPage({ params }: Props) {
               <div className="grid h-full place-items-center p-8 text-center">
                 <p
                   className="max-w-[20ch] font-display text-lg font-bold leading-tight"
-                  style={{ color: 'var(--forest)' }}
+                  style={{ color: 'var(--cocoa)' }}
                 >
                   Olhômetro vale
                   <br />

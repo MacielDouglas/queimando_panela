@@ -30,7 +30,7 @@ export function GoogleSignInButton() {
       className="h-12 w-full rounded-full border bg-white font-bold"
       style={{
         borderColor: 'var(--line)',
-        color: 'var(--forest)',
+        color: 'var(--cocoa)',
       }}
     >
       <FcGoogle className="mr-2 size-5" />

@@ -102,8 +102,8 @@ function PaginationLink({
       href={href}
       className="rounded-full bg-white px-4 py-2 text-[0.78rem] font-bold uppercase transition-colors hover:text-white"
       style={{
-        border: '1px solid var(--forest)',
-        color: 'var(--forest)',
+        border: '1px solid var(--cocoa)',
+        color: 'var(--cocoa)',
         letterSpacing: '0.08em',
       }}
     >
@@ -134,7 +134,7 @@ export function RecipeGrid({
           <div className="flex items-center gap-2">
             <span
               className="h-1 w-8"
-              style={{ background: 'var(--accent-e)' }}
+              style={{ background: 'var(--food-accent)' }}
               aria-hidden
             />
             <p
@@ -146,7 +146,7 @@ export function RecipeGrid({
           </div>
           <h2
             className="mt-2 font-display text-xl font-extrabold leading-none tracking-[-0.015em] text-balance sm:text-2xl"
-            style={{ color: 'var(--forest)' }}
+            style={{ color: 'var(--cocoa)' }}
           >
             {q ? `Resultados para "${q}"` : 'Todas as receitas'}
           </h2>
@@ -155,7 +155,7 @@ export function RecipeGrid({
           className="shrink-0 rounded-full bg-white px-3.5 py-1.5 text-[0.78rem] font-bold uppercase"
           style={{
             border: '1px solid var(--line)',
-            color: 'var(--forest)',
+            color: 'var(--cocoa)',
             letterSpacing: '0.08em',
           }}
         >
@@ -178,13 +178,13 @@ export function RecipeGrid({
         >
           <p
             className="mx-auto grid size-10 place-items-center rounded-full bg-white text-xs font-extrabold"
-            style={{ color: 'var(--forest)', border: '1px solid var(--line)' }}
+            style={{ color: 'var(--cocoa)', border: '1px solid var(--line)' }}
           >
             Ø
           </p>
           <p
             className="mt-3 text-sm font-extrabold uppercase"
-            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+            style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
           >
             Nenhuma receita encontrada
           </p>
@@ -222,7 +222,7 @@ export function RecipeGrid({
               />
               <span
                 className="rounded-full px-3.5 py-2 text-[0.78rem] font-extrabold tracking-wide text-white"
-                style={{ background: 'var(--forest)' }}
+                style={{ background: 'var(--cocoa)' }}
               >
                 {currentPage} / {totalPages}
               </span>

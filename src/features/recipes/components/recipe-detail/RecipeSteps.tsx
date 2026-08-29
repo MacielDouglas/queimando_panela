@@ -30,11 +30,14 @@ export function RecipeSteps({ sections }: Props) {
         className="flex items-center gap-2 px-5 py-4"
         style={{
           borderBottom: '1px solid var(--line)',
-          background: 'var(--forest)',
+          background: 'var(--cocoa)',
           color: 'white',
         }}
       >
-        <ScrollText className="size-4" style={{ color: 'var(--accent-e)' }} />
+        <ScrollText
+          className="size-4"
+          style={{ color: 'var(--food-accent)' }}
+        />
         <h2
           className="text-[0.78rem] font-bold uppercase"
           style={{ color: 'white', letterSpacing: '0.08em' }}
@@ -62,8 +65,8 @@ export function RecipeSteps({ sections }: Props) {
                 <h3
                   className="inline-flex rounded-full px-3 py-1 text-[0.78rem] font-bold uppercase"
                   style={{
-                    background: 'var(--accent-e)',
-                    color: 'var(--forest)',
+                    background: 'var(--food-accent)',
+                    color: 'var(--cocoa)',
                     letterSpacing: '0.06em',
                   }}
                 >
@@ -80,15 +83,15 @@ export function RecipeSteps({ sections }: Props) {
                     <span
                       className="grid size-11 place-items-center rounded-full text-sm font-extrabold"
                       style={{
-                        background: 'var(--accent-e)',
-                        color: 'var(--forest)',
+                        background: 'var(--food-accent)',
+                        color: 'var(--cocoa)',
                       }}
                     >
                       {stepIndex + 1}
                     </span>
                     <p
                       className="pt-1 text-sm leading-6"
-                      style={{ color: 'var(--forest)', textWrap: 'pretty' }}
+                      style={{ color: 'var(--cocoa)', textWrap: 'pretty' }}
                     >
                       {step}
                     </p>

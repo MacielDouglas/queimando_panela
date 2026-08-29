@@ -49,13 +49,13 @@ export function RecipeHeroFeatured({ recipe }: Props) {
         )}
         <span
           className="absolute inset-x-0 top-0 h-1"
-          style={{ background: 'var(--accent-e)' }}
+          style={{ background: 'var(--food-accent)' }}
           aria-hidden="true"
         />
         <span
           className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[0.7rem] font-extrabold uppercase"
           style={{
-            background: 'var(--forest)',
+            background: 'var(--cocoa)',
             color: 'white',
             letterSpacing: '0.08em',
             border: '1px solid rgba(255,255,255,0.12)',
@@ -69,21 +69,21 @@ export function RecipeHeroFeatured({ recipe }: Props) {
         <p
           className="inline-flex items-center gap-2 self-start rounded-full px-2.5 py-1 text-[0.78rem] font-bold uppercase"
           style={{
-            background: 'var(--accent-e)',
-            color: 'var(--forest)',
+            background: 'var(--food-accent)',
+            color: 'var(--cocoa)',
             letterSpacing: '0.08em',
           }}
         >
           <span
             className="size-1.5 rounded-full"
-            style={{ background: 'var(--forest)' }}
+            style={{ background: 'var(--cocoa)' }}
             aria-hidden
           />
           Última receita
         </p>
         <h2
           className="mt-4 font-display text-2xl font-extrabold leading-none tracking-[-0.02em] text-balance sm:text-3xl"
-          style={{ color: 'var(--forest)' }}
+          style={{ color: 'var(--cocoa)' }}
         >
           {recipe.title}
         </h2>
@@ -101,7 +101,7 @@ export function RecipeHeroFeatured({ recipe }: Props) {
               className="rounded-full px-2.5 py-1 text-[0.78rem] font-bold uppercase"
               style={{
                 background: 'var(--muted)',
-                color: 'var(--forest)',
+                color: 'var(--cocoa)',
                 letterSpacing: '0.04em',
                 border: '1px solid var(--line)',
               }}
@@ -113,7 +113,7 @@ export function RecipeHeroFeatured({ recipe }: Props) {
             <span
               className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-xs"
               style={{
-                color: 'var(--forest)',
+                color: 'var(--cocoa)',
                 border: '1px solid var(--line)',
               }}
             >
@@ -127,11 +127,11 @@ export function RecipeHeroFeatured({ recipe }: Props) {
           )}
           <span
             className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-xs"
-            style={{ color: 'var(--forest)', border: '1px solid var(--line)' }}
+            style={{ color: 'var(--cocoa)', border: '1px solid var(--line)' }}
           >
             <Flame
               className="size-3.5 shrink-0"
-              style={{ color: 'var(--accent-e)' }}
+              style={{ color: 'var(--food-accent)' }}
               aria-hidden
             />{' '}
             {difficultyLabel[recipe.difficulty]}
@@ -144,12 +144,12 @@ export function RecipeHeroFeatured({ recipe }: Props) {
           >
             <span
               className="grid size-6 place-items-center rounded-full text-[10px] font-extrabold text-white"
-              style={{ background: 'var(--forest)' }}
+              style={{ background: 'var(--cocoa)' }}
             >
               {recipe.authorName.charAt(0).toUpperCase()}
             </span>
             por{' '}
-            <span style={{ color: 'var(--forest)', fontWeight: 600 }}>
+            <span style={{ color: 'var(--cocoa)', fontWeight: 600 }}>
               {recipe.authorName}
             </span>
           </p>
