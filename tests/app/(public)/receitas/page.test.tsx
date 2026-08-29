@@ -146,7 +146,7 @@ describe('RecipesPage', () => {
     render(await renderPage());
 
     expect(
-      screen.queryByRole('link', { name: /Enviar nova receita/i }),
+      screen.queryByRole('link', { name: /Publicar receita/i }),
     ).not.toBeInTheDocument();
   });
 
@@ -158,7 +158,7 @@ describe('RecipesPage', () => {
     render(await renderPage());
 
     expect(
-      screen.getByRole('link', { name: /Enviar receita/i }),
+      screen.getByRole('link', { name: /Publicar receita/i }),
     ).toBeInTheDocument();
   });
 

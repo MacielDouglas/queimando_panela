@@ -13,83 +13,153 @@ export function RecipeHeroFeatured({ recipe }: Props) {
     (recipe.prepTimeMinutes ?? 0) + (recipe.cookTimeMinutes ?? 0) || null;
 
   return (
-    <div className="grid overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white sm:grid-cols-[1.35fr_1fr]">
-      <div className="relative min-h-64 overflow-hidden bg-[#f5f5f5] sm:min-h-[380px]">
+    <div
+      className="qp-card-delight grid overflow-hidden bg-white sm:grid-cols-[1.35fr_1fr]"
+      style={{ borderRadius: 'var(--radius-md)' }}
+    >
+      <div
+        className="relative min-h-64 overflow-hidden sm:min-h-[380px]"
+        style={{ background: 'var(--muted)' }}
+      >
         {recipe.coverUrl ? (
           <Image
             src={recipe.coverUrl}
             alt={recipe.title}
             fill
             priority
-            className="object-cover transition duration-500 hover:scale-[1.02]"
+            className="object-cover transition duration-500 group-hover:scale-[1.02]"
             sizes="(max-width: 640px) 100vw, 60vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center bg-[#f5f5f5]">
-            <span className="rounded-full border border-[#e5e5e5] bg-white px-3 py-1.5 font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+          <div
+            className="flex h-full items-center justify-center"
+            style={{ background: 'var(--muted)' }}
+          >
+            <span
+              className="rounded-full bg-white px-3 py-1.5 text-[0.78rem] font-bold uppercase"
+              style={{
+                color: 'var(--ink-muted)',
+                letterSpacing: '0.08em',
+                border: '1px solid var(--line)',
+              }}
+            >
               Sem imagem
             </span>
           </div>
         )}
         <span
-          className="absolute inset-x-0 top-0 h-1 bg-[#ffb900]"
+          className="absolute inset-x-0 top-0 h-1"
+          style={{ background: 'var(--accent-e)' }}
           aria-hidden="true"
         />
-        <span className="absolute left-3 top-3 rounded-full border border-white/20 bg-[#0a0a0a] px-2.5 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-white shadow-sm">
+        <span
+          className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[0.7rem] font-extrabold uppercase"
+          style={{
+            background: 'var(--forest)',
+            color: 'white',
+            letterSpacing: '0.08em',
+            border: '1px solid rgba(255,255,255,0.12)',
+          }}
+        >
           Em destaque
         </span>
       </div>
 
       <div className="flex flex-col p-6">
-        <p className="inline-flex items-center gap-2 self-start rounded-full bg-[#ffb900] px-2.5 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
-          <span className="size-1.5 rounded-full bg-[#0a0a0a]" aria-hidden />
+        <p
+          className="inline-flex items-center gap-2 self-start rounded-full px-2.5 py-1 text-[0.78rem] font-bold uppercase"
+          style={{
+            background: 'var(--accent-e)',
+            color: 'var(--forest)',
+            letterSpacing: '0.08em',
+          }}
+        >
+          <span
+            className="size-1.5 rounded-full"
+            style={{ background: 'var(--forest)' }}
+            aria-hidden
+          />
           Última receita
         </p>
-        <h2 className="mt-4 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#0a0a0a] sm:text-3xl text-wrap-balance">
+        <h2
+          className="mt-4 font-display text-2xl font-extrabold leading-none tracking-[-0.02em] text-balance sm:text-3xl"
+          style={{ color: 'var(--forest)' }}
+        >
           {recipe.title}
         </h2>
         {recipe.summary && (
-          <p className="mt-3 line-clamp-3 font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
+          <p
+            className="mt-3 line-clamp-3 text-sm leading-6"
+            style={{ color: 'var(--ink-muted)', textWrap: 'pretty' }}
+          >
             {recipe.summary}
           </p>
         )}
         <div className="mt-4 flex flex-wrap gap-2">
           {recipe.types[0] && (
-            <span className="rounded-full border border-[#e5e5e5] bg-[#f5f5f5] px-2.5 py-1 font-display text-xs font-bold uppercase tracking-[0.08em] text-[#0a0a0a]">
+            <span
+              className="rounded-full px-2.5 py-1 text-[0.78rem] font-bold uppercase"
+              style={{
+                background: 'var(--muted)',
+                color: 'var(--forest)',
+                letterSpacing: '0.04em',
+                border: '1px solid var(--line)',
+              }}
+            >
               {recipe.types[0]}
             </span>
           )}
           {totalTime && (
-            <span className="inline-flex items-center gap-1 rounded-full border border-[#e5e5e5] bg-white px-2.5 py-1 font-sans text-xs text-[#0a0a0a]">
+            <span
+              className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-xs"
+              style={{
+                color: 'var(--forest)',
+                border: '1px solid var(--line)',
+              }}
+            >
               <Clock3
-                className="size-3.5 shrink-0 text-[#6b6b6b]"
+                className="size-3.5 shrink-0"
+                style={{ color: 'var(--ink-muted)' }}
                 aria-hidden
               />{' '}
               {totalTime} min
             </span>
           )}
-          <span className="inline-flex items-center gap-1 rounded-full border border-[#e5e5e5] bg-white px-2.5 py-1 font-sans text-xs text-[#0a0a0a]">
-            <Flame className="size-3.5 shrink-0 text-[#ffb900]" aria-hidden />{' '}
+          <span
+            className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-xs"
+            style={{ color: 'var(--forest)', border: '1px solid var(--line)' }}
+          >
+            <Flame
+              className="size-3.5 shrink-0"
+              style={{ color: 'var(--accent-e)' }}
+              aria-hidden
+            />{' '}
             {difficultyLabel[recipe.difficulty]}
           </span>
         </div>
         {recipe.authorName && (
-          <p className="mt-4 flex items-center gap-2 border-t border-[#f2f2f2] pt-4 font-sans text-xs text-[#6b6b6b]">
-            <span className="grid size-6 place-items-center rounded-full bg-[#0a0a0a] font-display text-[10px] font-extrabold text-white">
+          <p
+            className="mt-4 flex items-center gap-2 border-t pt-4 text-xs"
+            style={{ color: 'var(--ink-muted)', borderColor: 'var(--line)' }}
+          >
+            <span
+              className="grid size-6 place-items-center rounded-full text-[10px] font-extrabold text-white"
+              style={{ background: 'var(--forest)' }}
+            >
               {recipe.authorName.charAt(0).toUpperCase()}
             </span>
             por{' '}
-            <span className="font-semibold text-[#0a0a0a]">
+            <span style={{ color: 'var(--forest)', fontWeight: 600 }}>
               {recipe.authorName}
             </span>
           </p>
         )}
         <Link
           href={`/receitas/${recipe.slug}`}
-          className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-none bg-[#0a0a0a] px-5 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#ffb900] hover:text-[#0a0a0a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb900] focus-visible:ring-offset-2"
+          className="button-queimando-panela button-primary-queimando-panela mt-6"
         >
-          Ver receita{' '}
-          <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+          Ver receita
+          <ArrowRight className="size-4" aria-hidden />
         </Link>
       </div>
     </div>

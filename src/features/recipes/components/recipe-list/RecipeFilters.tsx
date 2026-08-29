@@ -97,8 +97,15 @@ function clearFilters(base: URLSearchParams) {
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="h-1 w-6 bg-[#ffb900]" aria-hidden />
-      <p className="font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+      <span
+        className="h-1 w-6"
+        style={{ background: 'var(--accent-e)' }}
+        aria-hidden
+      />
+      <p
+        className="text-[0.78rem] font-bold uppercase"
+        style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+      >
         {children}
       </p>
     </div>
@@ -109,24 +116,29 @@ function ChipLink({
   href,
   active,
   children,
-  activeClassName = 'border-[#0a0a0a] bg-[#0a0a0a] text-white',
-  inactiveClassName = 'border-[#e5e5e5] bg-white text-[#0a0a0a] hover:border-[#0a0a0a] hover:bg-[#f5f5f5]',
 }: {
   href: string;
   active: boolean;
   children: React.ReactNode;
-  activeClassName?: string;
-  inactiveClassName?: string;
 }) {
+  const activeStyle = {
+    background: 'var(--forest)',
+    color: 'white',
+    borderColor: 'var(--forest)',
+  } as const;
+  const inactiveStyle = {
+    background: 'white',
+    color: 'var(--forest)',
+    borderColor: 'var(--line)',
+  } as const;
+
   return (
     <Link
       href={href}
-      className={[
-        'rounded-full border px-3 py-1.5 font-display text-xs font-bold uppercase tracking-[0.08em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb900]',
-        active ? activeClassName : inactiveClassName,
-      ].join(' ')}
+      className="rounded-full border px-3 py-1.5 text-[0.78rem] font-bold uppercase transition-colors hover:opacity-90"
+      style={active ? activeStyle : inactiveStyle}
     >
-      {children}
+      <span style={{ letterSpacing: '0.04em' }}>{children}</span>
     </Link>
   );
 }
@@ -144,7 +156,10 @@ function FilterGroup({
 }) {
   if (options.length === 0) return null;
   return (
-    <div className="space-y-3 border-t border-[#e5e5e5] pt-5">
+    <div
+      className="space-y-3 pt-5"
+      style={{ borderTop: '1px solid var(--line)' }}
+    >
       <SectionTitle>{title}</SectionTitle>
       <div className="flex flex-wrap gap-2">
         {options.map((option) => (
@@ -197,8 +212,6 @@ export function RecipeFilters({
           <ChipLink
             href={setSingleParam(baseParams, 'categoria', undefined)}
             active={!currentCategory}
-            activeClassName="border-[#0a0a0a] bg-[#0a0a0a] text-white"
-            inactiveClassName="border-[#e5e5e5] bg-white text-[#0a0a0a] hover:border-[#0a0a0a]"
           >
             Todas
           </ChipLink>
@@ -221,7 +234,10 @@ export function RecipeFilters({
         getHref={(value) => toggleMultiParam(baseParams, 'ingrediente', value)}
       />
 
-      <div className="space-y-3 border-t border-[#e5e5e5] pt-5">
+      <div
+        className="space-y-3 pt-5"
+        style={{ borderTop: '1px solid var(--line)' }}
+      >
         <SectionTitle>Dificuldade</SectionTitle>
         <div className="flex flex-wrap gap-2">
           {difficultyOptions.map((item) => {
@@ -238,8 +254,6 @@ export function RecipeFilters({
                   item.value || undefined,
                 )}
                 active={active}
-                activeClassName="border-[#0a0a0a] bg-[#0a0a0a] text-white"
-                inactiveClassName="border-[#e5e5e5] bg-white text-[#0a0a0a] hover:border-[#0a0a0a] hover:bg-[#f5f5f5]"
               >
                 {item.label}
               </ChipLink>
@@ -263,10 +277,15 @@ export function RecipeFilters({
       />
 
       {hasActiveFilters && (
-        <div className="border-t border-[#e5e5e5] pt-5">
+        <div className="pt-5" style={{ borderTop: '1px solid var(--line)' }}>
           <Link
             href={clearFilters(baseParams)}
-            className="inline-flex rounded-full border border-[#e5e5e5] bg-white px-4 py-2 font-display text-xs font-bold uppercase tracking-[0.12em] text-[#0a0a0a] transition-colors hover:border-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0a0a0a]"
+            className="inline-flex rounded-full bg-white px-4 py-2 text-[0.78rem] font-bold uppercase transition-colors hover:text-white"
+            style={{
+              border: '1px solid var(--line)',
+              color: 'var(--forest)',
+              letterSpacing: '0.04em',
+            }}
           >
             Limpar filtros
           </Link>

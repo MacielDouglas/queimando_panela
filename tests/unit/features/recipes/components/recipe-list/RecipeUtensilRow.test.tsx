@@ -57,7 +57,7 @@ describe('RecipeUtensilRow', () => {
     expect(screen.getByRole('heading', { name: 'Forma' })).toBeInTheDocument();
     expect(screen.getByText('Utensílio')).toBeInTheDocument();
 
-    const link = screen.getByRole('link', { name: /Ver todas →/i });
+    const link = screen.getByRole('link', { name: /Ver todas/i });
     expect(link).toHaveAttribute('href', '/receitas?utensilio=Forma');
 
     expect(screen.getAllByTestId('recipe-card')).toHaveLength(2);
@@ -80,7 +80,7 @@ describe('RecipeUtensilRow', () => {
   it('codifica o nome do utensílio na url do link', () => {
     render(<RecipeUtensilRow utensilName="Air Fryer" recipes={recipes} />);
 
-    const link = screen.getByRole('link', { name: /Ver todas →/i });
+    const link = screen.getByRole('link', { name: /Ver todas/i });
     expect(link).toHaveAttribute('href', '/receitas?utensilio=Air%20Fryer');
   });
 });

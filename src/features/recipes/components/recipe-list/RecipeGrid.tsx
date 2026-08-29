@@ -75,7 +75,15 @@ function PaginationLink({
 }) {
   if (disabled) {
     return (
-      <span className="rounded-full border border-[#e5e5e5] bg-[#f5f5f5] px-4 py-2 font-display text-xs font-bold uppercase tracking-[0.12em] text-[#6b6b6b]">
+      <span
+        className="rounded-full px-4 py-2 text-[0.78rem] font-bold uppercase"
+        style={{
+          border: '1px solid var(--line)',
+          background: 'var(--muted)',
+          color: 'var(--ink-muted)',
+          letterSpacing: '0.08em',
+        }}
+      >
         {label}
       </span>
     );
@@ -92,7 +100,12 @@ function PaginationLink({
   return (
     <Link
       href={href}
-      className="rounded-full border border-[#0a0a0a] bg-white px-4 py-2 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] transition-colors hover:bg-[#0a0a0a] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb900]"
+      className="rounded-full bg-white px-4 py-2 text-[0.78rem] font-bold uppercase transition-colors hover:text-white"
+      style={{
+        border: '1px solid var(--forest)',
+        color: 'var(--forest)',
+        letterSpacing: '0.08em',
+      }}
     >
       {label}
     </Link>
@@ -113,19 +126,39 @@ export function RecipeGrid({
 }: Props) {
   return (
     <section>
-      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#e5e5e5] pb-6">
+      <div
+        className="flex flex-wrap items-end justify-between gap-4 pb-6"
+        style={{ borderBottom: '1px solid var(--line)' }}
+      >
         <div className="max-w-[60ch]">
           <div className="flex items-center gap-2">
-            <span className="h-1 w-8 bg-[#ffb900]" aria-hidden />
-            <p className="font-display text-xs font-bold uppercase tracking-[0.14em] text-[#6b6b6b]">
+            <span
+              className="h-1 w-8"
+              style={{ background: 'var(--accent-e)' }}
+              aria-hidden
+            />
+            <p
+              className="text-[0.78rem] font-bold uppercase"
+              style={{ color: 'var(--ink-muted)', letterSpacing: '0.08em' }}
+            >
               Queimando Panela
             </p>
           </div>
-          <h2 className="mt-2 font-display text-xl font-extrabold uppercase leading-none tracking-[-0.015em] text-[#0a0a0a] sm:text-2xl text-wrap-balance">
+          <h2
+            className="mt-2 font-display text-xl font-extrabold leading-none tracking-[-0.015em] text-balance sm:text-2xl"
+            style={{ color: 'var(--forest)' }}
+          >
             {q ? `Resultados para "${q}"` : 'Todas as receitas'}
           </h2>
         </div>
-        <p className="shrink-0 rounded-full border border-[#e5e5e5] bg-white px-3.5 py-1.5 font-display text-xs font-bold uppercase tracking-[0.12em] text-[#0a0a0a]">
+        <p
+          className="shrink-0 rounded-full bg-white px-3.5 py-1.5 text-[0.78rem] font-bold uppercase"
+          style={{
+            border: '1px solid var(--line)',
+            color: 'var(--forest)',
+            letterSpacing: '0.08em',
+          }}
+        >
           {total === 0
             ? 'Nenhuma'
             : total === 1
@@ -135,21 +168,37 @@ export function RecipeGrid({
       </div>
 
       {recipes.length === 0 ? (
-        <div className="mt-6 rounded-[12px] border border-[#e5e5e5] bg-[#f5f5f5] px-6 py-12 text-center">
-          <p className="mx-auto grid size-10 place-items-center rounded-full bg-white font-display text-xs font-extrabold text-[#0a0a0a] ring-1 ring-[#e5e5e5]">
+        <div
+          className="mt-6 px-6 py-12 text-center"
+          style={{
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--line)',
+            background: 'var(--muted)',
+          }}
+        >
+          <p
+            className="mx-auto grid size-10 place-items-center rounded-full bg-white text-xs font-extrabold"
+            style={{ color: 'var(--forest)', border: '1px solid var(--line)' }}
+          >
             Ø
           </p>
-          <p className="mt-3 font-display text-sm font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
+          <p
+            className="mt-3 text-sm font-extrabold uppercase"
+            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+          >
             Nenhuma receita encontrada
           </p>
-          <p className="mx-auto mt-2 max-w-[42ch] font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
+          <p
+            className="mx-auto mt-2 max-w-[42ch] text-sm leading-6"
+            style={{ color: 'var(--ink-muted)', textWrap: 'pretty' }}
+          >
             Tente outro termo ou remova algum filtro — a busca é por título,
             resumo e história.
           </p>
         </div>
       ) : (
         <>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {recipes.map((recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
@@ -171,7 +220,10 @@ export function RecipeGrid({
                 utensilio={utensilio}
                 ingrediente={ingrediente}
               />
-              <span className="rounded-full bg-[#0a0a0a] px-3.5 py-2 font-display text-xs font-extrabold tracking-wide text-white">
+              <span
+                className="rounded-full px-3.5 py-2 text-[0.78rem] font-extrabold tracking-wide text-white"
+                style={{ background: 'var(--forest)' }}
+              >
                 {currentPage} / {totalPages}
               </span>
               <PaginationLink

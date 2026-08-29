@@ -1,4 +1,3 @@
-import { ChefHat, Plus } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -36,7 +35,7 @@ type Props = {
 export const metadata: Metadata = {
   title: 'Receitas — Queimando Panela',
   description:
-    'Todas as receitas Queimando Panela — quadradas, amarelas e sem frescura.',
+    'Receitas afetivas, autorais e conferidas por IA — leitura leve, foto grande e filtros que respeitam sua escolha.',
 };
 
 function getSingle(value: SearchValue) {
@@ -112,22 +111,45 @@ export default async function RecipesPage({ searchParams }: Props) {
   const totalPages = Math.max(Math.ceil(total / take), 1);
 
   return (
-    <main className="bg-white">
-      <section className="border-b border-[#e5e5e5] bg-white">
+    <main>
+      {/* Hero editorial — mesmo padrão de Home: eyebrow + title + copy + stats */}
+      <section
+        className="qp-reveal border-b bg-white"
+        style={{ borderColor: 'var(--line)' }}
+      >
         <div className="editorial-container py-12 lg:py-16">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#e5e5e5] bg-white px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a] shadow-sm">
-                <span className="grid size-6 place-items-center rounded-full bg-[#ffb900]">
-                  <ChefHat className="size-3.5" />
+              <span
+                className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[0.78rem] font-bold uppercase"
+                style={{
+                  borderColor: 'var(--line)',
+                  background: 'white',
+                  color: 'var(--forest)',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                <span
+                  className="grid size-6 place-items-center rounded-full text-[0.7rem] font-extrabold"
+                  style={{
+                    background: 'var(--accent-e)',
+                    color: 'var(--forest)',
+                  }}
+                  aria-hidden="true"
+                >
+                  QP
                 </span>
                 Queimando Panela
               </span>
               <span
-                className="hidden h-6 w-px bg-[#e5e5e5] sm:block"
+                className="hidden h-6 w-px sm:block"
+                style={{ background: 'var(--line)' }}
                 aria-hidden="true"
               />
-              <span className="hidden font-sans text-xs font-medium tracking-wide text-[#6b6b6b] sm:inline">
+              <span
+                className="hidden text-xs font-medium sm:inline"
+                style={{ color: 'var(--ink-muted)', letterSpacing: '0.04em' }}
+              >
                 {total} {total === 1 ? 'receita' : 'receitas'} • curadoria lenta
               </span>
             </div>
@@ -135,27 +157,23 @@ export default async function RecipesPage({ searchParams }: Props) {
             {session?.user && (
               <Link
                 href="/receitas/new"
-                className="inline-flex min-h-11 items-center gap-2 rounded-none border-2 border-[#0a0a0a] bg-[#0a0a0a] px-5 font-display text-xs font-extrabold uppercase tracking-[0.12em] text-white transition-colors hover:bg-white hover:text-[#0a0a0a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb900] focus-visible:ring-offset-2"
+                className="button-queimando-panela button-primary-queimando-panela"
               >
-                <Plus className="size-4" />
-                Enviar receita
+                Publicar receita
+                <span aria-hidden="true">→</span>
               </Link>
             )}
           </div>
 
-          <h1 className="mt-8 max-w-3xl font-display text-4xl font-extrabold uppercase leading-[0.9] tracking-[-0.03em] text-[#0a0a0a] sm:text-5xl text-wrap-balance">
-            Receitas para
-            <br />
-            <span className="relative inline-block">
-              <span className="relative z-10">aquecer</span>
-              <span
-                className="absolute inset-x-0 bottom-1 h-[0.45em] bg-[#ffb900]/60"
-                aria-hidden
-              />
-            </span>{' '}
+          <p className="eyebrow-queimando-panela mt-8">Receitas com história</p>
+          <h1 className="section-title-queimando-panela max-w-[20ch] text-balance">
+            Receitas para{' '}
+            <em className="not-italic" style={{ color: 'var(--forest-hover)' }}>
+              aquecer
+            </em>{' '}
             a cozinha.
           </h1>
-          <p className="mt-4 max-w-2xl font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
+          <p className="section-copy">
             Leitura leve, foto grande e filtros que respeitam sua escolha.
             Escolha categoria, dificuldade ou ingrediente — a página responde
             com calma.
@@ -163,11 +181,27 @@ export default async function RecipesPage({ searchParams }: Props) {
         </div>
       </section>
 
-      <section className="border-y border-[#e5e5e5] bg-[#f5f5f5]">
+      {/* Busca — faixa muted com mesmo ritmo da Home */}
+      <section
+        className="qp-reveal border-y"
+        style={{ borderColor: 'var(--line)', background: 'var(--muted)' }}
+      >
         <div className="editorial-container py-6">
           <div className="flex items-center gap-4">
-            <span className="hidden shrink-0 items-center gap-2 bg-white px-3 py-1.5 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a] ring-1 ring-[#e5e5e5] sm:inline-flex">
-              <span className="size-1.5 bg-[#ffb900]" aria-hidden />
+            <span
+              className="hidden shrink-0 items-center gap-2 bg-white px-3 py-1.5 text-[0.78rem] font-bold uppercase sm:inline-flex"
+              style={{
+                color: 'var(--forest)',
+                letterSpacing: '0.08em',
+                border: '1px solid var(--line)',
+                borderRadius: '999px',
+              }}
+            >
+              <span
+                className="size-1.5 rounded-full"
+                style={{ background: 'var(--accent-e)' }}
+                aria-hidden
+              />
               Busca
             </span>
             <div className="flex-1">
@@ -175,7 +209,14 @@ export default async function RecipesPage({ searchParams }: Props) {
             </div>
             <Link
               href="/receitas"
-              className="hidden min-h-11 shrink-0 items-center justify-center rounded-none border border-[#e5e5e5] bg-white px-5 font-display text-xs font-bold uppercase tracking-[0.12em] text-[#0a0a0a] transition-colors hover:border-[#0a0a0a] hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0a0a0a] sm:inline-flex"
+              className="hidden min-h-11 shrink-0 items-center justify-center px-5 text-[0.78rem] font-bold uppercase sm:inline-flex"
+              style={{
+                color: 'var(--forest)',
+                letterSpacing: '0.08em',
+                border: '1px solid var(--line)',
+                background: 'white',
+                borderRadius: '999px',
+              }}
             >
               Limpar
             </Link>
@@ -187,53 +228,80 @@ export default async function RecipesPage({ searchParams }: Props) {
         <div className="grid gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
           <div className="min-w-0 space-y-10">
             {!isFiltered && latest && (
-              <section className="overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white p-2 shadow-sm">
+              <section
+                className="qp-reveal overflow-hidden bg-white"
+                style={{
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--line)',
+                  boxShadow: '0 10px 30px rgba(24, 58, 55, 0.06)',
+                }}
+              >
                 <RecipeHeroFeatured recipe={latest} />
               </section>
             )}
 
             {!isFiltered &&
               categoryRows.map((row) => (
-                <RecipeCategoryRow
-                  key={row.type}
-                  type={row.type}
-                  recipes={row.recipes}
-                />
+                <div key={row.type} className="qp-reveal">
+                  <RecipeCategoryRow type={row.type} recipes={row.recipes} />
+                </div>
               ))}
 
             {!isFiltered &&
               utensilRows.map((row) => (
-                <RecipeUtensilRow
-                  key={row.utensilName}
-                  utensilName={row.utensilName}
-                  recipes={row.recipes}
-                />
+                <div key={row.utensilName} className="qp-reveal">
+                  <RecipeUtensilRow
+                    utensilName={row.utensilName}
+                    recipes={row.recipes}
+                  />
+                </div>
               ))}
 
-            <RecipeGrid
-              recipes={recipes}
-              total={total}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              q={query}
-              categoria={category}
-              tipo={types}
-              dificuldade={difficulty}
-              utensilio={utensils}
-              ingrediente={ingredients}
-            />
+            <div className="qp-reveal">
+              <RecipeGrid
+                recipes={recipes}
+                total={total}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                q={query}
+                categoria={category}
+                tipo={types}
+                dificuldade={difficulty}
+                utensilio={utensils}
+                ingrediente={ingredients}
+              />
+            </div>
           </div>
 
-          <aside className="lg:sticky lg:top-[76px] space-y-4">
-            <div className="overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white">
-              <div className="border-b border-[#e5e5e5] bg-white px-5 py-4">
+          <aside className="space-y-4 lg:sticky lg:top-[96px]">
+            <div
+              className="qp-reveal overflow-hidden bg-white"
+              style={{
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--line)',
+              }}
+            >
+              <div
+                className="bg-white px-5 py-4"
+                style={{ borderBottom: '1px solid var(--line)' }}
+              >
                 <div className="flex items-center gap-2">
-                  <span className="h-1 w-8 bg-[#ffb900]" aria-hidden />
-                  <p className="font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
+                  <span
+                    className="h-1 w-8"
+                    style={{ background: 'var(--accent-e)' }}
+                    aria-hidden
+                  />
+                  <p
+                    className="text-[0.78rem] font-bold uppercase"
+                    style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+                  >
                     Filtros
                   </p>
                 </div>
-                <p className="mt-2 font-sans text-xs leading-5 text-[#6b6b6b]">
+                <p
+                  className="mt-2 text-xs leading-5"
+                  style={{ color: 'var(--ink-muted)' }}
+                >
                   Combine categoria, dificuldade e ingredientes com calma.
                 </p>
               </div>
@@ -253,11 +321,24 @@ export default async function RecipesPage({ searchParams }: Props) {
               </div>
             </div>
 
-            <div className="rounded-[12px] border border-[#e5e5e5] bg-[#f5f5f5] p-5">
-              <p className="font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
+            <div
+              className="qp-reveal p-5"
+              style={{
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--line)',
+                background: 'var(--muted)',
+              }}
+            >
+              <p
+                className="text-[0.78rem] font-bold uppercase"
+                style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
+              >
                 Dica
               </p>
-              <p className="mt-2 font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
+              <p
+                className="mt-2 text-sm leading-6"
+                style={{ color: 'var(--ink-muted)', textWrap: 'pretty' }}
+              >
                 O chip amarelo indica filtro ativo. Clique novamente para
                 remover — a página recarrega leve, sem pular.
               </p>

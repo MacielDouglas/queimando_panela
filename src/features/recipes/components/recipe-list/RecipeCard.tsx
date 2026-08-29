@@ -14,14 +14,23 @@ export function RecipeCard({ recipe }: Props) {
     (recipe.prepTimeMinutes ?? 0) + (recipe.cookTimeMinutes ?? 0) || null;
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-white transition-colors hover:border-[#0a0a0a]">
+    <article
+      className="qp-card-delight flex h-full flex-col overflow-hidden bg-white"
+      style={{
+        borderRadius: 'var(--radius-md)',
+        border: '1px solid var(--line)',
+      }}
+    >
       <Link
         href={`/receitas/${recipe.slug}`}
         aria-label={`Ver receita: ${recipe.title}`}
         className="group relative flex h-full w-full flex-col bg-white"
         tabIndex={-1}
       >
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#f5f5f5]">
+        <div
+          className="relative aspect-[4/3] w-full overflow-hidden"
+          style={{ background: 'var(--muted)' }}
+        >
           {recipe.coverUrl ? (
             <Image
               src={recipe.coverUrl}
@@ -31,41 +40,75 @@ export function RecipeCard({ recipe }: Props) {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           ) : (
-            <div className="flex h-full items-center justify-center bg-[#f5f5f5]">
-              <span className="border border-[#e5e5e5] bg-white px-2 py-1 font-display text-xs font-bold uppercase tracking-[0.12em] text-[#0a0a0a]">
+            <div
+              className="flex h-full items-center justify-center"
+              style={{ background: 'var(--muted)' }}
+            >
+              <span
+                className="bg-white px-2 py-1 text-[0.78rem] font-bold uppercase"
+                style={{
+                  color: 'var(--forest)',
+                  letterSpacing: '0.08em',
+                  border: '1px solid var(--line)',
+                  borderRadius: '999px',
+                }}
+              >
                 Sem foto
               </span>
             </div>
           )}
           <span
-            className="absolute top-0 left-0 h-1 w-full bg-[#ffb900]"
+            className="absolute left-0 top-0 h-1 w-full"
+            style={{ background: 'var(--accent-e)' }}
             aria-hidden="true"
           />
           {recipe.types[0] && (
-            <span className="absolute left-3 top-3 bg-[#ffb900] px-2 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
+            <span
+              className="absolute left-3 top-3 rounded-full px-2 py-1 text-[10px] font-extrabold uppercase"
+              style={{
+                background: 'var(--accent-e)',
+                color: 'var(--forest)',
+                letterSpacing: '0.08em',
+              }}
+            >
               {recipe.types[0]}
             </span>
           )}
         </div>
 
         <div className="flex flex-1 flex-col gap-3 p-4">
-          <h3 className="line-clamp-2 font-display text-sm font-bold uppercase leading-tight tracking-[-0.01em] text-[#0a0a0a] text-wrap-balance">
+          <h3
+            className="line-clamp-2 font-display text-sm font-bold leading-tight tracking-[-0.01em] text-balance"
+            style={{ color: 'var(--forest)' }}
+          >
             {recipe.title}
           </h3>
           {recipe.summary && (
-            <p className="line-clamp-2 font-sans text-sm leading-6 text-[#6b6b6b] text-wrap-pretty">
+            <p
+              className="line-clamp-2 text-sm leading-6"
+              style={{ color: 'var(--ink-muted)', textWrap: 'pretty' }}
+            >
               {recipe.summary}
             </p>
           )}
-          <div className="mt-auto flex items-center gap-3 border-t border-[#e5e5e5] pt-3 font-sans text-xs text-[#6b6b6b]">
+          <div
+            className="mt-auto flex items-center gap-3 border-t pt-3 text-xs"
+            style={{ color: 'var(--ink-muted)', borderColor: 'var(--line)' }}
+          >
             {totalTime && (
               <span className="inline-flex items-center gap-1">
-                <Clock3 className="size-3.5 text-[#0a0a0a]" />
+                <Clock3
+                  className="size-3.5"
+                  style={{ color: 'var(--forest)' }}
+                />
                 {totalTime} min
               </span>
             )}
             <span className="inline-flex items-center gap-1">
-              <Flame className="size-3.5 text-[#ffb900]" />
+              <Flame
+                className="size-3.5"
+                style={{ color: 'var(--accent-e)' }}
+              />
               {difficultyLabel[recipe.difficulty]}
             </span>
           </div>
