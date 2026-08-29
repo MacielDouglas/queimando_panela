@@ -14,7 +14,7 @@ interface RecipesSectionProps {
 export function RecipesSection({ rows }: RecipesSectionProps) {
   if (rows.length === 0) {
     return (
-      <section className="py-24 lg:py-28">
+      <section className="qp-reveal py-24 lg:py-28">
         <div className="editorial-container">
           <div className="text-center">
             <p className="eyebrow-queimando-panela mx-auto">Inspire-se</p>
@@ -39,7 +39,7 @@ export function RecipesSection({ rows }: RecipesSectionProps) {
   }
 
   return (
-    <section className="py-24 lg:py-28">
+    <section className="qp-reveal py-24 lg:py-28">
       <div className="editorial-container">
         <h2 className="section-title-queimando-panela">
           Receitas para compartilhar sem pressa.

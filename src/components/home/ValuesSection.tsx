@@ -19,7 +19,7 @@ const values = [
 export function ValuesSection() {
   return (
     <section
-      className="py-[120px]"
+      className="qp-reveal py-[120px]"
       style={{ background: 'var(--forest)', color: 'white' }}
     >
       <div className="editorial-container">

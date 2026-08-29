@@ -31,7 +31,7 @@ const categories = [
 
 export function CategoriesSection() {
   return (
-    <section className="py-24 lg:py-28">
+    <section className="qp-reveal py-24 lg:py-28">
       <div className="editorial-container">
         <div className="flex items-end justify-between gap-8">
           <div>

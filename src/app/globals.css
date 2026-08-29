@@ -366,4 +366,72 @@
     transform: translateY(-3px);
     box-shadow: 0 16px 36px rgba(24, 58, 55, 0.1);
   }
+
+  /* ──────────── OVERDRIVE: Scroll cinemático ──────────── */
+  .qp-scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    height: 2px;
+    width: 100%;
+    background: var(--accent-e);
+    transform-origin: left;
+    transform: scaleX(0);
+    pointer-events: none;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .qp-scroll-progress {
+      animation: qp-progress linear both;
+      animation-timeline: scroll(root);
+    }
+
+    .qp-parallax {
+      will-change: transform;
+      animation: qp-parallax linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 800px;
+    }
+
+    .qp-reveal {
+      animation: qp-reveal 0.7s cubic-bezier(0.25, 1, 0.5, 1) both;
+      animation-timeline: view();
+      animation-range: entry 12% cover 28%;
+    }
+
+    .qp-reveal-delay-1 {
+      animation-delay: 0.06s;
+    }
+
+    .qp-reveal-delay-2 {
+      animation-delay: 0.12s;
+    }
+  }
+
+  @keyframes qp-progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes qp-parallax {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-28px);
+    }
+  }
+
+  @keyframes qp-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }

@@ -2,7 +2,10 @@ import Image from 'next/image';
 
 export function IntroSection() {
   return (
-    <section className="py-24 lg:py-28" style={{ background: 'var(--cream)' }}>
+    <section
+      className="qp-reveal py-24 lg:py-28"
+      style={{ background: 'var(--cream)' }}
+    >
       <div className="editorial-container">
         <div className="grid items-center gap-[clamp(38px,9vw,120px)] lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative">

@@ -15,7 +15,7 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
   if (recipes.length === 0) {
     return (
       <section
-        className="py-24 lg:py-28"
+        className="qp-reveal py-24 lg:py-28"
         style={{ background: 'var(--cream)' }}
       >
         <div className="editorial-container">
@@ -47,7 +47,10 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
   const recipe = visible[currentRecipe] ?? visible[0];
 
   return (
-    <section className="py-24 lg:py-28" style={{ background: 'var(--cream)' }}>
+    <section
+      className="qp-reveal py-24 lg:py-28"
+      style={{ background: 'var(--cream)' }}
+    >
       <div className="editorial-container">
         <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
           <div className="max-w-[520px]">

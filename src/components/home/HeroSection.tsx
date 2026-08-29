@@ -87,7 +87,7 @@ export function HeroSection() {
 
         <div className="relative hidden min-h-[580px] lg:block">
           <div
-            className="absolute inset-0 overflow-hidden"
+            className="qp-parallax absolute inset-0 overflow-hidden"
             style={{
               borderRadius: '46% 46% 22px 22px',
               background: '#d9dfc9',

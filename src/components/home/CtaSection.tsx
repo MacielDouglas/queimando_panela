@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export function CtaSection() {
   return (
-    <section className="pb-24 lg:pb-28">
+    <section className="qp-reveal pb-24 lg:pb-28">
       <div className="editorial-container">
         <div
           className="grid items-center overflow-hidden lg:grid-cols-[1.15fr_0.85fr]"
