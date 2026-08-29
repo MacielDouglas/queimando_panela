@@ -70,7 +70,12 @@ vi.mock('@/features/recipes/actions/get-random-recipe', () => ({
 describe('Home', () => {
   it('renderiza o título principal "Queimando Panela"', async () => {
     render(await Home());
-    expect(screen.getAllByText(/Queimando Panela/i).length).toBeGreaterThan(0);
+    // Hero atual tem título editorial "Receitas caseiras que são memória." — verifica heading principal
+    expect(
+      screen.getByRole('heading', {
+        name: /Receitas caseiras que são.*memória/i,
+      }),
+    ).toBeInTheDocument();
   });
 
   it('renderiza o subtítulo convidando a ver receitas', async () => {
