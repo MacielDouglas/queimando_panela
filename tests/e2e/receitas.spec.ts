@@ -63,7 +63,9 @@ test.describe('Queimando Panela — E2E', () => {
 
     await expect(page.getByText(/queimando panela/i).first()).toBeVisible();
     await expect(
-      page.getByRole('link', { name: /ver receitas/i }).first(),
+      page
+        .getByRole('link', { name: /publicar receita|explorar receitas/i })
+        .first(),
     ).toBeVisible();
 
     await expect(page.getByRole('contentinfo')).toBeVisible();
