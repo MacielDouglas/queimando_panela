@@ -27,7 +27,10 @@ export default function Footer() {
   return (
     <footer
       className="border-t"
-      style={{ background: '#102c2a', borderColor: 'rgba(255,255,255,0.1)' }}
+      style={{
+        background: 'var(--forest-dark, #102c2a)',
+        borderColor: 'rgba(255,255,255,0.1)',
+      }}
     >
       <div className="editorial-container py-16 lg:py-14">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(3,0.65fr)]">
@@ -126,14 +129,28 @@ export default function Footer() {
         </div>
 
         <div
-          className="mt-12 flex flex-col justify-between gap-5 border-t pt-6 text-[0.8rem]"
+          className="mt-12 flex flex-col justify-between gap-5 border-t pt-6 text-[0.8rem] sm:flex-row"
           style={{
             borderColor: 'rgba(255,255,255,0.16)',
             color: 'rgba(255,255,255,0.72)',
           }}
         >
           <span>© 2026 Queimando Panela. Todos os direitos reservados.</span>
-          <span>Política de privacidade · Termos de uso</span>
+          <span className="flex items-center gap-2">
+            <Link
+              href="/termos"
+              className="transition-colors hover:text-[var(--accent-e)]"
+            >
+              Política de privacidade
+            </Link>
+            <span aria-hidden="true">·</span>
+            <Link
+              href="/termos"
+              className="transition-colors hover:text-[var(--accent-e)]"
+            >
+              Termos de uso
+            </Link>
+          </span>
         </div>
       </div>
     </footer>

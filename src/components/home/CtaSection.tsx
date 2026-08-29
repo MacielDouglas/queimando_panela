@@ -17,24 +17,24 @@ export function CtaSection() {
               className="max-w-[630px] font-display text-[clamp(2.25rem,4.6vw,4rem)] font-bold leading-none tracking-[-0.05em]"
               style={{ color: 'var(--forest)' }}
             >
-              Todo encontro merece um sabor especial.
+              Sua receita merece ir ao ar com confiança.
             </h2>
             <p
               className="mt-5 max-w-[520px]"
               style={{ color: 'rgba(31, 41, 51, 0.78)' }}
             >
-              Conheça produtos e inspirações para levar mais sabor à rotina, às
-              receitas e às pessoas que você gosta.
+              Publique em 3 minutos: escreva como faz em casa, a IA confere
+              utensílios, nutrição, tempo e categoria. Você revisa e publica.
             </p>
             <Link
-              href="/receitas"
-              className="button-epirus mt-8 inline-flex"
+              href="/receitas/new"
+              className="button-queimando-panela mt-8 inline-flex"
               style={{
                 background: 'var(--forest)',
                 color: 'white',
               }}
             >
-              Encontre nossos produtos
+              Publicar minha receita
               <span aria-hidden="true">→</span>
             </Link>
           </div>

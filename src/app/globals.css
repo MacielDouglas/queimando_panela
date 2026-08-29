@@ -38,7 +38,7 @@
 }
 
 :root {
-  /* Queimando Panela — Estilo Epirus: floresta + amarelo + creme */
+  /* Queimando Panela — floresta + amarelo + creme */
   --background: #fffdf7;
   --foreground: #1f2933;
 
@@ -79,13 +79,14 @@
   --leading-heading: 1.15;
   --leading-body: 1.6;
 
-  /* Tokens Epirus */
+  /* Tokens Queimando Panela */
   --accent-e: #ffc733;
   --accent-hover: #eeb214;
   --ink: #1f2933;
   --ink-muted: #52606d;
   --forest: #183a37;
   --forest-hover: #2f5d50;
+  --forest-dark: #102c2a;
   --cream: #fffdf7;
   --line: #e8e1d5;
   --shadow: 0 20px 50px rgba(24, 58, 55, 0.1);
@@ -187,6 +188,20 @@
     outline: 2px solid var(--forest);
     outline-offset: 2px;
   }
+
+  footer :focus-visible {
+    outline-color: var(--accent-e);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms;
+      transition-duration: 0.01ms;
+      scroll-behavior: auto;
+    }
+  }
 }
 
 @layer utilities {
@@ -220,7 +235,7 @@
     content: "";
   }
 
-  .section-title-epirus {
+  .section-title-queimando-panela {
     max-width: 760px;
     margin: 0;
     color: var(--forest);
@@ -237,7 +252,7 @@
     font-size: 1.05rem;
   }
 
-  .button-epirus {
+  .button-queimando-panela {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -254,32 +269,32 @@
       border-color 180ms ease;
   }
 
-  .button-epirus:hover {
+  .button-queimando-panela:hover {
     transform: translateY(-2px);
   }
 
-  .button-primary-epirus {
+  .button-primary-queimando-panela {
     background: var(--accent-e);
     color: var(--ink);
   }
 
-  .button-primary-epirus:hover {
+  .button-primary-queimando-panela:hover {
     background: var(--accent-hover);
   }
 
-  .button-outline-epirus {
+  .button-outline-queimando-panela {
     border-color: var(--forest);
     color: var(--forest);
     background: transparent;
   }
 
-  .button-outline-epirus:hover {
+  .button-outline-queimando-panela:hover {
     border-color: var(--accent-e);
     background: var(--accent-e);
     color: var(--ink);
   }
 
-  .text-link-epirus {
+  .text-link-queimando-panela {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -289,16 +304,16 @@
     transition: color 180ms ease;
   }
 
-  .text-link-epirus::after {
+  .text-link-queimando-panela::after {
     content: "\2192";
     transition: transform 180ms ease;
   }
 
-  .text-link-epirus:hover::after {
+  .text-link-queimando-panela:hover::after {
     transform: translateX(4px);
   }
 
-  .text-link-epirus:hover {
+  .text-link-queimando-panela:hover {
     color: var(--forest-hover);
   }
 }

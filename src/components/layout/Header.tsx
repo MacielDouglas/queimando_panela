@@ -13,6 +13,7 @@ export default function Header() {
       style={{
         borderColor: 'rgba(232, 225, 213, 0.72)',
         background: 'rgba(255, 253, 247, 0.9)',
+        boxShadow: '0 1px 12px rgba(24, 58, 55, 0.06)',
       }}
     >
       <div className="editorial-container flex min-h-[78px] items-center justify-between gap-6">

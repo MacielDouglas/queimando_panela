@@ -40,7 +40,12 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
       <div
         className={cn('h-[42px] w-28 animate-pulse', className)}
         style={{ background: 'var(--line)' }}
-      />
+        aria-busy="true"
+        aria-live="polite"
+        role="status"
+      >
+        <span className="sr-only">Carregando sessão</span>
+      </div>
     );
   }
 
@@ -70,7 +75,7 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
       asChild
       onClick={onNavigate}
       className={cn(
-        'button-epirus button-primary-epirus h-[42px] px-[17px] text-[0.88rem]',
+        'button-queimando-panela button-primary-queimando-panela h-[42px] px-[17px] text-[0.88rem]',
         className,
       )}
     >

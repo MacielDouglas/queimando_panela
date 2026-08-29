@@ -5,22 +5,21 @@ const categories = [
   {
     name: 'Prato principal',
     description:
-      'Texturas, aromas e intensidades para transformar qualquer ocasião.',
+      'Arroz, feijoada, moqueca — pratos que sustentam a mesa e a conversa.',
     image:
       'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=900&q=80',
     href: '/receitas?categoria=Prato%20principal',
   },
   {
     name: 'Sobremesa',
-    description:
-      'Leves, cremosas e perfeitas para criar combinações surpreendentes.',
+    description: 'Bolo, pudim, doce de avó — finais doces que viram história.',
     image:
       'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=80',
     href: '/receitas?categoria=Sobremesa',
   },
   {
     name: 'Café da manhã',
-    description: 'Ingredientes versáteis para dar mais sabor ao seu dia.',
+    description: 'Pão, tapioca, café passado — começos que dão energia ao dia.',
     image:
       'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80',
     href: '/receitas?categoria=Caf%C3%A9%20da%20manh%C3%A3',
@@ -29,18 +28,17 @@ const categories = [
 
 export function CategoriesSection() {
   return (
-    <section className="py-[116px]">
+    <section className="py-29">
       <div className="editorial-container">
         <div className="flex items-end justify-between gap-8">
           <div>
-            <p className="eyebrow-queimando-panela">Para todos os momentos</p>
-            <h2 className="section-title-epirus">
+            <h2 className="section-title-queimando-panela">
               Sabores que inspiram a sua próxima receita.
             </h2>
           </div>
         </div>
 
-        <div className="mt-[52px] grid gap-[22px] md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-13 grid gap-5.5 md:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
             <article
               key={category.name}
@@ -77,9 +75,9 @@ export function CategoriesSection() {
                 </p>
                 <Link
                   href={category.href}
-                  className="text-link-epirus mt-5 inline-flex"
+                  className="text-link-queimando-panela mt-5 inline-flex"
                 >
-                  Descobrir sabores
+                  Ver receitas
                 </Link>
               </div>
             </article>

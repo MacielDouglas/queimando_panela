@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export function IntroSection() {
   return (
-    <section className="py-[110px]" style={{ background: 'var(--white)' }}>
+    <section className="py-[110px]" style={{ background: 'var(--cream)' }}>
       <div className="editorial-container">
         <div className="grid items-center gap-[clamp(38px,9vw,120px)] lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative">
@@ -10,7 +10,7 @@ export function IntroSection() {
               className="relative overflow-hidden"
               style={{ borderRadius: 'var(--radius-lg)' }}
             >
-              <div className="relative aspect-[1/1.06] overflow-hidden bg-[#f5f0e8]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#f5f0e8] lg:aspect-[1/1.06]">
                 <Image
                   src="https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&w=1000&q=85"
                   alt="Queijos artesanais, ervas e ingredientes naturais"
@@ -21,7 +21,7 @@ export function IntroSection() {
               </div>
             </div>
             <div
-              className="absolute bottom-[34px] right-[-28px] max-w-[230px] p-5"
+              className="relative mt-4 max-w-[230px] p-5 lg:absolute lg:bottom-[34px] lg:right-[-28px] lg:mt-0"
               style={{
                 borderRadius: '14px',
                 background: 'var(--forest)',
@@ -45,17 +45,16 @@ export function IntroSection() {
           </div>
 
           <div className="max-w-[520px]">
-            <p className="eyebrow-queimando-panela">Queimando Panela</p>
-            <h2 className="section-title-epirus">
-              Descubra os segredos da cozinha caseira.
+            <h2 className="section-title-queimando-panela">
+              Cozinha caseira, com medida de olhômetro e de grama.
             </h2>
             <p className="section-copy">
-              Escondidos nos sabores mais genuínos, nas receitas que passam de
-              geração em geração. Cada prato carrega uma história, cada tempero
-              uma memória
+              Cada receita carrega quem fez, de onde veio e como acertar de
+              primeira — com ajuda da IA que sugere utensílios, calcula nutrição
+              e estima tempo.
             </p>
             <p className="section-copy">
-              Receitas testadas na cozinha de casa.
+              Testada na cozinha de casa, publicada com confiança.
             </p>
           </div>
         </div>

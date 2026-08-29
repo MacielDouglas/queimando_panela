@@ -1,17 +1,14 @@
 const values = [
   {
-    number: '01',
     title: 'Receitas de família',
     description:
       'Pratos que passam de geração em geração, guardando memórias e sabores.',
   },
   {
-    number: '02',
     title: 'Tradição viva',
     description: 'Cada receita é um pedaço de história que merece ser contada.',
   },
   {
-    number: '03',
     title: 'Gastronomia acessível',
     description:
       'Criamos soluções versáteis para transformar o cotidiano em uma experiência mais saborosa.',
@@ -56,16 +53,10 @@ export function ValuesSection() {
           >
             {values.map((value) => (
               <article
-                key={value.number}
-                className="grid grid-cols-[56px_1fr] gap-[18px] border-b py-[25px]"
+                key={value.title}
+                className="grid grid-cols-[1fr] gap-[6px] border-b py-[25px]"
                 style={{ borderColor: 'rgba(255,255,255,0.2)' }}
               >
-                <span
-                  className="font-display text-[1.65rem] font-bold"
-                  style={{ color: 'var(--accent-e)' }}
-                >
-                  {value.number}
-                </span>
                 <div>
                   <h3
                     className="text-[1.05rem] font-semibold"

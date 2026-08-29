@@ -14,11 +14,12 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
 
   if (recipes.length === 0) {
     return (
-      <section className="py-[112px]" style={{ background: 'var(--white)' }}>
+      <section className="py-[112px]" style={{ background: 'var(--cream)' }}>
         <div className="editorial-container">
           <div className="text-center">
-            <p className="eyebrow-queimando-panela">Últimas receitas</p>
-            <h2 className="section-title-epirus mx-auto">Saiu do forno</h2>
+            <h2 className="section-title-queimando-panela mx-auto">
+              Saiu do forno
+            </h2>
             <p className="section-copy mx-auto">
               Quando a primeira receita for publicada, ela aparece aqui com foto
               grande e leitura leve.
@@ -33,12 +34,11 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
   const recipe = visible[currentRecipe] ?? visible[0];
 
   return (
-    <section className="py-[112px]" style={{ background: 'var(--white)' }}>
+    <section className="py-[112px]" style={{ background: 'var(--cream)' }}>
       <div className="editorial-container">
         <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="max-w-[520px]">
-            <p className="eyebrow-queimando-panela">Últimas receitas</p>
-            <h2 className="section-title-epirus">
+            <h2 className="section-title-queimando-panela">
               O que acabou de sair do forno
             </h2>
             <p
@@ -48,7 +48,7 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
               Leitura leve, foto grande, foco no que importa — sem ruído.
             </p>
             <div className="mt-8 flex items-center gap-6">
-              <Link href="/receitas" className="text-link-epirus">
+              <Link href="/receitas" className="text-link-queimando-panela">
                 Ver todas
               </Link>
             </div>
@@ -128,22 +128,37 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
             </Link>
 
             <div className="mt-6 flex items-center justify-between">
-              <div className="flex gap-2">
-                {visible.map((_, index) => (
+              <div
+                className="flex gap-1"
+                role="tablist"
+                aria-label="Navegação de receitas"
+              >
+                {visible.map((r, index) => (
                   <button
-                    key={visible[index].id}
+                    key={r.id}
                     type="button"
+                    role="tab"
+                    aria-selected={index === currentRecipe}
+                    aria-label={`Receita ${index + 1} de ${visible.length}: ${r.title}`}
                     onClick={() => setCurrentRecipe(index)}
-                    className="h-1 transition-all"
+                    className="flex items-center justify-center transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent-e)] focus-visible:outline-offset-2"
                     style={{
-                      width: index === currentRecipe ? '32px' : '16px',
-                      background:
-                        index === currentRecipe
-                          ? 'var(--accent-e)'
-                          : 'var(--line)',
+                      minWidth: '44px',
+                      minHeight: '44px',
+                      padding: '0 6px',
                     }}
-                    aria-label={`Receita ${index + 1}`}
-                  />
+                  >
+                    <span
+                      className="block h-1 transition-all"
+                      style={{
+                        width: index === currentRecipe ? '32px' : '16px',
+                        background:
+                          index === currentRecipe
+                            ? 'var(--accent-e)'
+                            : 'var(--line)',
+                      }}
+                    />
+                  </button>
                 ))}
               </div>
               <p

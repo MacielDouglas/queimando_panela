@@ -45,7 +45,9 @@ export function NavLinks({
             className={cn(
               'text-[0.92rem] font-semibold transition-colors',
               variant === 'header' && 'text-[#52606d] hover:text-[#183a37]',
-              variant === 'header' && active && 'text-[#183a37]',
+              variant === 'header' &&
+                active &&
+                'font-bold text-[#183a37] underline decoration-[var(--accent-e)] decoration-2 underline-offset-8',
               variant === 'footer' &&
                 'text-sm normal-case tracking-normal text-white/80 hover:text-[var(--accent-e)]',
               variant === 'mobile' &&

@@ -17,8 +17,7 @@ export function RecipesSection({ rows }: RecipesSectionProps) {
       <section className="py-[112px]">
         <div className="editorial-container">
           <div className="text-center">
-            <p className="eyebrow-queimando-panela">Inspire-se</p>
-            <h2 className="section-title-epirus mx-auto">
+            <h2 className="section-title-queimando-panela mx-auto">
               Receitas para compartilhar sem pressa.
             </h2>
             <p className="section-copy mx-auto">
@@ -34,8 +33,7 @@ export function RecipesSection({ rows }: RecipesSectionProps) {
   return (
     <section className="py-[112px]">
       <div className="editorial-container">
-        <p className="eyebrow-queimando-panela">Inspire-se</p>
-        <h2 className="section-title-epirus">
+        <h2 className="section-title-queimando-panela">
           Receitas para compartilhar sem pressa.
         </h2>
         <p className="section-copy">

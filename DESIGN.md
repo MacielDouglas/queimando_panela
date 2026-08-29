@@ -1,58 +1,65 @@
 ---
 name: "Queimando Panela"
-description: "Blog moderno para cozinheiros 30-55 — IA que analisa receita, leitura limpa e hierarquia forte. Light, #ffb900 restrained, Sora grotesk + Inter."
+description: "Blog acolhedor com IA co-piloto — floresta + amarelo creme, Playfair editorial + DM Sans leve, cantos suaves."
 colors:
-  background: "#FFFFFF"
-  foreground: "#0a0a0a"
-  primary: "#ffb900"
-  primary-foreground: "#0a0a0a"
-  secondary: "#f2f2f2"
-  secondary-foreground: "#0a0a0a"
-  muted: "#f5f5f5"
-  muted-foreground: "#6b6b6b"
-  accent: "#0a0a0a"
-  accent-foreground: "#FFFFFF"
-  card: "#FFFFFF"
-  card-foreground: "#0a0a0a"
-  border: "#e5e5e5"
-  input: "#0a0a0a"
-  ring: "#ffb900"
+  background: "#fffdf7"
+  foreground: "#1f2933"
+  primary: "#ffc733"
+  primary-foreground: "#1f2933"
+  secondary: "#f5f0e8"
+  secondary-foreground: "#1f2933"
+  muted: "#f5f0e8"
+  muted-foreground: "#52606d"
+  accent: "#183a37"
+  accent-foreground: "#ffffff"
+  card: "#ffffff"
+  card-foreground: "#1f2933"
+  border: "#e8e1d5"
+  input: "#1f2933"
+  ring: "#ffc733"
   destructive: "#cc1f1f"
+  forest: "#183a37"
+  forest-hover: "#2f5d50"
+  forest-dark: "#102c2a"
+  cream: "#fffdf7"
+  ink-muted: "#52606d"
+  line: "#e8e1d5"
+  sage: "#d9dfc9"
 typography:
   display:
-    fontFamily: "Sora, sans-serif"
-    fontSize: "clamp(2.4rem, 1.6rem + 3vw, 4.5rem)"
-    fontWeight: 800
-    lineHeight: 0.95
-    letterSpacing: "-0.03em"
+    fontFamily: "Playfair Display, Georgia, serif"
+    fontSize: "clamp(2.4rem, 5vw, 4.2rem)"
+    fontWeight: 700
+    lineHeight: 1.03
+    letterSpacing: "-0.045em"
   headline:
-    fontFamily: "Sora, sans-serif"
-    fontSize: "clamp(1.8rem, 1.3rem + 1.8vw, 2.8rem)"
-    fontWeight: 800
-    lineHeight: 1
-    letterSpacing: "-0.02em"
-  title:
-    fontFamily: "Sora, sans-serif"
-    fontSize: "clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem)"
+    fontFamily: "Playfair Display, Georgia, serif"
+    fontSize: "clamp(1.75rem, 1.25rem + 2vw, 2.75rem)"
     fontWeight: 700
     lineHeight: 1.15
+    letterSpacing: "-0.03em"
+  title:
+    fontFamily: "Playfair Display, Georgia, serif"
+    fontSize: "clamp(1.375rem, 1.125rem + 1vw, 1.75rem)"
+    fontWeight: 600
+    lineHeight: 1.2
     letterSpacing: "-0.01em"
   body:
-    fontFamily: "Inter, system-ui, sans-serif"
+    fontFamily: "DM Sans, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.7
+    lineHeight: 1.6
   label:
-    fontFamily: "Sora, sans-serif"
-    fontSize: "0.7rem"
-    fontWeight: 800
+    fontFamily: "DM Sans, system-ui, sans-serif"
+    fontSize: "0.78rem"
+    fontWeight: 700
     lineHeight: 1.2
-    letterSpacing: "0.14em"
+    letterSpacing: "0.13em"
 rounded:
-  sm: "0px"
-  md: "8px"
-  lg: "12px"
-  xl: "12px"
+  sm: "14px"
+  md: "18px"
+  lg: "28px"
+  organic: "22px"
   full: "9999px"
 spacing:
   xs: "4px"
@@ -61,127 +68,166 @@ spacing:
   lg: "24px"
   xl: "32px"
 components:
-  button-default:
+  button-primary-queimando-panela:
     backgroundColor: "{colors.primary}"
-    textColor: "{colors.primary-foreground}"
-    rounded: "{rounded.sm}"
-    padding: "14px 24px"
-    height: "48px"
-  button-outline:
-    backgroundColor: "transparent"
     textColor: "{colors.foreground}"
-    rounded: "{rounded.sm}"
-    padding: "14px 24px"
-    height: "48px"
+    rounded: "{rounded.full}"
+    padding: "0 22px"
+    height: "50px"
+  button-outline-queimando-panela:
+    backgroundColor: "transparent"
+    textColor: "{colors.forest}"
+    rounded: "{rounded.full}"
+    padding: "0 22px"
+    height: "50px"
   button-secondary:
-    backgroundColor: "{colors.foreground}"
-    textColor: "#FFFFFF"
-    rounded: "{rounded.sm}"
-    padding: "14px 24px"
-    height: "48px"
+    backgroundColor: "{colors.forest}"
+    textColor: "#ffffff"
+    rounded: "{rounded.full}"
+    padding: "0 22px"
+    height: "50px"
   card-default:
     backgroundColor: "{colors.card}"
     textColor: "{colors.card-foreground}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: "0px"
   input-default:
     backgroundColor: "{colors.card}"
     textColor: "{colors.foreground}"
-    rounded: "{rounded.sm}"
+    rounded: "{rounded.md}"
     padding: "12px 16px"
     height: "48px"
   badge-default:
     backgroundColor: "{colors.primary}"
-    textColor: "{colors.primary-foreground}"
-    rounded: "{rounded.sm}"
+    textColor: "{colors.foreground}"
+    rounded: "{rounded.full}"
     padding: "4px 8px"
     height: "24px"
 ---
 
-# Design System: Queimando Panela — Blog Moderno com IA
+# Design System: Queimando Panela
 
-## 1. Overview — North Star: "Blog que se lê como livro, com IA como co-piloto"
+## 1. Overview
 
-Queimando Panela tem identidade própria: nem site antigo amarelo quadrado, nem blog genérico. É um **blog claro, limpo, com bom respiro**, feito para leitura prolongada de receita em tela grande e no celular com farinha na mão. O amarelo `#ffb900` é tempero restrained (≤10% da tela) — aparece em CTA, badge e faixa fina de 2px para guiar, nunca como fundo de seção. A tipografia faz o trabalho pesado: Sora grotesk 800 em caixa alta para títulos com peso e contraste, Inter para corpo com leading 1.7 e 65–72ch.
+**Creative North Star: "A Cozinha como Sala de Estar"**
 
-**Contrato:**
-- Light #FFFFFF, tinta #0a0a0a, amarelo #ffb900 restrained.
-- Híbrido: botões/inputs/badges 0px quadrados (precisão tech), cards/sheets 12px suaves (acolhimento blog).
-- Espaço generoso: `py-16 lg:py-20` entre seções, `gap-10` em grids, `editorial-container` com respiro `min(100%-1.5rem,84rem)`.
-- IA como diferencial visível: ao criar receita, a análise retorna em cards claros com utensílios, nutrição, tempo e classificação — sempre editável.
+Queimando Panela é um blog que se lê como livro, mas acolhe como cozinha de casa. A tecnologia (IA que confere utensílios, nutrição, tempo e classificação) serve o afeto, não o contrário. Visualmente é **claro, editorial e quente** — Playfair Display dá peso editorial acolhedor, DM Sans garante leitura leve com farinha na mão. O creme `#fffdf7` aquece o branco sem virar bege pesado, o amarelo `#ffc733` pontua em pílulas e faixas de 2px, o forest `#183a37` ancora títulos e cabeçalho. Nada de site institucional quadrado pesado, nada de blog genérico lotado de anúncios.
 
-## 2. Colors — Restrained Queimando Panela
+Rejeita: fundo cream saturado que parece papel envelhecido, gradient text, glassmorphism decorativo, `border-left` colorido em cards, sombras 16px+ com borda, eyebrow em cada seção, `01/02/03` como scaffolding e cards idênticos. IA aparece como rascunho editável com utensílios, nutrição e tempo explicados — nunca como veredito fechado.
 
-Paleta light sem bege. Amarelo nunca como fill de seção.
+**Key Characteristics:**
+- Editorial quente: Playfair + DM Sans, `text-wrap: balance` em h1–h3, 65–72ch, leading 1.6.
+- Creme dominante, amarelo restrained (≤15% da tela), forest como âncora.
+- Cantos suaves: `18px` cards/inputs, `28px` hero/CTA, `999px` botões/links — híbrido acolhedor, não precisão tech fria.
+- Espaço generoso: `editorial-container min(100%-40px,1180px)`, `py-16 lg:py-20` entre seções, `gap-10` em grids.
+- IA como co-piloto visível na Home e no fluxo de criação.
 
-- **#ffb900** — Primary. Só CTA, badge, faixa 2–4px, ring. Sempre com texto #0a0a0a (7.2:1).
-- **#0a0a0a** — Foreground. Títulos, header text sobre amarelo, bordas, botão secundário.
-- **#FFFFFF** — Fundo página e cards.
-- **#f2f2f2 / #f5f5f5** — Muted/secondary para hover e zebra. Nunca fundo de página.
-- **#e5e5e5** — Border fina. Linhas de separação.
-- **#6b6b6b** — Muted-foreground. Único cinza para descrição (5.6:1 sobre branco).
-- **#cc1f1f** — Destructive.
+## 2. Colors
 
-**Regra do Amarelo:** se a seção parece amarela ao dar zoom out, tem amarelo demais. O branco deve dominar.
+Paleta quente e editorial: forest profundo ancora, amarelo manteiga pontua, creme e linha dão respiro.
 
-**Regra do Híbrido:** `border-radius: 0` em botões/inputs/badges; `12px` em cards/sheets/dialogs. Se um card está quadrado 0px, é drift do Estapar antigo.
+### Primary
+- **Amarelo Manteiga** (#ffc733): CTA primário, badge/pill, faixa `::before` 30×2px do eyebrow, ring `2px #ffc733`. Sempre com texto `#1f2933` (9.4:1). Hover `#eeb214`.
+- **Forest Profundo** (#183a37): Títulos, header text, borda, botão secundário, footer. Sobre creme 12.3:1. Hover `#2f5d50`.
 
-## 3. Typography — Sora Grotesk + Inter para leitura
+### Secondary
+- **Creme Queimando Panela** (#fffdf7): Fundo de página (`--background`, `--cream`) e header translúcido `rgba(255,253,247,0.9)`. Aquece sem virar bege.
+- **Areia Clara** (#f5f0e8): Muted/secondary para hover, zebra e fundo de imagem. Nunca fundo de página cheio.
 
-**Escolha:** Grotesk + Inter (mantida por voto). Sora traz modernidade tech sem ser fria; Inter garante leitura longa sem fadiga. Duas famílias com contraste claro, não duas similares.
+### Neutral
+- **Tinta** (#1f2933): Texto base, `--foreground`/`--ink`/`--input`.
+- **Tinta Suave** (#52606d): Texto secundário, `p` e descrições (6.3:1 sobre #fffdf7, AA).
+- **Linha** (#e8e1d5): Border fina 1px, divisores. Mesmo valor para `--border`/`--line`.
+- **Branco Puro** (#ffffff): Cards, popover. Sobre forest 12.3:1.
+- **Vermelho Panela** (#cc1f1f): Destructive.
+- **Verde Sálvia** (#d9dfc9): Fundo sutil atrás da imagem hero orgânica (não token, uso pontual).
 
-- **Display** Sora 800 `clamp(2.4rem,1.6rem+3vw,4.5rem)` 0.95 -0.03em uppercase. Só hero e h1 de página.
-- **Headline** Sora 800 `clamp(1.8rem,1.3rem+1.8vw,2.8rem)` 1 -0.02em uppercase. Títulos de seção.
-- **Title** Sora 700 `clamp(1.25rem,1.1rem+0.6vw,1.6rem)` 1.15 -0.01em uppercase. Card titles.
-- **Body** Inter 400 `1rem` 1.7. Texto corrido, `max-width:72ch`, `text-wrap: pretty` para evitar viúvas.
-- **Label** Sora 800 `0.7rem` 1.2 0.14em uppercase. Navegação, eyebrow pontual, badge.
+### Named Rules
+**The Amarelo Restrained Rule.** Amarelo aparece em pílula, badge ou faixa 2px — nunca como fill de seção inteira. Se a página parece amarela ao dar zoom out, tem amarelo demais.
+**The Cream Não É Bege Rule.** #fffdf7 é fundo, não personalidade. Aquece o branco; não compete com ele. Evitar saturar com #f5f0e8 em bloco grande.
 
-**Hierarquia:** peso faz o trabalho, não tamanho exagerado. H1 sempre mais pesado que H2, nunca flat (ratio ≥1.25). `text-wrap: balance` em h1–h3.
+## 3. Typography
 
-## 4. Layout — Blog com bom respiro
+**Display Font:** Playfair Display (Google, variable `--font-display`, weights 400/600/700/800) com fallback Georgia, serif
+**Body Font:** DM Sans (Google, variable `--font-body`, weights 400/500/600/700) com fallback system-ui, sans-serif
+**Label/Mono Font:** DM Sans bold para eyebrow, badge e navegação
 
-- **Container:** `w-[min(100%-1.5rem,84rem)]` centralizado. Respiro generoso, não colado na borda.
-- **Ritmo:** `py-16 lg:py-20` entre seções, `gap-10` em grids, `space-y-6` dentro de cards. Variação intencional: hero mais denso, leitura mais arejada.
-- **Grid:** `repeat(auto-fit, minmax(280px,1fr))` para cards. Lista 3 cols desktop, 2 tablet, 1 mobile. Nada de `grid-cols-4` fixo que quebra.
-- **Faixas:** faixa fina 2–4px `#ffb900` como divisor sutil, nunca bloco amarelo cheio. Header 64px branco com borda inferior `1px #e5e5e5`, CTA amarelo pontual.
-- **Leitura:** `reading-container` 72ch para steps/ingredientes. Imagem sempre `4/3` quadrada com `border-2 #0a0a0a` leve quando em destaque.
+**Character:** Editorial acolhedor com leitura leve. Playfair dá peso e confiança ("a IA conferiu"), DM Sans conduz sem fadiga. Contraste não vem de duas sans similares, mas de serif display + sans humanista. `text-wrap: balance` em h1–h3, `text-wrap: pretty` no corpo.
+
+### Hierarchy
+- **Display** (Playfair 700, `clamp(2.2rem,5vw,4.2rem)` 1.03 -0.045em): Hero h1 e títulos de seção `.section-title-queimando-panela`. Só hero e h2 de página.
+- **Headline** (Playfair 700, `clamp(1.75rem,1.25rem+2vw,2.75rem)` 1.15 -0.03em): `h2` padrão.
+- **Title** (Playfair 600, `clamp(1.375rem,1.125rem+1vw,1.75rem)` 1.2 -0.01em): `h3` e títulos de card `1.55–1.72rem`.
+- **Body** (DM Sans 400, `1rem` 1.6, `max-width 72ch`): Texto corrido, `section-copy 1.05rem` em `max-width 620px`.
+- **Label** (DM Sans 700, `0.78rem` 1.2 0.13em uppercase): Eyebrow `eyebrow-queimando-panela` (com traço 30×2px amarelo), navegação, badge `0.73rem`.
+
+### Named Rules
+**The Balance Rule.** Todo h1–h3 usa `text-wrap: balance`; corpo usa `pretty`. Linha nunca passa 72ch.
+**The Eyebrow Pontual Rule.** Eyebrow só em Hero + 1 seção âncora por página, nunca factory em 6/7 seções.
+
+## 4. Elevation
+
+Sistema usa sombra suave como lift acolhedor, não como borda. Superfícies são planas por padrão; sombra aparece para destacar card ou badge flutuante.
+
+### Shadow Vocabulary
+- **Ambient Soft** (`0 20px 50px rgba(24, 58, 55, 0.1)` — `--shadow`): Card flutuante da Intro e badge rotacionado do hero. Uso pontual.
+- **Card Lift** (`0 10px 30px rgba(24, 58, 55, 0.06)`): Cards de receita (`RecipesSection`). Sutil, sem borda pesada.
+
+### Named Rules
+**The Sem-Borda-Pesada Rule.** Nunca `border: 1px solid` + `box-shadow 16px+` no mesmo elemento. Ou borda `1px #e8e1d5` ou sombra `≤10px`, nunca ambos como decoração.
+**The Flat-By-Default Rule.** Fundo creme + cards brancos já criam profundidade por contraste tonal. Sombra só quando precisa elevar.
 
 ## 5. Components
 
-### Buttons — Híbrido
-- 0px, h-12, Sora 800 uppercase 0.12em.
-- Primary: #ffb900 + #0a0a0a, hover #e6a700.
-- Secondary: #0a0a0a + branco.
-- Outline: borda 1px #0a0a0a, hover preenche preto.
+### Buttons
+- **Shape:** Pill `999px`, `min-height 50px`, `padding 0 22px`, `font-weight 700`, `transition transform 180ms`.
+- **Primary Queimando Panela:** `bg #ffc733` + `color #1f2933`, hover `#eeb214` + `translateY(-2px)`.
+- **Outline Queimando Panela:** `border 1px #183a37` + `color #183a37` transparente, hover preenche `#ffc733` + `border #ffc733`.
+- **Secondary:** `bg #183a37` + `color white`.
+- **AuthNav:** `h-42px px-17px` pill, ghost quando deslogado usa primary queimando-panela.
 
-### Cards — Blog 12px
-- 12px, borda 1px #e5e5e5, sem sombra, imagem 4:3, padding 0 (conteúdo p-4). Faixa 4px #ffb900 opcional no topo.
-- Título Sora 700 uppercase, descrição Inter #6b6b6b.
+### Chips
+- **Style:** Pill `999px`, `0.73rem extrabold uppercase 0.04em`, `bg #ffc733` + `color #1f2933` quando badge; `bg white border 1px #e8e1d5` quando inativo.
 
-### Inputs
-- 0px, borda 1px #0a0a0a, placeholder #6b6b6b, focus `ring 2px #ffb900`, erro borda #cc1f1f.
+### Cards / Containers
+- **Corner Style:** `18px` (`--radius-md`) para cards de categoria/receita; `28px` (`--radius-lg`) para hero CTA; `46% 46% 22px 22px` orgânico só no hero image (uso signature).
+- **Background:** `white` sobre `cream #fffdf7`.
+- **Shadow Strategy:** `0 10px 30px rgba(24,58,55,0.06)` em receitas; sem sombra em categorias (borda `1px #e8e1d5`).
+- **Border:** `1px #e8e1d5` quando sem sombra; `14px` card flutuante forest da Intro (`bg #183a37` + `color white`).
+- **Internal Padding:** `p-6` categorias, `p-[22px]` receitas, `p-5` card.
 
-### Badges/Chips
-- 0px, Sora 800 uppercase 0.7rem, padding 4px 8px. Default amarelo, active preto/branco, inactive branco/borda.
+### Inputs / Fields
+- **Style:** `bg white`, `border 1px #1f2933`, `radius 18px`, `placeholder #52606d`.
+- **Focus:** `outline 2px solid #183a37` + `ring 2px #ffc733`.
+- **Error / Disabled:** `border #cc1f1f` para erro.
 
-### Header
-- Branco `bg-white border-b border-[#e5e5e5] h-16`, logo preto, nav Sora 800 uppercase 13px #0a0a0a, CTA amarelo 0px.
+### Navigation
+- **Header:** `sticky top-0 z-20 h-78px`, `bg rgba(255,253,247,0.9)` + `backdrop-blur`, `border-b rgba(232,225,213,0.72)`. `editorial-container flex justify-between`. Logo `QP` pill `34px 50% 50% 50% 8px rotate -18deg` + `bg #ffc733`.
+- **Nav links:** `DM Sans 0.92rem semibold`, `color #52606d` default, `#183a37` hover/active, `gap-7`. Mobile `Sheet` com `max-w-sm`, header amarelo.
+- **Footer:** `bg #102c2a` (forest escuro `#102c2a` derivado de #183a37) + `border-top rgba(255,255,255,0.1)`, 4 cols `1.2fr repeat(3,0.65fr)`, títulos `0.8rem uppercase 0.08em #ffc733`, links `0.9rem rgba(255,255,255,0.72)` hover `#ffc733`.
 
-### Footer
-- Branco com borda superior 1px #e5e5e5, texto #6b6b6b, títulos Sora amarelo #ffb900 pontual, nada de footer preto pesado antigo.
+### Signature Component — Eyebrow Queimando Panela
+- `inline-flex gap 10px` + `::before 30×2px #ffc733`, `DM Sans 0.78rem 700 0.13em uppercase`, `color #183a37`. Uso pontual (Hero + 1 seção).
 
-## 6. Do's and Don'ts — Blog Moderno
+## 6. Do's and Don'ts
 
-Do:
-- Branco dominante, amarelo pontual ≤10%.
-- Híbrido 0px botões / 12px cards.
-- Espaço generoso e hierarquia forte — leitura agradável é P0.
-- Foto grande 4:3 em todo card.
-- IA visível como cards editáveis claros, não modal escuro.
+### Do:
+- **Do** usar creme #fffdf7 dominante, amarelo #ffc733 pontual (pill/badge/faixa 2px) e forest #183a37 como âncora.
+- **Do** usar Playfair Display para títulos com `text-wrap: balance` e DM Sans para corpo com `max-width 72ch`.
+- **Do** manter híbrido `999px` botões/links e `18px/28px` cards — cantos suaves são a marca.
+- **Do** manter `editorial-container min(100%-40px,1180px)` com respiro generoso.
+- **Do** mostrar IA como cards editáveis claros (utensílios, nutrição, tempo, classificação) na Home e no fluxo de criação.
+- **Do** garantir toque ≥44px, foco visível `2px #183a37` (ou `2px #ffc733` sobre escuro) e respeitar `prefers-reduced-motion`.
+- **Do** usar fotos grandes 4:3 com `border 1px #e8e1d5` ou sombra suave — nunca card sem imagem.
 
-Don't:
-- Amarelo como fundo de seção.
-- Tudo 0px quadrado pesado (era Estapar).
-- Fundo cream/bege, gradient text, glass, sombra 16px+ com borda.
-- Eyebrow em cada seção, `01/02`, cards idênticos.
-- Texto cinza claro sobre branco (<4.5:1).
+### Don't:
+- **Don't** usar amarelo como fundo de seção inteira (ex: CTA full `#ffc733` é exceção pontual documentada com `28px`, não padrão).
+- **Don't** repetir eyebrow `eyebrow-queimando-panela` em cada seção — máximo 1–2 por página. Eyebrow factory é AI slop.
+- **Don't** usar `01/02/03` numerados como scaffolding em Values — número só quando é fluxo ordenado real.
+- **Don't** usar `border-left` >1px colorido como faixa lateral em cards.
+- **Don't** usar gradient text (`background-clip: text`) ou glassmorphism decorativo.
+- **Don't** usar `border 1px + box-shadow 16px+` juntos como ghost-card.
+- **Don't** usar cards idênticos com ícone + heading + text repetidos sem diferenciação.
+- **Don't** usar texto `color #52606d` claro sobre creme com contraste <4.5:1 — `#52606d` sobre `#fffdf7` está em 6.3:1, manter.
+- **Don't** usar `border-radius 32px+` em cards — topo é `28px`.
+- **Don't** voltar ao site antigo amarelo quadrado 0px ou ao blog genérico lotado de anúncios — ambos são anti-references de PRODUCT.md.
