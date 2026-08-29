@@ -16,21 +16,21 @@ export default function Header() {
         boxShadow: '0 1px 12px rgba(24, 58, 55, 0.06)',
       }}
     >
-      <div className="editorial-container flex min-h-[78px] items-center justify-between gap-6">
+      <div className="editorial-container flex min-h-[84px] items-center justify-between gap-6">
         <Link
           href="/"
           className="inline-flex items-center gap-3 text-[#183a37]"
           aria-label="Queimando Panela - Página inicial"
         >
-          <QPMark />
-          <span className="hidden font-display text-[1.35rem] font-bold sm:inline">
+          <QPMark className="size-[38px] text-[0.95rem]" />
+          <span className="hidden font-display text-[1.45rem] font-extrabold tracking-[-0.015em] sm:inline">
             Queimando Panela
           </span>
         </Link>
 
         <nav
           aria-label="Navegação principal"
-          className="hidden items-center gap-7 md:flex"
+          className="hidden items-center gap-8 md:flex"
         >
           <NavLinks items={navItems} variant="header" />
         </nav>

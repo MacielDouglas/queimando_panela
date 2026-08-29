@@ -14,16 +14,29 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
 
   if (recipes.length === 0) {
     return (
-      <section className="py-[112px]" style={{ background: 'var(--cream)' }}>
+      <section
+        className="py-24 lg:py-28"
+        style={{ background: 'var(--cream)' }}
+      >
         <div className="editorial-container">
           <div className="text-center">
-            <h2 className="section-title-queimando-panela mx-auto">
-              Saiu do forno
+            <p className="eyebrow-queimando-panela mx-auto">
+              O forno está aquecendo
+            </p>
+            <h2 className="section-title-queimando-panela mx-auto text-balance">
+              Nenhuma fumaça por enquanto.
             </h2>
             <p className="section-copy mx-auto">
-              Quando a primeira receita for publicada, ela aparece aqui com foto
-              grande e leitura leve.
+              Quando a primeira receita sair do forno, ela aparece aqui com foto
+              grande. Que tal aquecer a cozinha?
             </p>
+            <a
+              href="/receitas/new"
+              className="button-queimando-panela button-primary-queimando-panela mt-8 inline-flex"
+            >
+              Aquecer o forno
+              <span aria-hidden="true">→</span>
+            </a>
           </div>
         </div>
       </section>
@@ -34,9 +47,9 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
   const recipe = visible[currentRecipe] ?? visible[0];
 
   return (
-    <section className="py-[112px]" style={{ background: 'var(--cream)' }}>
+    <section className="py-24 lg:py-28" style={{ background: 'var(--cream)' }}>
       <div className="editorial-container">
-        <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
           <div className="max-w-[520px]">
             <h2 className="section-title-queimando-panela">
               O que acabou de sair do forno
@@ -57,7 +70,7 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
           <div>
             <Link
               href={`/receitas/${recipe.slug}`}
-              className="group block overflow-hidden border transition-[border-color,box-shadow]"
+              className="qp-card-delight group block overflow-hidden border"
               style={{
                 borderRadius: 'var(--radius-md)',
                 borderColor: 'var(--line)',

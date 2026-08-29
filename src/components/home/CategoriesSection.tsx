@@ -9,6 +9,7 @@ const categories = [
     image:
       'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=900&q=80',
     href: '/receitas?categoria=Prato%20principal',
+    cta: 'Ver pratos principais',
   },
   {
     name: 'Sobremesa',
@@ -16,6 +17,7 @@ const categories = [
     image:
       'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=80',
     href: '/receitas?categoria=Sobremesa',
+    cta: 'Ver sobremesas',
   },
   {
     name: 'Café da manhã',
@@ -23,12 +25,13 @@ const categories = [
     image:
       'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80',
     href: '/receitas?categoria=Caf%C3%A9%20da%20manh%C3%A3',
+    cta: 'Ver cafés da manhã',
   },
 ];
 
 export function CategoriesSection() {
   return (
-    <section className="py-29">
+    <section className="py-24 lg:py-28">
       <div className="editorial-container">
         <div className="flex items-end justify-between gap-8">
           <div>
@@ -38,11 +41,11 @@ export function CategoriesSection() {
           </div>
         </div>
 
-        <div className="mt-13 grid gap-5.5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
             <article
               key={category.name}
-              className="group overflow-hidden border bg-white transition-[transform,box-shadow]"
+              className="qp-card-delight group overflow-hidden border bg-white"
               style={{
                 borderColor: 'var(--line)',
                 borderRadius: 'var(--radius-md)',
@@ -76,8 +79,9 @@ export function CategoriesSection() {
                 <Link
                   href={category.href}
                   className="text-link-queimando-panela mt-5 inline-flex"
+                  aria-label={`${category.cta} — ${category.name}`}
                 >
-                  Ver receitas
+                  {category.cta}
                 </Link>
               </div>
             </article>

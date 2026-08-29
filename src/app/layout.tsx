@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { DM_Sans, Playfair_Display } from 'next/font/google';
 import './globals.css';
+import { ConsoleDelight } from '@/components/delight/console-delight';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 
@@ -46,6 +47,7 @@ export default async function RootLayout({
           <div className="flex-1">{children}</div>
           <Footer />
         </div>
+        <ConsoleDelight />
       </body>
     </html>
   );

@@ -45,8 +45,8 @@ export default function Footer() {
               </span>
             </Link>
             <p
-              className="mt-4 max-w-[300px] text-[0.9rem] leading-relaxed"
-              style={{ color: 'rgba(255,255,255,0.72)' }}
+              className="mt-4 max-w-[340px] text-[0.95rem] leading-relaxed"
+              style={{ color: 'rgba(255,255,255,0.76)' }}
             >
               Gastronomia com origem, cuidado e sabor para os momentos que
               realmente importam.
@@ -55,8 +55,8 @@ export default function Footer() {
 
           <div>
             <h3
-              className="mb-4 text-[0.8rem] font-bold uppercase"
-              style={{ color: 'var(--accent-e)', letterSpacing: '0.08em' }}
+              className="mb-4 text-[0.82rem] font-extrabold uppercase"
+              style={{ color: 'var(--accent-e)', letterSpacing: '0.1em' }}
             >
               Institucional
             </h3>
@@ -79,8 +79,8 @@ export default function Footer() {
 
           <div>
             <h3
-              className="mb-4 text-[0.8rem] font-bold uppercase"
-              style={{ color: 'var(--accent-e)', letterSpacing: '0.08em' }}
+              className="mb-4 text-[0.82rem] font-extrabold uppercase"
+              style={{ color: 'var(--accent-e)', letterSpacing: '0.1em' }}
             >
               Atendimento
             </h3>
@@ -103,8 +103,8 @@ export default function Footer() {
 
           <div>
             <h3
-              className="mb-4 text-[0.8rem] font-bold uppercase"
-              style={{ color: 'var(--accent-e)', letterSpacing: '0.08em' }}
+              className="mb-4 text-[0.82rem] font-extrabold uppercase"
+              style={{ color: 'var(--accent-e)', letterSpacing: '0.1em' }}
             >
               Siga a gente
             </h3>

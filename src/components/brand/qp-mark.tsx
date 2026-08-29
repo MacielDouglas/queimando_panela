@@ -14,8 +14,9 @@ export function QPMark({
     <span
       role="img"
       aria-label={label}
+      title="Queimando Panela — onde olhômetro vira medida"
       className={cn(
-        'inline-grid size-[34px] place-items-center rounded-full text-[#183a37] font-body text-[0.88rem] font-bold',
+        'qp-mark-delight inline-grid size-[34px] place-items-center rounded-full text-[#183a37] font-body text-[0.88rem] font-bold',
         className,
       )}
       style={{

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export function CtaSection() {
   return (
-    <section className="pb-[112px]">
+    <section className="pb-24 lg:pb-28">
       <div className="editorial-container">
         <div
           className="grid items-center overflow-hidden lg:grid-cols-[1.15fr_0.85fr]"
@@ -12,16 +12,27 @@ export function CtaSection() {
             background: 'var(--accent-e)',
           }}
         >
-          <div className="p-[clamp(38px,6vw,76px)]">
+          <div className="p-[clamp(42px,6vw,84px)]">
+            <p
+              className="mb-4 inline-flex items-center gap-2 text-[0.78rem] font-bold uppercase"
+              style={{ color: 'var(--forest)', letterSpacing: '0.14em' }}
+            >
+              <span
+                className="h-[2px] w-7"
+                style={{ background: 'var(--forest)' }}
+                aria-hidden="true"
+              />
+              Comece hoje
+            </p>
             <h2
-              className="max-w-[630px] font-display text-[clamp(2.25rem,4.6vw,4rem)] font-bold leading-none tracking-[-0.05em]"
+              className="max-w-[20ch] font-display text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold leading-[0.9] tracking-[-0.04em] text-balance"
               style={{ color: 'var(--forest)' }}
             >
               Sua receita merece ir ao ar com confiança.
             </h2>
             <p
-              className="mt-5 max-w-[520px]"
-              style={{ color: 'rgba(31, 41, 51, 0.78)' }}
+              className="mt-5 max-w-[560px] text-[1.08rem] leading-relaxed"
+              style={{ color: 'rgba(31, 41, 51, 0.82)' }}
             >
               Publique em 3 minutos: escreva como faz em casa, a IA confere
               utensílios, nutrição, tempo e categoria. Você revisa e publica.

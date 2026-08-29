@@ -14,16 +14,24 @@ interface RecipesSectionProps {
 export function RecipesSection({ rows }: RecipesSectionProps) {
   if (rows.length === 0) {
     return (
-      <section className="py-[112px]">
+      <section className="py-24 lg:py-28">
         <div className="editorial-container">
           <div className="text-center">
-            <h2 className="section-title-queimando-panela mx-auto">
-              Receitas para compartilhar sem pressa.
+            <p className="eyebrow-queimando-panela mx-auto">Inspire-se</p>
+            <h2 className="section-title-queimando-panela mx-auto text-balance">
+              Sua panela ainda não queimou por aqui.
             </h2>
             <p className="section-copy mx-auto">
-              Assim que houver receitas publicadas, elas aparecem aqui com foto
-              grande e leitura leve.
+              Seja a primeira história: publique sua receita e deixe a IA
+              conferir utensílios, tempo e nutrição antes de ir ao ar.
             </p>
+            <a
+              href="/receitas/new"
+              className="button-queimando-panela button-primary-queimando-panela mt-8 inline-flex"
+            >
+              Publicar minha primeira receita
+              <span aria-hidden="true">→</span>
+            </a>
           </div>
         </div>
       </section>
@@ -31,7 +39,7 @@ export function RecipesSection({ rows }: RecipesSectionProps) {
   }
 
   return (
-    <section className="py-[112px]">
+    <section className="py-24 lg:py-28">
       <div className="editorial-container">
         <h2 className="section-title-queimando-panela">
           Receitas para compartilhar sem pressa.
@@ -41,12 +49,12 @@ export function RecipesSection({ rows }: RecipesSectionProps) {
           ingrediente.
         </p>
 
-        <div className="mt-[52px] grid gap-[22px] md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {rows.map((row) =>
             row.recipes.map((recipe) => (
               <article
                 key={`${row.type}-${recipe.id}`}
-                className="group overflow-hidden bg-white"
+                className="qp-card-delight group overflow-hidden bg-white"
                 style={{
                   borderRadius: 'var(--radius-md)',
                   boxShadow: '0 10px 30px rgba(24, 58, 55, 0.06)',

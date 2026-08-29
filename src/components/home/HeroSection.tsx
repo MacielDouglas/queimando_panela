@@ -8,7 +8,7 @@ export function HeroSection() {
         <div className="max-w-[650px]">
           <p className="eyebrow-queimando-panela">Feito por quem cozinha</p>
 
-          <h1 className="font-display text-[clamp(3.15rem,7vw,6.1rem)] font-bold leading-[0.92] tracking-[-0.03em]">
+          <h1 className="font-display text-[clamp(3.2rem,7vw,6.4rem)] font-extrabold leading-[0.88] tracking-[-0.04em]">
             Receitas caseiras que são{' '}
             <em className="not-italic" style={{ color: 'var(--forest-hover)' }}>
               memória.
@@ -16,83 +16,82 @@ export function HeroSection() {
           </h1>
 
           <p
-            className="mt-7 max-w-[530px] text-[clamp(1rem,1.7vw,1.12rem)]"
+            className="mt-7 max-w-[560px] text-[clamp(1rem,1.7vw,1.12rem)] leading-relaxed"
             style={{ color: 'var(--ink-muted)' }}
           >
-            Publique sua receita e a IA confere utensílios, tempo, nutrição e
-            categoria antes de ir ao ar. História da sua família, com segurança
-            de quem testa antes.
+            Escreva como faz em casa. A IA confere utensílios, tempo, nutrição e
+            categoria — você revisa e publica com segurança.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/receitas"
+              href="/receitas/new"
               className="button-queimando-panela button-primary-queimando-panela"
             >
-              Explorar receitas
+              Publicar receita
               <span aria-hidden="true">→</span>
             </Link>
             <Link
-              href="/receitas/new"
+              href="/receitas"
               className="button-queimando-panela button-outline-queimando-panela"
             >
-              Enviar receita
+              Explorar receitas
             </Link>
           </div>
 
-          <ul className="mt-12 flex flex-wrap gap-5" aria-label="Diferenciais">
-            <li className="flex min-w-[118px] flex-col gap-0.5">
+          <ul className="mt-14 flex flex-wrap gap-7" aria-label="Diferenciais">
+            <li className="flex min-w-[132px] flex-col gap-1">
               <strong
-                className="text-[1.25rem] font-bold"
+                className="text-[1.45rem] font-extrabold leading-none tracking-[-0.02em]"
                 style={{ color: 'var(--forest)' }}
               >
                 100%
               </strong>
               <span
-                className="text-[0.84rem]"
-                style={{ color: 'var(--ink-muted)' }}
+                className="text-[0.76rem] font-bold uppercase"
+                style={{ color: 'var(--ink-muted)', letterSpacing: '0.1em' }}
               >
                 histórias reais
               </span>
             </li>
-            <li className="flex min-w-[118px] flex-col gap-0.5">
+            <li className="flex min-w-[132px] flex-col gap-1">
               <strong
-                className="text-[1.25rem] font-bold"
+                className="text-[1.45rem] font-extrabold leading-none tracking-[-0.02em]"
                 style={{ color: 'var(--forest)' }}
               >
-                3 pilares
+                3 passos
               </strong>
               <span
-                className="text-[0.84rem]"
-                style={{ color: 'var(--ink-muted)' }}
+                className="text-[0.76rem] font-bold uppercase"
+                style={{ color: 'var(--ink-muted)', letterSpacing: '0.1em' }}
               >
-                tradição à mesa
+                escrever · conferir · publicar
               </span>
             </li>
-            <li className="flex min-w-[118px] flex-col gap-0.5">
+            <li className="flex min-w-[132px] flex-col gap-1">
               <strong
-                className="text-[1.25rem] font-bold"
+                className="text-[1.45rem] font-extrabold leading-none tracking-[-0.02em]"
                 style={{ color: 'var(--forest)' }}
               >
                 IA
               </strong>
               <span
-                className="text-[0.84rem]"
-                style={{ color: 'var(--ink-muted)' }}
+                className="text-[0.76rem] font-bold uppercase"
+                style={{ color: 'var(--ink-muted)', letterSpacing: '0.1em' }}
               >
-                aprimorando o que está bom
+                co-piloto que confere
               </span>
             </li>
           </ul>
         </div>
 
-        <div className="relative hidden min-h-[540px] lg:block">
+        <div className="relative hidden min-h-[580px] lg:block">
           <div
             className="absolute inset-0 overflow-hidden"
             style={{
               borderRadius: '46% 46% 22px 22px',
               background: '#d9dfc9',
-              right: '18px',
+              right: '12px',
             }}
           >
             <Image
@@ -105,14 +104,14 @@ export function HeroSection() {
             />
           </div>
           <div
-            className="absolute bottom-[30px] right-0 grid size-[145px] place-items-center border-[9px] text-center"
+            className="qp-badge-float absolute bottom-[18px] right-[-6px] grid size-[168px] place-items-center border-[10px] text-center"
             style={{
               borderColor: 'var(--cream)',
               borderRadius: '50%',
               background: 'var(--accent-e)',
               color: 'var(--forest)',
               boxShadow: 'var(--shadow)',
-              transform: 'rotate(10deg)',
+              transform: 'rotate(12deg)',
             }}
             role="img"
             aria-label="Feito com cuidado"

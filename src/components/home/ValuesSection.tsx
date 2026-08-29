@@ -1,24 +1,25 @@
 const values = [
   {
-    title: 'Receitas de família',
+    title: 'Receitas com dono',
     description:
-      'Pratos que passam de geração em geração, guardando memórias e sabores.',
+      'Toda receita mostra autor e história. Olhômetro vale tanto quanto gramas — a IA respeita o seu jeito.',
   },
   {
-    title: 'Tradição viva',
-    description: 'Cada receita é um pedaço de história que merece ser contada.',
+    title: 'Tradição que vive',
+    description:
+      'Do caderno amarelado para a tela. A IA confere e você decide o que fica — a memória continua sua.',
   },
   {
-    title: 'Gastronomia acessível',
+    title: 'Cozinha para todos',
     description:
-      'Criamos soluções versáteis para transformar o cotidiano em uma experiência mais saborosa.',
+      'Ingredientes do dia a dia, passos claros e tempo real. Cozinhar bem sem complicar.',
   },
 ];
 
 export function ValuesSection() {
   return (
     <section
-      className="py-[100px]"
+      className="py-[120px]"
       style={{ background: 'var(--forest)', color: 'white' }}
     >
       <div className="editorial-container">
@@ -31,19 +32,22 @@ export function ValuesSection() {
               Nosso compromisso
             </p>
             <h2
-              className="font-display text-[clamp(2.4rem,4.8vw,4rem)] font-bold leading-[1.05] tracking-[-0.045em]"
+              className="font-display text-[clamp(2.6rem,5vw,4.5rem)] font-extrabold leading-[0.95] tracking-[-0.04em] text-balance"
               style={{ color: 'white' }}
             >
               Menos artifícios. Mais sabor, origem e propósito.
             </h2>
+            <div
+              className="mt-5 h-[3px] w-12"
+              style={{ background: 'var(--accent-e)' }}
+              aria-hidden="true"
+            />
             <p
-              className="mt-6 text-[1.04rem]"
-              style={{ color: 'rgba(255,255,255,0.72)' }}
+              className="mt-6 max-w-[52ch] text-[1.08rem] leading-relaxed"
+              style={{ color: 'rgba(255,255,255,0.78)' }}
             >
-              A boa comida cria conexões. Por isso, cada escolha parte de uma
-              ideia simples: saboreie as tortas salgadas, o orgulho da culinária
-              caseira. Aproveite o café da manhã, uma fonte atemporal de
-              energia.
+              Cada receita mostra autor, história e medidas de olhômetro
+              validadas pela IA — você publica sabendo que vai dar certo.
             </p>
           </div>
 
@@ -54,19 +58,19 @@ export function ValuesSection() {
             {values.map((value) => (
               <article
                 key={value.title}
-                className="grid grid-cols-[1fr] gap-[6px] border-b py-[25px]"
+                className="grid grid-cols-[1fr] gap-[8px] border-b py-[28px]"
                 style={{ borderColor: 'rgba(255,255,255,0.2)' }}
               >
                 <div>
                   <h3
-                    className="text-[1.05rem] font-semibold"
+                    className="text-[1.22rem] font-bold leading-tight tracking-[-0.015em]"
                     style={{ color: 'white' }}
                   >
                     {value.title}
                   </h3>
                   <p
-                    className="mt-[7px] text-[0.92rem]"
-                    style={{ color: 'rgba(255,255,255,0.68)' }}
+                    className="mt-2 max-w-[48ch] text-[0.96rem] leading-relaxed"
+                    style={{ color: 'rgba(255,255,255,0.72)' }}
                   >
                     {value.description}
                   </p>

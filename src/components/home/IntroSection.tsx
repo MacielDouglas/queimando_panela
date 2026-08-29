@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export function IntroSection() {
   return (
-    <section className="py-[110px]" style={{ background: 'var(--cream)' }}>
+    <section className="py-24 lg:py-28" style={{ background: 'var(--cream)' }}>
       <div className="editorial-container">
         <div className="grid items-center gap-[clamp(38px,9vw,120px)] lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative">
@@ -49,12 +49,13 @@ export function IntroSection() {
               Cozinha caseira, com medida de olhômetro e de grama.
             </h2>
             <p className="section-copy">
-              Cada receita carrega quem fez, de onde veio e como acertar de
-              primeira — com ajuda da IA que sugere utensílios, calcula nutrição
-              e estima tempo.
+              Mostre quem fez, de onde veio e como acertar de primeira. A IA
+              sugere utensílios, calcula nutrição e estima tempo — sem tirar o
+              sabor da sua história.
             </p>
             <p className="section-copy">
-              Testada na cozinha de casa, publicada com confiança.
+              Você testa em casa, revisa o rascunho da IA e publica com
+              confiança.
             </p>
           </div>
         </div>
