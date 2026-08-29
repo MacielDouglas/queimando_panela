@@ -52,24 +52,31 @@ export function SignUpForm() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-7">
       <GoogleSignInButton />
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-[#e5e5e5]" />
+          <span
+            className="w-full border-t"
+            style={{ borderColor: 'var(--line)' }}
+          />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-white px-3 font-display text-xs font-bold uppercase tracking-[0.14em] text-[#6b6b6b]">
+          <span
+            className="bg-white px-3 text-[0.78rem] font-bold uppercase"
+            style={{ color: 'var(--ink-muted)', letterSpacing: '0.08em' }}
+          >
             ou cadastre-se com e-mail
           </span>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         <div className="space-y-2">
           <Label
             htmlFor="name"
-            className="font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]"
+            className="text-[0.78rem] font-bold uppercase"
+            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
           >
             Nome
           </Label>
@@ -78,11 +85,12 @@ export function SignUpForm() {
             type="text"
             autoComplete="name"
             placeholder="Seu nome"
-            className="h-12 rounded-none border-[#0a0a0a] bg-white focus-visible:border-[#0a0a0a] focus-visible:ring-2 focus-visible:ring-[#ffb900]"
+            className="h-12 rounded-[14px] bg-white"
+            style={{ borderColor: 'var(--line)' } as React.CSSProperties}
             {...register('name')}
           />
           {errors.name && (
-            <p className="font-sans text-sm text-[#cc1f1f]">
+            <p className="text-sm" style={{ color: 'var(--destructive)' }}>
               {errors.name.message}
             </p>
           )}
@@ -90,7 +98,8 @@ export function SignUpForm() {
         <div className="space-y-2">
           <Label
             htmlFor="email"
-            className="font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]"
+            className="text-[0.78rem] font-bold uppercase"
+            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
           >
             E-mail
           </Label>
@@ -99,11 +108,12 @@ export function SignUpForm() {
             type="email"
             autoComplete="email"
             placeholder="voce@exemplo.com"
-            className="h-12 rounded-none border-[#0a0a0a] bg-white focus-visible:border-[#0a0a0a] focus-visible:ring-2 focus-visible:ring-[#ffb900]"
+            className="h-12 rounded-[14px] bg-white"
+            style={{ borderColor: 'var(--line)' } as React.CSSProperties}
             {...register('email')}
           />
           {errors.email && (
-            <p className="font-sans text-sm text-[#cc1f1f]">
+            <p className="text-sm" style={{ color: 'var(--destructive)' }}>
               {errors.email.message}
             </p>
           )}
@@ -111,7 +121,8 @@ export function SignUpForm() {
         <div className="space-y-2">
           <Label
             htmlFor="password"
-            className="font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]"
+            className="text-[0.78rem] font-bold uppercase"
+            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
           >
             Senha
           </Label>
@@ -120,11 +131,12 @@ export function SignUpForm() {
             type="password"
             autoComplete="new-password"
             placeholder="Crie uma senha"
-            className="h-12 rounded-none border-[#0a0a0a] bg-white focus-visible:border-[#0a0a0a] focus-visible:ring-2 focus-visible:ring-[#ffb900]"
+            className="h-12 rounded-[14px] bg-white"
+            style={{ borderColor: 'var(--line)' } as React.CSSProperties}
             {...register('password')}
           />
           {errors.password && (
-            <p className="font-sans text-sm text-[#cc1f1f]">
+            <p className="text-sm" style={{ color: 'var(--destructive)' }}>
               {errors.password.message}
             </p>
           )}
@@ -132,7 +144,8 @@ export function SignUpForm() {
         <div className="space-y-2">
           <Label
             htmlFor="confirmPassword"
-            className="font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]"
+            className="text-[0.78rem] font-bold uppercase"
+            style={{ color: 'var(--forest)', letterSpacing: '0.08em' }}
           >
             Confirmar senha
           </Label>
@@ -141,28 +154,37 @@ export function SignUpForm() {
             type="password"
             autoComplete="new-password"
             placeholder="Repita sua senha"
-            className="h-12 rounded-none border-[#0a0a0a] bg-white focus-visible:border-[#0a0a0a] focus-visible:ring-2 focus-visible:ring-[#ffb900]"
+            className="h-12 rounded-[14px] bg-white"
+            style={{ borderColor: 'var(--line)' } as React.CSSProperties}
             {...register('confirmPassword')}
           />
           {errors.confirmPassword && (
-            <p className="font-sans text-sm text-[#cc1f1f]">
+            <p className="text-sm" style={{ color: 'var(--destructive)' }}>
               {errors.confirmPassword.message}
             </p>
           )}
         </div>
         {serverError && (
-          <p className="border border-[#cc1f1f]/20 bg-[#cc1f1f]/5 px-3 py-2 font-sans text-sm text-[#cc1f1f]">
+          <p
+            className="rounded-[var(--radius-md)] px-3 py-2 text-sm"
+            style={{
+              border:
+                '1px solid color-mix(in srgb, var(--destructive) 20%, transparent)',
+              background: 'color-mix(in srgb, var(--destructive) 6%, white)',
+              color: 'var(--destructive)',
+            }}
+          >
             {serverError}
           </p>
         )}
-        <p className="font-sans text-xs leading-5 text-[#6b6b6b]">
+        <p className="text-xs leading-5" style={{ color: 'var(--ink-muted)' }}>
           Ao continuar, você concorda com nossos termos e política de
           privacidade.
         </p>
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-12 w-full rounded-none bg-[#ffb900] font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a] hover:bg-[#e6a700] border border-[#0a0a0a]"
+          className="button-queimando-panela button-primary-queimando-panela h-12 w-full"
         >
           {isSubmitting ? 'Criando conta...' : 'Criar conta'}
         </Button>

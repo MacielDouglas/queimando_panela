@@ -19,72 +19,135 @@ export function AuthShell({
   footerLinkLabel,
 }: AuthShellProps) {
   return (
-    <main className="min-h-dvh bg-white">
-      <div className="mx-auto flex min-h-[calc(100dvh-6px)] w-full max-w-6xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid w-full max-w-5xl border-2 border-[#0a0a0a] bg-white md:grid-cols-[1.05fr_0.95fr]">
-          <section className="hidden border-r-2 border-[#0a0a0a] bg-[#0a0a0a] md:flex md:flex-col md:justify-between text-white">
-            <div className="p-8 lg:p-10">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 bg-[#ffb900] px-3 py-1 text-[#0a0a0a]"
+    <main className="min-h-dvh" style={{ background: 'var(--cream)' }}>
+      <div className="editorial-container flex min-h-[calc(100dvh-96px)] items-center justify-center py-12 lg:py-16">
+        <div
+          className="qp-reveal grid w-full max-w-5xl overflow-hidden bg-white"
+          style={{
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--line)',
+            boxShadow: '0 16px 36px rgba(24, 58, 55, 0.08)',
+          }}
+        >
+          <div className="grid md:grid-cols-[1.05fr_0.95fr]">
+            {/* Lado editorial — mesmo idioma de ValuesSection */}
+            <section
+              className="hidden flex-col justify-between p-8 lg:p-10 md:flex"
+              style={{ background: 'var(--forest)', color: 'white' }}
+            >
+              <div>
+                <Link
+                  href="/"
+                  className="inline-flex items-center gap-2 rounded-full px-3 py-1.5"
+                  style={{
+                    background: 'var(--accent-e)',
+                    color: 'var(--forest)',
+                  }}
+                >
+                  <span
+                    className="grid size-7 place-items-center rounded-full text-xs font-extrabold"
+                    style={{
+                      background: 'var(--forest)',
+                      color: 'var(--accent-e)',
+                    }}
+                    aria-hidden="true"
+                  >
+                    QP
+                  </span>
+                  <span
+                    className="text-[0.78rem] font-extrabold uppercase"
+                    style={{ letterSpacing: '0.08em' }}
+                  >
+                    Queimando Panela
+                  </span>
+                </Link>
+
+                <div className="mt-10 max-w-md space-y-4">
+                  <p
+                    className="inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-[0.78rem] font-bold uppercase"
+                    style={{
+                      background: 'var(--accent-e)',
+                      color: 'var(--forest)',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
+                    Cozinha com história
+                  </p>
+                  <h1 className="font-display text-[clamp(2rem,3vw,2.6rem)] font-extrabold leading-[0.95] tracking-[-0.04em] text-balance text-white">
+                    Receitas para
+                    <br />
+                    guardar, testar
+                    <br />e compartilhar.
+                  </h1>
+                  <p
+                    className="text-sm leading-6"
+                    style={{ color: 'rgba(255,255,255,0.72)' }}
+                  >
+                    Entre para salvar favoritas, publicar com IA e fazer parte
+                    da cozinha que valoriza olhômetro e grama.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                className="rounded-[var(--radius-md)] p-5"
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.14)',
+                }}
               >
-                <span className="size-7 bg-[#0a0a0a] text-[#ffb900] grid place-items-center font-display text-xs font-extrabold">
-                  QP
-                </span>
-                <span className="font-display text-xs font-extrabold uppercase tracking-[0.14em]">
-                  Queimando Panela
-                </span>
-              </Link>
-              <div className="mt-12 max-w-md space-y-4">
-                <p className="inline-block bg-[#ffb900] px-2 py-1 font-display text-xs font-extrabold uppercase tracking-[0.14em] text-[#0a0a0a]">
-                  Blog culinário Queimando Panela
+                <p
+                  className="text-[0.78rem] font-bold uppercase"
+                  style={{ color: 'var(--accent-e)', letterSpacing: '0.08em' }}
+                >
+                  Feito por quem cozinha
                 </p>
-                <h1 className="font-display text-4xl font-extrabold uppercase leading-none tracking-[-0.02em] text-white">
-                  Receitas para
-                  <br />
-                  guardar, testar
-                  <br />e compartilhar.
-                </h1>
-                <p className="font-sans text-sm leading-6 text-white/60">
-                  Entre para salvar suas favoritas e enviar novas receitas para
-                  a comunidade — quadrado e amarelo.
+                <p
+                  className="mt-1 text-sm leading-5"
+                  style={{ color: 'rgba(255,255,255,0.76)' }}
+                >
+                  Escreva como faz em casa. A IA confere utensílios, tempo e
+                  nutrição — você publica com confiança.
                 </p>
               </div>
-            </div>
-            <div className="border-t-2 border-[#ffb900] bg-[#ffb900] p-6">
-              <p className="font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#0a0a0a]">
-                Simples, claro e direto
-              </p>
-              <p className="mt-1 font-sans text-sm leading-5 text-[#0a0a0a]">
-                Um espaço aberto para quem gosta de cozinhar em casa.
-              </p>
-            </div>
-          </section>
+            </section>
 
-          <section className="flex items-center justify-center bg-white">
-            <div className="w-full max-w-md px-6 py-8 sm:px-8">
-              <div className="border-l border-[#e5e5e5] pl-3">
-                <h2 className="font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#0a0a0a]">
+            {/* Lado formulário — mesmo ritmo de home */}
+            <section className="flex items-center justify-center bg-white">
+              <div className="w-full max-w-md px-6 py-8 sm:px-8">
+                <p className="eyebrow-queimando-panela">Queimando Panela</p>
+                <h2
+                  className="font-display text-2xl font-extrabold leading-none tracking-[-0.04em] text-balance"
+                  style={{ color: 'var(--forest)' }}
+                >
                   {title}
                 </h2>
-                <p className="mt-2 font-sans text-sm leading-5 text-[#6b6b6b]">
-                  {description}
+                <p className="section-copy mt-3 !text-sm">{description}</p>
+
+                <div className="mt-8">{children}</div>
+
+                <p
+                  className="mt-8 border-t pt-6 text-sm"
+                  style={{
+                    borderColor: 'var(--line)',
+                    color: 'var(--ink-muted)',
+                  }}
+                >
+                  {footerText}{' '}
+                  <Link
+                    href={footerLinkHref}
+                    className="font-bold underline decoration-2 underline-offset-4 transition-colors hover:opacity-80"
+                    style={{
+                      color: 'var(--forest)',
+                      textDecorationColor: 'var(--accent-e)',
+                    }}
+                  >
+                    {footerLinkLabel}
+                  </Link>
                 </p>
               </div>
-
-              <div className="mt-6">{children}</div>
-
-              <p className="mt-6 border-t-2 border-[#0a0a0a] pt-4 font-sans text-sm text-[#6b6b6b]">
-                {footerText}{' '}
-                <Link
-                  href={footerLinkHref}
-                  className="font-display font-extrabold uppercase tracking-[0.08em] text-[#0a0a0a] underline decoration-[#ffb900] decoration-2 underline-offset-4 hover:bg-[#ffb900]"
-                >
-                  {footerLinkLabel}
-                </Link>
-              </p>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
       </div>
     </main>
