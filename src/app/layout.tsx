@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
-import { DM_Sans, Playfair_Display } from 'next/font/google';
+import { DM_Sans, Fraunces } from 'next/font/google';
 import './globals.css';
 import { ConsoleDelight } from '@/components/delight/console-delight';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 
-const playfair = Playfair_Display({
+const playfair = Fraunces({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
-  weight: ['400', '600', '700', '800'],
+  weight: ['500', '600', '700'],
 });
 
 const dmSans = DM_Sans({
@@ -39,7 +39,6 @@ export default async function RootLayout({
         className={`${playfair.variable} ${dmSans.variable} min-h-dvh antialiased`}
         style={{
           color: 'var(--ink)',
-          background: 'var(--cream)',
         }}
       >
         <div className="flex min-h-dvh flex-col">

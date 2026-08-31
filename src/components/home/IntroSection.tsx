@@ -13,7 +13,7 @@ export function IntroSection() {
               className="relative overflow-hidden"
               style={{ borderRadius: 'var(--radius-lg)' }}
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-[#f7f1e9] lg:aspect-[1/1.06]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#e8ddca] lg:aspect-[1/1.06]">
                 <Image
                   src="https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&w=1000&q=85"
                   alt="Queijos artesanais, ervas e ingredientes naturais"

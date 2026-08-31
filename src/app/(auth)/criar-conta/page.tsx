@@ -57,7 +57,7 @@ export default function NewUserPage() {
             role="presentation"
           >
             <ChefHat
-              className="h-4 w-4 shrink-0 text-amber-500"
+              className="h-4 w-4 shrink-0 text-[#a85131]"
               aria-hidden="true"
             />
             A cozinha está aberta
@@ -69,13 +69,13 @@ export default function NewUserPage() {
               className="text-2xl leading-tight font-black tracking-tight text-stone-100 sm:text-3xl"
             >
               Crie sua conta no{' '}
-              <span className="text-amber-500">Queimando Panela</span>
+              <span className="text-[#a85131]">Queimando Panela</span>
             </h1>
             <p className="mx-auto max-w-lg text-base leading-relaxed text-stone-400">
               Entre para uma comunidade apaixonada por receitas, sabores,
               histórias e experiências gastronômicas.
             </p>
-            <p className="text-sm font-medium text-amber-600">
+            <p className="text-sm font-medium text-[var(--clay)]">
               Sua próxima receita começa aqui 🍲
             </p>
           </div>

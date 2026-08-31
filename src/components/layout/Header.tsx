@@ -13,15 +13,15 @@ export default function Header() {
       <header
         className="sticky top-0 z-20 border-b backdrop-blur"
         style={{
-          borderColor: 'rgba(232, 225, 213, 0.72)',
-          background: 'rgba(255, 253, 247, 0.9)',
-          boxShadow: '0 1px 12px rgba(24, 58, 55, 0.06)',
+          borderColor: 'rgba(27, 41, 32, 0.16)',
+          background: 'rgba(246, 240, 228, 0.9)',
+          boxShadow: '0 1px 12px rgba(27, 41, 32, 0.06)',
         }}
       >
         <div className="editorial-container flex min-h-[84px] items-center justify-between gap-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-3 text-[#3a2418]"
+            className="inline-flex items-center gap-3 text-[#1b2920]"
             aria-label="Queimando Panela - Página inicial"
           >
             <QPMark className="size-[38px] text-[0.95rem]" />

@@ -96,7 +96,7 @@ export function SignUpForm() {
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 placeholder="Seu nome"
-                className="border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+                className="border-[rgba(27,41,32,0.16)] bg-white/70 focus-visible:border-[var(--clay)] focus-visible:ring-[var(--gold)]/20"
               />
             </FieldContent>
 
@@ -116,7 +116,7 @@ export function SignUpForm() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="voce@email.com"
-                className="border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+                className="border-[rgba(27,41,32,0.16)] bg-white/70 focus-visible:border-[var(--clay)] focus-visible:ring-[var(--gold)]/20"
               />
             </FieldContent>
           </Field>
@@ -133,7 +133,7 @@ export function SignUpForm() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="••••••••"
-                className="border-neutral-200 bg-white/70 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+                className="border-[rgba(27,41,32,0.16)] bg-white/70 focus-visible:border-[var(--clay)] focus-visible:ring-[var(--gold)]/20"
               />
             </FieldContent>
 
@@ -148,7 +148,7 @@ export function SignUpForm() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-11 w-full bg-amber-500 font-semibold text-neutral-950 transition-all duration-300 hover:bg-amber-400"
+          className="h-11 w-full bg-[#a85131] font-semibold text-neutral-950 transition-all duration-300 hover:bg-[#8e4429]"
         >
           {isSubmitting ? 'Criando conta...' : 'Criar conta'}
         </Button>
@@ -170,7 +170,7 @@ export function SignUpForm() {
         Já tem conta?{' '}
         <Link
           href="/login"
-          className="font-semibold text-amber-700 hover:text-amber-500"
+          className="font-semibold text-[#a85131] hover:text-[#a85131]"
         >
           Entrar
         </Link>

@@ -58,7 +58,7 @@ export default function LoginPage() {
             role="presentation"
           >
             <ChefHat
-              className="h-4 w-4 shrink-0 text-amber-500"
+              className="h-4 w-4 shrink-0 text-[#a85131]"
               aria-hidden="true"
             />
             Bem-vindo de volta
@@ -69,13 +69,13 @@ export default function LoginPage() {
               id="login-heading"
               className="text-4xl leading-tight font-black tracking-tight text-stone-100 sm:text-5xl"
             >
-              Entre no <span className="text-amber-500">Queimando Panela</span>
+              Entre no <span className="text-[#a85131]">Queimando Panela</span>
             </h1>
             <p className="mx-auto max-w-lg text-base leading-relaxed text-stone-400">
               Receitas autorais, histórias culinárias, dicas de cozinha e
               sabores preparados com carinho.
             </p>
-            <p className="text-sm font-medium text-amber-600">
+            <p className="text-sm font-medium text-[var(--clay)]">
               A cozinha já está quente 🔥
             </p>
           </div>

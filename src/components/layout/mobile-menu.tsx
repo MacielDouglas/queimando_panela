@@ -25,7 +25,7 @@ export function MobileMenu() {
           type="button"
           variant="ghost"
           size="icon"
-          className="size-11 border border-[#3a2418] bg-transparent text-[#3a2418] hover:bg-[#3a2418] hover:text-white"
+          className="size-11 border border-[#1b2920] bg-transparent text-[#1b2920] hover:bg-[#1b2920] hover:text-white"
           aria-label="Abrir menu"
         >
           <HiOutlineMenuAlt3 className="size-5" />
@@ -48,7 +48,7 @@ export function MobileMenu() {
             <SheetClose asChild>
               <Link
                 href="/"
-                className="inline-flex items-center gap-3 text-[#3a2418]"
+                className="inline-flex items-center gap-3 text-[#1b2920]"
               >
                 <QPMark />
                 <span className="font-display text-sm font-bold uppercase tracking-[0.1em]">
@@ -79,7 +79,7 @@ export function MobileMenu() {
 
         <div
           className="border-t px-6 py-5"
-          style={{ borderColor: 'var(--line)', background: '#24150e' }}
+          style={{ borderColor: 'var(--line)', background: '#111b14' }}
         >
           <p
             className="text-xs font-bold uppercase"
@@ -96,7 +96,7 @@ export function MobileMenu() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 border px-3 py-2 text-xs font-bold uppercase text-white transition-colors hover:bg-[var(--food-accent)] hover:text-[#3a2418]"
+                    className="inline-flex items-center gap-2 border px-3 py-2 text-xs font-bold uppercase text-white transition-colors hover:bg-[var(--food-accent)] hover:text-[#1b2920]"
                     style={{
                       borderColor: 'rgba(255,255,255,0.1)',
                       letterSpacing: '0.08em',

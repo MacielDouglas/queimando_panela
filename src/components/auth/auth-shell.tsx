@@ -26,7 +26,7 @@ export function AuthShell({
           style={{
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--line)',
-            boxShadow: '0 16px 36px rgba(24, 58, 55, 0.08)',
+            boxShadow: '0 16px 36px rgba(27, 41, 32, 0.08)',
           }}
         >
           <div className="grid md:grid-cols-[1.05fr_0.95fr]">

@@ -16,7 +16,7 @@ export function QPMark({
       aria-label={label}
       title="Queimando Panela — onde olhômetro vira medida"
       className={cn(
-        'qp-mark-delight inline-grid size-[34px] place-items-center rounded-full text-[#3a2418] font-body text-[0.88rem] font-bold',
+        'qp-mark-delight inline-grid size-[34px] place-items-center rounded-full text-[#1b2920] font-body text-[0.88rem] font-bold',
         className,
       )}
       style={{
@@ -35,7 +35,7 @@ export function QPWordmark({ className, ...props }: ComponentProps<'div'>) {
   return (
     <div
       className={cn(
-        'flex flex-col font-display font-bold uppercase leading-none tracking-[0.06em] text-[#3a2418]',
+        'flex flex-col font-display font-bold uppercase leading-none tracking-[0.06em] text-[#1b2920]',
         className,
       )}
       {...props}

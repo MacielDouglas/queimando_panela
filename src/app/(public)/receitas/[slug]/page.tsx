@@ -198,71 +198,270 @@ export default async function RecipeDetailPage({ params }: Props) {
         </div>
       </section>
 
-      {/* CTA final — editorial, mesma linguagem da Home */}
+      {/* CTA final — SUA VEZ: delight + bolder + layout + colorize */}
       <section
         className="border-t"
         style={{ borderColor: 'var(--line)', background: 'white' }}
       >
         <div className="editorial-container py-12 lg:py-16">
           <div
-            className="grid items-center overflow-hidden lg:grid-cols-[1.15fr_0.85fr]"
+            className="group relative grid overflow-hidden lg:grid-cols-[1.38fr_0.62fr]"
             style={{
               borderRadius: 'var(--radius-lg)',
+              border: '1px solid var(--line)',
               background: 'var(--food-accent)',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
-            <div className="p-8 lg:p-10">
+            {/* delight: leve textura radial pontual, sem stripes/grid */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.06]"
+              style={{
+                background:
+                  'radial-gradient(circle at 18% 22%, var(--cocoa) 0 1px, transparent 1.2px), radial-gradient(circle at 72% 78%, var(--cocoa) 0 1px, transparent 1.2px)',
+                backgroundSize: '28px 28px',
+              }}
+              aria-hidden="true"
+            />
+
+            {/* Left — bolder hierarchy + layout rhythm */}
+            <div className="relative flex flex-col gap-5 p-[clamp(24px,5vw,48px)] lg:p-[clamp(28px,4vw,56px)] lg:pr-10">
               <p
-                className="mb-3 inline-flex items-center gap-2 text-[0.78rem] font-bold uppercase"
-                style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
+                className="inline-flex items-center gap-2.5 text-[0.72rem] font-bold uppercase"
+                style={{ color: 'var(--cocoa)', letterSpacing: '0.14em' }}
               >
                 <span
-                  className="h-[2px] w-7"
+                  className="grid size-7 place-items-center rounded-full bg-white"
+                  style={{
+                    border: '1px solid var(--line)',
+                    color: 'var(--cocoa)',
+                  }}
+                  aria-hidden="true"
+                >
+                  <span className="text-[0.7rem] leading-none transition-transform duration-300 group-hover:rotate-12">
+                    ✦
+                  </span>
+                </span>
+                Sua vez
+                <span
+                  className="h-px w-8"
+                  style={{ background: 'var(--cocoa)', opacity: 0.2 }}
+                  aria-hidden="true"
+                />
+                <span
+                  className="hidden rounded-full bg-white px-2.5 py-1 text-[0.68rem] font-extrabold uppercase sm:inline-flex"
+                  style={{
+                    border: '1px solid var(--line)',
+                    color: 'var(--ink-muted)',
+                    letterSpacing: '0.06em',
+                  }}
+                >
+                  Panela &gt; perfeição
+                </span>
+              </p>
+
+              <h2
+                className="max-w-[14ch] font-display font-extrabold leading-[0.85] tracking-[-0.045em] text-balance"
+                style={{
+                  color: 'var(--cocoa)',
+                  fontSize: 'clamp(2.6rem, 5.2vw, 3.9rem)',
+                }}
+              >
+                Queimou
+                <br />a panela?
+                <br />
+                <em
+                  className="font-display font-normal italic"
+                  style={{ color: 'var(--cocoa)', letterSpacing: '-0.03em' }}
+                >
+                  Ótimo.
+                </em>
+              </h2>
+
+              <p
+                className="max-w-[46ch] text-[1.04rem] leading-[1.65]"
+                style={{ color: 'rgba(58,36,24,0.78)', textWrap: 'pretty' }}
+              >
+                Toda mancha de molho guarda história. Compartilhe a sua com
+                medidas de olhômetro — a IA confere utensílios, tempo e nutrição
+                antes de publicar.
+              </p>
+
+              <div className="mt-1 flex flex-wrap items-center gap-3">
+                <Link
+                  href="/receitas/new"
+                  className="button-queimando-panela group/btn"
+                  style={{ background: 'var(--cocoa)', color: 'white' }}
+                >
+                  Publicar receita
+                  <span
+                    className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </Link>
+                <Link
+                  href="/receitas"
+                  className="inline-flex min-h-11 items-center gap-1.5 px-4 text-sm font-bold"
+                  style={{ color: 'var(--cocoa)' }}
+                >
+                  Explorar receitas
+                  <span
+                    className="transition-transform duration-200 group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </Link>
+              </div>
+
+              <p
+                className="inline-flex items-center gap-2 text-xs"
+                style={{ color: 'rgba(58,36,24,0.6)' }}
+              >
+                <span
+                  className="size-1.5 rounded-full"
                   style={{ background: 'var(--cocoa)' }}
                   aria-hidden="true"
                 />
-                Sua vez
+                Leva 2 min • rascunho editável • IA co-piloto
               </p>
-              <h2
-                className="max-w-[20ch] font-display text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[0.9] tracking-[-0.04em] text-balance"
-                style={{ color: 'var(--cocoa)' }}
-              >
-                Queimou a panela? Ótimo.
-              </h2>
-              <p
-                className="mt-3 max-w-[52ch] text-[1.05rem] leading-6"
-                style={{ color: 'rgba(31,41,51,0.82)' }}
-              >
-                Toda receita boa tem uma história. Compartilhe a sua e deixe a
-                IA conferir antes de ir ao ar.
-              </p>
-              <Link
-                href="/receitas/new"
-                className="button-queimando-panela mt-6 inline-flex"
-                style={{ background: 'var(--cocoa)', color: 'white' }}
-              >
-                Publicar receita
-                <span aria-hidden="true">→</span>
-              </Link>
             </div>
+
+            {/* Right — layout dedicado + colorize committed + delight artifact */}
             <div
-              className="hidden min-h-[280px] bg-white/40 lg:block"
-              style={{ background: 'var(--muted)' }}
+              className="relative hidden min-h-[380px] flex-col justify-between overflow-hidden p-6 lg:flex"
+              style={{ background: 'var(--cocoa)', color: 'white' }}
             >
-              <div className="grid h-full place-items-center p-8 text-center">
+              <div
+                className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full opacity-[0.08]"
+                style={{ background: 'var(--food-accent)' }}
+                aria-hidden="true"
+              />
+
+              {/* Polaroid delight artifact */}
+              <div className="relative mx-auto w-full max-w-[280px] flex-1 content-center">
+                <div
+                  className="relative rotate-[-1.5deg] bg-white p-3 pb-8 transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:rotate-[-0.5deg] group-hover:shadow-lg"
+                  style={{
+                    borderRadius: '14px',
+                    border: '1px solid var(--line)',
+                    boxShadow: '0 12px 28px rgba(0,0,0,0.18)',
+                  }}
+                >
+                  <div
+                    className="relative aspect-[4/3] overflow-hidden"
+                    style={{
+                      borderRadius: '10px',
+                      background: 'var(--muted)',
+                      border: '1px solid var(--line)',
+                    }}
+                  >
+                    <div className="absolute inset-0 grid place-items-center gap-2 p-4 text-center">
+                      <span
+                        className="rounded-full bg-white px-2.5 py-1 text-[0.68rem] font-extrabold uppercase"
+                        style={{
+                          border: '1px solid var(--line)',
+                          color: 'var(--cocoa)',
+                          letterSpacing: '0.06em',
+                        }}
+                      >
+                        Arroz da Dona Cida
+                      </span>
+                      <p
+                        className="font-display text-sm font-bold leading-tight"
+                        style={{ color: 'var(--cocoa)' }}
+                      >
+                        2 xícaras de
+                        <br />
+                        colher de pau
+                      </p>
+                      <span
+                        className="text-[0.7rem]"
+                        style={{ color: 'var(--ink-muted)' }}
+                      >
+                        + 1 pitada de história
+                      </span>
+                    </div>
+                  </div>
+                  <p
+                    className="mt-3 text-center font-display text-[0.82rem] font-semibold italic leading-tight"
+                    style={{ color: 'var(--cocoa)' }}
+                  >
+                    “Minha mãe media no olho — e sempre dava certo.”
+                  </p>
+                  <span
+                    className="absolute -right-2 -top-2 grid size-7 place-items-center rounded-full text-[0.7rem] font-bold shadow-sm"
+                    style={{
+                      background: 'var(--food-accent)',
+                      color: 'var(--cocoa)',
+                      border: '1px solid var(--line)',
+                    }}
+                    aria-hidden="true"
+                  >
+                    ♡
+                  </span>
+                </div>
+
+                {/* delight: floating badge — committed yellow + cocoa */}
+                <div
+                  className="qp-badge-float absolute -right-1 bottom-2 hidden rotate-[9deg] items-center gap-1 rounded-full border bg-white px-3 py-1.5 text-xs font-bold shadow-sm lg:inline-flex"
+                  style={{
+                    borderColor: 'var(--line)',
+                    color: 'var(--cocoa)',
+                  }}
+                  aria-hidden="true"
+                >
+                  <span
+                    className="size-1.5 rounded-full"
+                    style={{ background: 'var(--food-accent)' }}
+                  />
+                  olhômetro aprovado
+                </div>
+              </div>
+
+              <div
+                className="relative mt-4 flex items-center justify-between gap-3 border-t pt-4 text-xs"
+                style={{ borderColor: 'rgba(255,255,255,0.14)' }}
+              >
                 <p
-                  className="max-w-[20ch] font-display text-lg font-bold leading-tight"
-                  style={{ color: 'var(--cocoa)' }}
+                  className="font-display text-sm font-bold leading-tight"
+                  style={{ color: 'white' }}
                 >
                   Olhômetro vale
                   <br />
-                  tanto quanto
-                  <br />
-                  gramas.
+                  tanto quanto gramas.
                 </p>
+                <span
+                  className="shrink-0 rounded-full bg-white px-3 py-1 text-[0.7rem] font-extrabold uppercase"
+                  style={{
+                    color: 'var(--cocoa)',
+                    letterSpacing: '0.06em',
+                  }}
+                >
+                  100% histórias reais
+                </span>
               </div>
             </div>
           </div>
+
+          {/* Mobile delight fallback — layout rhythm keeps meaning when right col hidden */}
+          <p
+            className="flex items-center justify-center gap-2 border-t py-4 text-center text-xs font-bold uppercase lg:hidden"
+            style={{
+              borderColor: 'rgba(58,36,24,0.12)',
+              color: 'var(--cocoa)',
+              letterSpacing: '0.08em',
+            }}
+          >
+            <span
+              className="size-1.5 rounded-full"
+              style={{ background: 'var(--cocoa)' }}
+              aria-hidden="true"
+            />
+            Olhômetro vale tanto quanto gramas
+          </p>
         </div>
       </section>
     </main>

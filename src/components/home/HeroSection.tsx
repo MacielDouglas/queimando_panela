@@ -90,7 +90,7 @@ export function HeroSection() {
             className="qp-parallax absolute inset-0 overflow-hidden"
             style={{
               borderRadius: '46% 46% 22px 22px',
-              background: '#f7f1e9',
+              background: '#e8ddca',
               right: '12px',
             }}
           >

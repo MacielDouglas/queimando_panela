@@ -233,7 +233,7 @@ export default async function RecipesPage({ searchParams }: Props) {
                 style={{
                   borderRadius: 'var(--radius-md)',
                   border: '1px solid var(--line)',
-                  boxShadow: '0 10px 30px rgba(24, 58, 55, 0.06)',
+                  boxShadow: '0 10px 30px rgba(27, 41, 32, 0.06)',
                 }}
               >
                 <RecipeHeroFeatured recipe={latest} />

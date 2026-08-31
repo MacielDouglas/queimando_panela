@@ -45,9 +45,9 @@ export function RecipeCardSmall({ recipe, priority = false }: Props) {
       <div className="flex flex-col gap-1 pt-2.5">
         <Link
           href={`/receitas/${recipe.slug}`}
-          className="focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:outline-none"
+          className="focus-visible:ring-2 focus-visible:ring-[var(--gold)] focus-visible:ring-offset-2 focus-visible:outline-none"
         >
-          <h4 className="line-clamp-2 text-sm leading-snug font-semibold tracking-tight text-neutral-950 transition-colors group-hover:text-amber-700">
+          <h4 className="line-clamp-2 text-sm leading-snug font-semibold tracking-tight text-neutral-950 transition-colors group-hover:text-[#a85131]">
             {recipe.title}
           </h4>
         </Link>
@@ -64,7 +64,7 @@ export function RecipeCardSmall({ recipe, priority = false }: Props) {
           )}
           <span className="flex items-center gap-1 text-xs">
             <Flame
-              className="h-3.5 w-3.5 shrink-0 text-amber-500"
+              className="h-3.5 w-3.5 shrink-0 text-[#a85131]"
               aria-hidden="true"
             />
             <span>{difficultyLabel[recipe.difficulty]}</span>

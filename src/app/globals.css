@@ -62,73 +62,79 @@
   --color-cream: var(--cream);
   --color-line: var(--line);
 
-  --radius-sm: calc(var(--radius) - 8px);
-  --radius-md: calc(var(--radius) - 4px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 10px);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
 }
 
 :root {
   /*
    * ─────────────────────────────────────────────────────
-   * Fundação: acolhedora, gastronômica e tecnológica.
-   * Cacau substitui completamente o verde da marca.
+   * Fundacao Epirus nova.html — editorial raiz, papel e barro.
+   * Ink #1b2920, paper #f6f0e4, clay #a85131, gold #c4975d, moss #65765b
    * ─────────────────────────────────────────────────────
    */
-  --background: #fffdf8;
-  --foreground: #2a211d;
+  --background: #f6f0e4;
+  --foreground: #1b2920;
 
   --card: #ffffff;
-  --card-foreground: #2a211d;
+  --card-foreground: #1b2920;
 
   --popover: #ffffff;
-  --popover-foreground: #2a211d;
+  --popover-foreground: #1b2920;
 
   /*
-   * Amarelo = ação culinária geral.
-   * Ex.: salvar, favoritar, começar a cozinhar.
+   * Clay = ação editorial (substitui amarelo).
    */
-  --primary: #ffc733;
-  --primary-foreground: #2a211d;
+  --primary: #a85131;
+  --primary-foreground: #ffffff;
 
-  --secondary: #f7f1e9;
-  --secondary-foreground: #3a2418;
+  --secondary: #e8ddca;
+  --secondary-foreground: #1b2920;
 
-  --muted: #f7f1e9;
-  --muted-foreground: #74665d;
+  --muted: #e8ddca;
+  --muted-foreground: #3e4d42;
 
   /*
-   * Accent = marca, navegação e contexto editorial.
+   * Accent = ink editorial
    */
-  --accent: #3a2418;
-  --accent-foreground: #ffffff;
+  --accent: #1b2920;
+  --accent-foreground: #f6f0e4;
 
-  --border: #eae2d8;
-  --input: #eae2d8;
-  --ring: #5b5ce2;
+  --border: rgba(27, 41, 32, 0.16);
+  --input: rgba(27, 41, 32, 0.16);
+  --ring: #c4975d;
 
   --destructive: #c93d3d;
   --destructive-foreground: #ffffff;
 
   /*
    * ─────────────────────────────────────────────────────
-   * Marca culinária: cacau + dourado
+   * Marca Epirus — mapeamento compativel (alias)
    * ─────────────────────────────────────────────────────
    */
-  --cocoa: #3a2418;
-  --cocoa-hover: #593b2a;
-  --cocoa-dark: #24150e;
+  --cocoa: #1b2920;
+  --cocoa-hover: #2a3a2f;
+  --cocoa-dark: #111b14;
 
-  --food-accent: #ffc733;
-  --food-accent-hover: #e5ac18;
-  --food-accent-soft: #fff1be;
+  --food-accent: #a85131;
+  --food-accent-hover: #8e4429;
+  --food-accent-soft: #e8ddca;
 
-  --cream: #fffdf8;
-  --cream-strong: #f7f1e9;
+  --cream: #f6f0e4;
+  --cream-strong: #e8ddca;
 
-  --ink: #2a211d;
-  --ink-muted: #74665d;
-  --line: #eae2d8;
+  --ink: #1b2920;
+  --ink-muted: #3e4d42;
+  --line: rgba(27, 41, 32, 0.16);
+
+  --paper: #f6f0e4;
+  --paper-strong: #e8ddca;
+  --clay: #a85131;
+  --gold: #c4975d;
+  --moss: #65765b;
+  --white: #ffffff;
 
   /*
    * ─────────────────────────────────────────────────────
@@ -168,12 +174,12 @@
    * Estrutura
    * ─────────────────────────────────────────────────────
    */
-  --radius: 18px;
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
-  --radius-xl: 28px;
-  --radius-full: 999px;
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-full: 0px;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -187,12 +193,12 @@
   --leading-heading: 1.15;
   --leading-body: 1.6;
 
-  --shadow-sm: 0 4px 12px rgba(58, 36, 24, 0.06);
-  --shadow-md: 0 12px 28px rgba(58, 36, 24, 0.08);
-  --shadow-lg: 0 20px 50px rgba(58, 36, 24, 0.1);
+  --shadow-sm: 0 4px 12px rgba(27, 41, 32, 0.06);
+  --shadow-md: 0 12px 28px rgba(27, 41, 32, 0.1);
+  --shadow-lg: 0 20px 60px rgba(27, 41, 32, 0.2);
 
-  --shadow-ai: 0 14px 34px rgba(91, 92, 226, 0.16);
-  --shadow-ai-hover: 0 18px 40px rgba(91, 92, 226, 0.24);
+  --shadow-ai: 0 14px 34px rgba(27, 41, 32, 0.12);
+  --shadow-ai-hover: 0 18px 40px rgba(27, 41, 32, 0.16);
 
   --container: 1180px;
 }
@@ -225,10 +231,14 @@
   html {
     font-size: 16px;
     scroll-behavior: smooth;
+    background-color: var(--paper);
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    position: relative;
+    isolation: isolate;
+    background-color: var(--paper);
     font-family: var(--font-body), "DM Sans", Arial, sans-serif;
     font-size: var(--text-base);
     line-height: var(--leading-body);
@@ -238,6 +248,31 @@
     font-variant-ligatures: common-ligatures;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  body::before {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(rgba(246, 240, 228, 0.6), rgba(246, 240, 228, 0.6)),
+      url("/pattern.jpg");
+    background-repeat: repeat, repeat;
+    background-size:
+      auto,
+      512px 512px;
+    background-position:
+      top left,
+      top left;
+    content: "";
+    pointer-events: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    border-radius: 0 !important;
   }
 
   h1,
@@ -295,17 +330,17 @@
   }
 
   ::selection {
-    background: var(--food-accent);
-    color: var(--ink);
+    background: var(--gold);
+    color: var(--white);
   }
 
   :focus-visible {
-    outline: 3px solid var(--ai-primary);
+    outline: 3px solid var(--gold);
     outline-offset: 3px;
   }
 
   footer :focus-visible {
-    outline-color: var(--food-accent);
+    outline-color: var(--gold);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -369,7 +404,7 @@
     width: 22px;
     height: 22px;
     place-items: center;
-    border-radius: 8px;
+    border-radius: 0;
     background: linear-gradient(135deg, var(--ai-primary), var(--ai-violet));
     box-shadow: 0 6px 14px rgba(91, 92, 226, 0.22);
     color: #ffffff;
@@ -405,7 +440,7 @@
     min-height: 50px;
     padding: 0 22px;
     border: 1px solid transparent;
-    border-radius: var(--radius-full);
+    border-radius: 0;
     cursor: pointer;
     font-weight: 700;
     transition:
@@ -425,14 +460,14 @@
   }
 
   .button-primary-queimando-panela {
-    background: var(--food-accent);
-    color: var(--ink);
-    box-shadow: 0 8px 20px rgba(255, 199, 51, 0.25);
+    background: var(--clay);
+    color: var(--white);
+    box-shadow: 0 8px 20px rgba(168, 81, 49, 0.22);
   }
 
   .button-primary-queimando-panela:hover {
     background: var(--food-accent-hover);
-    box-shadow: 0 12px 28px rgba(255, 199, 51, 0.32);
+    box-shadow: 0 12px 28px rgba(168, 81, 49, 0.28);
   }
 
   .button-outline-queimando-panela {
@@ -455,7 +490,7 @@
     min-height: 50px;
     padding: 0 22px;
     border: 1px solid transparent;
-    border-radius: var(--radius-full);
+    border-radius: 0;
     background: var(--ai-primary);
     color: var(--ai-primary-foreground);
     cursor: pointer;
@@ -485,7 +520,7 @@
     min-height: 50px;
     padding: 0 22px;
     border: 1px solid var(--ai-border);
-    border-radius: var(--radius-full);
+    border-radius: 0;
     background: var(--ai-soft);
     color: var(--ai-primary);
     cursor: pointer;
@@ -508,7 +543,7 @@
     position: relative;
     overflow: hidden;
     border: 1px solid var(--ai-border);
-    border-radius: var(--radius-xl);
+    border-radius: 0;
     background: linear-gradient(135deg, var(--ai-muted), var(--ai-soft));
     box-shadow: 0 12px 28px rgba(91, 92, 226, 0.08);
   }
@@ -528,7 +563,7 @@
     min-height: 30px;
     padding: 0 10px;
     border: 1px solid var(--ai-border);
-    border-radius: var(--radius-full);
+    border-radius: 0;
     background: var(--ai-soft);
     color: var(--ai-primary);
     font-size: 0.75rem;
@@ -556,7 +591,7 @@
     min-height: 30px;
     padding: 0 10px;
     border: 1px solid var(--line);
-    border-radius: var(--radius-full);
+    border-radius: 0;
     background: var(--cream-strong);
     color: var(--cocoa);
     font-size: 0.78rem;
@@ -666,12 +701,7 @@
     z-index: 50;
     width: 100%;
     height: 3px;
-    background: linear-gradient(
-      90deg,
-      var(--food-accent),
-      var(--ai-primary),
-      var(--ai-violet)
-    );
+    background: linear-gradient(90deg, var(--clay), var(--gold), var(--moss));
     transform: scaleX(0);
     transform-origin: left;
     pointer-events: none;
@@ -732,4 +762,11 @@
       transform: translateY(0);
     }
   }
+}
+
+/* Forçar tudo quadrado - override global */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
 }

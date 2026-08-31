@@ -24,7 +24,7 @@ function ResetPasswordFormFallback() {
     <div className="space-y-5">
       <div className="h-11 w-full animate-pulse rounded-none bg-stone-100" />
       <div className="h-11 w-full animate-pulse rounded-none bg-stone-100" />
-      <div className="h-11 w-full animate-pulse rounded-none bg-amber-100" />
+      <div className="h-11 w-full animate-pulse rounded-none bg-[var(--paper-strong)]" />
     </div>
   );
 }

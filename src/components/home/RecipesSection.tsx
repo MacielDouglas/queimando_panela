@@ -57,7 +57,7 @@ export function RecipesSection({ rows }: RecipesSectionProps) {
                 className="qp-card-delight group overflow-hidden bg-white"
                 style={{
                   borderRadius: 'var(--radius-md)',
-                  boxShadow: '0 10px 30px rgba(24, 58, 55, 0.06)',
+                  boxShadow: '0 10px 30px rgba(27, 41, 32, 0.06)',
                 }}
               >
                 <div

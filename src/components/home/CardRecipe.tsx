@@ -56,7 +56,7 @@ export default function CardRecipe({
           <span
             className="absolute left-2.5 top-2.5 rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase shadow-sm"
             style={{
-              borderColor: 'rgba(24, 58, 55, 0.1)',
+              borderColor: 'rgba(27, 41, 32, 0.1)',
               background: 'var(--food-accent)',
               color: 'var(--ink)',
               letterSpacing: '0.12em',

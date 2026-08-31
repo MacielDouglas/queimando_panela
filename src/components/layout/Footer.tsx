@@ -28,7 +28,7 @@ export default function Footer() {
     <footer
       className="border-t"
       style={{
-        background: 'var(--cocoa-dark, #24150e)',
+        background: 'var(--cocoa-dark, #111b14)',
         borderColor: 'rgba(255,255,255,0.1)',
       }}
     >
