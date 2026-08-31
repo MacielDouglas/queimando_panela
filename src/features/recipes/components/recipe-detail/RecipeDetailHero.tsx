@@ -52,7 +52,7 @@ export function RecipeDetailHero({
               {types.map((t) => (
                 <span
                   key={t}
-                  className="rounded-full px-3 py-1.5 text-[0.78rem] font-bold uppercase"
+                  className="rounded-full px-3 py-1.5 text-[0.78rem] font-bold uppercase transition-transform hover:-translate-y-0.5"
                   style={{
                     background: 'var(--food-accent)',
                     color: 'var(--cocoa)',
@@ -102,7 +102,7 @@ export function RecipeDetailHero({
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {totalTime > 0 && (
                 <div
-                  className="rounded-[14px] bg-white p-4"
+                  className="rounded-[14px] bg-white p-4 transition-transform hover:-translate-y-0.5 hover:border-[var(--food-accent)]"
                   style={{ border: '1px solid var(--line)' }}
                 >
                   <p
@@ -128,7 +128,7 @@ export function RecipeDetailHero({
               )}
               {prepTimeMinutes ? (
                 <div
-                  className="rounded-[14px] bg-white p-4"
+                  className="rounded-[14px] bg-white p-4 transition-transform hover:-translate-y-0.5 hover:border-[var(--food-accent)]"
                   style={{ border: '1px solid var(--line)' }}
                 >
                   <p
@@ -150,7 +150,7 @@ export function RecipeDetailHero({
               ) : null}
               {cookTimeMinutes ? (
                 <div
-                  className="rounded-[14px] bg-white p-4"
+                  className="rounded-[14px] bg-white p-4 transition-transform hover:-translate-y-0.5 hover:border-[var(--food-accent)]"
                   style={{ border: '1px solid var(--line)' }}
                 >
                   <p
@@ -172,7 +172,7 @@ export function RecipeDetailHero({
               ) : null}
               {servings ? (
                 <div
-                  className="rounded-[14px] bg-white p-4"
+                  className="rounded-[14px] bg-white p-4 transition-transform hover:-translate-y-0.5 hover:border-[var(--food-accent)]"
                   style={{ border: '1px solid var(--line)' }}
                 >
                   <p
@@ -247,9 +247,9 @@ export function RecipeDetailHero({
             )}
           </div>
 
-          <div className="relative">
+          <div className="group relative">
             <div
-              className="relative overflow-hidden bg-white p-2"
+              className="relative overflow-hidden bg-white p-2 transition-shadow duration-300 group-hover:shadow-md"
               style={{
                 borderRadius: 'var(--radius-lg)',
                 border: '1px solid var(--line)',
@@ -268,7 +268,7 @@ export function RecipeDetailHero({
                     alt={title}
                     fill
                     priority
-                    className="object-cover"
+                    className="object-cover transition duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.03]"
                     sizes="(max-width: 1024px) 100vw, 420px"
                   />
                 ) : (
