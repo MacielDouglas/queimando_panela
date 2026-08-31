@@ -25,6 +25,7 @@ model Recipe {
   nutritionPer100g  Json?
   classification    Json?
   isPublished       Boolean            @default(false)
+  isAiGenerated     Boolean            @default(false)
   publishedAt       DateTime?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
@@ -40,6 +41,7 @@ model Recipe {
   recipeTypes       RecipeTypeOnRecipe[]
 
   @@index([authorId])
+  @@index([isAiGenerated])
 }
 
 model RecipeSection {
@@ -208,6 +210,7 @@ model User {
   accounts Account[]
 
   recipes Recipe[] // <- ADICIONE
+  geladeiraLogs GeladeiraLog[]
 
   @@unique([email])
   @@map("user")
@@ -259,4 +262,15 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model GeladeiraLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("geladeira_log")
 }

@@ -17,6 +17,7 @@ export type DeveloperLink = {
 export const navItems: NavItem[] = [
   { href: '/', label: 'Home', exact: true },
   { href: '/receitas', label: 'Receitas' },
+  { href: '/geladeira', label: 'Geladeira' },
   { href: '/favoritos', label: 'Favoritos' },
   { href: '/sobre', label: 'Sobre' },
 ];

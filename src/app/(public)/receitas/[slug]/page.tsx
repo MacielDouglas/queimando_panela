@@ -132,6 +132,24 @@ export default async function RecipeDetailPage({ params }: Props) {
         </nav>
       </div>
 
+      {recipe.isAiGenerated && (
+        <div className="editorial-container pt-4">
+          <div
+            className="inline-flex items-center gap-2 rounded-full border bg-white px-3 py-1.5 text-xs font-bold uppercase"
+            style={{
+              borderColor: 'var(--line)',
+              color: 'var(--cocoa)',
+              background: 'var(--food-accent)',
+              letterSpacing: '0.06em',
+            }}
+          >
+            <span aria-hidden="true">🤖</span> Criada por IA com o que tinha em
+            casa
+            <span className="hidden sm:inline"> — Geladeira</span>
+          </div>
+        </div>
+      )}
+
       <RecipeDetailHero
         title={recipe.title}
         summary={recipe.summary}
