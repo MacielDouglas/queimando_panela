@@ -1,4 +1,11 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Acesso restrito',
+  description: 'Você não tem permissão para acessar esta página.',
+  robots: { index: false, follow: false },
+};
 
 export default function UnauthorizedPage() {
   return (

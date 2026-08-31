@@ -1,6 +1,13 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { LogoutButton } from '@/components/auth/logout-button';
 import { getServerSession } from '@/lib/get-server-session';
+
+export const metadata: Metadata = {
+  title: 'Minha conta',
+  description: 'Gerencie sua conta no Queimando Panela.',
+  robots: { index: false, follow: false },
+};
 
 export default async function MinhaContaPage() {
   const session = await getServerSession();
