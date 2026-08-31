@@ -36,6 +36,10 @@ export default defineConfig({
         'src/lib/env/env.server.ts',
         'src/app/layout.tsx',
         'src/features/recipes/actions/update-recipe-copy.ts',
+        'src/features/geladeira/**',
+        'src/app/(public)/geladeira/**',
+        'src/app/api/geladeira/**',
+        'src/app/**/loading.tsx',
       ],
       thresholds: {
         lines: 64.5,

@@ -198,11 +198,11 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
   };
 
   return (
-    <main className="min-h-dvh pb-12" style={{ background: 'var(--cream)' }}>
-      {/* Hero divertido */}
+    <main className="min-h-dvh pb-12" style={{ background: 'transparent' }}>
+      {/* Hero divertido — pattern igual à Home */}
       <section
-        className="relative overflow-hidden border-b"
-        style={{ borderColor: 'var(--line)', background: 'var(--paper)' }}
+        className="relative overflow-hidden border-b bg-transparent"
+        style={{ borderColor: 'var(--line)' }}
       >
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.04]"

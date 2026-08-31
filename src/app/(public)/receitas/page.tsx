@@ -112,9 +112,9 @@ export default async function RecipesPage({ searchParams }: Props) {
 
   return (
     <main>
-      {/* Hero editorial — mesmo padrão de Home: eyebrow + title + copy + stats */}
+      {/* Hero editorial — pattern igual à Home: fundo transparente para revelar pattern.jpg */}
       <section
-        className="qp-reveal border-b bg-white"
+        className="qp-reveal border-b bg-transparent"
         style={{ borderColor: 'var(--line)' }}
       >
         <div className="editorial-container py-12 lg:py-16">
@@ -181,10 +181,10 @@ export default async function RecipesPage({ searchParams }: Props) {
         </div>
       </section>
 
-      {/* Busca — faixa muted com mesmo ritmo da Home */}
+      {/* Busca — faixa transparente para revelar pattern.jpg igual à Home */}
       <section
-        className="qp-reveal border-y"
-        style={{ borderColor: 'var(--line)', background: 'var(--muted)' }}
+        className="qp-reveal border-y bg-transparent"
+        style={{ borderColor: 'var(--line)' }}
       >
         <div className="editorial-container py-6">
           <div className="flex items-center gap-4">

@@ -103,7 +103,7 @@ export default async function RecipeDetailPage({ params }: Props) {
       ];
 
   return (
-    <main style={{ background: 'var(--cream)' }} className="pb-0">
+    <main style={{ background: 'transparent' }} className="pb-0">
       {/* Breadcrumb editorial */}
       <div className="editorial-container pt-6">
         <nav
