@@ -26,9 +26,22 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
     form.formState.errors.sections?.[index]?.modeOfPreparation?.message;
 
   return (
-    <section className="space-y-4 border border-neutral-200 bg-neutral-50 p-4 sm:p-5">
-      <div className="flex items-center justify-between gap-4 border-b border-neutral-200 pb-3">
-        <h3 className="text-sm font-bold tracking-[0.16em] text-neutral-900 uppercase">
+    <section
+      className="space-y-4 p-4 sm:p-5"
+      style={{
+        borderRadius: 'var(--radius-md)',
+        border: '1px solid var(--line)',
+        background: 'var(--muted)',
+      }}
+    >
+      <div
+        className="flex items-center justify-between gap-4 pb-3"
+        style={{ borderBottom: '1px solid var(--line)' }}
+      >
+        <h3
+          className="text-xs font-bold uppercase"
+          style={{ letterSpacing: '0.1em', color: 'var(--cocoa)' }}
+        >
           {isFirst && isOnly ? 'Receita' : `Etapa ${index + 1}`}
         </h3>
 
@@ -38,7 +51,8 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
             variant="ghost"
             size="sm"
             onClick={onRemove}
-            className="h-9 w-9 p-0 text-neutral-500 hover:bg-red-50 hover:text-red-600"
+            className="h-9 w-9 p-0 hover:bg-white"
+            style={{ color: 'var(--ink-muted)' }}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -49,7 +63,8 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
         <Field data-invalid={Boolean(nameError)}>
           <FieldLabel
             htmlFor={`section-name-${index}`}
-            className="text-sm font-semibold text-neutral-800"
+            className="text-sm font-semibold"
+            style={{ color: 'var(--cocoa)' }}
           >
             Nome da etapa
           </FieldLabel>
@@ -57,7 +72,8 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
           <Input
             id={`section-name-${index}`}
             placeholder="Ex: Massa, recheio, cobertura"
-            className="border-neutral-300 bg-white focus-visible:ring-amber-500"
+            className="bg-white"
+            style={{ borderColor: 'var(--line)' }}
             aria-invalid={Boolean(nameError)}
             {...form.register(`sections.${index}.name`)}
           />
@@ -69,7 +85,8 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
       <Field data-invalid={Boolean(ingredientsError)}>
         <FieldLabel
           htmlFor={`section-ingredients-${index}`}
-          className="text-sm font-semibold text-neutral-800"
+          className="text-sm font-semibold"
+          style={{ color: 'var(--cocoa)' }}
         >
           Ingredientes
         </FieldLabel>
@@ -77,7 +94,8 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
         <Textarea
           id={`section-ingredients-${index}`}
           placeholder={`2 ovos\n1 xícara de farinha\n1 colher de manteiga`}
-          className="min-h-32 resize-none border-neutral-300 bg-white text-sm leading-relaxed focus-visible:ring-amber-500"
+          className="min-h-32 resize-none bg-white text-sm leading-relaxed"
+          style={{ borderColor: 'var(--line)' }}
           aria-invalid={Boolean(ingredientsError)}
           {...form.register(`sections.${index}.ingredientsText`)}
         />
@@ -88,7 +106,8 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
       <Field data-invalid={Boolean(modeError)}>
         <FieldLabel
           htmlFor={`section-mode-${index}`}
-          className="text-sm font-semibold text-neutral-800"
+          className="text-sm font-semibold"
+          style={{ color: 'var(--cocoa)' }}
         >
           Modo de preparo
         </FieldLabel>
@@ -96,7 +115,8 @@ export function SectionField({ form, index, isOnly, onRemove }: Props) {
         <Textarea
           id={`section-mode-${index}`}
           placeholder="Descreva o passo a passo com clareza."
-          className="min-h-48 resize-none border-neutral-300 bg-white text-sm leading-relaxed focus-visible:ring-amber-500"
+          className="min-h-48 resize-none bg-white text-sm leading-relaxed"
+          style={{ borderColor: 'var(--line)' }}
           aria-invalid={Boolean(modeError)}
           {...form.register(`sections.${index}.modeOfPreparation`)}
         />

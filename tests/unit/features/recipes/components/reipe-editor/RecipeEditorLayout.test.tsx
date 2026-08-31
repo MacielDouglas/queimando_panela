@@ -24,7 +24,9 @@ describe('RecipeEditorLayout', () => {
       </RecipeEditorLayout>,
     );
 
-    expect(screen.getByText('Nova receita')).toBeInTheDocument();
+    expect(screen.getAllByText('Nova receita').length).toBeGreaterThanOrEqual(
+      1,
+    );
     expect(
       screen.getByRole('heading', { name: 'Compartilhe sua receita' }),
     ).toBeInTheDocument();

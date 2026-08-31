@@ -119,42 +119,85 @@ export function RecipeNutrition({ summary, per100g, suggestions }: Props) {
 
       {suggestionItems.length > 0 && (
         <aside
-          className="p-5"
+          className="overflow-hidden bg-white"
           style={{
             borderRadius: 'var(--radius-md)',
-            background: 'var(--food-accent)',
             border: '1px solid var(--line)',
           }}
         >
+          {/* colorize: yellow deixa de ser superfície e vira acento restrito (top bar 4px) */}
           <div
-            className="flex items-center gap-2 pb-3"
-            style={{ borderBottom: '1px solid rgba(24,58,55,0.12)' }}
+            className="h-1 w-full"
+            style={{ background: 'var(--food-accent)' }}
+            aria-hidden="true"
+          />
+          {/* bolder: header com hierarquia editorial — icon pill + eyebrow + título Playfair + count badge */}
+          <div
+            className="px-5 pt-5 pb-4"
+            style={{ borderBottom: '1px solid var(--line)' }}
           >
-            <Lightbulb className="size-4" style={{ color: 'var(--cocoa)' }} />
-            <h2
-              className="text-[0.78rem] font-bold uppercase"
-              style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
+            <div className="flex items-start gap-3">
+              <span
+                className="grid size-8 shrink-0 place-items-center rounded-full"
+                style={{
+                  background: 'var(--food-accent)',
+                  color: 'var(--cocoa)',
+                }}
+                aria-hidden="true"
+              >
+                <Lightbulb className="size-4" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p
+                  className="text-[0.72rem] font-bold uppercase"
+                  style={{ color: 'var(--cocoa)', letterSpacing: '0.1em' }}
+                >
+                  Sugestões
+                </p>
+                <h2
+                  className="font-display text-[1.15rem] font-bold leading-none"
+                  style={{ color: 'var(--cocoa)', letterSpacing: '-0.02em' }}
+                >
+                  Queimando Panela
+                </h2>
+              </div>
+              <span
+                className="shrink-0 rounded-full border bg-white px-2.5 py-1 text-xs font-bold"
+                style={{
+                  borderColor: 'var(--line)',
+                  color: 'var(--ink-muted)',
+                }}
+                role="status"
+                aria-label={`${suggestionItems.length} sugestões`}
+              >
+                {suggestionItems.length}
+              </span>
+            </div>
+            <p
+              className="mt-2.5 text-xs leading-5"
+              style={{ color: 'var(--ink-muted)', textWrap: 'pretty' }}
             >
-              Sugestões Queimando Panela
-            </h2>
+              Troca esperta, sem perder o afeto — ajuste fino pra sua panela.
+            </p>
           </div>
-          <ul className="mt-3 space-y-2">
+          <ul className="space-y-3 p-5">
             {suggestionItems.map((item) => (
               <li
                 key={item}
-                className="rounded-[10px] bg-white px-3 py-2.5 text-sm leading-5"
+                className="flex gap-3 rounded-[12px] px-3.5 py-3 text-sm leading-6"
                 style={{
+                  background: 'var(--muted)',
                   border: '1px solid var(--line)',
                   color: 'var(--cocoa)',
                   textWrap: 'pretty',
                 }}
               >
                 <span
-                  className="mr-2 inline-block size-1.5 rounded-full"
+                  className="mt-2 size-1.5 shrink-0 rounded-full"
                   style={{ background: 'var(--food-accent)' }}
                   aria-hidden="true"
                 />
-                {item}
+                <span className="font-medium">{item}</span>
               </li>
             ))}
           </ul>

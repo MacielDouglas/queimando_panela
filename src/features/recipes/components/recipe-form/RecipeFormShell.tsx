@@ -192,7 +192,13 @@ export function RecipeFormShell({ mode, initialData }: Props) {
 
   return (
     <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-      <div className="space-y-6 rounded-[12px] border border-[#e5e5e5] bg-white p-5 sm:p-7 lg:p-8">
+      <div
+        className="space-y-6 bg-white p-5 sm:p-7 lg:p-8"
+        style={{
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--line)',
+        }}
+      >
         <TitleField form={form} />
         <StoryField form={form} />
       </div>
@@ -203,14 +209,35 @@ export function RecipeFormShell({ mode, initialData }: Props) {
         onRemove={removeSection}
       />
 
-      <section className="rounded-[12px] border border-[#e5e5e5] bg-white p-5 sm:p-7 lg:p-8">
-        <h2 className="mb-4 font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#0a0a0a]">
-          Fotos
-        </h2>
-        <ImageUploadField form={form} />
-        <p className="mt-3 font-sans text-xs leading-5 text-[#6b6b6b]">
-          Arraste ou clique para enviar. A primeira foto vira capa. Até 5
-          imagens, 10MB cada.
+      <section
+        className="bg-white p-5 sm:p-7 lg:p-8"
+        style={{
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--line)',
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <span
+            className="h-1 w-8"
+            style={{ background: 'var(--food-accent)' }}
+            aria-hidden="true"
+          />
+          <h2
+            className="font-display text-xs font-extrabold uppercase"
+            style={{ letterSpacing: '0.14em', color: 'var(--cocoa)' }}
+          >
+            Fotos
+          </h2>
+        </div>
+        <div className="mt-4">
+          <ImageUploadField form={form} />
+        </div>
+        <p
+          className="mt-3 font-sans text-xs leading-5"
+          style={{ color: 'var(--ink-muted)' }}
+        >
+          Arraste ou clique para enviar. A primeira foto vira capa. Até 3
+          imagens.
         </p>
       </section>
 
@@ -223,11 +250,27 @@ export function RecipeFormShell({ mode, initialData }: Props) {
 
       {isReviewVisible && (
         <section id="ai-review" className="space-y-5">
-          <div className="border-b border-[#e5e5e5] pb-4">
-            <h2 className="font-display text-sm font-extrabold uppercase tracking-[0.16em] text-[#0a0a0a]">
-              Revisão final
-            </h2>
-            <p className="mt-2 max-w-[65ch] font-sans text-sm leading-6 text-[#6b6b6b]">
+          <div
+            className="pb-4"
+            style={{ borderBottom: '1px solid var(--line)' }}
+          >
+            <div className="flex items-center gap-2">
+              <span
+                className="h-1 w-8"
+                style={{ background: 'var(--ai-primary)' }}
+                aria-hidden="true"
+              />
+              <h2
+                className="font-display text-sm font-extrabold uppercase"
+                style={{ letterSpacing: '0.1em', color: 'var(--cocoa)' }}
+              >
+                Revisão final
+              </h2>
+            </div>
+            <p
+              className="mt-2 max-w-[65ch] font-sans text-sm leading-6"
+              style={{ color: 'var(--ink-muted)' }}
+            >
               Revise a análise da IA. Tudo aqui é editável — publique só quando
               estiver do seu jeito.
             </p>

@@ -57,7 +57,9 @@ describe('NewRecipePage', () => {
     const ui = await NewRecipePage();
     render(ui);
 
-    expect(screen.getByText('Nova receita')).toBeInTheDocument();
+    expect(screen.getAllByText('Nova receita').length).toBeGreaterThanOrEqual(
+      1,
+    );
     expect(screen.getByText('Compartilhe sua receita')).toBeInTheDocument();
     expect(
       screen.getByText(

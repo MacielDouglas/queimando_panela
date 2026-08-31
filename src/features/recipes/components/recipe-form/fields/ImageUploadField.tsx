@@ -117,9 +117,9 @@ export function ImageUploadField({ form }: Props) {
 
   return (
     <div className="space-y-3">
-      <p className="text-base font-semibold text-neutral-800">
+      <p className="text-sm font-semibold" style={{ color: 'var(--cocoa)' }}>
         Fotos da receita{' '}
-        <span className="font-normal text-neutral-400">
+        <span className="font-normal" style={{ color: 'var(--ink-muted)' }}>
           (opcional, até 3 imagens)
         </span>
       </p>
@@ -133,7 +133,11 @@ export function ImageUploadField({ form }: Props) {
               key={
                 image.kind === 'existing' ? image.id : `${image.file.name}-${i}`
               }
-              className="relative h-28 w-28 overflow-hidden rounded-2xl border border-amber-100"
+              className="relative h-28 w-28 overflow-hidden"
+              style={{
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--line)',
+              }}
             >
               <Image
                 src={src}
@@ -170,7 +174,13 @@ export function ImageUploadField({ form }: Props) {
               </div>
 
               {i === 0 && (
-                <span className="absolute bottom-1 left-1 rounded-full bg-amber-500 px-2 py-0.5 text-xs font-bold text-white">
+                <span
+                  className="absolute bottom-1 left-1 rounded-full px-2 py-0.5 text-xs font-bold"
+                  style={{
+                    background: 'var(--food-accent)',
+                    color: 'var(--cocoa)',
+                  }}
+                >
                   Capa
                 </span>
               )}
@@ -181,15 +191,22 @@ export function ImageUploadField({ form }: Props) {
         {images.length < 3 && (
           <div
             {...getRootProps()}
-            className={`flex h-28 w-28 cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed transition-colors ${
-              isDragActive
-                ? 'border-amber-400 bg-amber-50'
-                : 'border-amber-200 bg-white/60 hover:border-amber-400 hover:bg-amber-50'
-            }`}
+            className="flex h-28 w-28 cursor-pointer flex-col items-center justify-center gap-1 border-2 border-dashed transition-colors"
+            style={{
+              borderRadius: 'var(--radius-md)',
+              borderColor: isDragActive ? 'var(--food-accent)' : 'var(--line)',
+              background: isDragActive ? 'var(--food-accent-soft)' : 'white',
+            }}
           >
             <input {...getInputProps()} />
-            <ImagePlus className="h-6 w-6 text-amber-400" />
-            <span className="text-center text-xs text-neutral-500">
+            <ImagePlus
+              className="h-6 w-6"
+              style={{ color: 'var(--food-accent)' }}
+            />
+            <span
+              className="text-center text-xs"
+              style={{ color: 'var(--ink-muted)' }}
+            >
               {isDragActive ? 'Solte aqui' : 'Adicionar foto'}
             </span>
           </div>

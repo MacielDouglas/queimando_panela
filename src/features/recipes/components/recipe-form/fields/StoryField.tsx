@@ -23,24 +23,28 @@ export function StoryField({ form }: Props) {
       <div className="flex items-center justify-between gap-4">
         <FieldLabel
           htmlFor="recipe-story"
-          className="text-sm font-bold tracking-[0.16em] text-neutral-900 uppercase"
+          className="text-xs font-bold uppercase"
+          style={{ letterSpacing: '0.1em', color: 'var(--cocoa)' }}
         >
           História da receita
         </FieldLabel>
 
-        <span className="text-xs text-neutral-500">{value.length}/500</span>
+        <span className="text-xs" style={{ color: 'var(--ink-muted)' }}>
+          {value.length}/500
+        </span>
       </div>
 
       <Textarea
         id="recipe-story"
         placeholder="Conte a memória, a origem ou o contexto dessa receita."
-        className="min-h-32 resize-none border-neutral-300 bg-white text-base focus-visible:ring-amber-500"
+        className="min-h-32 resize-none bg-white text-base"
+        style={{ borderColor: 'var(--line)' }}
         maxLength={500}
         aria-invalid={Boolean(error)}
         {...form.register('story')}
       />
 
-      <FieldDescription>
+      <FieldDescription style={{ color: 'var(--ink-muted)' }}>
         Esse campo é opcional e ajuda a contextualizar a receita.
       </FieldDescription>
 

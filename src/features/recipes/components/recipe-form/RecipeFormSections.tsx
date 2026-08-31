@@ -16,12 +16,37 @@ export function RecipeFormSections({ form, onAdd, onRemove }: Props) {
   const sections = form.watch('sections') ?? [];
 
   return (
-    <section className="space-y-5 rounded-[12px] border border-[#e5e5e5] bg-white p-5 sm:p-7">
-      <div className="flex items-center justify-between gap-4 border-b border-[#e5e5e5] pb-4">
-        <h2 className="font-display text-xs font-extrabold uppercase tracking-[0.16em] text-[#0a0a0a]">
-          {sections.length > 1 ? 'Etapas da receita' : 'Receita'}
-        </h2>
-        <span className="font-sans text-xs text-[#6b6b6b]">
+    <section
+      className="space-y-5 bg-white p-5 sm:p-7"
+      style={{
+        borderRadius: 'var(--radius-md)',
+        border: '1px solid var(--line)',
+      }}
+    >
+      <div
+        className="flex items-center justify-between gap-4 pb-4"
+        style={{ borderBottom: '1px solid var(--line)' }}
+      >
+        <div className="flex items-center gap-2">
+          <span
+            className="h-1 w-8"
+            style={{ background: 'var(--food-accent)' }}
+            aria-hidden="true"
+          />
+          <h2
+            className="font-display text-xs font-extrabold uppercase"
+            style={{ letterSpacing: '0.14em', color: 'var(--cocoa)' }}
+          >
+            {sections.length > 1 ? 'Etapas da receita' : 'Receita'}
+          </h2>
+        </div>
+        <span
+          className="rounded-full border bg-white px-2.5 py-1 font-sans text-xs font-bold"
+          style={{
+            borderColor: 'var(--line)',
+            color: 'var(--ink-muted)',
+          }}
+        >
           {sections.length} {sections.length === 1 ? 'etapa' : 'etapas'}
         </span>
       </div>
@@ -40,7 +65,8 @@ export function RecipeFormSections({ form, onAdd, onRemove }: Props) {
         type="button"
         variant="outline"
         onClick={onAdd}
-        className="min-h-11 w-full rounded-none border border-dashed border-[#0a0a0a] bg-white text-sm font-semibold text-[#0a0a0a] hover:bg-[#f5f5f5]"
+        className="min-h-11 w-full rounded-full border border-dashed bg-white text-sm font-bold hover:bg-[var(--muted)]"
+        style={{ borderColor: 'var(--line)', color: 'var(--cocoa)' }}
       >
         <Plus className="mr-2 size-4" />
         Adicionar etapa

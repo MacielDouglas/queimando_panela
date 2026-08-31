@@ -25,7 +25,7 @@ export function RecipeFormAnalyzeAction({
         type="button"
         onClick={onAnalyze}
         disabled={isAnalyzing}
-        className="min-h-12 w-full rounded-none bg-[#ffc733] px-5 text-sm font-bold uppercase tracking-[0.08em] text-[#0a0a0a] hover:bg-[#e6a700]"
+        className="button-ai min-h-12 w-full"
       >
         {isAnalyzing ? (
           <>
@@ -39,13 +39,17 @@ export function RecipeFormAnalyzeAction({
           </>
         )}
       </Button>
-      <p className="font-sans text-xs leading-5 text-[#6b6b6b]">
+      <p
+        className="font-sans text-xs leading-5"
+        style={{ color: 'var(--ink-muted)' }}
+      >
         A IA retorna utensílios, nutrição, tempo e classificação. Você revisa
         tudo antes de publicar — nada é salvo automático.
       </p>
       {aiError && (
         <p
-          className="border border-[#e5e5e5] bg-[#fff4f4] px-4 py-3 font-sans text-sm text-[#cc1f1f]"
+          className="rounded-[var(--radius-md)] border bg-white px-4 py-3 font-sans text-sm"
+          style={{ borderColor: 'var(--line)', color: 'var(--destructive)' }}
           role="alert"
         >
           {aiError}
@@ -65,7 +69,7 @@ export function RecipeFormSaveAction({
       type="button"
       onClick={onSave}
       disabled={isSaving}
-      className="min-h-12 w-full rounded-none bg-[#0a0a0a] px-5 text-sm font-bold uppercase tracking-[0.08em] text-white hover:bg-[#ffc733] hover:text-[#0a0a0a]"
+      className="button-queimando-panela button-primary-queimando-panela min-h-12 w-full"
     >
       {isSaving ? (
         <>

@@ -16,7 +16,8 @@ export function TitleField({ form }: Props) {
     <Field data-invalid={Boolean(error)}>
       <FieldLabel
         htmlFor="recipe-title"
-        className="text-sm font-bold tracking-[0.16em] text-neutral-900 uppercase"
+        className="text-xs font-bold uppercase"
+        style={{ letterSpacing: '0.1em', color: 'var(--cocoa)' }}
       >
         Título da receita
       </FieldLabel>
@@ -24,7 +25,8 @@ export function TitleField({ form }: Props) {
       <Input
         id="recipe-title"
         placeholder="Ex: Bolo de milho da minha avó"
-        className="h-12 border-neutral-300 bg-white text-base focus-visible:ring-amber-500"
+        className="h-12 bg-white text-base"
+        style={{ borderColor: 'var(--line)' }}
         aria-invalid={Boolean(error)}
         {...form.register('title')}
       />
