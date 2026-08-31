@@ -160,6 +160,16 @@
           }
         }
       }
+    },
+    {
+      "includes": ["src/app/not-found.tsx"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noArrayIndexKey": "off"
+          }
+        }
+      }
     }
   ]
 }

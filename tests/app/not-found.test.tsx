@@ -15,17 +15,30 @@ describe('NotFound', () => {
   it('mostra a mensagem divertida de 404', () => {
     render(<NotFound />);
 
-    expect(screen.getByText(/Essa receita queimou/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Essa receita fugiu da panela/i),
+    ).toBeInTheDocument();
   });
 
   it('tem link para voltar para a página inicial', () => {
     render(<NotFound />);
 
     const link = screen.getByRole('link', {
-      name: /Voltar ao menu/i,
+      name: /Voltar pra cozinha/i,
     });
 
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/');
+  });
+
+  it('tem link para ver receitas que deram certo', () => {
+    render(<NotFound />);
+
+    const link = screen.getByRole('link', {
+      name: /Que não queimaram/i,
+    });
+
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', '/receitas');
   });
 });
