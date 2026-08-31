@@ -4,13 +4,13 @@ import { GeladeiraClient } from '@/features/geladeira/components/GeladeiraClient
 import { auth } from '@/lib/auth';
 
 export const metadata: Metadata = {
-  title: 'O que tem em casa? | Queimando Panela',
+  title: 'O que tem? | Queimando Panela',
   description:
-    'Informe o que tem na geladeira, escolha doce ou salgado e deixe a IA criar uma receita divertida com o que você tem. Até 3 criações por dia.',
+    'Informe o que tem em casa, escolha doce, salgado ou tanto faz e deixe a IA criar uma receita divertida com o que você tem. Até 3 criações por dia.',
   openGraph: {
-    title: 'O que tem em casa? — Geladeira | Queimando Panela',
+    title: 'O que tem? — Queimando Panela',
     description:
-      'O que tem na sua geladeira? A IA transforma em receita. Doce, salgado ou tanto faz — até 2 perguntinhas se faltar algo.',
+      'O que tem em casa? A IA transforma em receita. Doce, salgado ou tanto faz — até 2 perguntinhas se faltar algo.',
   },
 };
 

@@ -1,5 +1,16 @@
 'use client';
 
+import {
+  Beef,
+  Bot,
+  ChefHat,
+  Cookie,
+  Copy,
+  Egg,
+  HelpCircle,
+  Refrigerator,
+  Sparkles,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -224,7 +235,12 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
                   letterSpacing: '0.08em',
                 }}
               >
-                <span aria-hidden="true">🧊</span> Geladeira
+                <Refrigerator
+                  className="size-3.5"
+                  style={{ color: 'var(--cocoa)' }}
+                  aria-hidden="true"
+                />
+                O que tem?
                 <span className="hidden sm:inline">
                   {' '}
                   — o que tem em casa vira receita
@@ -234,9 +250,7 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
                 className="mt-4 font-display text-[clamp(2.4rem,6vw,3.8rem)] font-extrabold leading-[0.9] tracking-[-0.04em]"
                 style={{ color: 'var(--cocoa)' }}
               >
-                O que tem
-                <br />
-                em casa?
+                O que tem?
               </h1>
               <p
                 className="mt-4 max-w-[52ch] text-[1.02rem] leading-6"
@@ -257,9 +271,13 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
               style={{ borderColor: 'var(--paper)', transform: 'rotate(6deg)' }}
               aria-hidden="true"
             >
-              <span className="text-5xl">🍳</span>
+              <ChefHat
+                className="size-10"
+                style={{ color: 'var(--cocoa)' }}
+                aria-hidden="true"
+              />
               <span
-                className="mt-1 block text-xs font-bold uppercase tracking-[0.08em]"
+                className="mt-2 block text-xs font-bold uppercase tracking-[0.08em]"
                 style={{ color: 'var(--cocoa)' }}
               >
                 IA cozinheira
@@ -290,7 +308,7 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
                 color: 'var(--cocoa)',
               }}
             >
-              🥚
+              <Egg className="size-4" aria-hidden="true" />
             </span>
             <h2 className="text-sm font-bold" style={{ color: 'var(--cocoa)' }}>
               O que você tem?
@@ -395,16 +413,16 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
               <div className="mt-2 grid grid-cols-3 gap-2">
                 {(
                   [
-                    { v: 'salgado', label: 'Salgado', icon: '🧀' },
-                    { v: 'doce', label: 'Doce', icon: '🍫' },
-                    { v: 'tanto_faz', label: 'Tanto faz', icon: '✨' },
+                    { v: 'salgado', label: 'Salgado', Icon: Beef },
+                    { v: 'doce', label: 'Doce', Icon: Cookie },
+                    { v: 'tanto_faz', label: 'Tanto faz', Icon: Sparkles },
                   ] as const
                 ).map((opt) => (
                   <button
                     key={opt.v}
                     type="button"
                     onClick={() => setPref(opt.v)}
-                    className="rounded-[12px] border px-3 py-3 text-sm font-bold transition-colors"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-[12px] border px-3 py-3 text-sm font-bold transition-colors"
                     style={{
                       borderColor:
                         pref === opt.v ? 'var(--food-accent)' : 'var(--line)',
@@ -414,7 +432,7 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
                     }}
                     aria-pressed={pref === opt.v}
                   >
-                    <span className="mr-1.5">{opt.icon}</span>
+                    <opt.Icon className="size-4" aria-hidden="true" />
                     {opt.label}
                   </button>
                 ))}
@@ -443,7 +461,14 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
                 className="inline-flex min-h-11 items-center justify-center rounded-full px-6 text-sm font-extrabold uppercase tracking-[0.06em] transition-colors disabled:opacity-50"
                 style={{ background: 'var(--cocoa)', color: 'white' }}
               >
-                {loading ? 'Fuçando a geladeira...' : 'Gerar receita ✨'}
+                {loading ? (
+                  'Fuçando a geladeira...'
+                ) : (
+                  <span className="inline-flex items-center gap-1.5">
+                    Gerar receita{' '}
+                    <Sparkles className="size-4" aria-hidden="true" />
+                  </span>
+                )}
               </button>
               <button
                 type="button"
@@ -488,10 +513,11 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
               }}
             >
               <h3
-                className="text-sm font-bold"
+                className="inline-flex items-center gap-2 text-sm font-bold"
                 style={{ color: 'var(--cocoa)' }}
               >
-                A IA precisa de uma ajudinha 🤔
+                <HelpCircle className="size-4" aria-hidden="true" />A IA precisa
+                de uma ajudinha
               </h3>
               <p className="mt-1 text-sm" style={{ color: 'var(--ink-muted)' }}>
                 Responda com Sim ou Não. Até 2 perguntinhas, bem rápidas.
@@ -554,7 +580,14 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
                 className="inline-flex min-h-11 items-center justify-center rounded-full px-6 text-sm font-extrabold disabled:opacity-50"
                 style={{ background: 'var(--cocoa)', color: 'white' }}
               >
-                {loading ? 'Gerando...' : 'Gerar com minhas respostas 🚀'}
+                {loading ? (
+                  'Gerando...'
+                ) : (
+                  <span className="inline-flex items-center gap-1.5">
+                    Gerar com minhas respostas{' '}
+                    <Sparkles className="size-4" aria-hidden="true" />
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -591,8 +624,8 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
                     border: '1px solid var(--line)',
                   }}
                 >
-                  <span aria-hidden="true">🤖</span> Criada por IA com o que
-                  tinha em casa
+                  <Bot className="size-3.5" aria-hidden="true" /> Criada por IA
+                  com o que tinha em casa
                 </span>
                 <h2
                   className="mt-3 max-w-[18ch] font-display text-[clamp(2rem,5vw,3rem)] font-extrabold leading-[0.9] tracking-[-0.04em]"
@@ -752,7 +785,14 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
                   className="inline-flex min-h-11 items-center justify-center rounded-full border bg-white px-5 text-sm font-bold"
                   style={{ borderColor: 'var(--line)', color: 'var(--cocoa)' }}
                 >
-                  {copied ? 'Copiado! ✓' : 'Copiar receita 📋'}
+                  {copied ? (
+                    'Copiado! ✓'
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5">
+                      Copiar receita{' '}
+                      <Copy className="size-4" aria-hidden="true" />
+                    </span>
+                  )}
                 </button>
                 <button
                   type="button"
@@ -761,7 +801,14 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
                   className="inline-flex min-h-11 items-center justify-center rounded-full px-6 text-sm font-extrabold disabled:opacity-50"
                   style={{ background: 'var(--cocoa)', color: 'white' }}
                 >
-                  {publishing ? 'Publicando...' : 'Publicar como receita 🤖'}
+                  {publishing ? (
+                    'Publicando...'
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5">
+                      Publicar como receita{' '}
+                      <Bot className="size-4" aria-hidden="true" />
+                    </span>
+                  )}
                 </button>
                 {!isLogged && (
                   <span
