@@ -139,6 +139,57 @@ function parseAiJson(raw: string): AnalyzeResult {
   }
 }
 
+function normalizeSuggestions(raw: unknown): string {
+  if (Array.isArray(raw)) {
+    return raw
+      .map((s) => String(s).trim())
+      .filter(Boolean)
+      .slice(0, 3)
+      .join('\n\n');
+  }
+  if (typeof raw === 'string') {
+    // Converte sequências literais "\\n" ainda presentes para quebra real
+    const s = raw.replace(/\\n/g, '\n').replace(/\r\n/g, '\n');
+    // Normaliza múltiplas quebras para separar exatamente 3 parágrafos
+    const parts = s
+      .split(/\n+/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    if (parts.length >= 3) return parts.slice(0, 3).join('\n\n');
+    if (parts.length > 0) return parts.join('\n\n');
+    return s.trim();
+  }
+  return String(raw ?? '');
+}
+
+function normalizeModeOfPreparation(raw: unknown): string {
+  if (typeof raw !== 'string') return String(raw ?? '');
+  // Converte "\n" literal e \r\n para quebra real
+  const s = raw.replace(/\\n/g, '\n').replace(/\r\n/g, '\n');
+  // Primeiro tenta split por quebra real
+  let parts = s
+    .split('\n')
+    .map((p) => p.trim())
+    .filter(Boolean);
+  // Fallback: se ainda é 1 parágrafo mas contém "2." "3." inline (ex: "1. Bata \n2. Asse" colado ou "1. A 2. B 3. C")
+  if (parts.length === 1 && /\s\d+\.\s/.test(parts[0])) {
+    const fallback = parts[0]
+      .split(/\s(?=\d+\.\s)/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    if (fallback.length > 1) parts = fallback;
+  }
+  // Normaliza para "1. texto" garantindo numeração sequencial e sem prefixos duplicados
+  const normalized = parts
+    .map((p, i) => {
+      const cleaned = p.replace(/^\s*\d+[.)-]?\s*/, '').trim();
+      if (!cleaned) return '';
+      return `${i + 1}. ${cleaned}`;
+    })
+    .filter(Boolean);
+  return normalized.join('\n');
+}
+
 // ─── Prompt Builder ───────────────────────────────────────────────────────────
 
 function buildSectionsText(sections: Section[]): string {
@@ -153,6 +204,17 @@ function buildSectionsText(sections: Section[]): string {
 
 function buildPrompt(title: string, sections: Section[]): string {
   const sectionsText = buildSectionsText(sections);
+  const paragraphInfo = sections
+    .map((s, i) => {
+      const label =
+        sections.length === 1 ? 'Receita' : s.name || `Etapa ${i + 1}`;
+      const count = s.modeOfPreparation
+        .split('\n')
+        .map((p) => p.trim())
+        .filter(Boolean).length;
+      return `- "${label}": ${count} parágrafo(s) no modo de preparo → retorne EXATAMENTE ${count} passo(s) numerado(s)`;
+    })
+    .join('\n');
 
   return `
 Você é um Chef de Cozinha com 3 estrelas Michelin, Revisor Culinário e Nutricionista profissional.
@@ -167,7 +229,13 @@ REGRAS OBRIGATÓRIAS
 - Ajuste tempos, temperaturas e etapas incoerentes quando necessário.
 - Identifique utensílios reais e distintos com base no modo de preparo.
 - Considere técnicas como flambagem, fritura, assar, bater e gelar ao definir dificuldade e tempos.
+- PRESERVE A QUANTIDADE EXATA DE PARÁGRAFOS DO MODO DE PREPARO: cada quebra de linha do usuário é um passo. NÃO subdivida um parágrafo em dois, NÃO junte dois parágrafos em um. Se o usuário enviou 8 parágrafos, retorne exatamente 8 passos numerados.
 - Retorne SOMENTE o JSON abaixo. Nenhum texto, emoji ou markdown fora do JSON.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONFERÊNCIA DE PARÁGRAFOS DO USUÁRIO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${paragraphInfo}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 RECEITA DO USUÁRIO
@@ -188,8 +256,15 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
   Desperte o desejo de preparar a receita, criando expectativa, faça sentir notas, sabores, cheiro.
 
 "difficulty"
-  Um dos valores: "EASY" |  "EASY_MEDIUM" | "MEDIUM" |  "MEDIUM_HARD" | "HARD"
-  Considere técnicas, número de etapas, equipamentos e tempo total.
+  Um dos valores: "EASY" | "EASY_MEDIUM" | "MEDIUM" | "MEDIUM_HARD" | "HARD"
+  DISTRIBUA de forma honesta entre as 5 faixas — NÃO use sempre "MEDIUM".
+  Use tempo total (prep + cook), número de ingredientes/etapas e técnica como critério objetivo:
+  - EASY (Fácil): até 30 min total, ≤5 ingredientes simples, técnicas básicas (misturar, cortar, mexer, gelar), sem forno ou forno simples ≤20 min. Ex: brigadeiro tradicional, vitaminas, sanduíche.
+  - EASY_MEDIUM (Fácil a Médio): 30-45 min, 5-8 ingredientes, 1 técnica que exige atenção (refogar, bater massa simples, forno 20-35 min). Ex: bolo de cenoura simples, panqueca.
+  - MEDIUM (Médio): 45-90 min, 6-12 ingredientes, 2-3 etapas encadeadas, controle de ponto/temperatura, fritura simples, forno médio, milho ralado/cozido. Ex: pamonha, curau, estrogonofe, lasanha simples.
+  - MEDIUM_HARD (Médio a Difícil): 90-150 min, 10+ ingredientes, técnicas como sovar, fermentação curta, fritura por imersão, banho-maria, defumação leve, montagem em camadas. Ex: feijoada completa, coxinha, pão caseiro.
+  - HARD (Difícil): >150 min OU técnicas avançadas (massa folhada/laminada, fermentação longa, confeitaria fina, sous-vide, temperagem de chocolate). Ex: croquembouche, macaron, char siu artesanal.
+  Conte ingredientes, estime tempo real e só então classifique. Varie a escala.
 
 "difficultyLabel"
   "EASY" -> "Fácil"
@@ -201,16 +276,23 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
 
   "types"
   Array de classificações da receita. Mínimo 1, máximo 3 itens.
-  Cada item deve ser uma categoria isolada e específica.
-    Os 3 itens devem ser distintos entre si.
-  Nunca repita categorias.
-  Todos devem ser em português.
-  Exemplos válidos:
-    ["Prato principal", "Carne", "Clássico brasileiro"]
-    ["Entrada", "Petisco", "Vegetariano"]
-    ["Sobremesa", "Doce", "Forno"]
-    ["Lanche", "Pão", "Artesanal"]
-  Nunca use separadores como "/" dentro de um item.
+  Cada item deve ser uma categoria isolada e específica, em português, sem "/" dentro do item.
+  ESTRUTURA OBRIGATÓRIA (escolha 1 por posição):
+  - Posição 1 = FUNÇÃO NA REFEIÇÃO: "Lanche" | "Café da manhã" | "Entrada" | "Prato principal" | "Acompanhamento" | "Sobremesa" | "Bebida" | "Petisco" | "Doce"
+  - Posição 2 = BASE/INGREDIENTE ou MODO: "Milho", "Carne", "Frango", "Porco", "Peixe", "Vegetariano", "Massa", "Forno", "Fritura", etc
+  - Posição 3 = ORIGEM/ESTILO opcional: "Festa Junina", "Clássico brasileiro", "Italiana", etc
+  REGRAS ANTI-ERRO:
+  - Pamonha, curau, canjica, bolo, brigadeiro, biscoito, tapioca, cuscuz, pão de queijo, broa são SEMPRE "Lanche", "Café da manhã", "Sobremesa" ou "Doce" — NUNCA "Prato principal" ou "Acompanhamento".
+  - "Prato principal" SOMENTE para refeição salgada completa que sustenta (ex: arroz+feijão+proteína, massas recheadas, carnes com acompanhamento).
+  - "Sobremesa"/"Doce" para doces de finalização.
+  - Os 3 itens devem ser distintos entre si, nunca repita.
+  Exemplos CORRETOS:
+    Pamonha → ["Lanche", "Milho", "Festa Junina"]
+    Brigadeiro com bacon → ["Sobremesa", "Doce", "Festa"]
+    Feijoada → ["Prato principal", "Carne", "Clássico brasileiro"]
+    Bolo de cenoura → ["Lanche", "Bolo", "Clássico brasileiro"]
+    Coxinha → ["Petisco", "Frango", "Fritura"]
+  Nunca classifique lanche/festa junina como prato principal.
 
 "prepTimeMinutes"
   Tempo de preparo em minutos (inteiro). Inclui apenas mise en place e montagem a frio.
@@ -219,11 +301,12 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
   Tempo de cozimento em minutos (inteiro). Inclui forno, fogão, grelha, fritadeira, etc.
 
 "suggestions"
-  Três parágrafos separados por \\n\\n:
-  - Parágrafo 1 (até 400 caracteres): substituições de ingredientes, adaptações e variações da receita.
-  - Parágrafo 2 (até 400 caracteres): traga um alerta para um ingrediente muito calórico, que tenha muito açúcar e muito sódio.
-  - Parágrafo 3 (até 400 caracteres): sugestões de acompanhamentos e harmonizações que combinem com o prato.
-  Quebras de linha dentro do JSON devem ser escapadas como \\n.
+  String com EXATAMENTE 3 parágrafos de texto corrido, separados por "\\n\\n" (duas quebras escapadas). NÃO use markdown, NÃO use quebras simples \n, NÃO deixe "\n" visível como texto.
+  - Parágrafo 1 (até 400 caracteres): substituições de ingredientes, adaptações e variações.
+  - Parágrafo 2 (até 400 caracteres): alerta nutricional sobre ingrediente calórico/açúcar/sódio (ex: leite condensado, bacon).
+  - Parágrafo 3 (até 400 caracteres): acompanhamentos e harmonizações (ex: sorvete, café, vinho, frutas).
+  Formato exato: "Texto do parágrafo 1.\\n\\nTexto do parágrafo 2.\\n\\nTexto do parágrafo 3."
+  Cada \\n deve ser escapado como \\n dentro do JSON; o frontend separa por parágrafos, não por "\n" literal.
 
 "nutritionSummary"
   Frase curta e acessível resumindo o perfil nutricional da receita (até 200 caracteres).
@@ -260,7 +343,7 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
     { "originalText": "50 g de manteiga em ponto pomada", "name": "manteiga em ponto pomada", "generalName": "manteiga" }
     { "originalText": "1 disco de pizza de frigideira", "name": "pizza de frigideira", "generalName": "pizza" }
     { "originalText": "¼ de xícara (chá) de vinho branco", "name": "vinho branco", "generalName": "vinho branco" }
-  - "modeOfPreparation": passos numerados, curtos e claros.
+  - "modeOfPreparation": string com passos numerados, UM PARÁGRAFO DO USUÁRIO = UM PASSO NUMERADO. Mantenha EXATAMENTE a mesma quantidade de parágrafos que o usuário enviou (ver CONFERÊNCIA acima). Formato EXATO: "1. Primeiro passo corrigido.\n2. Segundo passo corrigido.\n3. Terceiro passo corrigido." Cada passo começa com "N. " (número + ponto + espaço), preserva o conteúdo daquele parágrafo (corrigido ortograficamente), NÃO quebre um parágrafo longo em 2 passos, NÃO junte 2 parágrafos em 1. Quebras escapadas como \n, nunca "\n" literal visível.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 JSON ESPERADO (retorne apenas isso)
@@ -353,6 +436,49 @@ export async function POST(request: Request) {
 
     try {
       const parsed = parseAiJson(raw);
+      // Normaliza suggestions para garantir 3 parágrafos com \n\n reais, lidando com \\n literal
+      const rawSuggestions = (parsed as unknown as Record<string, unknown>)
+        .suggestions;
+      (parsed as unknown as Record<string, unknown>).suggestions =
+        normalizeSuggestions(rawSuggestions);
+      // Normaliza modo de preparo e preserva quantidade exata de parágrafos do usuário
+      const parsedSections = (parsed as unknown as Record<string, unknown>)
+        .sections as Array<Record<string, unknown>> | undefined;
+      if (Array.isArray(parsedSections)) {
+        for (let i = 0; i < parsedSections.length; i++) {
+          const sec = parsedSections[i];
+          let normalized = normalizeModeOfPreparation(sec.modeOfPreparation);
+          const originalText = sections[i]?.modeOfPreparation ?? '';
+          const expectedCount = originalText
+            .split('\n')
+            .map((p) => p.trim())
+            .filter(Boolean).length;
+          const actualCount = normalized.split('\n').filter(Boolean).length;
+          if (expectedCount && actualCount !== expectedCount) {
+            console.warn(
+              `[api/recipes/analyze] paragraph count mismatch secao "${String(sec.name)}": esperado ${expectedCount}, IA retornou ${actualCount}. Ajustando.`,
+            );
+            if (actualCount > expectedCount) {
+              const parts = normalized.split('\n').filter(Boolean);
+              const head = parts.slice(0, expectedCount - 1);
+              const tailParts = parts.slice(expectedCount - 1);
+              // Junta o excedente em um único parágrafo, removendo numerações intermediárias
+              const tailJoined = tailParts
+                .map((p) => p.replace(/^\s*\d+[.)-]?\s*/, '').trim())
+                .join(' ');
+              const merged = [...head, `${expectedCount}. ${tailJoined}`].join(
+                '\n',
+              );
+              const finalParts = merged.split('\n').map((p, idx) => {
+                const cleaned = p.replace(/^\s*\d+[.)-]?\s*/, '').trim();
+                return `${idx + 1}. ${cleaned}`;
+              });
+              normalized = finalParts.join('\n');
+            }
+          }
+          sec.modeOfPreparation = normalized;
+        }
+      }
       return NextResponse.json({ data: parsed });
     } catch (error) {
       console.error('[api/recipes/analyze] JSON parse error:', error);

@@ -10,11 +10,21 @@ type Props = {
 };
 
 function splitSteps(text: string) {
-  return text
+  // Normaliza "\n" literal (ex: "1. A\\n2. B") para quebra real e cobre \r\n
+  const normalized = text.replace(/\\n/g, '\n').replace(/\r\n/g, '\n');
+  let parts = normalized
     .split('\n')
     .map((step) => step.trim())
-    .filter(Boolean)
-    .map((step) => step.replace(/^\s*\d+[.)-]?\s*/, ''));
+    .filter(Boolean);
+  // Fallback: AI retornou tudo em 1 linha tipo "1. A 2. B 3. C" colado com "\n2"
+  if (parts.length === 1 && /\s\d+\.\s/.test(parts[0])) {
+    const fallback = parts[0]
+      .split(/\s(?=\d+\.\s)/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (fallback.length > 1) parts = fallback;
+  }
+  return parts.map((step) => step.replace(/^\s*\d+[.)-]?\s*/, ''));
 }
 
 export function RecipeSteps({ sections }: Props) {

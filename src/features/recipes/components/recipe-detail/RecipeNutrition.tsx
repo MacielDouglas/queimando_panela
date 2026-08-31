@@ -13,7 +13,10 @@ type Props = {
 
 function splitSuggestions(text: string | null) {
   if (!text) return [];
-  return text
+  // Normaliza sequências literais "\n" (armazenadas como texto) para quebra real,
+  // garantindo que tanto "a\n\nb" (newline real) quanto "a\\n\\nb" (literal) virem parágrafos.
+  const normalized = text.replace(/\\n/g, '\n').replace(/\r\n/g, '\n');
+  return normalized
     .split(/\n+/)
     .map((item) => item.trim())
     .filter(Boolean);
