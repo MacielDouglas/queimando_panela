@@ -15,20 +15,55 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center p-6">
-      <div className="w-full max-w-md border-2 border-[#1b2920] bg-white p-8">
-        <div className="mx-auto mb-6 grid size-14 place-items-center border-2 border-[#1b2920] bg-[#a85131] text-[#1b2920]">
-          <span className="font-display text-xl font-extrabold">!</span>
+    <main
+      className="min-h-screen flex items-center justify-center p-6"
+      style={{ background: 'var(--background)' }}
+    >
+      <div
+        className="w-full max-w-md bg-white p-8"
+        style={{
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--line)',
+          boxShadow: 'var(--shadow-sm)',
+        }}
+      >
+        <div
+          className="mx-auto mb-6 grid size-14 place-items-center"
+          style={{
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--line)',
+            background: 'var(--food-accent)',
+          }}
+        >
+          <span
+            className="font-display text-xl font-extrabold"
+            style={{ color: 'white' }}
+          >
+            !
+          </span>
         </div>
-        <h1 className="text-center font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.02em] text-[#1b2920]">
+        <h1
+          className="text-center font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.02em]"
+          style={{ color: 'var(--cocoa)' }}
+        >
           Algo queimou na cozinha
         </h1>
-        <p className="mt-3 text-center font-sans text-sm leading-6 text-[#3e4d42]">
+        <p
+          className="mt-3 text-center text-sm leading-6"
+          style={{ color: 'var(--ink-muted)' }}
+        >
           Não foi possível carregar. Tente novamente — sem pop-up, sem
           enrolação.
         </p>
         {error.digest && (
-          <p className="mt-2 border border-[rgba(27,41,32,0.16)] bg-[#e8ddca] px-3 py-2 text-center font-mono text-xs text-[#3e4d42]">
+          <p
+            className="mt-2 border px-3 py-2 text-center font-mono text-xs"
+            style={{
+              borderColor: 'var(--line)',
+              background: 'var(--muted)',
+              color: 'var(--ink-muted)',
+            }}
+          >
             Erro: {error.digest}
           </p>
         )}
@@ -36,13 +71,13 @@ export default function Error({
           <button
             type="button"
             onClick={unstable_retry}
-            className="h-12 border-2 border-[#1b2920] bg-[#a85131] font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#1b2920] hover:bg-[#1b2920] hover:text-white"
+            className="button-queimando-panela button-primary-queimando-panela"
           >
             Tentar novamente
           </button>
           <Link
             href="/"
-            className="grid h-12 place-items-center border-2 border-[#1b2920] bg-white font-display text-xs font-extrabold uppercase tracking-[0.12em] text-[#1b2920] hover:bg-[#1b2920] hover:text-white"
+            className="button-queimando-panela button-outline-queimando-panela"
           >
             Voltar ao início
           </Link>

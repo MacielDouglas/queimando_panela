@@ -338,7 +338,7 @@ export function GeladeiraClient({ isLogged }: { isLogged: boolean }) {
                 </Link>{' '}
                 ou{' '}
                 <Link
-                  href="/criar-conta"
+                  href="/sign-up"
                   className="font-bold underline decoration-[var(--food-accent)] underline-offset-4"
                 >
                   criar conta

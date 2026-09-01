@@ -136,7 +136,7 @@ export function SignInForm() {
       <p className="text-center text-sm text-neutral-600">
         Não tem conta?{' '}
         <Link
-          href="/criar-conta"
+          href="/sign-up"
           className="font-semibold text-[#a85131] hover:text-[#a85131]"
         >
           Criar conta

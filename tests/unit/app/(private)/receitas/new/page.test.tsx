@@ -46,7 +46,7 @@ describe('NewRecipePage', () => {
     expect(getSessionMock).toHaveBeenCalledWith({
       headers: expect.any(Headers),
     });
-    expect(redirectMock).toHaveBeenCalledWith('/login');
+    expect(redirectMock).toHaveBeenCalledWith('/sign-in');
   });
 
   it('renderiza o formulário quando há usuário autenticado', async () => {

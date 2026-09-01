@@ -82,10 +82,10 @@ describe('EditRecipePage', () => {
       EditRecipePage({
         params: Promise.resolve({ slug: 'bolo-de-milho' }),
       }),
-    ).rejects.toThrow('NEXT_REDIRECT:/login');
+    ).rejects.toThrow('NEXT_REDIRECT:/sign-in');
 
     expect(getEditableRecipeBySlugMock).not.toHaveBeenCalled();
-    expect(redirectMock).toHaveBeenCalledWith('/login');
+    expect(redirectMock).toHaveBeenCalledWith('/sign-in');
   });
 
   it('chama notFound quando a receita não existe para o autor', async () => {

@@ -312,7 +312,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           <>
             Não tem conta?{' '}
             <Link
-              href="/criar-conta"
+              href="/sign-up"
               className="font-semibold text-[#a85131] transition-colors hover:text-[#1b2920] focus-visible:outline-[#c4975d]"
             >
               Criar conta
@@ -322,7 +322,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           <>
             Já tem conta?{' '}
             <Link
-              href="/login"
+              href="/sign-in"
               className="font-semibold text-[#a85131] transition-colors hover:text-[#1b2920] focus-visible:outline-[#c4975d]"
             >
               Entrar

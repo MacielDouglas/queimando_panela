@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 export default async function EditRecipePage({ params }: Props) {
   const session = await auth.api.getSession({ headers: await headers() });
-  if (!session?.user) redirect('/login');
+  if (!session?.user) redirect('/sign-in');
 
   const { slug } = await params;
   const recipe = await getEditableRecipeBySlug(slug, session.user.id);

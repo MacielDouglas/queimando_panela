@@ -762,6 +762,37 @@
       transform: translateY(0);
     }
   }
+
+  @keyframes qp-wiggle {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    15% {
+      transform: rotate(14deg);
+    }
+    30% {
+      transform: rotate(-10deg);
+    }
+    45% {
+      transform: rotate(8deg);
+    }
+    60% {
+      transform: rotate(-6deg);
+    }
+    75% {
+      transform: rotate(3deg);
+    }
+  }
+
+  .qp-wiggle {
+    animation: qp-wiggle 1.2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+    animation-delay: 1s;
+  }
+
+  .qp-float-badge {
+    animation: qp-float 4s ease-in-out infinite;
+  }
 }
 
 /* Forçar tudo quadrado - override global */

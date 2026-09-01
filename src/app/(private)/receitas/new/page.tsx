@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default async function NewRecipePage() {
   const session = await auth.api.getSession({ headers: await headers() });
 
-  if (!session?.user) redirect('/login');
+  if (!session?.user) redirect('/sign-in');
 
   return (
     <RecipeEditorLayout

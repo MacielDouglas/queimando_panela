@@ -35,7 +35,9 @@ export function LogoutButton({ className }: LogoutButtonProps) {
       variant="outline"
       onClick={handleLogout}
       disabled={isPending}
-      className={className ?? 'rounded-none border-stone-300'}
+      className={
+        className ?? 'button-queimando-panela button-outline-queimando-panela'
+      }
     >
       {isPending ? 'Saindo...' : 'Sair'}
     </Button>
