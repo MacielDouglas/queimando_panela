@@ -15,7 +15,7 @@ export function IntroSection() {
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-[#e8ddca] lg:aspect-[1/1.06]">
                 <Image
-                  src="https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&w=1000&q=85"
+                  src="/images/ingredientes.jpg"
                   alt="Queijos artesanais, ervas e ingredientes naturais"
                   fill
                   sizes="(max-width: 1024px) 100vw, 45vw"
@@ -26,7 +26,7 @@ export function IntroSection() {
             <div
               className="relative mt-4 max-w-[230px] p-5 lg:absolute lg:bottom-[34px] lg:right-[-28px] lg:mt-0"
               style={{
-                borderRadius: '14px',
+                borderRadius: 'var(--radius-md)',
                 background: 'var(--cocoa)',
                 color: 'white',
                 boxShadow: 'var(--shadow)',

@@ -15,6 +15,26 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: 'GPTBot',
         disallow: '/',
       },
+      {
+        userAgent: 'CCBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'Bytespider',
+        disallow: '/',
+      },
+      {
+        userAgent: 'Google-Extended',
+        disallow: '/',
+      },
+      {
+        userAgent: 'anthropic-ai',
+        disallow: '/',
+      },
+      {
+        userAgent: 'ClaudeBot',
+        disallow: '/',
+      },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,

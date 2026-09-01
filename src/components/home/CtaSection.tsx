@@ -32,7 +32,7 @@ export function CtaSection() {
             </h2>
             <p
               className="mt-5 max-w-[560px] text-[1.08rem] leading-relaxed"
-              style={{ color: 'rgba(31, 41, 51, 0.82)' }}
+              style={{ color: 'var(--ink-muted)' }}
             >
               Publique em 3 minutos: escreva como faz em casa, a IA confere
               utensílios, nutrição, tempo e categoria. Você revisa e publica.
@@ -54,7 +54,7 @@ export function CtaSection() {
             style={{ minHeight: '340px' }}
           >
             <Image
-              src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1000&q=80"
+              src="/images/refeicao-compartilhada.jpg"
               alt="Pessoas compartilhando uma refeição à mesa"
               fill
               sizes="40vw"

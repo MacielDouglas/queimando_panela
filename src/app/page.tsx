@@ -9,7 +9,7 @@ import { ValuesSection } from '@/components/home/ValuesSection';
 import { getClassicRecipes } from '@/features/recipes/actions/get-classic-recipes';
 import { getLatestRecipes } from '@/features/recipes/actions/get-latest-recipes';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Queimando Panela — Receitas caseiras, afetivas e autorais',

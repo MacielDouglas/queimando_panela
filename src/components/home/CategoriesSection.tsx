@@ -6,24 +6,21 @@ const categories = [
     name: 'Prato principal',
     description:
       'Arroz, feijoada, moqueca — pratos que sustentam a mesa e a conversa.',
-    image:
-      'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=900&q=80',
+    image: '/images/prato-principal.jpg',
     href: '/receitas?categoria=Prato%20principal',
     cta: 'Ver pratos principais',
   },
   {
     name: 'Sobremesa',
     description: 'Bolo, pudim, doce de avó — finais doces que viram história.',
-    image:
-      'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=80',
+    image: '/images/sobremesa.jpg',
     href: '/receitas?categoria=Sobremesa',
     cta: 'Ver sobremesas',
   },
   {
     name: 'Café da manhã',
     description: 'Pão, tapioca, café passado — começos que dão energia ao dia.',
-    image:
-      'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80',
+    image: '/images/cafe-manha.jpg',
     href: '/receitas?categoria=Caf%C3%A9%20da%20manh%C3%A3',
     cta: 'Ver cafés da manhã',
   },

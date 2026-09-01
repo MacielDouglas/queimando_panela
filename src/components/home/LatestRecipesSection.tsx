@@ -138,7 +138,7 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
                   className="mt-4 inline-flex items-center gap-2 text-[0.78rem] font-bold uppercase"
                   style={{ color: 'var(--cocoa)', letterSpacing: '0.1em' }}
                 >
-                  Veja →
+                  Ver receita →
                 </div>
               </div>
             </Link>

@@ -16,10 +16,10 @@ vi.mock('framer-motion', () => ({
 }));
 
 describe('SobrePage', () => {
-  it('renderiza o hero com heading "O Queimando Panela?"', () => {
+  it('renderiza o hero com heading "Queimando Panela?"', () => {
     render(<SobrePage />);
 
-    const headings = screen.getAllByRole('heading', { name: /o queimando/i });
+    const headings = screen.getAllByRole('heading', { name: /queimando/i });
     expect(headings.length).toBeGreaterThanOrEqual(1);
     expect(headings[0].tagName).toBe('H1');
   });

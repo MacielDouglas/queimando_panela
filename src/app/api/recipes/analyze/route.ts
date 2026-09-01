@@ -2,6 +2,35 @@ import Groq from 'groq-sdk';
 import { NextResponse } from 'next/server';
 import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
 
+// ─── Rate Limit (in-memory per IP) ─────────────────────────────────────────
+
+const rateLimit = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW = 60_000; // 1 minuto
+
+export function resetRateLimit() {
+  rateLimit.clear();
+}
+
+function checkRateLimit(ip: string): boolean {
+  if (process.env.NODE_ENV === 'test') return true;
+
+  const now = Date.now();
+  const entry = rateLimit.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+
+  if (entry.count >= RATE_LIMIT_MAX) {
+    return false;
+  }
+
+  entry.count++;
+  return true;
+}
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type Section = {
@@ -388,7 +417,15 @@ JSON ESPERADO (retorne apenas isso)
 // ─── Route Handler ────────────────────────────────────────────────────────────
 
 export async function POST(request: Request) {
-  console.log('[api/recipes/analyze] POST reached');
+  const ip =
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json(
+      { error: 'Muitas requisições. Aguarde um minuto e tente novamente.' },
+      { status: 429 },
+    );
+  }
 
   try {
     const rawKey = process.env.GROQ_API_KEY?.trim();
@@ -432,7 +469,6 @@ export async function POST(request: Request) {
     });
 
     const raw = completion.choices[0]?.message?.content ?? '';
-    console.log('[api/recipes/analyze] raw response:', raw);
 
     try {
       const parsed = parseAiJson(raw);

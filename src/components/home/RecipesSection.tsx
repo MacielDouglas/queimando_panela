@@ -88,7 +88,6 @@ export function RecipesSection({ rows }: RecipesSectionProps) {
                   <span
                     className="absolute left-4 top-4 px-[11px] py-[7px] text-[0.73rem] font-extrabold uppercase"
                     style={{
-                      borderRadius: '999px',
                       background: 'var(--food-accent)',
                       color: 'var(--ink)',
                       letterSpacing: '0.04em',

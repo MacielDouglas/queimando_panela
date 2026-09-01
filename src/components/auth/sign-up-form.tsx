@@ -166,7 +166,7 @@ export function SignUpForm() {
         </div>
         {serverError && (
           <p
-            className="rounded-[var(--radius-md)] px-3 py-2 text-sm"
+            className="px-3 py-2 text-sm"
             style={{
               border:
                 '1px solid color-mix(in srgb, var(--destructive) 20%, transparent)',
