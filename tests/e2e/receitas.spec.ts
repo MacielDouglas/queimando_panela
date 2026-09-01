@@ -196,9 +196,7 @@ test.describe('rota protegida /receitas/new — visitante', () => {
     await page.goto('/receitas/new');
 
     await expect(page).toHaveURL(/\/sign-in/, { timeout: 15_000 });
-    await expect(
-      page.getByText('Queimando Panela', { exact: true }),
-    ).toBeVisible();
+    await expect(page.locator('p.eyebrow-queimando-panela')).toBeVisible();
     await expect(page.getByLabel(/e-mail/i)).toBeVisible();
   });
 });
