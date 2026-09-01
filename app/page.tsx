@@ -161,7 +161,7 @@ export default function Home() {
             <div className="relative rounded-[28px] border border-orange-100 bg-white p-3 shadow-xl">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&w=900&q=80"
+                src="/images/hero-frutas.jpg"
                 alt="Mesa com pratos variados"
                 className="aspect-[4/3.2] w-full rounded-2xl object-cover"
               />
