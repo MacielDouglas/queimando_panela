@@ -793,6 +793,17 @@
   .qp-float-badge {
     animation: qp-float 4s ease-in-out infinite;
   }
+
+  @keyframes qp-confetti {
+    0% {
+      transform: translateY(-10px) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(380px) rotate(180deg);
+      opacity: 0;
+    }
+  }
 }
 
 /* Forçar tudo quadrado - override global */

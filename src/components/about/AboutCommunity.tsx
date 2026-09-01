@@ -52,7 +52,10 @@ export function AboutCommunity() {
             >
               Comunidade
             </p>
-            <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,3.6rem)] font-extrabold leading-[0.95] tracking-[-0.04em] text-balance">
+            <h2
+              className="mt-4 font-display text-[clamp(2rem,4.5vw,3.6rem)] font-extrabold leading-[0.95] tracking-[-0.04em] text-balance"
+              style={{ color: 'white' }}
+            >
               Cozinhar é melhor{' '}
               <em
                 className="font-display font-normal italic"

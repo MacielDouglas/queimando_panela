@@ -85,7 +85,7 @@ export function SignUpForm() {
             type="text"
             autoComplete="name"
             placeholder="Seu nome"
-            className="h-12 rounded-[14px] bg-white"
+            className="h-12 bg-white"
             style={{ borderColor: 'var(--line)' } as React.CSSProperties}
             {...register('name')}
           />
@@ -108,7 +108,7 @@ export function SignUpForm() {
             type="email"
             autoComplete="email"
             placeholder="voce@exemplo.com"
-            className="h-12 rounded-[14px] bg-white"
+            className="h-12 bg-white"
             style={{ borderColor: 'var(--line)' } as React.CSSProperties}
             {...register('email')}
           />
@@ -131,7 +131,7 @@ export function SignUpForm() {
             type="password"
             autoComplete="new-password"
             placeholder="Crie uma senha"
-            className="h-12 rounded-[14px] bg-white"
+            className="h-12 bg-white"
             style={{ borderColor: 'var(--line)' } as React.CSSProperties}
             {...register('password')}
           />
@@ -154,7 +154,7 @@ export function SignUpForm() {
             type="password"
             autoComplete="new-password"
             placeholder="Repita sua senha"
-            className="h-12 rounded-[14px] bg-white"
+            className="h-12 bg-white"
             style={{ borderColor: 'var(--line)' } as React.CSSProperties}
             {...register('confirmPassword')}
           />

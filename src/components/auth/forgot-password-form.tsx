@@ -64,24 +64,45 @@ export function ForgotPasswordForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
       <div className="space-y-2">
-        <Label htmlFor="email">E-mail</Label>
+        <Label
+          htmlFor="email"
+          className="text-[0.78rem] font-bold uppercase"
+          style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
+        >
+          E-mail
+        </Label>
         <Input
           id="email"
           type="email"
           autoComplete="email"
           placeholder="voce@exemplo.com"
-          className="h-11 rounded-none border-[#1b2920] focus-visible:ring-[#a85131]"
+          className="h-12 bg-white"
+          style={{ borderColor: 'var(--line)' } as React.CSSProperties}
           {...register('email')}
         />
         {errors.email && (
-          <p className="text-sm text-[#cc1f1f]">{errors.email.message}</p>
+          <p className="text-sm" style={{ color: 'var(--destructive)' }}>
+            {errors.email.message}
+          </p>
         )}
       </div>
 
-      {serverError && <p className="text-sm text-[#cc1f1f]">{serverError}</p>}
+      {serverError && (
+        <p
+          className="px-3 py-2 text-sm"
+          style={{
+            border:
+              '1px solid color-mix(in srgb, var(--destructive) 20%, transparent)',
+            background: 'color-mix(in srgb, var(--destructive) 6%, white)',
+            color: 'var(--destructive)',
+          }}
+        >
+          {serverError}
+        </p>
+      )}
 
       {isSuccess && (
-        <p className="text-sm text-stone-600">
+        <p className="text-sm leading-6" style={{ color: 'var(--ink-muted)' }}>
           Se existir uma conta com esse e-mail, enviaremos as instruções para
           redefinir sua senha.
         </p>
@@ -90,7 +111,7 @@ export function ForgotPasswordForm() {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="h-11 w-full rounded-none bg-[#a85131] text-[#1b2920] hover:bg-[#8e4429]"
+        className="button-queimando-panela button-primary-queimando-panela h-12 w-full"
       >
         {isSubmitting ? 'Enviando...' : 'Enviar instruções'}
       </Button>

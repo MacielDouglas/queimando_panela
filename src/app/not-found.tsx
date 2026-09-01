@@ -45,7 +45,6 @@ export default function NotFound() {
 
   return (
     <main className="relative min-h-dvh overflow-hidden bg-transparent px-4 py-10 sm:p-8">
-      {/* confetti fofo */}
       {confetti && (
         <div
           className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -70,22 +69,17 @@ export default function NotFound() {
       )}
 
       <div className="relative mx-auto w-full max-w-[560px]">
-        {/* cartaz divertido */}
         <div
           className="relative overflow-hidden bg-white p-6 sm:p-8"
           style={{
-            border: '2px solid #1b2920',
-            boxShadow: '8px 8px 0 #1b2920',
+            border: '2px solid var(--cocoa)',
+            boxShadow: '8px 8px 0 var(--cocoa)',
           }}
         >
-          {/* faixa topo */}
           <div className="flex items-center justify-between gap-2">
-            <span
-              className="inline-flex items-center gap-2 bg-[#1b2920] px-2.5 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.16em] text-white"
-              style={{ letterSpacing: '0.14em' }}
-            >
+            <span className="inline-flex items-center gap-2 bg-[var(--cocoa)] px-2.5 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.14em] text-white">
               <span
-                className="size-2 rounded-full bg-[#a85131] animate-pulse"
+                className="size-2 rounded-none bg-[var(--food-accent)] animate-pulse"
                 aria-hidden="true"
               />
               ERRO GOSTOSO 404
@@ -93,7 +87,7 @@ export default function NotFound() {
             <button
               type="button"
               onClick={sortear}
-              className="rounded-full border bg-white px-3 py-1 text-xs font-bold hover:bg-[var(--muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
+              className="border bg-white px-3 py-1 text-xs font-bold hover:bg-[var(--muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
               style={{ borderColor: 'var(--line)', color: 'var(--cocoa)' }}
               aria-label="Sortear outra piada"
             >
@@ -101,17 +95,16 @@ export default function NotFound() {
             </button>
           </div>
 
-          {/* 404 grandão com panela */}
           <div className="mt-6 text-center">
             <div className="flex items-center justify-center gap-2">
-              <span className="font-display text-[clamp(3rem,12vw,5.5rem)] font-black leading-none tracking-[-0.04em] text-[#1b2920]">
+              <span className="font-display text-[clamp(3rem,12vw,5.5rem)] font-black leading-none tracking-[-0.04em] text-[var(--cocoa)]">
                 4
               </span>
               <button
                 type="button"
                 onClick={sortear}
-                className="group grid size-[clamp(3rem,12vw,5.5rem)] place-items-center rounded-full border-2 bg-[#a85131] text-[#1b2920] transition-transform hover:rotate-6 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
-                style={{ borderColor: '#1b2920' }}
+                className="group grid size-[clamp(3rem,12vw,5.5rem)] place-items-center border-2 bg-[var(--food-accent)] text-[var(--cocoa)] transition-transform hover:rotate-6 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
+                style={{ borderColor: 'var(--cocoa)' }}
                 aria-label="Tocar a panela"
                 title="Toc toc, tem alguém aí?"
               >
@@ -122,7 +115,7 @@ export default function NotFound() {
                   🍳
                 </span>
               </button>
-              <span className="font-display text-[clamp(3rem,12vw,5.5rem)] font-black leading-none tracking-[-0.04em] text-[#1b2920]">
+              <span className="font-display text-[clamp(3rem,12vw,5.5rem)] font-black leading-none tracking-[-0.04em] text-[var(--cocoa)]">
                 4
               </span>
             </div>
@@ -140,25 +133,24 @@ export default function NotFound() {
 
           <h1
             className="mt-4 text-center font-display text-[1.65rem] font-extrabold leading-none tracking-[-0.02em] sm:text-[1.9rem]"
-            style={{ color: '#1b2920' }}
+            style={{ color: 'var(--cocoa)' }}
           >
             {piada.titulo}
           </h1>
           <p
             className="mx-auto mt-3 max-w-[42ch] text-center text-sm leading-6"
-            style={{ color: '#3e4d42', textWrap: 'pretty' }}
+            style={{ color: 'var(--ink-muted)', textWrap: 'pretty' }}
           >
             {piada.texto} A boa notícia? Sua fome ainda está intacta e a gente
             tem centenas de receitas que <b>não</b> queimaram.
           </p>
 
-          {/* selo feliz */}
           <div
-            className="mx-auto mt-5 flex max-w-[360px] items-center justify-center gap-2 rounded-full border bg-[var(--muted)] px-3 py-2 text-xs font-bold"
+            className="mx-auto mt-5 flex max-w-[360px] items-center justify-center gap-2 border bg-[var(--muted)] px-3 py-2 text-xs font-bold"
             style={{ borderColor: 'var(--line)', color: 'var(--cocoa)' }}
           >
             <span
-              className="size-2 rounded-full bg-[#a85131]"
+              className="size-2 rounded-none bg-[var(--food-accent)]"
               aria-hidden="true"
             />
             Você está a 1 clique de algo delicioso
@@ -168,8 +160,8 @@ export default function NotFound() {
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
             <Link
               href="/"
-              className="group relative grid h-12 place-items-center overflow-hidden border-2 bg-[#a85131] font-display text-xs font-extrabold uppercase tracking-[0.12em] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#1b2920] active:translate-y-0 active:shadow-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
-              style={{ borderColor: '#1b2920', color: '#1b2920' }}
+              className="group relative grid h-12 place-items-center overflow-hidden border-2 bg-[var(--food-accent)] font-display text-xs font-extrabold uppercase tracking-[0.12em] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--cocoa)] active:translate-y-0 active:shadow-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
+              style={{ borderColor: 'var(--cocoa)', color: 'var(--cocoa)' }}
             >
               <span
                 className="absolute inset-0 -translate-x-full bg-white/15 transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:translate-x-0"
@@ -182,7 +174,7 @@ export default function NotFound() {
                 />
                 Voltar pra cozinha
                 <span
-                  className="grid size-6 place-items-center rounded-full bg-white text-[#1b2920] transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-12"
+                  className="grid size-6 place-items-center bg-white text-[var(--cocoa)] transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-12"
                   aria-hidden="true"
                 >
                   <ChefHat className="size-3.5" />
@@ -191,8 +183,8 @@ export default function NotFound() {
             </Link>
             <Link
               href="/receitas"
-              className="group relative grid h-12 place-items-center overflow-hidden border-2 bg-white font-display text-xs font-extrabold uppercase tracking-[0.12em] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#1b2920] hover:bg-[#1b2920] hover:text-white active:translate-y-0 active:shadow-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
-              style={{ borderColor: '#1b2920', color: '#1b2920' }}
+              className="group relative grid h-12 place-items-center overflow-hidden border-2 bg-white font-display text-xs font-extrabold uppercase tracking-[0.12em] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--cocoa)] hover:bg-[var(--cocoa)] hover:text-white active:translate-y-0 active:shadow-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
+              style={{ borderColor: 'var(--cocoa)', color: 'var(--cocoa)' }}
             >
               <span className="relative flex items-center gap-2">
                 <Utensils
@@ -206,7 +198,7 @@ export default function NotFound() {
                 />
               </span>
               <span
-                className="absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-[#a85131] px-2 py-0.5 text-[9px] font-black tracking-[0.08em] text-white opacity-0 transition-all duration-300 group-hover:bottom-2 group-hover:opacity-100"
+                className="absolute bottom-1 left-1/2 -translate-x-1/2 bg-[var(--food-accent)] px-2 py-0.5 text-[9px] font-black tracking-[0.08em] text-white opacity-0 transition-all duration-300 group-hover:bottom-2 group-hover:opacity-100"
                 aria-hidden="true"
               >
                 com carinho!
@@ -223,7 +215,6 @@ export default function NotFound() {
           </p>
         </div>
 
-        {/* rodapé fofo */}
         <p
           className="mt-4 text-center text-xs"
           style={{ color: 'var(--ink-muted)' }}
@@ -237,8 +228,6 @@ export default function NotFound() {
           </Link>
         </p>
       </div>
-
-      <style>{`@keyframes qp-confetti { 0% { transform: translateY(-10px) rotate(0deg); opacity: 1 } 100% { transform: translateY(380px) rotate(180deg); opacity: 0 } }`}</style>
     </main>
   );
 }

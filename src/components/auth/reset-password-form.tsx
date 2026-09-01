@@ -71,13 +71,16 @@ export function ResetPasswordForm() {
   if (!token || resetError) {
     return (
       <div className="space-y-4">
-        <p className="text-sm leading-6 text-[#cc1f1f]">
+        <p
+          className="text-sm leading-6"
+          style={{ color: 'var(--destructive)' }}
+        >
           O link de redefinição é inválido ou expirou.
         </p>
         <Button
           asChild
           variant="outline"
-          className="h-11 w-full rounded-none border-[#1b2920]"
+          className="button-queimando-panela button-outline-queimando-panela h-12 w-full"
         >
           <Link href="/forgot-password">Solicitar novo link</Link>
         </Button>
@@ -88,13 +91,13 @@ export function ResetPasswordForm() {
   if (isSuccess) {
     return (
       <div className="space-y-4">
-        <p className="text-sm leading-6 text-stone-600">
+        <p className="text-sm leading-6" style={{ color: 'var(--ink-muted)' }}>
           Sua senha foi redefinida com sucesso. Agora você já pode entrar com a
           nova senha.
         </p>
         <Button
           asChild
-          className="h-11 w-full rounded-none bg-[#a85131] text-[#1b2920] hover:bg-[#8e4429]"
+          className="button-queimando-panela button-primary-queimando-panela h-12 w-full"
         >
           <Link href="/sign-in">Ir para login</Link>
         </Button>
@@ -107,43 +110,71 @@ export function ResetPasswordForm() {
       <input type="hidden" {...register('token')} />
 
       <div className="space-y-2">
-        <Label htmlFor="password">Nova senha</Label>
+        <Label
+          htmlFor="password"
+          className="text-[0.78rem] font-bold uppercase"
+          style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
+        >
+          Nova senha
+        </Label>
         <Input
           id="password"
           type="password"
           autoComplete="new-password"
           placeholder="Digite sua nova senha"
-          className="h-11 rounded-none border-[#1b2920] focus-visible:ring-[#a85131]"
+          className="h-12 bg-white"
+          style={{ borderColor: 'var(--line)' } as React.CSSProperties}
           {...register('password')}
         />
         {errors.password && (
-          <p className="text-sm text-[#cc1f1f]">{errors.password.message}</p>
+          <p className="text-sm" style={{ color: 'var(--destructive)' }}>
+            {errors.password.message}
+          </p>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="confirmPassword">Confirmar nova senha</Label>
+        <Label
+          htmlFor="confirmPassword"
+          className="text-[0.78rem] font-bold uppercase"
+          style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
+        >
+          Confirmar nova senha
+        </Label>
         <Input
           id="confirmPassword"
           type="password"
           autoComplete="new-password"
           placeholder="Repita sua nova senha"
-          className="h-11 rounded-none border-[#1b2920] focus-visible:ring-[#a85131]"
+          className="h-12 bg-white"
+          style={{ borderColor: 'var(--line)' } as React.CSSProperties}
           {...register('confirmPassword')}
         />
         {errors.confirmPassword && (
-          <p className="text-sm text-[#cc1f1f]">
+          <p className="text-sm" style={{ color: 'var(--destructive)' }}>
             {errors.confirmPassword.message}
           </p>
         )}
       </div>
 
-      {serverError && <p className="text-sm text-[#cc1f1f]">{serverError}</p>}
+      {serverError && (
+        <p
+          className="px-3 py-2 text-sm"
+          style={{
+            border:
+              '1px solid color-mix(in srgb, var(--destructive) 20%, transparent)',
+            background: 'color-mix(in srgb, var(--destructive) 6%, white)',
+            color: 'var(--destructive)',
+          }}
+        >
+          {serverError}
+        </p>
+      )}
 
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="h-11 w-full rounded-none bg-[#a85131] text-[#1b2920] hover:bg-[#8e4429]"
+        className="button-queimando-panela button-primary-queimando-panela h-12 w-full"
       >
         {isSubmitting ? 'Redefinindo...' : 'Redefinir senha'}
       </Button>

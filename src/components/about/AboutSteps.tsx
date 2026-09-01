@@ -128,7 +128,7 @@ export function AboutSteps() {
         <div className="mx-auto max-w-[620px] text-center">
           <p className="eyebrow-queimando-panela">Passo a passo</p>
           <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.2rem)] font-extrabold leading-[0.95] tracking-[-0.04em] text-balance">
-            Como funciona o{' '}
+            Como funciona{' '}
             <em
               className="font-display font-normal italic"
               style={{ color: 'var(--food-accent)' }}

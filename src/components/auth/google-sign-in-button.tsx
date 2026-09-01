@@ -27,7 +27,7 @@ export function GoogleSignInButton() {
       variant="outline"
       onClick={handleGoogleSignIn}
       disabled={isPending}
-      className="h-12 w-full rounded-full border bg-white font-bold"
+      className="h-12 w-full border bg-white font-bold"
       style={{
         borderColor: 'var(--line)',
         color: 'var(--cocoa)',

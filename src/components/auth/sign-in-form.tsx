@@ -82,7 +82,7 @@ export function SignInForm() {
             type="email"
             autoComplete="email"
             placeholder="voce@exemplo.com"
-            className="h-12 rounded-[14px] bg-white"
+            className="h-12 bg-white"
             style={{ borderColor: 'var(--line)' } as React.CSSProperties}
             {...register('email')}
           />
@@ -118,7 +118,7 @@ export function SignInForm() {
             type="password"
             autoComplete="current-password"
             placeholder="Digite sua senha"
-            className="h-12 rounded-[14px] bg-white"
+            className="h-12 bg-white"
             style={{ borderColor: 'var(--line)' } as React.CSSProperties}
             {...register('password')}
           />

@@ -38,14 +38,14 @@ export function AuthShell({
               <div>
                 <Link
                   href="/"
-                  className="inline-flex items-center gap-2 rounded-full px-3 py-1.5"
+                  className="inline-flex items-center gap-2 px-3 py-1.5"
                   style={{
                     background: 'var(--food-accent)',
                     color: 'var(--cocoa)',
                   }}
                 >
                   <span
-                    className="grid size-7 place-items-center rounded-full text-xs font-extrabold"
+                    className="grid size-7 place-items-center text-xs font-extrabold"
                     style={{
                       background: 'var(--cocoa)',
                       color: 'var(--food-accent)',
@@ -64,7 +64,7 @@ export function AuthShell({
 
                 <div className="mt-10 max-w-md space-y-4">
                   <p
-                    className="inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-[0.78rem] font-bold uppercase"
+                    className="inline-flex items-center gap-2 px-2.5 py-1 text-[0.78rem] font-bold uppercase"
                     style={{
                       background: 'var(--food-accent)',
                       color: 'var(--cocoa)',

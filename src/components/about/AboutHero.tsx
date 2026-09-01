@@ -15,7 +15,7 @@ export function AboutHero() {
           </p>
 
           <h1 className="mt-6 font-display text-[clamp(2.8rem,6vw,5.2rem)] font-extrabold leading-[0.9] tracking-[-0.04em] text-balance">
-            O Queimando{' '}
+            Queimando{' '}
             <em
               className="font-display font-normal italic"
               style={{ color: 'var(--food-accent)', letterSpacing: '-0.03em' }}

@@ -26,13 +26,13 @@ export default async function MinhaContaPage() {
           }}
         >
           <p
-            className="eyebrow-queimando-panela inline-flex items-center gap-2"
+            className="eyebrow-queimando-panela"
             style={{ background: 'var(--food-accent)', color: 'var(--cocoa)' }}
           >
             Minha conta
           </p>
           <h1
-            className="mt-3 font-display text-3xl font-extrabold uppercase leading-none tracking-[-0.02em]"
+            className="mt-3 font-display text-3xl font-extrabold leading-none tracking-[-0.02em]"
             style={{ color: 'var(--cocoa)' }}
           >
             Perfil da conta
@@ -109,16 +109,19 @@ export default async function MinhaContaPage() {
                 className="grid grid-cols-[120px_1fr] gap-2 border px-3 py-2"
                 style={{
                   borderColor: 'var(--food-accent)',
-                  background: 'var(--food-accent)',
+                  background: 'var(--food-accent-soft)',
                 }}
               >
                 <dt
                   className="font-display text-xs font-bold uppercase tracking-[0.1em]"
-                  style={{ color: 'white' }}
+                  style={{ color: 'var(--cocoa)' }}
                 >
                   Verificada
                 </dt>
-                <dd className="font-extrabold" style={{ color: 'white' }}>
+                <dd
+                  className="font-extrabold"
+                  style={{ color: 'var(--cocoa)' }}
+                >
                   {session.user.emailVerified ? 'Sim' : 'Não'}
                 </dd>
               </div>
