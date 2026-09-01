@@ -197,7 +197,7 @@ test.describe('rota protegida /receitas/new — visitante', () => {
 
     await expect(page).toHaveURL(/\/sign-in/, { timeout: 15_000 });
     await expect(
-      page.getByRole('heading', { name: /queimando panela/i }),
+      page.getByText('Queimando Panela', { exact: true }),
     ).toBeVisible();
     await expect(page.getByLabel(/e-mail/i)).toBeVisible();
   });
