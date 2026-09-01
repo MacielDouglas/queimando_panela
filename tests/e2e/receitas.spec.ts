@@ -192,10 +192,10 @@ test.describe('Queimando Panela — E2E', () => {
 test.describe('rota protegida /receitas/new — visitante', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
-  test('redireciona visitante deslogado para /login', async ({ page }) => {
+  test('redireciona visitante deslogado para /sign-in', async ({ page }) => {
     await page.goto('/receitas/new');
 
-    await expect(page).toHaveURL(/\/login/, { timeout: 15_000 });
+    await expect(page).toHaveURL(/\/sign-in/, { timeout: 15_000 });
     await expect(
       page.getByRole('heading', { name: /queimando panela/i }),
     ).toBeVisible();
@@ -210,11 +210,11 @@ test.describe('rota protegida /receitas/new — autenticado', () => {
     page,
   }) => {
     await page.goto('/receitas/new');
-    await expect(page).toHaveURL(/\/receitas\/new|\/login/, {
+    await expect(page).toHaveURL(/\/receitas\/new|\/sign-in/, {
       timeout: 15_000,
     });
 
-    if (page.url().includes('/login')) {
+    if (page.url().includes('/sign-in')) {
       test.skip(
         true,
         'Sem sessão autenticada — defina E2E_USER_EMAIL/PASSWORD e rode o projeto setup',
@@ -303,11 +303,11 @@ test.describe('rota protegida /receitas/new — autenticado', () => {
     page,
   }) => {
     await page.goto('/receitas/new');
-    await expect(page).toHaveURL(/\/receitas\/new|\/login/, {
+    await expect(page).toHaveURL(/\/receitas\/new|\/sign-in/, {
       timeout: 15_000,
     });
 
-    if (page.url().includes('/login')) {
+    if (page.url().includes('/sign-in')) {
       test.skip(true, 'Sem sessão — pule validação autenticada');
       return;
     }

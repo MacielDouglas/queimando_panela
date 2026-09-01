@@ -7,7 +7,7 @@ const authFile = path.join(__dirname, 'playwright/.auth/user.json');
  * Setup de autenticação — E2E
  *
  * - Tenta autenticar via better-auth API (`POST /api/auth/sign-in/email`)
- * - Fallback via UI (`/login`) se a API falhar
+ * - Fallback via UI (`/sign-in`) se a API falhar
  * - Se `E2E_USER_EMAIL` / `E2E_USER_PASSWORD` não estiverem definidos, cria
  *   storageState vazio e pula (para CI sem secrets / dev local)
  * - Salva cookies + localStorage em `tests/e2e/playwright/.auth/user.json`
@@ -46,11 +46,11 @@ setup('authenticate', async ({ page }) => {
   if (apiResponse.ok()) {
     // Cookies já estão no page context; valida sessão indo a rota protegida
     await page.goto('/receitas/new');
-    await expect(page).toHaveURL(/\/receitas\/new|\/login/, {
+    await expect(page).toHaveURL(/\/receitas\/new|\/sign-in/, {
       timeout: 15_000,
     });
     const url = page.url();
-    if (url.includes('/login')) {
+    if (url.includes('/sign-in')) {
       console.warn(
         '[auth.setup] API retornou 200 mas sessão não persistiu — tentando fallback UI',
       );
@@ -67,7 +67,7 @@ setup('authenticate', async ({ page }) => {
   }
 
   // ── Tentativa 2: Fallback UI ──────────────────────────────────────────
-  await page.goto('/login');
+  await page.goto('/sign-in');
   await expect(
     page.getByRole('heading', { name: /queimando panela/i }),
   ).toBeVisible({ timeout: 15_000 });
@@ -78,10 +78,10 @@ setup('authenticate', async ({ page }) => {
   await page.getByRole('button', { name: /^entrar$/i }).click();
 
   // Aguarda navegação pós-login — better-auth redireciona para "/"
-  await page.waitForURL((url) => !url.pathname.includes('/login'), {
+  await page.waitForURL((url) => !url.pathname.includes('/sign-in'), {
     timeout: 20_000,
   });
-  await expect(page).not.toHaveURL(/\/login/);
+  await expect(page).not.toHaveURL(/\/sign-in/);
 
   await page.context().storageState({ path: authFile });
   console.log(
