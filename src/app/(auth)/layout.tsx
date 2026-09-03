@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { auth } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 type AppLayoutProps = {
   children: ReactNode;
 };

@@ -3,6 +3,8 @@ import { headers } from 'next/headers';
 import { GeladeiraClient } from '@/features/geladeira/components/GeladeiraClient';
 import { auth } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'O que tem? | Queimando Panela',
   description:

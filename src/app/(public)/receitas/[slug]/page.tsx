@@ -2,19 +2,20 @@ import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-
-export const revalidate = 3600;
-
-export async function generateStaticParams() {
-  return [];
-}
-
 import { getRecipeBySlug } from '@/features/recipes/actions/get-recipe-by-slug';
 import { RecipeDetailHero } from '@/features/recipes/components/recipe-detail/RecipeDetailHero';
 import { RecipeIngredients } from '@/features/recipes/components/recipe-detail/RecipeIngredients';
 import { RecipeNutrition } from '@/features/recipes/components/recipe-detail/RecipeNutrition';
 import { RecipeSteps } from '@/features/recipes/components/recipe-detail/RecipeSteps';
 import { auth } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return [];
+}
 
 type Props = {
   params: Promise<{ slug: string }>;
