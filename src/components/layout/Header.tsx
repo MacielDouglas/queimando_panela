@@ -1,8 +1,7 @@
 import Link from 'next/link';
 
 import { QPMark } from '@/components/brand/qp-mark';
-import { AuthNavButton } from '@/components/layout/auth-nav-button';
-import { MobileMenu } from '@/components/layout/mobile-menu';
+import { AuthSection } from '@/components/layout/auth-section';
 import { NavLinks } from '@/components/layout/nav-links';
 import { navItems } from '@/components/layout/navigation-data';
 
@@ -37,14 +36,7 @@ export default function Header() {
             <NavLinks items={navItems} variant="header" />
           </nav>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden md:block">
-              <AuthNavButton />
-            </div>
-            <div className="md:hidden">
-              <MobileMenu />
-            </div>
-          </div>
+          <AuthSection />
         </div>
       </header>
     </>
