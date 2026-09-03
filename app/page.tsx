@@ -23,6 +23,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { classicRecipes, featuredRecipe, latestRecipes } from "@/lib/mock-data";
 
+export const dynamic = "force-static";
+
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col">

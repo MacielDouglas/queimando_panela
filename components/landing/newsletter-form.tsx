@@ -23,7 +23,11 @@ export function NewsletterForm() {
         aria-label="Seu e-mail"
         className="h-9 w-full rounded-full border border-white/15 bg-white/5 px-4 text-sm text-white placeholder:text-zinc-500 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/30"
       />
-      <Button size="sm" type="submit" className="shrink-0 rounded-full bg-orange-600 px-5 font-bold hover:bg-orange-700">
+      <Button
+        size="sm"
+        type="submit"
+        className="shrink-0 rounded-full bg-orange-600 px-5 font-bold hover:bg-orange-700"
+      >
         Assinar
       </Button>
     </form>

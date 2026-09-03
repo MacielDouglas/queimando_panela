@@ -6,9 +6,7 @@ const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 function createPrismaClient(): PrismaClient {
   const url = process.env.DATABASE_URL;
   if (!url) {
-    // Sem DATABASE_URL a landing não consulta o banco; retorna cliente lazy
-    // @ts-expect-error — inicialização sem adapter só para não quebrar o build
-    return new PrismaClient();
+    throw new Error("DATABASE_URL não configurado! Adicione no .env ou no ambiente da Vercel.");
   }
   const adapter = new PrismaPg({ connectionString: url });
   return new PrismaClient({ adapter });
