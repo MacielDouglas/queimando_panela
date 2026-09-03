@@ -304,7 +304,7 @@ export async function POST(request: Request) {
     const ip = getClientIp(h);
 
     const rawKey = process.env.GROQ_API_KEY?.trim();
-    if (!rawKey?.startsWith('gsk_')) {
+    if (!rawKey?.startsWith('gsk_') || rawKey.length < 20) {
       return NextResponse.json(
         { error: 'Serviço de IA indisponível.' },
         { status: 503 },
@@ -333,7 +333,6 @@ export async function POST(request: Request) {
     });
 
     const raw = completion.choices[0]?.message?.content ?? '';
-    console.log('[geladeira/generate] raw:', raw);
 
     let parsed: AiResponse;
     try {

@@ -7,8 +7,8 @@ const envServerSchema = z.object({
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
 
-  BETTER_AUTH_SECRET: z.string().optional(),
-  BETTER_AUTH_URL: z.string().optional(),
+  BETTER_AUTH_SECRET: z.string().min(1, 'BETTER_AUTH_SECRET é obrigatório'),
+  BETTER_AUTH_URL: z.string().url().or(z.literal('')).optional(),
 
   R2_ENDPOINT: z.string().url().or(z.literal('')).optional(),
   R2_PUBLIC_URL: z.string().url().or(z.literal('')).optional(),

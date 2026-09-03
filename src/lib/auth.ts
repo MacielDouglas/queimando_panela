@@ -20,6 +20,7 @@ export const auth = betterAuth({
   ],
   emailAndPassword: {
     enabled: true,
+    password: { minLength: 8 },
   },
   socialProviders: {
     ...(envServer.GOOGLE_CLIENT_ID && envServer.GOOGLE_CLIENT_SECRET
@@ -32,4 +33,13 @@ export const auth = betterAuth({
       : {}),
   },
   secret: envServer.BETTER_AUTH_SECRET,
+  session: {
+    expiresIn: 60 * 60 * 24 * 7, // 7 dias
+    updateAge: 60 * 60 * 24, // Atualizar a cada 24h
+    cookieCache: { enabled: true },
+  },
+  rateLimit: {
+    window: 60, // 1 minuto
+    max: 10, // Max 10 tentativas
+  },
 });

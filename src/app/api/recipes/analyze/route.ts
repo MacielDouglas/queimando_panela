@@ -438,11 +438,11 @@ export async function POST(request: Request) {
         { status: 503 },
       );
     }
-    if (!rawKey.startsWith('gsk_')) {
+    if (!rawKey.startsWith('gsk_') || rawKey.length < 20) {
       return NextResponse.json(
         {
           error:
-            'GROQ_API_KEY inválida (deve começar com gsk_). Gere uma nova em https://console.groq.com/keys e atualize .env e Vercel.',
+            'GROQ_API_KEY inválida. Gere uma nova em https://console.groq.com/keys e atualize .env e Vercel.',
         },
         { status: 503 },
       );
