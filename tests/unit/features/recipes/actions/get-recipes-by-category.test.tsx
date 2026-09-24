@@ -1,11 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const recipeFindManyMock = vi.fn();
+const recipeTypeFindManyMock = vi.fn();
 
 vi.mock('@/lib/prisma', () => ({
   prisma: {
     recipe: {
       findMany: (...args: any[]) => recipeFindManyMock(...args),
+    },
+    recipeType: {
+      findMany: (...args: any[]) => recipeTypeFindManyMock(...args),
     },
   },
 }));
@@ -20,13 +24,13 @@ describe('getRecipesByCategory', () => {
   it('retorna categorias com receitas mapeadas', async () => {
     const createdAt = new Date('2026-05-22T12:00:00.000Z');
 
-    // First call: get distinct types
+    // First call: get distinct types via recipeType
+    recipeTypeFindManyMock.mockResolvedValueOnce([
+      { name: 'Bolo' },
+      { name: 'Salgado' },
+    ]);
+    // Second call: get recipes for 'Bolo'
     recipeFindManyMock
-      .mockResolvedValueOnce([
-        { recipeTypes: [{ recipeType: { name: 'Bolo' } }] },
-        { recipeTypes: [{ recipeType: { name: 'Salgado' } }] },
-      ])
-      // Second call: get recipes for 'Bolo'
       .mockResolvedValueOnce([
         {
           id: '1',
@@ -103,15 +107,10 @@ describe('getRecipesByCategory', () => {
   });
 
   it('filtra categorias vazias', async () => {
-    const createdAt = new Date('2026-05-22T12:00:00.000Z');
-
-    // First call: get distinct types (only Coxinha)
-    recipeFindManyMock
-      .mockResolvedValueOnce([
-        { recipeTypes: [{ recipeType: { name: 'Salgado' } }] },
-      ])
-      // Second call: get recipes for 'Salgado' (nenhuma receita encontrada para esse tipo)
-      .mockResolvedValueOnce([]);
+    // First call: get distinct types (only Salgado)
+    recipeTypeFindManyMock.mockResolvedValueOnce([{ name: 'Salgado' }]);
+    // Second call: get recipes for 'Salgado' (nenhuma receita encontrada para esse tipo)
+    recipeFindManyMock.mockResolvedValueOnce([]);
 
     const result = await getRecipesByCategory(4);
 

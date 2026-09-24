@@ -20,6 +20,7 @@ vi.mock('@/lib/r2', () => ({
 
 vi.mock('@/features/recipes/server/process-recipe-image', () => ({
   processRecipeImage: (...args: unknown[]) => processRecipeImageMock(...args),
+  MAX_RECIPE_IMAGE_INPUT_BYTES: 10 * 1024 * 1024,
 }));
 
 import {

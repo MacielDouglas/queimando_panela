@@ -1,6 +1,6 @@
 'use server';
 
-import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 
 type FilterOption = {
@@ -15,70 +15,57 @@ type RecipeFilterOptions = {
   ingredients: FilterOption[];
 };
 
-function shuffle<T>(items: T[]) {
-  const copy = [...items];
-
-  for (let i = copy.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-
-  return copy;
+function toOptions(items: { name: string }[]): FilterOption[] {
+  return items.map((item) => ({ label: item.name, value: item.name }));
 }
 
-export const getRecipeFilterOptions = cache(
-  async (): Promise<RecipeFilterOptions> => {
-    const categories: FilterOption[] = [
-      { label: 'Prato principal', value: 'Prato principal' },
-      { label: 'Sobremesa', value: 'Sobremesa' },
-      { label: 'Massa', value: 'Massa' },
-      { label: 'Ave', value: 'Ave' },
-      { label: 'Café da manhã', value: 'Café da manhã' },
-      { label: 'Lanche', value: 'Lanche' },
-      { label: 'Acompanhamento', value: 'Acompanhamento' },
-    ];
+// Cache compartilhado entre requests (24h). Sem shuffle server-side para
+// permitir CDN/ISR — embaralhe no client se precisar de variedade.
+async function fetchRecipeFilterOptions(): Promise<RecipeFilterOptions> {
+  const categories: FilterOption[] = [
+    { label: 'Prato principal', value: 'Prato principal' },
+    { label: 'Sobremesa', value: 'Sobremesa' },
+    { label: 'Massa', value: 'Massa' },
+    { label: 'Ave', value: 'Ave' },
+    { label: 'Café da manhã', value: 'Café da manhã' },
+    { label: 'Lanche', value: 'Lanche' },
+    { label: 'Acompanhamento', value: 'Acompanhamento' },
+  ];
 
-    try {
-      const [types, utensils, ingredients] = await Promise.all([
-        prisma.recipeType.findMany({
-          orderBy: { name: 'asc' },
-          select: { name: true },
-        }),
-        prisma.utensil.findMany({
-          orderBy: { name: 'asc' },
-          select: { name: true },
-          take: 24,
-        }),
-        prisma.generalIngredient.findMany({
-          orderBy: { name: 'asc' },
-          select: { name: true },
-          take: 48,
-        }),
-      ]);
+  try {
+    const [types, utensils, ingredients] = await Promise.all([
+      prisma.recipeType.findMany({
+        orderBy: { name: 'asc' },
+        select: { name: true },
+        take: 60,
+      }),
+      prisma.utensil.findMany({
+        orderBy: { name: 'asc' },
+        select: { name: true },
+        take: 6,
+      }),
+      prisma.generalIngredient.findMany({
+        orderBy: { name: 'asc' },
+        select: { name: true },
+        take: 12,
+      }),
+    ]);
 
-      return {
-        categories,
-        types: types.map((item) => ({
-          label: item.name,
-          value: item.name,
-        })),
-        utensils: shuffle(utensils)
-          .slice(0, 6)
-          .map((item) => ({
-            label: item.name,
-            value: item.name,
-          })),
-        ingredients: shuffle(ingredients)
-          .slice(0, 12)
-          .map((item) => ({
-            label: item.name,
-            value: item.name,
-          })),
-      };
-    } catch (error) {
-      if (process.env.NODE_ENV === 'production')
-        console.error('[getRecipeFilterOptions] fallback:', error);
-      return { categories, types: [], utensils: [], ingredients: [] };
-    }
-  },
+    return {
+      categories,
+      types: toOptions(types),
+      utensils: toOptions(utensils),
+      ingredients: toOptions(ingredients),
+    };
+  } catch (error) {
+    if (process.env.NODE_ENV === 'production')
+      console.error('[getRecipeFilterOptions] fallback:', error);
+    return { categories, types: [], utensils: [], ingredients: [] };
+  }
+}
+
+export const getRecipeFilterOptions = unstable_cache(
+  fetchRecipeFilterOptions,
+  ['recipe-filter-options'],
+  { revalidate: 86400, tags: ['recipe-filters'] },
 );

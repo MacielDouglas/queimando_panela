@@ -14,8 +14,9 @@ const txUtensilOnRecipeDeleteManyMock = vi.fn();
 const txRecipeSectionDeleteManyMock = vi.fn();
 const txRecipeTypeOnRecipeDeleteManyMock = vi.fn();
 const txRecipeUpdateMock = vi.fn();
-const txIngredientCreateMock = vi.fn();
-const txGeneralIngredientUpsertMock = vi.fn();
+const txIngredientCreateManyMock = vi.fn();
+const txGeneralIngredientFindManyMock = vi.fn();
+const txGeneralIngredientCreateManyMock = vi.fn();
 const txRecipeImageDeleteManyMock = vi.fn();
 const txRecipeImageUpdateMock = vi.fn();
 const txRecipeImageCreateMock = vi.fn();
@@ -127,10 +128,11 @@ describe('updateRecipe', () => {
       return callback({
         ingredient: {
           deleteMany: txIngredientDeleteManyMock,
-          create: txIngredientCreateMock,
+          createMany: txIngredientCreateManyMock,
         },
         generalIngredient: {
-          upsert: txGeneralIngredientUpsertMock,
+          findMany: txGeneralIngredientFindManyMock,
+          createMany: txGeneralIngredientCreateManyMock,
         },
         utensilOnRecipe: {
           deleteMany: txUtensilOnRecipeDeleteManyMock,
@@ -214,8 +216,9 @@ describe('updateRecipe', () => {
       id: 'recipe-1',
       sections: [{ id: 'new-section-1' }],
     });
-    txGeneralIngredientUpsertMock.mockResolvedValue({ id: 'gen-1' });
-    txIngredientCreateMock.mockResolvedValue({});
+    txGeneralIngredientFindManyMock.mockResolvedValue([]);
+    txGeneralIngredientCreateManyMock.mockResolvedValue({ count: 2 });
+    txIngredientCreateManyMock.mockResolvedValue({ count: 2 });
 
     uploadRecipeImageMock.mockResolvedValue({
       key: 'recipes/new-1.webp',
@@ -284,18 +287,18 @@ describe('updateRecipe', () => {
       }),
     );
 
-    expect(txGeneralIngredientUpsertMock).toHaveBeenCalledTimes(2);
-    expect(txIngredientCreateMock).toHaveBeenCalledTimes(2);
-    expect(txIngredientCreateMock).toHaveBeenNthCalledWith(
-      1,
+    expect(txGeneralIngredientFindManyMock).toHaveBeenCalled();
+    expect(txIngredientCreateManyMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({
-          recipeId: 'recipe-1',
-          sectionId: 'new-section-1',
-          originalText: '2 xícaras de milho',
-          name: 'milho',
-          order: 0,
-        }),
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            recipeId: 'recipe-1',
+            sectionId: 'new-section-1',
+            originalText: '2 xícaras de milho',
+            name: 'milho',
+            order: 0,
+          }),
+        ]),
       }),
     );
 

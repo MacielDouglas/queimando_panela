@@ -8,13 +8,26 @@ import { RecipeIngredients } from '@/features/recipes/components/recipe-detail/R
 import { RecipeNutrition } from '@/features/recipes/components/recipe-detail/RecipeNutrition';
 import { RecipeSteps } from '@/features/recipes/components/recipe-detail/RecipeSteps';
 import { auth } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
-export const dynamic = 'force-dynamic';
-
+// Detalhe usa ISR: gera estático sob demanda e revalida a cada hora.
+// getRecipeBySlug usa cache() do React, então generateMetadata + page
+// compartilham a mesma query dentro do request.
 export const revalidate = 3600;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  return [];
+  try {
+    const recipes = await prisma.recipe.findMany({
+      where: { isPublished: true },
+      select: { slug: true },
+      orderBy: { updatedAt: 'desc' },
+      take: 100,
+    });
+    return recipes.map((r) => ({ slug: r.slug }));
+  } catch {
+    return [];
+  }
 }
 
 type Props = {

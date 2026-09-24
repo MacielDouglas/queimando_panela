@@ -2,7 +2,13 @@ import Groq from 'groq-sdk';
 import { NextResponse } from 'next/server';
 import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
 
+export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
+
 // ─── Rate Limit (in-memory per IP) ─────────────────────────────────────────
+// Nota: é proteção best-effort por instância. A proteção real anti-abuso é
+// exigir sessão + limites no provedor de IA. Mantido curto para não segurar
+// Function aberta.
 
 const rateLimit = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT_MAX = 5;
@@ -12,10 +18,18 @@ export function resetRateLimit() {
   rateLimit.clear();
 }
 
+function pruneRateLimit(now: number) {
+  if (rateLimit.size < 500) return;
+  for (const [key, entry] of rateLimit) {
+    if (now > entry.resetAt) rateLimit.delete(key);
+  }
+}
+
 function checkRateLimit(ip: string): boolean {
   if (process.env.NODE_ENV === 'test') return true;
 
   const now = Date.now();
+  pruneRateLimit(now);
   const entry = rateLimit.get(ip);
 
   if (!entry || now > entry.resetAt) {
@@ -29,6 +43,20 @@ function checkRateLimit(ip: string): boolean {
 
   entry.count++;
   return true;
+}
+
+const NO_STORE = { 'Cache-Control': 'no-store' };
+
+function validateAnalyzeBody(title: unknown, sections: unknown): string | null {
+  if (
+    typeof title !== 'string' ||
+    !title.trim() ||
+    !Array.isArray(sections) ||
+    sections.length === 0
+  ) {
+    return 'Título e seções são obrigatórios.';
+  }
+  return null;
 }
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -423,11 +451,30 @@ export async function POST(request: Request) {
   if (!checkRateLimit(ip)) {
     return NextResponse.json(
       { error: 'Muitas requisições. Aguarde um minuto e tente novamente.' },
-      { status: 429 },
+      {
+        status: 429,
+        headers: { ...NO_STORE, 'Retry-After': '60' },
+      },
     );
   }
 
   try {
+    // Exige login fora de testes: a rota é usada pelo formulário protegido
+    // /enviar-receita e antes aceitava chamadas anônimas ilimitadas.
+    // Import dinâmico para não puxar better-auth/server-only no bundle de testes.
+    if (process.env.NODE_ENV !== 'test') {
+      const { auth } = await import('@/lib/auth');
+      const session = await auth.api.getSession({
+        headers: request.headers,
+      });
+      if (!session?.user) {
+        return NextResponse.json(
+          { error: 'Você precisa estar logado.' },
+          { status: 401, headers: NO_STORE },
+        );
+      }
+    }
+
     const rawKey = process.env.GROQ_API_KEY?.trim();
     if (!rawKey) {
       return NextResponse.json(
@@ -435,7 +482,7 @@ export async function POST(request: Request) {
           error:
             'Serviço de IA indisponível. Configure GROQ_API_KEY em .env e na Vercel (https://console.groq.com/keys).',
         },
-        { status: 503 },
+        { status: 503, headers: NO_STORE },
       );
     }
     if (!rawKey.startsWith('gsk_') || rawKey.length < 20) {
@@ -444,21 +491,41 @@ export async function POST(request: Request) {
           error:
             'GROQ_API_KEY inválida. Gere uma nova em https://console.groq.com/keys e atualize .env e Vercel.',
         },
-        { status: 503 },
+        { status: 503, headers: NO_STORE },
       );
     }
 
     const body = (await request.json()) as RequestBody;
     const { title, sections } = body;
 
-    if (!title?.trim() || !sections?.length) {
+    const validationError = validateAnalyzeBody(title, sections);
+    if (validationError) {
       return NextResponse.json(
-        { error: 'Título e seções são obrigatórios.' },
-        { status: 400 },
+        { error: validationError },
+        { status: 400, headers: NO_STORE },
       );
     }
 
-    const groq = new Groq({ apiKey: rawKey });
+    // Limites anti-abuso: evita prompt gigante segurando a Function por minutos.
+    if (title.trim().length > 120 || sections.length > 5) {
+      return NextResponse.json(
+        { error: 'Título e seções são obrigatórios.' },
+        { status: 400, headers: NO_STORE },
+      );
+    }
+    for (const section of sections) {
+      if (
+        section.ingredientsText?.length > 5000 ||
+        section.modeOfPreparation?.length > 10000
+      ) {
+        return NextResponse.json(
+          { error: 'Receita muito grande para análise.' },
+          { status: 413, headers: NO_STORE },
+        );
+      }
+    }
+
+    const groq = new Groq({ apiKey: rawKey, timeout: 25000 });
 
     const completion = await groq.chat.completions.create({
       model: 'openai/gpt-oss-120b', // ← MODELO ATUALIZADO
@@ -515,12 +582,12 @@ export async function POST(request: Request) {
           sec.modeOfPreparation = normalized;
         }
       }
-      return NextResponse.json({ data: parsed });
+      return NextResponse.json({ data: parsed }, { headers: NO_STORE });
     } catch (error) {
       console.error('[api/recipes/analyze] JSON parse error:', error);
       return NextResponse.json(
         { error: 'A resposta da IA veio em formato inválido.' },
-        { status: 422 },
+        { status: 422, headers: NO_STORE },
       );
     }
   } catch (error) {
@@ -550,14 +617,14 @@ export async function POST(request: Request) {
           error:
             'Chave da IA inválida ou expirada. Gere uma nova em https://console.groq.com/keys, atualize GROQ_API_KEY no .env (local) e em Vercel → Settings → Environment Variables, depois faça redeploy.',
         },
-        { status: 503 },
+        { status: 503, headers: NO_STORE },
       );
     }
 
     console.error('[api/recipes/analyze] request error:', error);
     return NextResponse.json(
       { error: 'Erro ao processar com a IA. Tente novamente em instantes.' },
-      { status: 500 },
+      { status: 500, headers: NO_STORE },
     );
   }
 }

@@ -40,6 +40,16 @@ export async function updateRecipe(
   const analysis = JSON.parse(analysisRaw) as AiRecipeAnalysis;
   const story = typeof storyRaw === 'string' ? storyRaw : undefined;
 
+  const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+  for (const file of newImageFiles.slice(0, 3)) {
+    if (!file.type.startsWith('image/')) {
+      return { error: 'Formato de arquivo inválido. Envie apenas imagens.' };
+    }
+    if (file.size > MAX_UPLOAD_BYTES) {
+      return { error: 'Imagem muito grande. Envie arquivo de até 10 MB.' };
+    }
+  }
+
   let existingImages: ExistingImagePayload[] = [];
   if (typeof existingImagesRaw === 'string' && existingImagesRaw.trim()) {
     existingImages = JSON.parse(existingImagesRaw) as ExistingImagePayload[];
@@ -100,35 +110,65 @@ export async function updateRecipe(
         },
       });
 
-      // ingredientes + GeneralIngredient
+      // ingredientes + GeneralIngredient em lote (evita N+1 dentro da transação)
+      const flatIngredients: {
+        sectionId: string;
+        originalText: string;
+        name: string;
+        order: number;
+        generalName: string;
+      }[] = [];
       for (const [sectionIndex, section] of analysis.sections.entries()) {
         const createdSection = updated.sections[sectionIndex];
         if (!createdSection) continue;
-
         for (const [order, ingredient] of section.ingredients.entries()) {
-          const generalName = normalizeLower(ingredient.generalName);
-
-          const generalIngredient = generalName
-            ? await tx.generalIngredient.upsert({
-                where: { name: generalName },
-                update: {},
-                create: { name: generalName },
-              })
-            : null;
-
-          await tx.ingredient.create({
-            data: {
-              recipeId: updated.id,
-              sectionId: createdSection.id,
-              originalText: ingredient.originalText.trim(),
-              name: ingredient.name.trim(),
-              amount: null,
-              unit: null,
-              order,
-              generalIngredientId: generalIngredient?.id,
-            },
+          flatIngredients.push({
+            sectionId: createdSection.id,
+            originalText: ingredient.originalText.trim().slice(0, 500),
+            name: ingredient.name.trim().slice(0, 200),
+            order,
+            generalName: normalizeLower(ingredient.generalName ?? ''),
           });
         }
+      }
+
+      const uniqueGenerals = Array.from(
+        new Set(flatIngredients.map((i) => i.generalName).filter(Boolean)),
+      );
+      const generalIdByName = new Map<string, string>();
+      if (uniqueGenerals.length > 0) {
+        const existingGenerals = await tx.generalIngredient.findMany({
+          where: { name: { in: uniqueGenerals } },
+          select: { id: true, name: true },
+        });
+        for (const g of existingGenerals) generalIdByName.set(g.name, g.id);
+        const missing = uniqueGenerals.filter((n) => !generalIdByName.has(n));
+        if (missing.length > 0) {
+          await tx.generalIngredient.createMany({
+            data: missing.map((name) => ({ name })),
+            skipDuplicates: true,
+          });
+          const createdGenerals = await tx.generalIngredient.findMany({
+            where: { name: { in: missing } },
+            select: { id: true, name: true },
+          });
+          for (const g of createdGenerals) generalIdByName.set(g.name, g.id);
+        }
+      }
+
+      if (flatIngredients.length > 0) {
+        await tx.ingredient.createMany({
+          data: flatIngredients.map((item) => ({
+            recipeId: updated.id,
+            sectionId: item.sectionId,
+            originalText: item.originalText,
+            name: item.name,
+            amount: null,
+            unit: null,
+            order: item.order,
+            generalIngredientId: generalIdByName.get(item.generalName) ?? null,
+          })),
+        });
       }
 
       if (removedImages.length > 0) {

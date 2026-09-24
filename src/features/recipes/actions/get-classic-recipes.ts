@@ -28,8 +28,10 @@ export const getClassicRecipes = cache(
 
       if (publishedTypes.length === 0) return [];
 
-      const shuffled = [...publishedTypes].sort(() => Math.random() - 0.5);
-      const selectedTypes = shuffled.slice(0, typesCount);
+      const safeTypesCount = Math.min(Math.max(typesCount, 1), 8);
+      const safeRecipesPerType = Math.min(Math.max(recipesPerType, 1), 6);
+      // Ordem determinística para permitir ISR/CDN. Sorteio, se desejado, no client.
+      const selectedTypes = publishedTypes.slice(0, safeTypesCount);
 
       const rows = await Promise.all(
         selectedTypes.map(async (recipeType) => {
@@ -41,12 +43,24 @@ export const getClassicRecipes = cache(
               },
             },
             orderBy: { createdAt: 'desc' },
-            take: recipesPerType,
-            include: {
-              images: { orderBy: { order: 'asc' } },
+            take: safeRecipesPerType,
+            select: {
+              id: true,
+              slug: true,
+              title: true,
+              summary: true,
+              difficulty: true,
+              prepTimeMinutes: true,
+              cookTimeMinutes: true,
+              createdAt: true,
+              images: {
+                orderBy: { order: 'asc' },
+                take: 2,
+                select: { url: true, isCover: true, order: true },
+              },
               author: { select: { name: true } },
               recipeTypes: {
-                include: { recipeType: true },
+                select: { recipeType: { select: { name: true } } },
               },
             },
           });

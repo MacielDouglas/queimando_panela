@@ -223,18 +223,34 @@ export const getAllRecipes = cache(
       ...(andFilters.length > 0 ? { AND: andFilters } : {}),
     };
 
+    // Trava anti-abuso: bots varrendo page=9999 geravam offset gigante no Neon.
+    const safeTake = Math.min(Math.max(take, 1), 48);
+    const safeSkip = Math.min(Math.max(skip, 0), 480);
+
     try {
       const [items, total] = await Promise.all([
         prisma.recipe.findMany({
           where,
           orderBy: { createdAt: 'desc' },
-          take,
-          skip,
-          include: {
-            images: { orderBy: { order: 'asc' } },
+          take: safeTake,
+          skip: safeSkip,
+          select: {
+            id: true,
+            slug: true,
+            title: true,
+            summary: true,
+            difficulty: true,
+            prepTimeMinutes: true,
+            cookTimeMinutes: true,
+            createdAt: true,
+            images: {
+              orderBy: { order: 'asc' },
+              take: 2,
+              select: { url: true, isCover: true, order: true },
+            },
             author: { select: { name: true } },
             recipeTypes: {
-              include: { recipeType: true },
+              select: { recipeType: { select: { name: true } } },
             },
           },
         }),

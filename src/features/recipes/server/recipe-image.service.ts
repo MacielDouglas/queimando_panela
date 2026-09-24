@@ -2,7 +2,10 @@ import crypto from 'node:crypto';
 import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 
 import { getR2BucketName, getR2PublicUrl, r2 } from '@/lib/r2';
-import { processRecipeImage } from './process-recipe-image';
+import {
+  MAX_RECIPE_IMAGE_INPUT_BYTES,
+  processRecipeImage,
+} from './process-recipe-image';
 
 export type UploadedRecipeImage = {
   key: string;
@@ -40,6 +43,14 @@ export async function uploadRecipeImage(params: {
   order: number;
   isCover: boolean;
 }) {
+  // Validação precoce: rejeita antes de gastar CPU com sharp ou banda com R2.
+  if (!params.file.type.startsWith('image/')) {
+    throw new Error('Formato de arquivo inválido.');
+  }
+  if (params.file.size > MAX_RECIPE_IMAGE_INPUT_BYTES) {
+    throw new Error('Imagem muito grande. Envie arquivo de até 10 MB.');
+  }
+
   const processed = await processRecipeImage(params.file);
   const key = buildRecipeImageKey(params.recipeId, params.file.name);
 

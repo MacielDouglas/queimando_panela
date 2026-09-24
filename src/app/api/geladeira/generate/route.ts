@@ -4,6 +4,11 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
+
+const NO_STORE = { 'Cache-Control': 'no-store' };
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Preference = 'doce' | 'salgado' | 'tanto_faz';
 type Answer = { question: string; answer: boolean };
@@ -237,7 +242,7 @@ export async function POST(request: Request) {
         {
           error: 'Você precisa estar logado para criar receitas na geladeira.',
         },
-        { status: 401 },
+        { status: 401, headers: NO_STORE },
       );
     }
 
@@ -253,25 +258,34 @@ export async function POST(request: Request) {
     if (ingredients.length === 0) {
       return NextResponse.json(
         { error: 'Informe ao menos 1 ingrediente.' },
-        { status: 400 },
+        { status: 400, headers: NO_STORE },
       );
     }
     if (ingredients.length > 30) {
       return NextResponse.json(
         { error: 'Máximo 30 ingredientes.' },
-        { status: 400 },
+        { status: 400, headers: NO_STORE },
       );
+    }
+    // Trava anti-prompt gigante: cada ingrediente é incluído no prompt da IA.
+    for (const item of ingredients) {
+      if (item.length > 80) {
+        return NextResponse.json(
+          { error: 'Ingrediente muito longo.' },
+          { status: 413, headers: NO_STORE },
+        );
+      }
     }
     if (!['doce', 'salgado', 'tanto_faz'].includes(preference)) {
       return NextResponse.json(
         { error: 'Preferência inválida.' },
-        { status: 400 },
+        { status: 400, headers: NO_STORE },
       );
     }
     if (answers.length > 2) {
       return NextResponse.json(
         { error: 'Máximo 2 respostas.' },
-        { status: 400 },
+        { status: 400, headers: NO_STORE },
       );
     }
 
@@ -297,7 +311,13 @@ export async function POST(request: Request) {
             'Limite de 3 criações por 24h atingido. Tente novamente mais tarde.',
           retryAfter: retryAfterSec,
         },
-        { status: 429, headers: { 'Retry-After': String(retryAfterSec) } },
+        {
+          status: 429,
+          headers: {
+            ...NO_STORE,
+            'Retry-After': String(retryAfterSec),
+          },
+        },
       );
     }
 
@@ -307,7 +327,7 @@ export async function POST(request: Request) {
     if (!rawKey?.startsWith('gsk_') || rawKey.length < 20) {
       return NextResponse.json(
         { error: 'Serviço de IA indisponível.' },
-        { status: 503 },
+        { status: 503, headers: NO_STORE },
       );
     }
 
@@ -324,7 +344,7 @@ export async function POST(request: Request) {
         '\n\nATENÇÃO: Você já fez 2 perguntas, agora GERE A RECEITA FINAL obrigatoriamente com status ready, mesmo que falte algo.';
     }
 
-    const groq = new Groq({ apiKey: rawKey });
+    const groq = new Groq({ apiKey: rawKey, timeout: 25000 });
     const completion = await groq.chat.completions.create({
       model: 'openai/gpt-oss-120b',
       messages: [{ role: 'user', content: prompt }],
@@ -341,7 +361,7 @@ export async function POST(request: Request) {
       console.error('[geladeira/generate] parse error', e);
       return NextResponse.json(
         { error: 'Resposta da IA inválida.' },
-        { status: 422 },
+        { status: 422, headers: NO_STORE },
       );
     }
 
@@ -353,7 +373,7 @@ export async function POST(request: Request) {
             error:
               'IA ainda pediu mais informações após 2 perguntas. Tente com outros ingredientes.',
           },
-          { status: 422 },
+          { status: 422, headers: NO_STORE },
         );
       }
       const qs = (parsed.questions ?? [])
@@ -363,11 +383,14 @@ export async function POST(request: Request) {
       if (qs.length === 0) {
         return NextResponse.json(
           { error: 'IA não retornou perguntas válidas.' },
-          { status: 422 },
+          { status: 422, headers: NO_STORE },
         );
       }
       // Não conta no rate limit ainda, apenas retorna perguntas
-      return NextResponse.json({ status: 'needs_info', questions: qs });
+      return NextResponse.json(
+        { status: 'needs_info', questions: qs },
+        { headers: NO_STORE },
+      );
     }
 
     if (parsed.status === 'ready') {
@@ -376,7 +399,7 @@ export async function POST(request: Request) {
       if (!recipe?.title || !recipe?.sections?.length) {
         return NextResponse.json(
           { error: 'Receita incompleta retornada pela IA.' },
-          { status: 422 },
+          { status: 422, headers: NO_STORE },
         );
       }
 
@@ -396,18 +419,21 @@ export async function POST(request: Request) {
       });
 
       const remaining = Math.max(0, 2 - recentCount);
-      return NextResponse.json({ status: 'ready', recipe, remaining });
+      return NextResponse.json(
+        { status: 'ready', recipe, remaining },
+        { headers: NO_STORE },
+      );
     }
 
     return NextResponse.json(
       { error: 'Resposta inesperada da IA.' },
-      { status: 422 },
+      { status: 422, headers: NO_STORE },
     );
   } catch (error) {
     console.error('[geladeira/generate] error', error);
     return NextResponse.json(
       { error: 'Erro interno. Tente novamente.' },
-      { status: 500 },
+      { status: 500, headers: NO_STORE },
     );
   }
 }

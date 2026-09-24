@@ -98,7 +98,7 @@ describe('processRecipeImage', () => {
 
     await processRecipeImage(file);
 
-    expect(resizeMock).toHaveBeenCalledWith(2200, 2200, {
+    expect(resizeMock).toHaveBeenCalledWith(1600, 1600, {
       fit: 'inside',
       withoutEnlargement: true,
     });
@@ -122,11 +122,6 @@ describe('processRecipeImage', () => {
     };
 
     cloneMock
-      .mockReturnValueOnce(cloneForLoop)
-      .mockReturnValueOnce(cloneForLoop)
-      .mockReturnValueOnce(cloneForLoop)
-      .mockReturnValueOnce(cloneForLoop)
-      .mockReturnValueOnce(cloneForLoop)
       .mockReturnValueOnce(cloneForLoop)
       .mockReturnValueOnce(cloneForLoop)
       .mockReturnValueOnce(cloneForLoop)
@@ -164,11 +159,6 @@ describe('processRecipeImage', () => {
     };
 
     cloneMock
-      .mockReturnValueOnce(cloneForLoop)
-      .mockReturnValueOnce(cloneForLoop)
-      .mockReturnValueOnce(cloneForLoop)
-      .mockReturnValueOnce(cloneForLoop)
-      .mockReturnValueOnce(cloneForLoop)
       .mockReturnValueOnce(cloneForLoop)
       .mockReturnValueOnce(cloneForLoop)
       .mockReturnValueOnce(cloneForLoop)

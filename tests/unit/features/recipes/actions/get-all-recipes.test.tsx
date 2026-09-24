@@ -50,10 +50,24 @@ describe('getAllRecipes', () => {
       orderBy: { createdAt: 'desc' },
       take: 24,
       skip: 0,
-      include: {
-        images: { orderBy: { order: 'asc' } },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        summary: true,
+        difficulty: true,
+        prepTimeMinutes: true,
+        cookTimeMinutes: true,
+        createdAt: true,
+        images: {
+          orderBy: { order: 'asc' },
+          take: 2,
+          select: { url: true, isCover: true, order: true },
+        },
         author: { select: { name: true } },
-        recipeTypes: { include: { recipeType: true } },
+        recipeTypes: {
+          select: { recipeType: { select: { name: true } } },
+        },
       },
     });
 
@@ -191,10 +205,24 @@ describe('getAllRecipes', () => {
       orderBy: { createdAt: 'desc' },
       take: 12,
       skip: 24,
-      include: {
-        images: { orderBy: { order: 'asc' } },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        summary: true,
+        difficulty: true,
+        prepTimeMinutes: true,
+        cookTimeMinutes: true,
+        createdAt: true,
+        images: {
+          orderBy: { order: 'asc' },
+          take: 2,
+          select: { url: true, isCover: true, order: true },
+        },
         author: { select: { name: true } },
-        recipeTypes: { include: { recipeType: true } },
+        recipeTypes: {
+          select: { recipeType: { select: { name: true } } },
+        },
       },
     });
 

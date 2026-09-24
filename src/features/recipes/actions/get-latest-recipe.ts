@@ -10,11 +10,23 @@ export const getLatestRecipe = cache(
       const recipe = await prisma.recipe.findFirst({
         where: { isPublished: true },
         orderBy: { createdAt: 'desc' },
-        include: {
-          images: { orderBy: { order: 'asc' } },
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          summary: true,
+          difficulty: true,
+          prepTimeMinutes: true,
+          cookTimeMinutes: true,
+          createdAt: true,
+          images: {
+            orderBy: { order: 'asc' },
+            take: 2,
+            select: { url: true, isCover: true, order: true },
+          },
           author: { select: { name: true } },
           recipeTypes: {
-            include: { recipeType: true },
+            select: { recipeType: { select: { name: true } } },
           },
         },
       });

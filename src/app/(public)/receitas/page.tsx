@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
+// Listagem usa ISR curto: sem filtro é compartilhável no CDN,
+// com filtro é marcada noindex para não gerar crawl infinito.
+export const revalidate = 300;
 
 import { getAllRecipes } from '@/features/recipes/actions/get-all-recipes';
 import { getLatestRecipe } from '@/features/recipes/actions/get-latest-recipe';
@@ -32,11 +34,35 @@ type Props = {
   }>;
 };
 
-export const metadata: Metadata = {
-  title: 'Receitas — Queimando Panela',
-  description:
-    'Receitas afetivas, autorais e conferidas por IA — leitura leve, foto grande e filtros que respeitam sua escolha.',
-};
+export async function generateMetadata({
+  searchParams,
+}: Props): Promise<Metadata> {
+  const params = await searchParams;
+  const hasFilter = Boolean(
+    params.q ??
+      params.categoria ??
+      params.tipo ??
+      params.dificuldade ??
+      params.utensilio ??
+      params.ingrediente ??
+      (params.page && params.page !== '1'),
+  );
+
+  if (hasFilter) {
+    return {
+      title: 'Receitas — Queimando Panela',
+      description:
+        'Receitas afetivas, autorais e conferidas por IA — leitura leve, foto grande e filtros que respeitam sua escolha.',
+      robots: { index: false, follow: true },
+    };
+  }
+
+  return {
+    title: 'Receitas — Queimando Panela',
+    description:
+      'Receitas afetivas, autorais e conferidas por IA — leitura leve, foto grande e filtros que respeitam sua escolha.',
+  };
+}
 
 function getSingle(value: SearchValue) {
   return Array.isArray(value) ? value[0] : value;
@@ -76,7 +102,11 @@ export default async function RecipesPage({ searchParams }: Props) {
   const utensils = getMany(params.utensilio);
   const ingredients = getMany(params.ingrediente);
   const rawPage = normalizeString(params.page);
-  const currentPage = Math.max(Number(rawPage ?? '1'), 1);
+  const parsedPage = Number(rawPage ?? '1');
+  const currentPage = Math.min(
+    Math.max(Number.isFinite(parsedPage) ? Math.floor(parsedPage) : 1, 1),
+    20,
+  );
   const take = 24;
   const skip = (currentPage - 1) * take;
 

@@ -7,8 +7,10 @@ const headersMock = vi.fn();
 const getSessionMock = vi.fn();
 
 const recipeCreateMock = vi.fn();
-const ingredientCreateMock = vi.fn();
-const generalIngredientUpsertMock = vi.fn();
+const recipeFindUniqueMock = vi.fn();
+const ingredientCreateManyMock = vi.fn();
+const generalIngredientFindManyMock = vi.fn();
+const generalIngredientCreateManyMock = vi.fn();
 const recipeImageCreateManyMock = vi.fn();
 const uploadRecipeImageMock = vi.fn();
 
@@ -32,12 +34,15 @@ vi.mock('@/lib/prisma', () => ({
   prisma: {
     recipe: {
       create: (...args: unknown[]) => recipeCreateMock(...args),
+      findUnique: (...args: unknown[]) => recipeFindUniqueMock(...args),
     },
     ingredient: {
-      create: (...args: unknown[]) => ingredientCreateMock(...args),
+      createMany: (...args: unknown[]) => ingredientCreateManyMock(...args),
     },
     generalIngredient: {
-      upsert: (...args: unknown[]) => generalIngredientUpsertMock(...args),
+      findMany: (...args: unknown[]) => generalIngredientFindManyMock(...args),
+      createMany: (...args: unknown[]) =>
+        generalIngredientCreateManyMock(...args),
     },
     recipeImage: {
       createMany: (...args: unknown[]) => recipeImageCreateManyMock(...args),
@@ -137,12 +142,14 @@ describe('createRecipe', () => {
   it('cria receita, ingredientes e redireciona sem imagens', async () => {
     getSessionMock.mockResolvedValue({ user: { id: 'user-1' } });
 
+    recipeFindUniqueMock.mockResolvedValue(null);
     recipeCreateMock.mockResolvedValue({
       id: 'recipe-1',
       sections: [{ id: 'section-1' }],
     });
-    generalIngredientUpsertMock.mockResolvedValue({ id: 'gen-1' });
-    ingredientCreateMock.mockResolvedValue({});
+    generalIngredientFindManyMock.mockResolvedValue([]);
+    generalIngredientCreateManyMock.mockResolvedValue({ count: 2 });
+    ingredientCreateManyMock.mockResolvedValue({ count: 2 });
 
     const formData = makeFormData({
       analysis: makeAnalysis(),
@@ -168,18 +175,18 @@ describe('createRecipe', () => {
       }),
     );
 
-    expect(generalIngredientUpsertMock).toHaveBeenCalledTimes(2);
-    expect(ingredientCreateMock).toHaveBeenCalledTimes(2);
-    expect(ingredientCreateMock).toHaveBeenNthCalledWith(
-      1,
+    expect(generalIngredientFindManyMock).toHaveBeenCalled();
+    expect(ingredientCreateManyMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({
-          recipeId: 'recipe-1',
-          sectionId: 'section-1',
-          originalText: '2 xícaras de milho',
-          name: 'milho',
-          order: 0,
-        }),
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            recipeId: 'recipe-1',
+            sectionId: 'section-1',
+            originalText: '2 xícaras de milho',
+            name: 'milho',
+            order: 0,
+          }),
+        ]),
       }),
     );
 
@@ -191,12 +198,14 @@ describe('createRecipe', () => {
   it('faz upload de até 3 imagens e salva no banco', async () => {
     getSessionMock.mockResolvedValue({ user: { id: 'user-1' } });
 
+    recipeFindUniqueMock.mockResolvedValue(null);
     recipeCreateMock.mockResolvedValue({
       id: 'recipe-1',
       sections: [{ id: 'section-1' }],
     });
-    generalIngredientUpsertMock.mockResolvedValue({ id: 'gen-1' });
-    ingredientCreateMock.mockResolvedValue({});
+    generalIngredientFindManyMock.mockResolvedValue([]);
+    generalIngredientCreateManyMock.mockResolvedValue({ count: 2 });
+    ingredientCreateManyMock.mockResolvedValue({ count: 2 });
     uploadRecipeImageMock
       .mockResolvedValueOnce({
         key: 'recipes/1.webp',
@@ -293,6 +302,7 @@ describe('createRecipe', () => {
 
   it('retorna erro quando ocorre exceção ao salvar', async () => {
     getSessionMock.mockResolvedValue({ user: { id: 'user-1' } });
+    recipeFindUniqueMock.mockResolvedValue(null);
     recipeCreateMock.mockRejectedValue(new Error('db error'));
 
     const result = await createRecipe(

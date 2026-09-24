@@ -12,32 +12,16 @@ type CategoryRow = {
 export const getRecipesByCategory = cache(
   async (take = 4): Promise<CategoryRow[]> => {
     try {
-      const published = await prisma.recipe.findMany({
-        where: {
-          isPublished: true,
-          recipeTypes: {
-            some: {},
-          },
-        },
-        orderBy: { createdAt: 'desc' },
-        select: {
-          recipeTypes: {
-            include: { recipeType: true },
-          },
-        },
+      const safeTake = Math.min(Math.max(take, 1), 12);
+      // Busca direta dos tipos que têm receita publicada — sem varrer todas as receitas.
+      const types = await prisma.recipeType.findMany({
+        where: { recipes: { some: { recipe: { isPublished: true } } } },
+        orderBy: { name: 'asc' },
+        take: 4,
+        select: { name: true },
       });
 
-      const seen = new Set<string>();
-      for (const { recipeTypes } of published) {
-        for (const rt of recipeTypes) {
-          const t = rt.recipeType.name;
-          if (!seen.has(t)) seen.add(t);
-          if (seen.size >= 4) break;
-        }
-        if (seen.size >= 4) break;
-      }
-
-      const distinctTypes = Array.from(seen);
+      const distinctTypes = types.map((t) => t.name);
 
       const rows = await Promise.all(
         distinctTypes.map(async (type) => {
@@ -51,12 +35,24 @@ export const getRecipesByCategory = cache(
               },
             },
             orderBy: { createdAt: 'desc' },
-            take, // <- aqui o parâmetro é de fato usado
-            include: {
-              images: { orderBy: { order: 'asc' } },
+            take: safeTake, // <- aqui o parâmetro é de fato usado
+            select: {
+              id: true,
+              slug: true,
+              title: true,
+              summary: true,
+              difficulty: true,
+              prepTimeMinutes: true,
+              cookTimeMinutes: true,
+              createdAt: true,
+              images: {
+                orderBy: { order: 'asc' },
+                take: 2,
+                select: { url: true, isCover: true, order: true },
+              },
               author: { select: { name: true } },
               recipeTypes: {
-                include: { recipeType: true },
+                select: { recipeType: { select: { name: true } } },
               },
             },
           });

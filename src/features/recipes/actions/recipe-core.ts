@@ -31,6 +31,34 @@ export function normalizeLower(value: string) {
   return value.trim().toLowerCase();
 }
 
+function randomSuffix(length = 6) {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let out = '';
+  const bytes = new Uint8Array(length);
+  crypto.getRandomValues(bytes);
+  for (const b of bytes) out += chars[b % chars.length];
+  return out;
+}
+
+/**
+ * Slug único sem loop N+1 no banco: tenta o base uma vez, em colisão
+ * anexa sufixo aleatório (máx. 3 tentativas).
+ * Chamadores devem passar `exists: (slug) => Promise<boolean>`.
+ */
+export async function resolveUniqueSlug(
+  baseTitle: string,
+  exists: (slug: string) => Promise<boolean>,
+): Promise<string> {
+  const fallback = 'receita';
+  const base = slugify(baseTitle).slice(0, 60) || fallback;
+  if (!(await exists(base))) return base;
+  for (let i = 0; i < 3; i++) {
+    const candidate = `${base}-${randomSuffix()}`;
+    if (!(await exists(candidate))) return candidate;
+  }
+  return `${base}-${Date.now().toString(36)}`;
+}
+
 /**
  * Parte comum de dados da receita usada em create/update:
  * campos básicos + sections + utensils + recipeTypes.
