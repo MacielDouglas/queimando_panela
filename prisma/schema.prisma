@@ -42,6 +42,8 @@ model Recipe {
 
   @@index([authorId])
   @@index([isAiGenerated])
+  @@index([isPublished, createdAt(sort: Desc)])
+  @@index([isPublished, updatedAt(sort: Desc)])
 }
 
 model RecipeSection {

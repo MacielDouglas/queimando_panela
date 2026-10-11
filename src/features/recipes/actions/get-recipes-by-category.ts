@@ -3,6 +3,7 @@
 import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import type { RecipeCardData } from './get-all-recipes';
+import { mapToRecipeCardData, recipeCardSelect } from './recipe-card-select';
 
 type CategoryRow = {
   type: string;
@@ -18,72 +19,41 @@ export const getRecipesByCategory = cache(
         where: { recipes: { some: { recipe: { isPublished: true } } } },
         orderBy: { name: 'asc' },
         take: 4,
-        select: { name: true },
+        select: { id: true, name: true },
       });
 
-      const distinctTypes = types.map((t) => t.name);
+      if (types.length === 0) return [];
 
-      const rows = await Promise.all(
-        distinctTypes.map(async (type) => {
-          const items = await prisma.recipe.findMany({
-            where: {
-              isPublished: true,
-              recipeTypes: {
-                some: {
-                  recipeType: { name: type },
-                },
-              },
-            },
-            orderBy: { createdAt: 'desc' },
-            take: safeTake, // <- aqui o parâmetro é de fato usado
-            select: {
-              id: true,
-              slug: true,
-              title: true,
-              summary: true,
-              difficulty: true,
-              prepTimeMinutes: true,
-              cookTimeMinutes: true,
-              createdAt: true,
-              images: {
-                orderBy: { order: 'asc' },
-                take: 2,
-                select: { url: true, isCover: true, order: true },
-              },
-              author: { select: { name: true } },
-              recipeTypes: {
-                select: { recipeType: { select: { name: true } } },
-              },
-            },
-          });
+      // Lote único em vez de N+1: 1 query com `in` + agrupamento em JS.
+      const items = await prisma.recipe.findMany({
+        where: {
+          isPublished: true,
+          recipeTypes: {
+            some: { recipeTypeId: { in: types.map((t) => t.id) } },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: Math.min(types.length * safeTake * 4, 96),
+        select: recipeCardSelect,
+      });
 
-          return {
-            type,
-            recipes: items.map((recipe) => {
-              const cover =
-                recipe.images.find((img) => img.isCover) ??
-                recipe.images[0] ??
-                null;
+      const byType = new Map<string, typeof items>();
+      for (const item of items) {
+        for (const rt of item.recipeTypes) {
+          const list = byType.get(rt.recipeType.name) ?? [];
+          list.push(item);
+          byType.set(rt.recipeType.name, list);
+        }
+      }
 
-              return {
-                id: recipe.id,
-                slug: recipe.slug,
-                title: recipe.title,
-                summary: recipe.summary,
-                types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
-                difficulty: recipe.difficulty,
-                prepTimeMinutes: recipe.prepTimeMinutes,
-                cookTimeMinutes: recipe.cookTimeMinutes,
-                createdAt: recipe.createdAt,
-                coverUrl: cover?.url ?? null,
-                authorName: recipe.author?.name ?? null,
-              } satisfies RecipeCardData;
-            }),
-          };
-        }),
-      );
-
-      return rows.filter((row) => row.recipes.length > 0);
+      return types
+        .map((t) => ({
+          type: t.name,
+          recipes: (byType.get(t.name) ?? [])
+            .slice(0, safeTake)
+            .map(mapToRecipeCardData),
+        }))
+        .filter((row) => row.recipes.length > 0);
     } catch (error) {
       if (process.env.NODE_ENV === 'production')
         console.error('[getRecipesByCategory] fallback:', error);

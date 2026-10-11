@@ -3,6 +3,7 @@
 import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import type { RecipeCardData } from './get-all-recipes';
+import { mapToRecipeCardData, recipeCardSelect } from './recipe-card-select';
 
 type ClassicRecipeRow = {
   type: string;
@@ -12,86 +13,54 @@ type ClassicRecipeRow = {
 export const getClassicRecipes = cache(
   async (typesCount = 4, recipesPerType = 1): Promise<ClassicRecipeRow[]> => {
     try {
+      const safeTypesCount = Math.min(Math.max(typesCount, 1), 8);
+      const safeRecipesPerType = Math.min(Math.max(recipesPerType, 1), 6);
+
       const publishedTypes = await prisma.recipeType.findMany({
         where: {
           recipes: {
             some: { recipe: { isPublished: true } },
           },
         },
-        include: {
-          _count: {
-            select: { recipes: { where: { recipe: { isPublished: true } } } },
-          },
-        },
+        select: { id: true, name: true },
         orderBy: { name: 'asc' },
+        take: safeTypesCount,
       });
 
       if (publishedTypes.length === 0) return [];
 
-      const safeTypesCount = Math.min(Math.max(typesCount, 1), 8);
-      const safeRecipesPerType = Math.min(Math.max(recipesPerType, 1), 6);
       // Ordem determinística para permitir ISR/CDN. Sorteio, se desejado, no client.
-      const selectedTypes = publishedTypes.slice(0, safeTypesCount);
+      // Lote único em vez de N+1: 1 query com `in` + agrupamento em JS.
+      const items = await prisma.recipe.findMany({
+        where: {
+          isPublished: true,
+          recipeTypes: {
+            some: { recipeTypeId: { in: publishedTypes.map((t) => t.id) } },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        // Buffer 4x para distribuir entre os tipos no agrupamento em JS.
+        take: Math.min(safeTypesCount * safeRecipesPerType * 4, 96),
+        select: recipeCardSelect,
+      });
 
-      const rows = await Promise.all(
-        selectedTypes.map(async (recipeType) => {
-          const items = await prisma.recipe.findMany({
-            where: {
-              isPublished: true,
-              recipeTypes: {
-                some: { recipeTypeId: recipeType.id },
-              },
-            },
-            orderBy: { createdAt: 'desc' },
-            take: safeRecipesPerType,
-            select: {
-              id: true,
-              slug: true,
-              title: true,
-              summary: true,
-              difficulty: true,
-              prepTimeMinutes: true,
-              cookTimeMinutes: true,
-              createdAt: true,
-              images: {
-                orderBy: { order: 'asc' },
-                take: 2,
-                select: { url: true, isCover: true, order: true },
-              },
-              author: { select: { name: true } },
-              recipeTypes: {
-                select: { recipeType: { select: { name: true } } },
-              },
-            },
-          });
+      const byTypeId = new Map<string, typeof items>();
+      for (const item of items) {
+        for (const rt of item.recipeTypes) {
+          const list = byTypeId.get(rt.recipeType.name) ?? [];
+          list.push(item);
+          byTypeId.set(rt.recipeType.name, list);
+        }
+      }
 
-          return {
-            type: recipeType.name,
-            recipes: items.map((recipe) => {
-              const cover =
-                recipe.images.find((img) => img.isCover) ??
-                recipe.images[0] ??
-                null;
-
-              return {
-                id: recipe.id,
-                slug: recipe.slug,
-                title: recipe.title,
-                summary: recipe.summary,
-                types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
-                difficulty: recipe.difficulty,
-                prepTimeMinutes: recipe.prepTimeMinutes,
-                cookTimeMinutes: recipe.cookTimeMinutes,
-                createdAt: recipe.createdAt,
-                coverUrl: cover?.url ?? null,
-                authorName: recipe.author?.name ?? null,
-              } satisfies RecipeCardData;
-            }),
-          };
-        }),
-      );
-
-      return rows.filter((row) => row.recipes.length > 0);
+      return publishedTypes
+        .map((recipeType) => ({
+          type: recipeType.name,
+          recipes: (byTypeId.get(recipeType.name) ?? [])
+            .slice(0, safeRecipesPerType)
+            .map(mapToRecipeCardData),
+        }))
+        .filter((row) => row.recipes.length > 0);
     } catch (error) {
       if (process.env.NODE_ENV === 'production')
         console.error('[getClassicRecipes] fallback:', error);

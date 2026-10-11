@@ -33,19 +33,28 @@ async function fetchRecipeFilterOptions(): Promise<RecipeFilterOptions> {
   ];
 
   try {
+    // Ordena por popularidade (mais usadas primeiro): no mobile com internet
+    // limitada os primeiros chips são os que mais filtram.
     const [types, utensils, ingredients] = await Promise.all([
       prisma.recipeType.findMany({
-        orderBy: { name: 'asc' },
+        where: { recipes: { some: { recipe: { isPublished: true } } } },
+        orderBy: { recipes: { _count: 'desc' } },
         select: { name: true },
-        take: 60,
+        take: 30,
       }),
       prisma.utensil.findMany({
-        orderBy: { name: 'asc' },
+        where: { recipes: { some: { recipe: { isPublished: true } } } },
+        orderBy: { recipes: { _count: 'desc' } },
         select: { name: true },
         take: 6,
       }),
       prisma.generalIngredient.findMany({
-        orderBy: { name: 'asc' },
+        where: {
+          ingredients: {
+            some: { recipe: { isPublished: true } },
+          },
+        },
+        orderBy: { ingredients: { _count: 'desc' } },
         select: { name: true },
         take: 12,
       }),

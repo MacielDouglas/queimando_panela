@@ -43,7 +43,8 @@ export function LatestRecipesSection({ recipes }: LatestRecipesSectionProps) {
     );
   }
 
-  const visible = recipes.slice(0, 6);
+  // Carrossel exibe 1 por vez: máximo 3 no client (menos dados no 4G).
+  const visible = recipes.slice(0, 3);
   const recipe = visible[currentRecipe] ?? visible[0];
 
   return (

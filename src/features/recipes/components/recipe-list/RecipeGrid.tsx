@@ -100,6 +100,7 @@ function PaginationLink({
   return (
     <Link
       href={href}
+      prefetch={false}
       className="rounded-full bg-white px-4 py-2 text-[0.78rem] font-bold uppercase transition-colors hover:text-white"
       style={{
         border: '1px solid var(--cocoa)',

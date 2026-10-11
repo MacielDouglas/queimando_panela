@@ -21,50 +21,46 @@ describe('getRecipesByCategory', () => {
     vi.clearAllMocks();
   });
 
-  it('retorna categorias com receitas mapeadas', async () => {
+  it('retorna categorias com receitas mapeadas em lote único', async () => {
     const createdAt = new Date('2026-05-22T12:00:00.000Z');
 
-    // First call: get distinct types via recipeType
     recipeTypeFindManyMock.mockResolvedValueOnce([
-      { name: 'Bolo' },
-      { name: 'Salgado' },
+      { id: 't1', name: 'Bolo' },
+      { id: 't2', name: 'Salgado' },
     ]);
-    // Second call: get recipes for 'Bolo'
-    recipeFindManyMock
-      .mockResolvedValueOnce([
-        {
-          id: '1',
-          slug: 'bolo-de-milho',
-          title: 'Bolo de milho',
-          summary: 'Fofo',
-          difficulty: 'EASY',
-          prepTimeMinutes: 10,
-          cookTimeMinutes: 30,
-          createdAt,
-          images: [{ url: '/bolo.jpg', isCover: true, order: 0 }],
-          author: { name: 'Douglas' },
-          recipeTypes: [{ recipeType: { name: 'Bolo' } }],
-        },
-      ])
-      // Third call: get recipes for 'Salgado'
-      .mockResolvedValueOnce([
-        {
-          id: '2',
-          slug: 'coxinha',
-          title: 'Coxinha',
-          summary: 'Crocante',
-          difficulty: 'MEDIUM',
-          prepTimeMinutes: 20,
-          cookTimeMinutes: 25,
-          createdAt,
-          images: [{ url: '/coxinha.jpg', isCover: true, order: 0 }],
-          author: { name: 'Douglas' },
-          recipeTypes: [{ recipeType: { name: 'Salgado' } }],
-        },
-      ]);
+    // Lote único: 1 query com `in` para todos os tipos
+    recipeFindManyMock.mockResolvedValueOnce([
+      {
+        id: '1',
+        slug: 'bolo-de-milho',
+        title: 'Bolo de milho',
+        summary: 'Fofo',
+        difficulty: 'EASY',
+        prepTimeMinutes: 10,
+        cookTimeMinutes: 30,
+        createdAt,
+        images: [{ url: '/bolo.jpg' }],
+        author: { name: 'Douglas' },
+        recipeTypes: [{ recipeType: { name: 'Bolo' } }],
+      },
+      {
+        id: '2',
+        slug: 'coxinha',
+        title: 'Coxinha',
+        summary: 'Crocante',
+        difficulty: 'MEDIUM',
+        prepTimeMinutes: 20,
+        cookTimeMinutes: 25,
+        createdAt,
+        images: [{ url: '/coxinha.jpg' }],
+        author: { name: 'Douglas' },
+        recipeTypes: [{ recipeType: { name: 'Salgado' } }],
+      },
+    ]);
 
     const result = await getRecipesByCategory(4);
 
+    expect(recipeFindManyMock).toHaveBeenCalledTimes(1);
     expect(result).toHaveLength(2);
 
     expect(result).toContainEqual({
@@ -107,9 +103,10 @@ describe('getRecipesByCategory', () => {
   });
 
   it('filtra categorias vazias', async () => {
-    // First call: get distinct types (only Salgado)
-    recipeTypeFindManyMock.mockResolvedValueOnce([{ name: 'Salgado' }]);
-    // Second call: get recipes for 'Salgado' (nenhuma receita encontrada para esse tipo)
+    recipeTypeFindManyMock.mockResolvedValueOnce([
+      { id: 't2', name: 'Salgado' },
+    ]);
+    // Nenhuma receita publicada para esse tipo
     recipeFindManyMock.mockResolvedValueOnce([]);
 
     const result = await getRecipesByCategory(4);

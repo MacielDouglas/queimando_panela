@@ -1,28 +1,19 @@
 'use server';
 
 import { cache } from 'react';
-import type { RecipeDifficulty } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { RecipeCardData } from './get-all-recipes';
+import { mapToRecipeCardData, recipeCardSelect } from './recipe-card-select';
 
 type UtensilRow = {
   utensilName: string;
   recipes: RecipeCardData[];
 };
 
-function mapDifficulty(
-  difficulty: RecipeDifficulty,
-): 'EASY' | 'MEDIUM' | 'HARD' {
-  if (difficulty === 'EASY') return 'EASY';
-  if (difficulty === 'HARD') return 'HARD';
-
-  // EASY_MEDIUM, MEDIUM, MEDIUM_HARD caem aqui
-  return 'MEDIUM';
-}
-
 export const getRecipesByUtensil = cache(
   async (take = 4): Promise<UtensilRow[]> => {
     try {
+      const safeTake = Math.min(Math.max(take, 1), 12);
       const utensils = await prisma.utensil.findMany({
         where: {
           recipes: {
@@ -36,65 +27,52 @@ export const getRecipesByUtensil = cache(
         select: { id: true, name: true },
       });
 
-      const rows = await Promise.all(
-        utensils.map(async (utensil) => {
-          const items = await prisma.recipe.findMany({
-            where: {
-              isPublished: true,
-              utensils: {
-                some: { utensilId: utensil.id },
-              },
-            },
-            orderBy: { createdAt: 'desc' },
-            take,
-            select: {
-              id: true,
-              slug: true,
-              title: true,
-              summary: true,
-              difficulty: true,
-              prepTimeMinutes: true,
-              cookTimeMinutes: true,
-              createdAt: true,
-              images: {
-                orderBy: { order: 'asc' },
-                take: 2,
-                select: { url: true, isCover: true, order: true },
-              },
-              author: { select: { name: true } },
-              recipeTypes: {
-                select: { recipeType: { select: { name: true } } },
-              },
-            },
-          });
+      if (utensils.length === 0) return [];
 
-          return {
-            utensilName: utensil.name,
-            recipes: items.map((recipe) => {
-              const cover =
-                recipe.images.find((img) => img.isCover) ??
-                recipe.images[0] ??
-                null;
-
-              return {
-                id: recipe.id,
-                slug: recipe.slug,
-                title: recipe.title,
-                summary: recipe.summary,
-                types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
-                difficulty: mapDifficulty(recipe.difficulty),
-                prepTimeMinutes: recipe.prepTimeMinutes,
-                cookTimeMinutes: recipe.cookTimeMinutes,
-                createdAt: recipe.createdAt,
-                coverUrl: cover?.url ?? null,
-                authorName: recipe.author?.name ?? null,
-              } satisfies RecipeCardData;
-            }),
-          };
+      // Lote único em vez de N+1.
+      // Nota: o select do card não traz utensílios; buscamos IDs em lote
+      // numa segunda query leve e agrupamos em JS.
+      const [items, links] = await Promise.all([
+        prisma.recipe.findMany({
+          where: {
+            isPublished: true,
+            utensils: {
+              some: { utensilId: { in: utensils.map((u) => u.id) } },
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+          take: Math.min(utensils.length * safeTake * 4, 96),
+          select: recipeCardSelect,
         }),
-      );
+        prisma.utensilOnRecipe.findMany({
+          where: {
+            utensilId: { in: utensils.map((u) => u.id) },
+            recipe: { isPublished: true },
+          },
+          select: { recipeId: true, utensilId: true },
+          take: 400,
+        }),
+      ]);
 
-      return rows.filter((row) => row.recipes.length > 0);
+      const recipeIdsByUtensil = new Map<string, string[]>();
+      for (const link of links) {
+        const list = recipeIdsByUtensil.get(link.utensilId) ?? [];
+        list.push(link.recipeId);
+        recipeIdsByUtensil.set(link.utensilId, list);
+      }
+
+      const itemById = new Map(items.map((item) => [item.id, item]));
+
+      return utensils
+        .map((utensil) => ({
+          utensilName: utensil.name,
+          recipes: (recipeIdsByUtensil.get(utensil.id) ?? [])
+            .map((id) => itemById.get(id))
+            .filter((item) => item !== undefined)
+            .slice(0, safeTake)
+            .map(mapToRecipeCardData),
+        }))
+        .filter((row) => row.recipes.length > 0);
     } catch (error) {
       if (process.env.NODE_ENV === 'production')
         console.error('[getRecipesByUtensil] fallback:', error);

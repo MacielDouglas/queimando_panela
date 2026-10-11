@@ -60,9 +60,9 @@ describe('getAllRecipes', () => {
         cookTimeMinutes: true,
         createdAt: true,
         images: {
-          orderBy: { order: 'asc' },
-          take: 2,
-          select: { url: true, isCover: true, order: true },
+          orderBy: [{ isCover: 'desc' }, { order: 'asc' }],
+          take: 1,
+          select: { url: true },
         },
         author: { select: { name: true } },
         recipeTypes: {
@@ -169,7 +169,6 @@ describe('getAllRecipes', () => {
           OR: [
             { title: { contains: 'milho', mode: 'insensitive' } },
             { summary: { contains: 'milho', mode: 'insensitive' } },
-            { story: { contains: 'milho', mode: 'insensitive' } },
           ],
         },
         {
@@ -215,9 +214,9 @@ describe('getAllRecipes', () => {
         cookTimeMinutes: true,
         createdAt: true,
         images: {
-          orderBy: { order: 'asc' },
-          take: 2,
-          select: { url: true, isCover: true, order: true },
+          orderBy: [{ isCover: 'desc' }, { order: 'asc' }],
+          take: 1,
+          select: { url: true },
         },
         author: { select: { name: true } },
         recipeTypes: {

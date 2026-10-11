@@ -44,6 +44,7 @@ export function RecipeCategoryRow({ type, recipes }: Props) {
         </div>
         <Link
           href={`/receitas?tipo=${encodeURIComponent(type)}`}
+          prefetch={false}
           className="text-link-queimando-panela"
         >
           Ver todas

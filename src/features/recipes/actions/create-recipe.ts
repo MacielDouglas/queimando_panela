@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { uploadRecipeImage } from '@/features/recipes/server/recipe-image.service';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { revalidateRecipePages } from '@/lib/revalidate-recipes';
 import type { AiRecipeAnalysis } from '../types/recipe-ai.types';
 import {
   buildRecipeCoreData,
@@ -172,6 +173,9 @@ export async function createRecipe(
     console.error('Create recipe error:', error);
     return { error: 'Erro ao salvar a receita. Tente novamente.' };
   }
+
+  // Publicação aparece na hora: revalida ISR da Home, listagem e detalhe.
+  revalidateRecipePages();
 
   redirect('/receitas');
 }

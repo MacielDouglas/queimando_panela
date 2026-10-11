@@ -5,6 +5,7 @@ import { normalizeString } from '@/features/recipes/lib/recipe-params';
 import type { Prisma } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { RecipeDifficultyValue } from '../types/recipe.types';
+import { mapToRecipeCardData, recipeCardSelect } from './recipe-card-select';
 
 type MaybeArray<T> = T | T[] | undefined;
 
@@ -64,37 +65,24 @@ function normalizeDifficultyList(
   );
 }
 
-function buildRecipeCard(recipe: {
-  id: string;
-  slug: string;
-  title: string;
-  summary: string | null;
-  difficulty: RecipeDifficultyValue;
-  prepTimeMinutes: number | null;
-  cookTimeMinutes: number | null;
-  createdAt: Date;
-  images: { url: string; isCover: boolean; order: number }[];
-  author?: { name: string | null } | null;
-  recipeTypes: { recipeType: { name: string } }[];
-}): RecipeCardData {
-  const cover =
-    recipe.images.find((img) => img.isCover) ?? recipe.images[0] ?? null;
-
-  return {
-    id: recipe.id,
-    slug: recipe.slug,
-    title: recipe.title,
-    summary: recipe.summary,
-    types: recipe.recipeTypes.map((rt) => rt.recipeType.name),
-    difficulty: recipe.difficulty,
-    prepTimeMinutes: recipe.prepTimeMinutes,
-    cookTimeMinutes: recipe.cookTimeMinutes,
-    createdAt: recipe.createdAt,
-    coverUrl: cover?.url ?? null,
-    authorName: recipe.author?.name ?? null,
-  };
+/**
+ * Higieniza termo de busca: limite de 60 chars e sem curingas de LIKE.
+ * Prisma parametriza a query (sem risco de SQL injection), mas `%`/`_`
+ * gigantes forçam seq scan no Neon — barato de prevenir.
+ */
+function sanitizeSearchTerm(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  const cleaned = value
+    .replace(/[%_\\]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 60);
+  return cleaned || undefined;
 }
 
+// Cache compartilhado via ISR da rota (revalidate em page.tsx):
+// entre revalidações o CDN serve HTML sem tocar o Neon.
+// cache() do React faz o dedupe dentro do request.
 export const getAllRecipes = cache(
   async ({
     query,
@@ -109,7 +97,7 @@ export const getAllRecipes = cache(
     recipes: RecipeCardData[];
     total: number;
   }> => {
-    const normalizedQuery = normalizeString(query);
+    const normalizedQuery = sanitizeSearchTerm(normalizeString(query));
     const normalizedCategory = normalizeString(category);
     const normalizedTypes = normalizeStringList(types);
     const normalizedDifficulties = normalizeDifficultyList(difficulty);
@@ -119,11 +107,12 @@ export const getAllRecipes = cache(
     const andFilters: Prisma.RecipeWhereInput[] = [];
 
     if (normalizedQuery) {
+      // Busca só em title/summary (Fase D: índice trigram cobre esses campos).
+      // `story` (TEXT longo, sem índice) saía em seq scan — fora da busca.
       andFilters.push({
         OR: [
           { title: { contains: normalizedQuery, mode: 'insensitive' } },
           { summary: { contains: normalizedQuery, mode: 'insensitive' } },
-          { story: { contains: normalizedQuery, mode: 'insensitive' } },
         ],
       });
     }
@@ -234,31 +223,13 @@ export const getAllRecipes = cache(
           orderBy: { createdAt: 'desc' },
           take: safeTake,
           skip: safeSkip,
-          select: {
-            id: true,
-            slug: true,
-            title: true,
-            summary: true,
-            difficulty: true,
-            prepTimeMinutes: true,
-            cookTimeMinutes: true,
-            createdAt: true,
-            images: {
-              orderBy: { order: 'asc' },
-              take: 2,
-              select: { url: true, isCover: true, order: true },
-            },
-            author: { select: { name: true } },
-            recipeTypes: {
-              select: { recipeType: { select: { name: true } } },
-            },
-          },
+          select: recipeCardSelect,
         }),
         prisma.recipe.count({ where }),
       ]);
 
       return {
-        recipes: items.map(buildRecipeCard),
+        recipes: items.map(mapToRecipeCardData),
         total,
       };
     } catch (error) {

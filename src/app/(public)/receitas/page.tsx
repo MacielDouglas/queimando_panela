@@ -6,19 +6,15 @@ import Link from 'next/link';
 export const revalidate = 300;
 
 import { getAllRecipes } from '@/features/recipes/actions/get-all-recipes';
-import { getLatestRecipe } from '@/features/recipes/actions/get-latest-recipe';
-import { getRecipesByUtensil } from '@/features/recipes/actions/get-recipe-by-utensil';
+import { getRecipeCategoryCounts } from '@/features/recipes/actions/get-recipe-category-counts';
 import { getRecipeFilterOptions } from '@/features/recipes/actions/get-recipe-filter-options';
-import { getRecipesByCategory } from '@/features/recipes/actions/get-recipes-by-category';
-import { RecipeCategoryRow } from '@/features/recipes/components/recipe-list/RecipeCategoryRow';
+import { PublishRecipeButton } from '@/features/recipes/components/recipe-list/PublishRecipeButton';
 import { RecipeFilters } from '@/features/recipes/components/recipe-list/RecipeFilters';
 import { RecipeGrid } from '@/features/recipes/components/recipe-list/RecipeGrid';
 import { RecipeHeroFeatured } from '@/features/recipes/components/recipe-list/RecipeHeroFeatured';
 import { RecipeSearch } from '@/features/recipes/components/recipe-list/RecipeSearch';
-import { RecipeUtensilRow } from '@/features/recipes/components/recipe-list/RecipeUtensilRow';
 import { normalizeString } from '@/features/recipes/lib/recipe-params';
 import type { RecipeDifficultyValue } from '@/features/recipes/types/recipe.types';
-import { getServerSession } from '@/lib/get-server-session';
 
 type SearchValue = string | string[] | undefined;
 
@@ -68,11 +64,16 @@ function getSingle(value: SearchValue) {
   return Array.isArray(value) ? value[0] : value;
 }
 
+const MAX_FILTER_VALUE_LENGTH = 40;
+const MAX_MULTI_VALUES = 5;
+
 function getMany(value: SearchValue) {
   if (!value) return [];
-  return Array.isArray(value)
-    ? value.map((item) => item.trim()).filter(Boolean)
-    : [value.trim()].filter(Boolean);
+  const values = Array.isArray(value) ? value : [value];
+  return values
+    .map((item) => item.trim().slice(0, MAX_FILTER_VALUE_LENGTH))
+    .filter(Boolean)
+    .slice(0, MAX_MULTI_VALUES);
 }
 
 function parseDifficulty(
@@ -92,11 +93,13 @@ function parseDifficulty(
 }
 
 export default async function RecipesPage({ searchParams }: Props) {
-  const session = await getServerSession();
   const params = await searchParams;
 
-  const query = normalizeString(params.q);
-  const category = normalizeString(getSingle(params.categoria));
+  const query = normalizeString(params.q)?.slice(0, 60);
+  const category = normalizeString(getSingle(params.categoria))?.slice(
+    0,
+    MAX_FILTER_VALUE_LENGTH,
+  );
   const types = getMany(params.tipo);
   const difficulty = parseDifficulty(params.dificuldade);
   const utensils = getMany(params.utensilio);
@@ -107,7 +110,8 @@ export default async function RecipesPage({ searchParams }: Props) {
     Math.max(Number.isFinite(parsedPage) ? Math.floor(parsedPage) : 1, 1),
     20,
   );
-  const take = 24;
+  // 12 cards: metade do payload no 4G fraco; paginação compensa.
+  const take = 12;
   const skip = (currentPage - 1) * take;
 
   const isFiltered = !!(
@@ -119,26 +123,43 @@ export default async function RecipesPage({ searchParams }: Props) {
     ingredients.length > 0
   );
 
-  const [latest, categoryRows, utensilRows, allRecipesResult, filterOptions] =
-    await Promise.all([
-      isFiltered ? Promise.resolve(null) : getLatestRecipe(),
-      isFiltered ? Promise.resolve([]) : getRecipesByCategory(4),
-      isFiltered ? Promise.resolve([]) : getRecipesByUtensil(4),
-      getAllRecipes({
-        query,
-        category,
-        types,
-        difficulty,
-        utensils,
-        ingredients,
-        take,
-        skip,
-      }),
-      getRecipeFilterOptions(),
-    ]);
+  // Sem filtro: grade (2 queries) + contadores (1) + filtros (cache 24h).
+  // Com filtro: só grade + filtros. Hero deriva de recipes[0] — sem query extra.
+  // Sessão NÃO é lida aqui (headers() quebraria o ISR): o CTA de publicar
+  // é uma ilha client (PublishRecipeButton).
+  const [allRecipesResult, categoryCounts, filterOptions] = await Promise.all([
+    getAllRecipes({
+      query,
+      category,
+      types,
+      difficulty,
+      utensils,
+      ingredients,
+      take,
+      skip,
+    }),
+    isFiltered ? Promise.resolve([]) : getRecipeCategoryCounts(8),
+    getRecipeFilterOptions(),
+  ]);
 
   const { recipes, total } = allRecipesResult;
   const totalPages = Math.max(Math.ceil(total / take), 1);
+  const heroRecipe = !isFiltered ? (recipes[0] ?? null) : null;
+
+  const filtersCard = (
+    <RecipeFilters
+      currentQuery={query}
+      currentCategory={category}
+      currentDifficulty={difficulty ?? ''}
+      currentTypes={types}
+      currentUtensils={utensils}
+      currentIngredients={ingredients}
+      categories={filterOptions.categories}
+      types={filterOptions.types}
+      utensils={filterOptions.utensils}
+      ingredients={filterOptions.ingredients}
+    />
+  );
 
   return (
     <main>
@@ -184,15 +205,7 @@ export default async function RecipesPage({ searchParams }: Props) {
               </span>
             </div>
 
-            {session?.user && (
-              <Link
-                href="/receitas/new"
-                className="button-queimando-panela button-primary-queimando-panela"
-              >
-                Publicar receita
-                <span aria-hidden="true">→</span>
-              </Link>
-            )}
+            <PublishRecipeButton />
           </div>
 
           <p className="eyebrow-queimando-panela mt-8">Receitas com história</p>
@@ -239,6 +252,7 @@ export default async function RecipesPage({ searchParams }: Props) {
             </div>
             <Link
               href="/receitas"
+              prefetch={false}
               className="hidden min-h-11 shrink-0 items-center justify-center px-5 text-[0.78rem] font-bold uppercase sm:inline-flex"
               style={{
                 color: 'var(--cocoa)',
@@ -257,7 +271,7 @@ export default async function RecipesPage({ searchParams }: Props) {
       <div className="editorial-container py-12 lg:py-16">
         <div className="grid gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
           <div className="min-w-0 space-y-10">
-            {!isFiltered && latest && (
+            {heroRecipe && (
               <section
                 className="qp-reveal overflow-hidden bg-white"
                 style={{
@@ -266,26 +280,32 @@ export default async function RecipesPage({ searchParams }: Props) {
                   boxShadow: '0 10px 30px rgba(27, 41, 32, 0.06)',
                 }}
               >
-                <RecipeHeroFeatured recipe={latest} />
+                <RecipeHeroFeatured recipe={heroRecipe} />
               </section>
             )}
 
-            {!isFiltered &&
-              categoryRows.map((row) => (
-                <div key={row.type} className="qp-reveal">
-                  <RecipeCategoryRow type={row.type} recipes={row.recipes} />
-                </div>
-              ))}
-
-            {!isFiltered &&
-              utensilRows.map((row) => (
-                <div key={row.utensilName} className="qp-reveal">
-                  <RecipeUtensilRow
-                    utensilName={row.utensilName}
-                    recipes={row.recipes}
-                  />
-                </div>
-              ))}
+            {!isFiltered && categoryCounts.length > 0 && (
+              <nav
+                className="qp-reveal flex flex-wrap items-center gap-2"
+                aria-label="Explorar por categoria"
+              >
+                {categoryCounts.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={`/receitas?categoria=${encodeURIComponent(item.name)}`}
+                    prefetch={false}
+                    className="rounded-full bg-white px-3.5 py-2 text-[0.78rem] font-bold uppercase transition-colors"
+                    style={{
+                      border: '1px solid var(--line)',
+                      color: 'var(--cocoa)',
+                      letterSpacing: '0.04em',
+                    }}
+                  >
+                    {item.name} · {item.count}
+                  </Link>
+                ))}
+              </nav>
+            )}
 
             <div className="qp-reveal">
               <RecipeGrid
@@ -304,8 +324,38 @@ export default async function RecipesPage({ searchParams }: Props) {
           </div>
 
           <aside className="space-y-4 lg:sticky lg:top-[96px]">
+            {/* Mobile: filtros colapsados (details nativo, sem JS) para
+                economizar scroll + dados. Desktop: sempre visível. */}
+            <details className="qp-reveal overflow-hidden bg-white lg:hidden">
+              <summary
+                className="flex cursor-pointer list-none items-center justify-between bg-white px-5 py-4"
+                style={{ borderBottom: '1px solid var(--line)' }}
+              >
+                <span className="flex items-center gap-2">
+                  <span
+                    className="h-1 w-8"
+                    style={{ background: 'var(--food-accent)' }}
+                    aria-hidden
+                  />
+                  <span
+                    className="text-[0.78rem] font-bold uppercase"
+                    style={{ color: 'var(--cocoa)', letterSpacing: '0.08em' }}
+                  >
+                    Filtros
+                  </span>
+                </span>
+                <span
+                  className="text-[0.78rem] font-bold uppercase"
+                  style={{ color: 'var(--ink-muted)' }}
+                >
+                  Abrir
+                </span>
+              </summary>
+              <div className="p-4">{filtersCard}</div>
+            </details>
+
             <div
-              className="qp-reveal overflow-hidden bg-white"
+              className="qp-reveal hidden overflow-hidden bg-white lg:block"
               style={{
                 borderRadius: 'var(--radius-md)',
                 border: '1px solid var(--line)',
@@ -335,20 +385,7 @@ export default async function RecipesPage({ searchParams }: Props) {
                   Combine categoria, dificuldade e ingredientes com calma.
                 </p>
               </div>
-              <div className="p-4">
-                <RecipeFilters
-                  currentQuery={query}
-                  currentCategory={category}
-                  currentDifficulty={difficulty ?? ''}
-                  currentTypes={types}
-                  currentUtensils={utensils}
-                  currentIngredients={ingredients}
-                  categories={filterOptions.categories}
-                  types={filterOptions.types}
-                  utensils={filterOptions.utensils}
-                  ingredients={filterOptions.ingredients}
-                />
-              </div>
+              <div className="p-4">{filtersCard}</div>
             </div>
 
             <div

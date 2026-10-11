@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const utensilFindManyMock = vi.fn();
 const recipeFindManyMock = vi.fn();
+const utensilOnRecipeFindManyMock = vi.fn();
 
 vi.mock('@/lib/prisma', () => ({
   prisma: {
@@ -10,6 +11,9 @@ vi.mock('@/lib/prisma', () => ({
     },
     recipe: {
       findMany: (...args: any[]) => recipeFindManyMock(...args),
+    },
+    utensilOnRecipe: {
+      findMany: (...args: any[]) => utensilOnRecipeFindManyMock(...args),
     },
   },
 }));
@@ -35,10 +39,13 @@ describe('getRecipesByUtensil', () => {
         prepTimeMinutes: 10,
         cookTimeMinutes: 30,
         createdAt,
-        images: [{ url: '/bolo.jpg', isCover: true, order: 0 }],
+        images: [{ url: '/bolo.jpg' }],
         author: { name: 'Douglas' },
         recipeTypes: [{ recipeType: { name: 'Bolo' } }],
       },
+    ]);
+    utensilOnRecipeFindManyMock.mockResolvedValue([
+      { recipeId: '1', utensilId: 'u1' },
     ]);
 
     const result = await getRecipesByUtensil(4);
@@ -68,6 +75,7 @@ describe('getRecipesByUtensil', () => {
   it('filtra utensílios vazios', async () => {
     utensilFindManyMock.mockResolvedValue([{ id: 'u1', name: 'Forma' }]);
     recipeFindManyMock.mockResolvedValue([]);
+    utensilOnRecipeFindManyMock.mockResolvedValue([]);
 
     const result = await getRecipesByUtensil(4);
 

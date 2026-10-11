@@ -11,6 +11,10 @@ import { getLatestRecipes } from '@/features/recipes/actions/get-latest-recipes'
 
 export const dynamic = 'force-static';
 
+// ISR 1h: Home servida do CDN sem tocar o Neon; publicação/edição de
+// receita revalida na hora (ver create/update/delete-recipe).
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: 'Queimando Panela — Receitas caseiras, afetivas e autorais',
   description:
@@ -24,8 +28,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
+  // Carrossel "saiu do forno" exibe 1 por vez: 3 bastam (era 6).
   const [latestRecipes, classicRecipes] = await Promise.all([
-    getLatestRecipes(6),
+    getLatestRecipes(3),
     getClassicRecipes(3, 1),
   ]);
 

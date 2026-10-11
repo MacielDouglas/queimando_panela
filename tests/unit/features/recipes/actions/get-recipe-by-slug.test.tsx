@@ -12,6 +12,71 @@ vi.mock('@/lib/prisma', () => ({
 
 import { getRecipeBySlug } from '@/features/recipes/actions/get-recipe-by-slug';
 
+const expectedSelect = {
+  id: true,
+  slug: true,
+  title: true,
+  summary: true,
+  story: true,
+  modeOfPreparation: true,
+  difficulty: true,
+  prepTimeMinutes: true,
+  cookTimeMinutes: true,
+  servings: true,
+  suggestions: true,
+  nutritionSummary: true,
+  nutritionPer100g: true,
+  isPublished: true,
+  isAiGenerated: true,
+  authorId: true,
+  author: { select: { name: true } },
+  images: {
+    orderBy: { order: 'asc' },
+    select: {
+      url: true,
+      alt: true,
+      isCover: true,
+      order: true,
+    },
+  },
+  sections: {
+    orderBy: { order: 'asc' },
+    select: {
+      name: true,
+      modeOfPreparation: true,
+      ingredients: {
+        orderBy: { order: 'asc' },
+        select: {
+          id: true,
+          name: true,
+          amount: true,
+          unit: true,
+          originalText: true,
+          order: true,
+        },
+      },
+    },
+  },
+  ingredients: {
+    where: { sectionId: null },
+    orderBy: { order: 'asc' },
+    select: {
+      id: true,
+      name: true,
+      amount: true,
+      unit: true,
+      originalText: true,
+      order: true,
+    },
+  },
+  utensils: {
+    select: { utensil: { select: { name: true } } },
+  },
+  recipeTypes: {
+    select: { recipeType: { select: { name: true } } },
+  },
+};
+
 describe('getRecipeBySlug', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -25,26 +90,7 @@ describe('getRecipeBySlug', () => {
     expect(result).toBeNull();
     expect(findUniqueMock).toHaveBeenCalledWith({
       where: { slug: 'inexistente' },
-      include: {
-        author: { select: { name: true } },
-        images: { orderBy: { order: 'asc' } },
-        sections: {
-          orderBy: { order: 'asc' },
-          include: {
-            ingredients: { orderBy: { order: 'asc' } },
-          },
-        },
-        ingredients: {
-          where: { sectionId: null },
-          orderBy: { order: 'asc' },
-        },
-        utensils: {
-          include: { utensil: true },
-        },
-        recipeTypes: {
-          include: { recipeType: true },
-        },
-      },
+      select: expectedSelect,
     });
   });
 
@@ -64,26 +110,7 @@ describe('getRecipeBySlug', () => {
 
     expect(findUniqueMock).toHaveBeenCalledWith({
       where: { slug: 'bolo-de-milho' },
-      include: {
-        author: { select: { name: true } },
-        images: { orderBy: { order: 'asc' } },
-        sections: {
-          orderBy: { order: 'asc' },
-          include: {
-            ingredients: { orderBy: { order: 'asc' } },
-          },
-        },
-        ingredients: {
-          where: { sectionId: null },
-          orderBy: { order: 'asc' },
-        },
-        utensils: {
-          include: { utensil: true },
-        },
-        recipeTypes: {
-          include: { recipeType: true },
-        },
-      },
+      select: expectedSelect,
     });
 
     expect(result).toEqual({
@@ -96,5 +123,12 @@ describe('getRecipeBySlug', () => {
       ingredients: [],
       utensils: [],
     });
+  });
+
+  it('rejeita slug inválido sem consultar o banco', async () => {
+    const result = await getRecipeBySlug('../../etc/passwd');
+
+    expect(result).toBeNull();
+    expect(findUniqueMock).not.toHaveBeenCalled();
   });
 });

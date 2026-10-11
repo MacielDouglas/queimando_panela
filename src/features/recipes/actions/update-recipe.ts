@@ -8,6 +8,7 @@ import {
 } from '@/features/recipes/server/recipe-image.service';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { revalidateRecipePages } from '@/lib/revalidate-recipes';
 import type { AiRecipeAnalysis } from '../types/recipe-ai.types';
 import { buildRecipeCoreData, normalizeLower } from './recipe-core';
 import { buildFinalImageSequence } from './recipe-imagem-helpers';
@@ -236,6 +237,8 @@ export async function updateRecipe(
     console.error('Update recipe error:', error);
     return { error: 'Erro ao atualizar a receita. Tente novamente.' };
   }
+
+  revalidateRecipePages();
 
   redirect(`/receitas/${slug}`);
 }

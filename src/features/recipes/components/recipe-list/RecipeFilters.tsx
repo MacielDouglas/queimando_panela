@@ -132,9 +132,11 @@ function ChipLink({
     borderColor: 'var(--line)',
   } as const;
 
+  // Sem prefetch: dezenas de chips fariam dezenas de RSC requests no 4G.
   return (
     <Link
       href={href}
+      prefetch={false}
       className="rounded-full border px-3 py-1.5 text-[0.78rem] font-bold uppercase transition-colors hover:opacity-90"
       style={active ? activeStyle : inactiveStyle}
     >
@@ -280,6 +282,7 @@ export function RecipeFilters({
         <div className="pt-5" style={{ borderTop: '1px solid var(--line)' }}>
           <Link
             href={clearFilters(baseParams)}
+            prefetch={false}
             className="inline-flex rounded-full bg-white px-4 py-2 text-[0.78rem] font-bold uppercase transition-colors hover:text-white"
             style={{
               border: '1px solid var(--line)',

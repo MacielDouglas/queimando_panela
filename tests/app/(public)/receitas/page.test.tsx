@@ -20,24 +20,26 @@ vi.mock('next/image', () => ({
   ),
 }));
 
-vi.mock('@/lib/get-server-session', () => ({
-  getServerSession: vi.fn(),
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ replace: vi.fn(), push: vi.fn(), refresh: vi.fn() }),
+}));
+
+const useSessionMock = vi.fn();
+
+vi.mock('@/lib/auth-client', () => ({
+  authClient: {
+    get useSession() {
+      return useSessionMock;
+    },
+  },
 }));
 
 vi.mock('@/features/recipes/actions/get-all-recipes', () => ({
   getAllRecipes: vi.fn(),
 }));
 
-vi.mock('@/features/recipes/actions/get-latest-recipe', () => ({
-  getLatestRecipe: vi.fn(),
-}));
-
-vi.mock('@/features/recipes/actions/get-recipes-by-category', () => ({
-  getRecipesByCategory: vi.fn(),
-}));
-
-vi.mock('@/features/recipes/actions/get-recipe-by-utensil', () => ({
-  getRecipesByUtensil: vi.fn(),
+vi.mock('@/features/recipes/actions/get-recipe-category-counts', () => ({
+  getRecipeCategoryCounts: vi.fn(),
 }));
 
 vi.mock('@/features/recipes/actions/get-recipe-filter-options', () => ({
@@ -50,17 +52,11 @@ vi.mock('@/features/recipes/actions/get-recipe-filter-options', () => ({
 }));
 
 import { getAllRecipes } from '@/features/recipes/actions/get-all-recipes';
-import { getLatestRecipe } from '@/features/recipes/actions/get-latest-recipe';
-import { getRecipesByUtensil } from '@/features/recipes/actions/get-recipe-by-utensil';
+import { getRecipeCategoryCounts } from '@/features/recipes/actions/get-recipe-category-counts';
 import { getRecipeFilterOptions } from '@/features/recipes/actions/get-recipe-filter-options';
-import { getRecipesByCategory } from '@/features/recipes/actions/get-recipes-by-category';
-import { getServerSession } from '@/lib/get-server-session';
 
-const mockGetServerSession = vi.mocked(getServerSession);
 const mockGetAllRecipes = vi.mocked(getAllRecipes);
-const mockGetLatestRecipe = vi.mocked(getLatestRecipe);
-const mockGetRecipesByCategory = vi.mocked(getRecipesByCategory);
-const mockGetRecipesByUtensil = vi.mocked(getRecipesByUtensil);
+const mockGetRecipeCategoryCounts = vi.mocked(getRecipeCategoryCounts);
 const mockGetRecipeFilterOptions = vi.mocked(getRecipeFilterOptions);
 
 const recipeList: RecipeCardData[] = [
@@ -108,14 +104,14 @@ describe('RecipesPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
+    useSessionMock.mockReturnValue({ data: null, isPending: false });
+
     mockGetAllRecipes.mockResolvedValue({
       recipes: recipeList,
       total: recipeList.length,
     });
 
-    mockGetLatestRecipe.mockResolvedValue(recipeList[0]);
-    mockGetRecipesByCategory.mockResolvedValue([]);
-    mockGetRecipesByUtensil.mockResolvedValue([]);
+    mockGetRecipeCategoryCounts.mockResolvedValue([]);
     mockGetRecipeFilterOptions.mockResolvedValue({
       categories: [],
       types: [],
@@ -125,8 +121,6 @@ describe('RecipesPage', () => {
   });
 
   it('renderiza o hero com título e descrição', async () => {
-    mockGetServerSession.mockResolvedValueOnce(null);
-
     render(await renderPage());
 
     expect(
@@ -140,8 +134,8 @@ describe('RecipesPage', () => {
     ).toBeInTheDocument();
   });
 
-  it('não mostra o botão "Enviar nova receita" quando não há sessão', async () => {
-    mockGetServerSession.mockResolvedValueOnce(null);
+  it('não mostra o botão "Publicar receita" quando não há sessão', async () => {
+    useSessionMock.mockReturnValue({ data: null, isPending: false });
 
     render(await renderPage());
 
@@ -150,10 +144,13 @@ describe('RecipesPage', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('mostra o botão "Enviar nova receita" quando há usuário logado', async () => {
-    mockGetServerSession.mockResolvedValueOnce({
-      user: { id: '1', name: 'Douglas', email: 'douglas@example.com' },
-    } as any);
+  it('mostra o botão "Publicar receita" quando há usuário logado', async () => {
+    useSessionMock.mockReturnValue({
+      data: {
+        user: { id: '1', name: 'Douglas', email: 'douglas@example.com' },
+      },
+      isPending: false,
+    });
 
     render(await renderPage());
 
@@ -163,8 +160,6 @@ describe('RecipesPage', () => {
   });
 
   it('renderiza os cards de receitas retornados pela action', async () => {
-    mockGetServerSession.mockResolvedValueOnce(null);
-
     render(await renderPage());
 
     expect(
@@ -178,14 +173,10 @@ describe('RecipesPage', () => {
     expect(screen.getAllByRole('article').length).toBeGreaterThan(0);
   });
 
-  it('quando filtrada, não tenta carregar blocos editoriais', async () => {
-    mockGetServerSession.mockResolvedValueOnce(null);
-
+  it('quando filtrada, busca só a grade e pula contadores', async () => {
     render(await renderPage({ q: 'Frango' }));
 
-    expect(mockGetLatestRecipe).not.toHaveBeenCalled();
-    expect(mockGetRecipesByCategory).not.toHaveBeenCalled();
-    expect(mockGetRecipesByUtensil).not.toHaveBeenCalled();
+    expect(mockGetRecipeCategoryCounts).not.toHaveBeenCalled();
 
     expect(mockGetAllRecipes).toHaveBeenCalledWith(
       expect.objectContaining({

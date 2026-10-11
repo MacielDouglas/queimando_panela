@@ -45,6 +45,7 @@ export function RecipeUtensilRow({ utensilName, recipes }: Props) {
         </div>
         <Link
           href={`/receitas?utensilio=${encodeURIComponent(utensilName)}`}
+          prefetch={false}
           className="text-link-queimando-panela"
         >
           Ver todas
