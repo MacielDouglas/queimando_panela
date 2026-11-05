@@ -70,6 +70,29 @@ A rota principal de listagem da geladeira foi renomeada de `/geladeira` para `/o
 
 ---
 
+## Arquitetura (diagrama)
+
+```mermaid
+flowchart TD
+  Form["Form RHF+Zod + dropzone"] --> UP["sharp variantes WebP -> R2"]
+  Form --> AN["POST /api/recipes/analyze (Groq + retry 3x)"]
+  AN --> Draft["Rascunho editável: utensílios, nutrição, tempo, categoria"]
+  Draft --> PUB["Publicar isPublished/publishedAt"]
+  Gel["/o-que-tem: ingredientes da geladeira"] --> GEN["POST /api/geladeira/generate (3/dia por user)"]
+```
+
+## API
+
+| Método | Rota | Auth | Retorno |
+|---|---|---|---|
+| `POST` | `/api/recipes/analyze` | sessão | `{ utensils[], nutrition{}, timeMin, category, suggestions[] }` como rascunho editável |
+| `POST` | `/api/geladeira/generate` | sessão + rate-limit 3/dia | `{ recipes[] }` a partir dos ingredientes |
+| `ACTION` | `create/update/get-*` em `src/features/recipes/actions/` | sessão + ownership | Result pattern `{ data, error }` |
+
+> Mutações internas via Server Actions tipadas; `/api/*` só para IA e auth. IA sempre co-piloto, nunca veredito.
+
+---
+
 ## Design System
 
 Fonte única **Inter**, paleta quente "cozinha" (mel queimado `oklch(0.78 0.17 72)` como primária, papel de caderno como fundo) e componentes com `ring-1` ao invés de sombras. Documentação completa em `DESIGN.md:1`.
