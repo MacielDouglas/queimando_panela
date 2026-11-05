@@ -103,6 +103,7 @@ export default async function RootLayout({
   return (
     <html lang="pt-BR">
       <body
+        id="topo"
         className={`${playfair.variable} ${dmSans.variable} min-h-dvh antialiased`}
         style={{
           color: 'var(--ink)',
