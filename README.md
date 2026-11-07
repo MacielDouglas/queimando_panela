@@ -143,6 +143,11 @@ R2_SECRET_ACCESS_KEY=""
 R2_BUCKET=""
 R2_PUBLIC_URL="https://*.r2.dev"
 
+# Imagens editoriais no R2 (P0: sem /_next/image).
+# Opcional: sem ela o app usa R2_PUBLIC_URL. Se nenhuma existir,
+# cai no fallback local em public/images.
+NEXT_PUBLIC_R2_STATIC_BASE_URL=""
+
 # E-mail
 RESEND_API_KEY=""
 EMAIL_FROM="Queimando Panela <contato@exemplo.com>"

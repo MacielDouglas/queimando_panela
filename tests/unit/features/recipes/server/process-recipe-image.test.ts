@@ -98,7 +98,7 @@ describe('processRecipeImage', () => {
 
     await processRecipeImage(file);
 
-    expect(resizeMock).toHaveBeenCalledWith(1600, 1600, {
+    expect(resizeMock).toHaveBeenCalledWith(1200, 1200, {
       fit: 'inside',
       withoutEnlargement: true,
     });

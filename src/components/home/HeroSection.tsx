@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { staticImages } from '@/lib/static-images';
+
 export function HeroSection() {
   return (
     <section className="overflow-hidden px-0 py-[76px] lg:py-[64px]">
@@ -95,7 +97,7 @@ export function HeroSection() {
             }}
           >
             <Image
-              src="/images/hero-cozinha.jpg"
+              src={staticImages.heroCozinha}
               alt="Mesa com ingredientes frescos e receitas"
               fill
               sizes="50vw"

@@ -17,12 +17,12 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '*.r2.dev',
-      },
-    ],
+    // P0: toda imagem é servida direto do R2 (ou de /public), sem passar
+    // pelo otimizador `/_next/image`. Isso zera Image Transformations,
+    // Image Cache Reads/Writes e remove ~10 CDN Requests por pageview.
+    // O R2 já responde com `Cache-Control: immutable`, então o browser
+    // também para de revalidar as imagens entre visitas.
+    unoptimized: true,
   },
 
   experimental: {

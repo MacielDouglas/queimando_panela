@@ -4,6 +4,7 @@ import './globals.css';
 import { ConsoleDelight } from '@/components/delight/console-delight';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import { staticImages } from '@/lib/static-images';
 
 const playfair = Fraunces({
   subsets: ['latin'],
@@ -105,9 +106,14 @@ export default async function RootLayout({
       <body
         id="topo"
         className={`${playfair.variable} ${dmSans.variable} min-h-dvh antialiased`}
-        style={{
-          color: 'var(--ink)',
-        }}
+        style={
+          {
+            color: 'var(--ink)',
+            // P0: o pattern também sai do R2. O fallback CSS fica em
+            // `body::before` (var --qp-pattern, url("/images/pattern.webp")).
+            '--qp-pattern': `url("${staticImages.pattern}")`,
+          } as React.CSSProperties
+        }
       >
         <div className="flex min-h-dvh flex-col">
           <Header />

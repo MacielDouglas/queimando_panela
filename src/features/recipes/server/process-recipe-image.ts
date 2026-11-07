@@ -10,7 +10,10 @@ export type ProcessedRecipeImage = {
 
 const MAX_BYTES = 3 * 1024 * 1024;
 const MAX_INPUT_BYTES = 10 * 1024 * 1024;
-const MAX_DIMENSION = 1600;
+// P0: com a imagem servida direto do R2 (sem `/_next/image`), o maior
+// consumidor é o card (~400px CSS) e o hero do detalhe (~420px CSS).
+// 1200px cobre telas DPR2 com folga e evita servir 1600px em card.
+const MAX_DIMENSION = 1200;
 
 export const MAX_RECIPE_IMAGE_BYTES = MAX_BYTES;
 export const MAX_RECIPE_IMAGE_INPUT_BYTES = MAX_INPUT_BYTES;
@@ -49,7 +52,7 @@ export async function processRecipeImage(
   let finalMeta: sharp.Metadata | null = null;
 
   // 3 passes cobrem 95% dos casos com 1/3 do custo CPU anterior (8 passes).
-  for (const quality of [80, 68, 55]) {
+  for (const quality of [75, 65, 55]) {
     const candidate = await pipeline
       .clone()
       .webp({
@@ -68,7 +71,7 @@ export async function processRecipeImage(
   if (!output) {
     const fallback = await pipeline
       .clone()
-      .resize(1280, 1280, {
+      .resize(1000, 1000, {
         fit: 'inside',
         withoutEnlargement: true,
       })

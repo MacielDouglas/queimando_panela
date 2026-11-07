@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import { staticImages } from '@/lib/static-images';
+
 export function IntroSection() {
   return (
     <section
@@ -15,7 +17,7 @@ export function IntroSection() {
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-[#e8ddca] lg:aspect-[1/1.06]">
                 <Image
-                  src="/images/ingredientes.jpg"
+                  src={staticImages.ingredientes}
                   alt="Queijos artesanais, ervas e ingredientes naturais"
                   fill
                   sizes="(max-width: 1024px) 100vw, 45vw"

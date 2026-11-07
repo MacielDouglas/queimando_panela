@@ -257,7 +257,7 @@
     background-color: var(--paper);
     background-image:
       linear-gradient(rgba(246, 240, 228, 0.6), rgba(246, 240, 228, 0.6)),
-      url("/pattern.jpg");
+      var(--qp-pattern, url("/images/pattern.webp"));
     background-repeat: repeat, repeat;
     background-size:
       auto,

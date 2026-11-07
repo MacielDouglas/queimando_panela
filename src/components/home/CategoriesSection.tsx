@@ -1,26 +1,28 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { staticImages } from '@/lib/static-images';
+
 const categories = [
   {
     name: 'Prato principal',
     description:
       'Arroz, feijoada, moqueca — pratos que sustentam a mesa e a conversa.',
-    image: '/images/prato-principal-chef.jpg',
+    image: staticImages.pratoPrincipalChef,
     href: '/receitas?categoria=Prato%20principal',
     cta: 'Ver pratos principais',
   },
   {
     name: 'Sobremesa',
     description: 'Bolo, pudim, doce de avó — finais doces que viram história.',
-    image: '/images/sobremesa.jpg',
+    image: staticImages.sobremesa,
     href: '/receitas?categoria=Sobremesa',
     cta: 'Ver sobremesas',
   },
   {
     name: 'Café da manhã',
     description: 'Pão, tapioca, café passado — começos que dão energia ao dia.',
-    image: '/images/cafe-da-manha.jpg',
+    image: staticImages.cafeDaManha,
     href: '/receitas?categoria=Caf%C3%A9%20da%20manh%C3%A3',
     cta: 'Ver cafés da manhã',
   },

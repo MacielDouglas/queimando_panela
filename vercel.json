@@ -10,7 +10,7 @@
       ]
     },
     {
-      "source": "/pattern.jpg",
+      "source": "/opengraph-image",
       "headers": [
         {
           "key": "Cache-Control",

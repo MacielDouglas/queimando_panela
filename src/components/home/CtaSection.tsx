@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { staticImages } from '@/lib/static-images';
+
 export function CtaSection() {
   return (
     <section className="qp-reveal pb-24 lg:pb-28">
@@ -54,7 +56,7 @@ export function CtaSection() {
             style={{ minHeight: '340px' }}
           >
             <Image
-              src="/images/refeicao-compartilhada.jpg"
+              src={staticImages.refeicaoCompartilhada}
               alt="Pessoas compartilhando uma refeição à mesa"
               fill
               sizes="40vw"

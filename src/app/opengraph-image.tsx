@@ -1,6 +1,11 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
+// P1: gerada uma única vez no build e servida como asset estático.
+// Sem isso, o Satori (ImageResponse) roda a cada request e consome
+// 300–800 ms de Fluid Active CPU por acesso de crawler/bot de preview.
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export const alt = 'Queimando Panela — onde olhômetro vira medida';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -58,6 +63,8 @@ export default async function Image() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div
           style={{
+            display: 'flex',
+            flexDirection: 'column',
             fontFamily: 'Fraunces, Georgia, serif',
             fontSize: 64,
             fontWeight: 700,
@@ -66,12 +73,12 @@ export default async function Image() {
             color: '#1b2920',
           }}
         >
-          Onde olhômetro
-          <br />
-          vira medida.
+          <span>Onde olhômetro</span>
+          <span>vira medida.</span>
         </div>
         <div
           style={{
+            display: 'flex',
             fontSize: 18,
             color: '#3e4d42',
             maxWidth: 560,

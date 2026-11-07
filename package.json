@@ -28,6 +28,8 @@
     "test:e2e:auth": "playwright test --project chromium-auth",
     "test:e2e:setup": "playwright test --project setup",
     "test:e2e:report": "playwright show-report",
+    "images:optimize": "bun scripts/optimize-static-images.mjs",
+    "images:upload": "bun scripts/upload-static-images.mjs",
     "ci": "bun run check:ci && bun run typecheck && bun run test:coverage"
   },
   "dependencies": {
