@@ -201,6 +201,104 @@ Parágrafo 2","nutritionSummary":"Resumo nutri","nutritionPer100g":[{"nutrient":
     expect(json.data.sections[0].modeOfPreparation).toContain('1. Misture.');
   });
 
+  it('repete a análise quando a primeira resposta não contém JSON', async () => {
+    createMock
+      .mockResolvedValueOnce({
+        choices: [
+          {
+            message: { content: '' },
+            finish_reason: 'length',
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        choices: [
+          {
+            message: {
+              content:
+                '{"title":"Receita","summary":"Resumo","difficulty":"EASY","difficultyLabel":"Fácil","types":["Doce"],"prepTimeMinutes":10,"cookTimeMinutes":20,"suggestions":"Troca ingrediente","nutritionSummary":"Resumo nutri","nutritionPer100g":[{"nutrient":"Calorias","quantity":"100 kcal"}],"utensils":["Tigela"],"sections":[{"name":"Receita","ingredients":[{"originalText":"2 ovos","name":"ovos","generalName":"ovo"}],"modeOfPreparation":"1. Misture."}]}',
+            },
+            finish_reason: 'stop',
+          },
+        ],
+      });
+
+    const { POST } = await import('@/app/api/recipes/analyze/route');
+
+    const request = new Request('http://localhost/api/recipes/analyze', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: 'Receita',
+        sections: [
+          {
+            name: 'Receita',
+            ingredientsText: '2 ovos',
+            modeOfPreparation: 'Misture.',
+          },
+        ],
+      }),
+    });
+
+    const response = await POST(request);
+    const json = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(json.data.title).toBe('Receita');
+    expect(createMock).toHaveBeenCalledTimes(2);
+
+    const retryParams = createMock.mock.calls[1][0] as {
+      messages: { content: string }[];
+    };
+    expect(retryParams.messages[0].content).toContain('CORREÇÃO OBRIGATÓRIA');
+  });
+
+  it('usa JSON mode, reasoning baixo e prompt com conversão de medidas', async () => {
+    createMock.mockResolvedValue({
+      choices: [
+        {
+          message: {
+            content:
+              '{"title":"Receita","summary":"Resumo","difficulty":"EASY","difficultyLabel":"Fácil","types":["Doce"],"prepTimeMinutes":10,"cookTimeMinutes":20,"suggestions":"Troca ingrediente","nutritionSummary":"Resumo nutri","nutritionPer100g":[{"nutrient":"Calorias","quantity":"100 kcal"}],"utensils":["Tigela"],"sections":[{"name":"Receita","ingredients":[{"originalText":"2 ovos","name":"ovos","generalName":"ovo"}],"modeOfPreparation":"1. Misture."}]}',
+          },
+          finish_reason: 'stop',
+        },
+      ],
+    });
+
+    const { POST } = await import('@/app/api/recipes/analyze/route');
+
+    const request = new Request('http://localhost/api/recipes/analyze', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: 'Bolo de cenoura',
+        sections: [
+          {
+            name: 'Receita',
+            ingredientsText: '2 1/2 xícaras de farinha de trigo',
+            modeOfPreparation: 'Misture tudo.',
+          },
+        ],
+      }),
+    });
+
+    const response = await POST(request);
+
+    expect(response.status).toBe(200);
+
+    const params = createMock.mock.calls[0][0] as {
+      response_format: { type: string };
+      reasoning_effort: string;
+      max_completion_tokens: number;
+      messages: { content: string }[];
+    };
+
+    expect(params.response_format).toEqual({ type: 'json_object' });
+    expect(params.reasoning_effort).toBe('low');
+    expect(params.max_completion_tokens).toBe(8192);
+    expect(params.messages[0].content).toContain('CONVERSÃO DE MEDIDAS');
+    expect(params.messages[0].content).toContain('300 g');
+  });
+
   it('retorna 422 quando a IA responde sem JSON', async () => {
     createMock.mockResolvedValue({
       choices: [{ message: { content: 'sem objeto json aqui' } }],

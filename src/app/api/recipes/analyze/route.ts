@@ -186,7 +186,11 @@ function sanitizeJsonString(raw: string): string {
 
 function parseAiJson(raw: string): AnalyzeResult {
   const extracted = extractJsonObject(raw);
-  if (!extracted) throw new Error('NO_JSON_OBJECT');
+  if (!extracted) {
+    throw new Error(
+      `NO_JSON_OBJECT (${raw.trim().length} caracteres recebidos)`,
+    );
+  }
 
   try {
     return JSON.parse(extracted) as AnalyzeResult;
@@ -287,6 +291,15 @@ REGRAS OBRIGATÓRIAS
 - Identifique utensílios reais e distintos com base no modo de preparo.
 - Considere técnicas como flambagem, fritura, assar, bater e gelar ao definir dificuldade e tempos.
 - PRESERVE A QUANTIDADE EXATA DE PARÁGRAFOS DO MODO DE PREPARO: cada quebra de linha do usuário é um passo. NÃO subdivida um parágrafo em dois, NÃO junte dois parágrafos em um. Se o usuário enviou 8 parágrafos, retorne exatamente 8 passos numerados.
+- CONVERSÃO DE MEDIDAS: todo ingrediente deve trazer a quantidade original E a equivalência complementar, separadas por " - ".
+  • Se a quantidade original estiver em volume (xícaras, colheres, copos), acrescente o peso aproximado em gramas.
+  • Se a quantidade original estiver em peso (g ou kg), acrescente a medida caseira aproximada (xícaras ou colheres).
+  • Se a quantidade for por unidade (ovos, cebolas, dentes de alho), mantenha como está — não force conversão.
+  • Use como referência: 1 xícara (chá) = 240 ml; 1 colher (sopa) = 15 ml; 1 colher (chá) = 5 ml. Ajuste pela densidade do ingrediente (farinha ≈ 120 g/xícara; açúcar ≈ 200 g/xícara; líquidos ≈ 240 g/xícara; manteiga ≈ 227 g/xícara; cacau ≈ 85 g/xícara; aveia ≈ 90 g/xícara; mel ≈ 340 g/xícara).
+  • Arredonde para valores práticos (ex: 300 g, 11 g) e use frações legíveis (1/2, 1/4, 3/4, 2 1/2).
+  • Nunca altere a quantidade original; apenas acrescente a conversão.
+  • Use sempre espaço entre número e unidade: "300 g", "11 g".
+  • Formato: "2 1/2 xícaras de farinha de trigo - 300 g" / "1 colher de sopa de fermento em pó - 11 g" / "300 g de farinha de trigo - 2 1/2 xícaras".
 - Retorne SOMENTE o JSON abaixo. Nenhum texto, emoji ou markdown fora do JSON.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -393,13 +406,15 @@ CAMPOS DO JSON — INSTRUÇÕES DETALHADAS
   - Se houver apenas uma seção, use "Receita" como name.
   - "ingredients": lista de objetos.
   - Cada ingrediente deve conter:
-    - "originalText": texto completo padronizado do ingrediente, preservando quantidade, unidade e detalhes.
-    - "name": nome específico do ingrediente, sem quantidade.
-    - "generalName": nome genérico do ingrediente, em português e lowercase, próprio para indexação e busca.
+    - "originalText": texto completo padronizado do ingrediente, preservando a quantidade original e acrescentando a conversão complementar após " - " (ver regra CONVERSÃO DE MEDIDAS).
+    - "name": nome específico do ingrediente, sem quantidade, unidade ou conversão.
+    - "generalName": nome genérico do ingrediente, em português e lowercase, próprio para indexação e busca, sem quantidade, unidade ou conversão.
   - Exemplos:
-    { "originalText": "50 g de manteiga em ponto pomada", "name": "manteiga em ponto pomada", "generalName": "manteiga" }
+    { "originalText": "50 g de manteiga em ponto pomada - 1/4 de xícara", "name": "manteiga em ponto pomada", "generalName": "manteiga" }
+    { "originalText": "2 1/2 xícaras de farinha de trigo - 300 g", "name": "farinha de trigo", "generalName": "farinha de trigo" }
+    { "originalText": "1 colher de sopa de fermento em pó - 11 g", "name": "fermento em pó", "generalName": "fermento" }
     { "originalText": "1 disco de pizza de frigideira", "name": "pizza de frigideira", "generalName": "pizza" }
-    { "originalText": "¼ de xícara (chá) de vinho branco", "name": "vinho branco", "generalName": "vinho branco" }
+    { "originalText": "¼ de xícara (chá) de vinho branco - 60 g", "name": "vinho branco", "generalName": "vinho branco" }
   - "modeOfPreparation": string com passos numerados, UM PARÁGRAFO DO USUÁRIO = UM PASSO NUMERADO. Mantenha EXATAMENTE a mesma quantidade de parágrafos que o usuário enviou (ver CONFERÊNCIA acima). Formato EXATO: "1. Primeiro passo corrigido.\n2. Segundo passo corrigido.\n3. Terceiro passo corrigido." Cada passo começa com "N. " (número + ponto + espaço), preserva o conteúdo daquele parágrafo (corrigido ortograficamente), NÃO quebre um parágrafo longo em 2 passos, NÃO junte 2 parágrafos em 1. Quebras escapadas como \n, nunca "\n" literal visível.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -443,6 +458,65 @@ JSON ESPERADO (retorne apenas isso)
 }
 
 // ─── Route Handler ────────────────────────────────────────────────────────────
+
+const ANALYSIS_MODEL = 'openai/gpt-oss-120b';
+const ANALYSIS_MAX_COMPLETION_TOKENS = 8192;
+const ANALYSIS_MAX_ATTEMPTS = 2;
+
+const JSON_RETRY_INSTRUCTION = `
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CORREÇÃO OBRIGATÓRIA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Sua resposta anterior não pôde ser lida como JSON. Retorne AGORA somente o objeto JSON completo, começando com "{" e terminando com "}", sem markdown, sem comentários e sem texto antes ou depois.`;
+
+class AnalysisJsonError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AnalysisJsonError';
+  }
+}
+
+async function analyzeWithRetry(
+  groq: Groq,
+  title: string,
+  sections: Section[],
+): Promise<AnalyzeResult> {
+  const basePrompt = buildPrompt(title, sections);
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= ANALYSIS_MAX_ATTEMPTS; attempt++) {
+    const prompt =
+      attempt === 1 ? basePrompt : `${basePrompt}${JSON_RETRY_INSTRUCTION}`;
+
+    const completion = await groq.chat.completions.create({
+      model: ANALYSIS_MODEL,
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.2,
+      max_completion_tokens: ANALYSIS_MAX_COMPLETION_TOKENS,
+      reasoning_effort: 'low',
+      response_format: { type: 'json_object' },
+    });
+
+    const choice = completion.choices[0];
+    const content = choice?.message?.content ?? '';
+
+    try {
+      return parseAiJson(content);
+    } catch (error) {
+      lastError = error;
+      console.warn(
+        `[api/recipes/analyze] tentativa ${attempt}/${ANALYSIS_MAX_ATTEMPTS} sem JSON válido (finish_reason=${choice?.finish_reason ?? 'desconhecido'}, ${content.length} caracteres).`,
+      );
+    }
+  }
+
+  throw new AnalysisJsonError(
+    lastError instanceof Error
+      ? lastError.message
+      : 'A IA não retornou um objeto JSON válido.',
+  );
+}
 
 export async function POST(request: Request) {
   const ip =
@@ -525,71 +599,68 @@ export async function POST(request: Request) {
       }
     }
 
-    const groq = new Groq({ apiKey: rawKey, timeout: 25000 });
+    const groq = new Groq({ apiKey: rawKey, timeout: 20000 });
 
-    const completion = await groq.chat.completions.create({
-      model: 'openai/gpt-oss-120b', // ← MODELO ATUALIZADO
-      messages: [{ role: 'user', content: buildPrompt(title, sections) }],
-      temperature: 0.2,
-      max_tokens: 4096,
-      // response_format: { type: 'json_object' }, // ← ADICIONADO para garantir JSON
-    });
-
-    const raw = completion.choices[0]?.message?.content ?? '';
+    let parsed: AnalyzeResult;
 
     try {
-      const parsed = parseAiJson(raw);
-      // Normaliza suggestions para garantir 3 parágrafos com \n\n reais, lidando com \\n literal
-      const rawSuggestions = (parsed as unknown as Record<string, unknown>)
-        .suggestions;
-      (parsed as unknown as Record<string, unknown>).suggestions =
-        normalizeSuggestions(rawSuggestions);
-      // Normaliza modo de preparo e preserva quantidade exata de parágrafos do usuário
-      const parsedSections = (parsed as unknown as Record<string, unknown>)
-        .sections as Array<Record<string, unknown>> | undefined;
-      if (Array.isArray(parsedSections)) {
-        for (let i = 0; i < parsedSections.length; i++) {
-          const sec = parsedSections[i];
-          let normalized = normalizeModeOfPreparation(sec.modeOfPreparation);
-          const originalText = sections[i]?.modeOfPreparation ?? '';
-          const expectedCount = originalText
-            .split('\n')
-            .map((p) => p.trim())
-            .filter(Boolean).length;
-          const actualCount = normalized.split('\n').filter(Boolean).length;
-          if (expectedCount && actualCount !== expectedCount) {
-            console.warn(
-              `[api/recipes/analyze] paragraph count mismatch secao "${String(sec.name)}": esperado ${expectedCount}, IA retornou ${actualCount}. Ajustando.`,
-            );
-            if (actualCount > expectedCount) {
-              const parts = normalized.split('\n').filter(Boolean);
-              const head = parts.slice(0, expectedCount - 1);
-              const tailParts = parts.slice(expectedCount - 1);
-              // Junta o excedente em um único parágrafo, removendo numerações intermediárias
-              const tailJoined = tailParts
-                .map((p) => p.replace(/^\s*\d+[.)-]?\s*/, '').trim())
-                .join(' ');
-              const merged = [...head, `${expectedCount}. ${tailJoined}`].join(
-                '\n',
-              );
-              const finalParts = merged.split('\n').map((p, idx) => {
-                const cleaned = p.replace(/^\s*\d+[.)-]?\s*/, '').trim();
-                return `${idx + 1}. ${cleaned}`;
-              });
-              normalized = finalParts.join('\n');
-            }
-          }
-          sec.modeOfPreparation = normalized;
-        }
-      }
-      return NextResponse.json({ data: parsed }, { headers: NO_STORE });
+      parsed = await analyzeWithRetry(groq, title, sections);
     } catch (error) {
+      if (!(error instanceof AnalysisJsonError)) {
+        throw error;
+      }
+
       console.error('[api/recipes/analyze] JSON parse error:', error);
       return NextResponse.json(
         { error: 'A resposta da IA veio em formato inválido.' },
         { status: 422, headers: NO_STORE },
       );
     }
+
+    // Normaliza suggestions para garantir 3 parágrafos com \n\n reais, lidando com \\n literal
+    const rawSuggestions = (parsed as unknown as Record<string, unknown>)
+      .suggestions;
+    (parsed as unknown as Record<string, unknown>).suggestions =
+      normalizeSuggestions(rawSuggestions);
+    // Normaliza modo de preparo e preserva quantidade exata de parágrafos do usuário
+    const parsedSections = (parsed as unknown as Record<string, unknown>)
+      .sections as Array<Record<string, unknown>> | undefined;
+    if (Array.isArray(parsedSections)) {
+      for (let i = 0; i < parsedSections.length; i++) {
+        const sec = parsedSections[i];
+        let normalized = normalizeModeOfPreparation(sec.modeOfPreparation);
+        const originalText = sections[i]?.modeOfPreparation ?? '';
+        const expectedCount = originalText
+          .split('\n')
+          .map((p) => p.trim())
+          .filter(Boolean).length;
+        const actualCount = normalized.split('\n').filter(Boolean).length;
+        if (expectedCount && actualCount !== expectedCount) {
+          console.warn(
+            `[api/recipes/analyze] paragraph count mismatch secao "${String(sec.name)}": esperado ${expectedCount}, IA retornou ${actualCount}. Ajustando.`,
+          );
+          if (actualCount > expectedCount) {
+            const parts = normalized.split('\n').filter(Boolean);
+            const head = parts.slice(0, expectedCount - 1);
+            const tailParts = parts.slice(expectedCount - 1);
+            // Junta o excedente em um único parágrafo, removendo numerações intermediárias
+            const tailJoined = tailParts
+              .map((p) => p.replace(/^\s*\d+[.)-]?\s*/, '').trim())
+              .join(' ');
+            const merged = [...head, `${expectedCount}. ${tailJoined}`].join(
+              '\n',
+            );
+            const finalParts = merged.split('\n').map((p, idx) => {
+              const cleaned = p.replace(/^\s*\d+[.)-]?\s*/, '').trim();
+              return `${idx + 1}. ${cleaned}`;
+            });
+            normalized = finalParts.join('\n');
+          }
+        }
+        sec.modeOfPreparation = normalized;
+      }
+    }
+    return NextResponse.json({ data: parsed }, { headers: NO_STORE });
   } catch (error) {
     const status =
       typeof error === 'object' && error !== null
