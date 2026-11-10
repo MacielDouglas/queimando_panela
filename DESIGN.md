@@ -155,8 +155,8 @@ Paleta Epirus nova.html: papel aquece, tinta ancora, barro e ouro pontuam, musgo
 
 ## 3. Typography
 
-**Display Font:** Fraunces (Google, `--font-display`, opsz 9..144, 500/600/700) fallback Georgia, serif
-**Body Font:** DM Sans (Google, `--font-body`, 400/500/600) fallback system-ui, sans-serif
+**Display Font:** Fraunces (self-hosted, `src/app/fonts/fraunces-latin-variable.woff2`, `--font-display`, variável 500–700) fallback Georgia, serif
+**Body Font:** DM Sans (self-hosted, `src/app/fonts/dm-sans-latin-variable.woff2`, `--font-body`, variável 400–700) fallback system-ui, sans-serif
 **Label Font:** DM Sans 600 `0.68rem 0.16em uppercase` para eyebrow e nav
 
 **Character:** Editorial Raízes — Fraunces com `-0.06em` e `0.9` dá voz de território; DM Sans leve conduz longa leitura com `1.8`. `hero h1 clamp(3.3rem,8vw,7.75rem)` e `intro h2 clamp(2.25rem,5vw,4.9rem)`.

@@ -1,23 +1,30 @@
 import type { Metadata, Viewport } from 'next';
-import { DM_Sans, Fraunces } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import { ConsoleDelight } from '@/components/delight/console-delight';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import { staticImages } from '@/lib/static-images';
 
-const playfair = Fraunces({
-  subsets: ['latin'],
+// Fontes self-hosted (arquivos variáveis, subset `latin`) em vez de
+// `next/font/google`: o fetch do CSS do Google no build é instável e, quando o
+// Google responde com URLs sem extensão (`/l/font?kit=…&skey=…&v=…`), o build
+// do Turbopack quebra com "next/font/google queries have exactly one entry".
+// Referência: vercel/next.js#99114.
+const fraunces = localFont({
+  src: './fonts/fraunces-latin-variable.woff2',
   variable: '--font-display',
   display: 'swap',
-  weight: ['500', '600', '700'],
+  weight: '500 700',
+  adjustFontFallback: 'Times New Roman',
 });
 
-const dmSans = DM_Sans({
-  subsets: ['latin'],
+const dmSans = localFont({
+  src: './fonts/dm-sans-latin-variable.woff2',
   variable: '--font-body',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  weight: '400 700',
+  adjustFontFallback: 'Arial',
 });
 
 const siteUrl =
@@ -105,7 +112,7 @@ export default async function RootLayout({
     <html lang="pt-BR">
       <body
         id="topo"
-        className={`${playfair.variable} ${dmSans.variable} min-h-dvh antialiased`}
+        className={`${fraunces.variable} ${dmSans.variable} min-h-dvh antialiased`}
         style={
           {
             color: 'var(--ink)',
