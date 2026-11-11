@@ -86,9 +86,14 @@ test.describe('Queimando Panela — E2E', () => {
     ).toBeVisible();
     await expect(page.getByRole('button', { name: /^buscar$/i })).toBeVisible();
 
-    await expect(page.getByText('Filtros', { exact: true })).toBeVisible();
+    // O painel de filtros existe 2x no DOM (details mobile + card desktop).
+    // Filtra só o visível para não violar o strict mode do Playwright.
+    const sidebar = page.getByRole('complementary');
     await expect(
-      page.getByRole('complementary').getByText('Categoria', { exact: true }),
+      sidebar.getByText('Filtros', { exact: true }).filter({ visible: true }),
+    ).toBeVisible();
+    await expect(
+      sidebar.getByText('Categoria', { exact: true }).filter({ visible: true }),
     ).toBeVisible();
 
     await expect(

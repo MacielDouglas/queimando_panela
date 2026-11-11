@@ -33,12 +33,11 @@ const nextConfig: NextConfig = {
     proxyClientMaxBodySize: '10mb',
   },
 
-  serverExternalPackages: [
-    '@prisma/client',
-    '@prisma/adapter-pg',
-    'better-auth',
-    'pg',
-  ],
+  // NÃO inclua `better-auth` aqui: o pacote exporta `better-auth/react`, que
+  // usa hooks de React (`useRef`) também no SSR. Externá-lo faz o `react`
+  // resolvido por fora do bundle ser outro (dispatcher nulo) e o SSR quebra
+  // com "Cannot read properties of null (reading 'useRef')".
+  serverExternalPackages: ['@prisma/client', '@prisma/adapter-pg', 'pg'],
 
   headers: async () => [
     {
