@@ -59,8 +59,19 @@ jobs:
       - name: Seed database (create e2e user)
         run: bun run db:seed
 
-      - name: Install Playwright Browsers
-        run: bunx playwright install --with-deps chromium
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+
+      # Sem `--with-deps`: a imagem ubuntu-latest já traz as bibliotecas do
+      # Chromium (libnss3, libgbm1, libasound2...). O `--with-deps` roda
+      # `apt-get` e quebra o job quando os espelhos do Ubuntu não resolvem.
+      - name: Install Playwright browser
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: bunx playwright install chromium
 
       - name: Build application
         run: bun run build
