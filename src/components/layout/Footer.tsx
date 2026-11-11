@@ -15,7 +15,7 @@ const navigationLinks = [
 const institutionalLinks = [
   { href: '/receitas/new', label: 'Enviar receita' },
   { href: '/termos', label: 'Termos de uso' },
-  { href: '/termos', label: 'Política de privacidade' },
+  { href: '/privacidade', label: 'Política de privacidade' },
 ];
 
 const otherProjects = [
@@ -196,7 +196,7 @@ export default function Footer() {
               Termos de uso
             </Link>
             <Link
-              href="/termos"
+              href="/privacidade"
               className="transition-colors hover:text-[var(--gold)]"
             >
               Privacidade
