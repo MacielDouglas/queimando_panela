@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 
 import { QPMark } from '@/components/brand/qp-mark';
@@ -18,8 +19,10 @@ import {
 } from '@/components/ui/sheet';
 
 export function MobileMenu() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
           type="button"
@@ -72,9 +75,7 @@ export function MobileMenu() {
           className="border-t px-6 py-5"
           style={{ borderColor: 'var(--line)' }}
         >
-          <SheetClose asChild>
-            <AuthNavButton className="w-full" />
-          </SheetClose>
+          <AuthNavButton className="w-full" onNavigate={() => setOpen(false)} />
         </div>
 
         <div

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { type MouseEvent, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
@@ -12,12 +12,24 @@ type AuthNavButtonProps = {
   onNavigate?: () => void;
 };
 
+// Tempo da animação de saída do menu mobile (`duration-200` no SheetContent).
+// Navegar antes disso faz o painel reaparecer semitransparente sobre a página
+// de destino enquanto termina de fechar.
+const MENU_CLOSE_MS = 200;
+
 export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
   const router = useRouter();
   const { data, isPending } = authClient.useSession();
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   const isAuthenticated = Boolean(data?.user);
+
+  function handleSignInClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (!onNavigate) return;
+    event.preventDefault();
+    onNavigate();
+    window.setTimeout(() => router.push('/sign-in'), MENU_CLOSE_MS);
+  }
 
   async function handleSignOut() {
     setIsSigningOut(true);
@@ -73,13 +85,14 @@ export function AuthNavButton({ className, onNavigate }: AuthNavButtonProps) {
   return (
     <Button
       asChild
-      onClick={onNavigate}
       className={cn(
         'button-queimando-panela button-primary-queimando-panela h-[42px] px-[17px] text-[0.88rem]',
         className,
       )}
     >
-      <Link href="/sign-in">Entrar</Link>
+      <Link href="/sign-in" onClick={handleSignInClick}>
+        Entrar
+      </Link>
     </Button>
   );
 }
